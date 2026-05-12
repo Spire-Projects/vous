@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# VOUS — Setup del Proyecto
 
-## Getting Started
+Proyecto Next.js 16 (App Router) con Firebase, Cloudinary y TailwindCSS v4.
 
-First, run the development server:
+---
+
+## Requisitos
+
+- Node.js 20+
+- npm 10+
+- Cuenta de Firebase (Auth + Firestore habilitados)
+- Cuenta de Cloudinary
+
+---
+
+## Setup local
+
+### 1. Clonar el repositorio
+
+```bash
+git clone <url-del-repositorio>
+cd Vous
+```
+
+### 2. Instalar dependencias
+
+```bash
+npm install
+```
+
+### 3. Configurar variables de entorno
+
+```bash
+cp .env.example .env.local
+```
+
+Edita `.env.local` y completa todos los valores:
+
+| Variable | Descripción |
+|---|---|
+| `NEXT_PUBLIC_FIREBASE_API_KEY` | API Key del proyecto Firebase |
+| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | Dominio de auth de Firebase |
+| `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | ID del proyecto Firebase |
+| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` | Bucket de Storage |
+| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | Sender ID |
+| `NEXT_PUBLIC_FIREBASE_APP_ID` | App ID de Firebase |
+| `FIREBASE_ADMIN_PROJECT_ID` | Project ID (Admin SDK — solo servidor) |
+| `FIREBASE_ADMIN_CLIENT_EMAIL` | Email de cuenta de servicio |
+| `FIREBASE_ADMIN_PRIVATE_KEY` | Clave privada (con `\n` escapados) |
+| `CLOUDINARY_CLOUD_NAME` | Cloud name de Cloudinary |
+| `CLOUDINARY_API_KEY` | API Key de Cloudinary |
+| `CLOUDINARY_API_SECRET` | API Secret (solo servidor) |
+| `NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET` | Upload preset unsigned |
+
+### 4. Correr en desarrollo
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Scripts disponibles
 
-## Learn More
+| Comando | Descripción |
+|---|---|
+| `npm run dev` | Servidor de desarrollo con hot-reload |
+| `npm run build` | Build de producción |
+| `npm run start` | Iniciar servidor de producción |
+| `npm run lint` | Revisar errores de ESLint |
+| `npm run format` | Formatear código con Prettier |
+| `npm run format:check` | Verificar formato sin modificar archivos |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Estructura del proyecto
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/           # Páginas y layouts (App Router)
+├── components/    # Componentes reutilizables de UI
+├── context/       # React Context providers (auth, carrito, etc.)
+├── hooks/         # Custom hooks de React
+├── lib/           # Configuraciones de servicios externos
+│   ├── firebase.ts        # Firebase Auth + Firestore (cliente)
+│   ├── firebaseAdmin.ts   # Firebase Admin SDK (solo servidor)
+│   └── cloudinary.ts      # Cloudinary Node SDK (solo servidor)
+├── services/      # Lógica de acceso a datos (Firestore)
+├── types/         # Interfaces y tipos TypeScript
+└── utils/         # Helpers y funciones utilitarias
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Firebase
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Cliente** (`src/lib/firebase.ts`): Auth + Firestore, para uso en componentes de React.
+- **Admin SDK** (`src/lib/firebaseAdmin.ts`): solo en Server Components y API Routes; marcado `server-only`.
+- Reglas de Firestore en `firestore.rules`. Para desplegar: `firebase deploy --only firestore:rules`
+
+## Cloudinary
+
+- `src/lib/cloudinary.ts` usa el Node SDK (server-only). Para uploads desde el cliente, usa el `NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET` con fetch directo a la API de Cloudinary.
+
+---
+
+## Paleta de colores VOUS
+
+| Token | Color | Uso |
+|---|---|---|
+| `vous-warm-white` | `#FDFAF5` | Fondo principal |
+| `vous-cream` | `#F5F0E8` | Fondos secundarios |
+| `vous-soft-black` | `#1A1A18` | Texto principal |
+| `vous-gold` | `#C9A84C` | Color primario / CTAs |
+| `vous-gray` | `#6B6B63` | Texto secundario |
+
+Tipografías: **Cormorant Garamond** (serif) + **Inter** (sans-serif), cargadas con `next/font`.
+
+---
+
+## Deploy en Vercel
+
+1. Conecta el repositorio en [vercel.com](https://vercel.com)
+2. Agrega todas las variables de `.env.example` en *Settings → Environment Variables*
+3. Vercel detecta Next.js automáticamente — sin configuración adicional
+
