@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+/* ── Paleta VOUS ──────────────────────────────────────────────────────────── */
+@theme inline {
+  /* Colores de marca */
+  --color-vous-cream:       #F5F0E8;
+  --color-vous-warm-white:  #FDFAF5;
+  --color-vous-soft-black:  #1A1A18;
+  --color-vous-gold:        #C9A84C;
+  --color-vous-gold-light:  #E2C97E;
+  --color-vous-gold-dark:   #A07830;
+  --color-vous-gray:        #6B6B63;
+  --color-vous-gray-light:  #D4CFC6;
+  --color-vous-gray-dark:   #3D3D38;
+
+  /* Semánticos */
+  --color-background:       var(--color-vous-warm-white);
+  --color-foreground:       var(--color-vous-soft-black);
+  --color-primary:          var(--color-vous-gold);
+  --color-primary-hover:    var(--color-vous-gold-dark);
+
+  /* Tipografías */
+  --font-serif:  var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans:   var(--font-inter), "Inter", system-ui, sans-serif;
+}
+
+:root {
+  --background: var(--color-vous-warm-white);
+  --foreground: var(--color-vous-soft-black);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
