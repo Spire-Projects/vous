@@ -1,0 +1,6 @@
+export { HeroSection } from "./HeroSection";
+export { ValuesSection } from "./ValuesSection";
+export { NewInSection } from "./NewInSection";
+export { CollectionsSection } from "./CollectionsSection";
+export { MisionSection } from "./MisionSection";
+export { NewsletterSection } from "./NewsletterSection";

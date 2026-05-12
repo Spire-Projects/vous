@@ -3,25 +3,26 @@
 /* ── Paleta VOUS ──────────────────────────────────────────────────────────── */
 @theme inline {
   /* Colores de marca */
-  --color-vous-cream:       #F5F0E8;
-  --color-vous-warm-white:  #FDFAF5;
-  --color-vous-soft-black:  #1A1A18;
-  --color-vous-gold:        #C9A84C;
-  --color-vous-gold-light:  #E2C97E;
-  --color-vous-gold-dark:   #A07830;
-  --color-vous-gray:        #6B6B63;
-  --color-vous-gray-light:  #D4CFC6;
-  --color-vous-gray-dark:   #3D3D38;
+  --color-vous-cream: #f5f0e8;
+  --color-vous-warm-white: #fdfaf5;
+  --color-vous-soft-black: #1a1a18;
+  --color-vous-gold: #c9a84c;
+  --color-vous-gold-light: #e2c97e;
+  --color-vous-gold-dark: #a07830;
+  --color-vous-gray: #6b6b63;
+  --color-vous-gray-light: #d4cfc6;
+  --color-vous-gray-dark: #3d3d38;
 
   /* Semánticos */
-  --color-background:       var(--color-vous-warm-white);
-  --color-foreground:       var(--color-vous-soft-black);
-  --color-primary:          var(--color-vous-gold);
-  --color-primary-hover:    var(--color-vous-gold-dark);
+  --color-background: var(--color-vous-warm-white);
+  --color-foreground: var(--color-vous-soft-black);
+  --color-primary: var(--color-vous-gold);
+  --color-primary-hover: var(--color-vous-gold-dark);
 
   /* Tipografías */
-  --font-serif:  var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
-  --font-sans:   var(--font-inter), "Inter", system-ui, sans-serif;
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-inter), "Inter", system-ui, sans-serif;
+  --font-nav: var(--font-montserrat), "Montserrat", system-ui, sans-serif;
 }
 
 :root {
