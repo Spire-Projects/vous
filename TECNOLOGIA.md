@@ -4,10 +4,10 @@
 
 | Tecnología         | Versión          | Rol                                          |
 | ------------------ | ---------------- | -------------------------------------------- |
-| Next.js            | 14+ (App Router) | Framework principal, SSR / ISR / SSG         |
-| React              | 18+              | UI library                                   |
-| TypeScript         | 5+ (strict)      | Tipado estático en todo el proyecto          |
-| TailwindCSS        | 3+               | Sistema de estilos utilitario                |
+| Next.js            | 16.x (App Router) | Framework principal, SSR / ISR / SSG         |
+| React              | 19.x              | UI library                                   |
+| TypeScript         | 5+ (strict)       | Tipado estático en todo el proyecto          |
+| TailwindCSS        | 4+                | Sistema de estilos utilitario                |
 | Firebase Auth      | 10+              | Autenticación y gestión de sesiones          |
 | Firestore          | 10+              | Base de datos NoSQL serverless (colecciones) |
 | Firebase Admin SDK | 12+              | Operaciones privilegiadas en servidor        |
@@ -168,8 +168,8 @@ npm run lint
 # Formato
 npm run format
 
-# Verificación de tipos
-npm run typecheck
+# Verificar formato sin escritura
+npm run format:check
 ```
 
 ---
@@ -182,9 +182,9 @@ npm run typecheck
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint . --ext .ts,.tsx",
+    "lint": "eslint",
     "format": "prettier --write .",
-    "typecheck": "tsc --noEmit"
+    "format:check": "prettier --check ."
   }
 }
 ```

@@ -72,10 +72,10 @@ Desarrollar un e-commerce full-featured alineado a la identidad de VOUS que perm
 ## Roles del Sistema
 
 ```
-CUSTOMER       → Navega, compra, gestiona su cuenta y pedidos
-WHOLESALER     → Accede a precios de mayoreo, realiza pedidos en volumen
-ADMIN          → Gestiona catálogo, pedidos, usuarios y contenido
-SUPERADMIN     → Configuración global, acceso total, gestión de admins
+customer       → Navega, compra, gestiona su cuenta y pedidos
+wholesaler     → Accede a precios de mayoreo, realiza pedidos en volumen
+admin          → Gestiona catálogo, pedidos, usuarios y contenido
+superadmin     → Configuración global, acceso total, gestión de admins
 ```
 
 ---

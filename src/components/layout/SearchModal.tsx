@@ -18,7 +18,8 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
 
   useEffect(() => {
     if (open) {
-      setTimeout(() => inputRef.current?.focus(), 80);
+      const id = setTimeout(() => inputRef.current?.focus(), 80);
+      return () => clearTimeout(id);
     }
   }, [open]);
 

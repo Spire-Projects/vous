@@ -19,6 +19,8 @@ export function ProductGallery() {
           <button
             key={id}
             onClick={() => setActive(i)}
+            aria-label={`Ver imagen ${i + 1}`}
+            aria-current={active === i ? true : undefined}
             className={`w-16 h-20 md:w-20 md:h-24 bg-gradient-to-b ${bg} shrink-0 border-2 transition-colors ${
               active === i ? 'border-vous-gold' : 'border-transparent hover:border-vous-gray-light'
             }`}

@@ -5,6 +5,7 @@ import { Heart, ShoppingBag } from 'lucide-react'
 
 const SIZES = ['XS', 'S', 'M', 'L']
 const COLORS = ['#1a1a18', '#b8b0a4', '#c9a84c', '#6b5a3a']
+const COLOR_NAMES = ['Negro', 'Gris', 'Dorado', 'Marrón']
 
 export function ProductInfo() {
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
@@ -40,6 +41,8 @@ export function ProductInfo() {
               key={c}
               onClick={() => setSelectedColor(i)}
               style={{ backgroundColor: c }}
+              aria-label={COLOR_NAMES[i]}
+              aria-pressed={selectedColor === i}
               className={`w-7 h-7 rounded-full border-2 transition-all ${
                 selectedColor === i ? 'border-vous-gold scale-110' : 'border-transparent hover:border-vous-gray-light'
               }`}

@@ -241,7 +241,7 @@ export async function POST(req: NextRequest) {
 ### Organización
 
 - Un componente por archivo — nunca dos componentes en el mismo `.tsx`
-- Barrel exports (`index.ts`) solo en `components/ui/` y `types/`
+- Barrel exports (`index.ts`) para agrupar exports por módulo en `components/`, `hooks/`, `context/`, `services/`, `types/` y `utils/`
 - Imports absolutos con alias `@/` — nunca rutas relativas profundas (`../../..`)
 - Comentarios solo para lógica no obvia — el código debe ser autoexplicativo
 
