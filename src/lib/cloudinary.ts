@@ -23,11 +23,3 @@ cloudinary.config({
 });
 
 export default cloudinary;
-
-/**
- * Nombre del upload preset configurado en Cloudinary Dashboard.
- * Se usa en uploads desde el cliente (unsigned).
- */
-export const CLOUDINARY_UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET ?? "";
-
-export const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME ?? "";

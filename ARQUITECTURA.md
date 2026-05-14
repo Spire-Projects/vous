@@ -212,9 +212,9 @@ export async function POST(req: NextRequest) {
 ```jsonc
 // .prettierrc
 {
-  "semi": false,
-  "singleQuote": true,
-  "trailingComma": "all",
+  "semi": true,
+  "singleQuote": false,
+  "trailingComma": "es5",
   "printWidth": 100,
   "tabWidth": 2,
 }
