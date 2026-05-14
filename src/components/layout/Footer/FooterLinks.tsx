@@ -7,7 +7,7 @@ const FOOTER_SECTIONS = [
       { href: "/", label: "Inicio" },
       { href: "/catalogo", label: "Catálogo" },
       { href: "/categorias", label: "Categorías" },
-      { href: "/revista", label: "Revista" },
+      { href: "/revista", label: "Blog de Moda" },
     ],
   },
   {
