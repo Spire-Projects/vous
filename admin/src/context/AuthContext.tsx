@@ -2,6 +2,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useState,
   type ReactNode,
 } from "react";
 import {
@@ -21,10 +22,15 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { auth, db } from "../lib/firebase";
-import { useAuthStore, type AdminRole, type AuthUser } from "../stores/authStore";
 
-// Re-export types so existing imports keep working
-export type { AdminRole, AuthUser } from "../stores/authStore";
+export type AdminRole = "admin" | "superadmin";
+
+export interface AuthUser {
+  uid: string;
+  email: string | null;
+  name: string;
+  role: AdminRole;
+}
 
 interface AuthState {
   user: AuthUser | null;
@@ -41,7 +47,8 @@ interface AuthState {
 const AuthContext = createContext<AuthState | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const { user, loading, setUser, setLoading } = useAuthStore();
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     return onAuthStateChanged(auth, async (firebaseUser) => {
@@ -84,7 +91,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       setLoading(false);
     });
-  }, [setUser, setLoading]);
+  }, []);
 
   async function login(email: string, password: string): Promise<void> {
     await signInWithEmailAndPassword(auth, email, password);

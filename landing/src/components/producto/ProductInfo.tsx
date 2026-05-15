@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Heart, ShoppingBag } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 const SIZES = ['XS', 'S', 'M', 'L']
 const COLORS = ['#1a1a18', '#b8b0a4', '#c9a84c', '#6b5a3a']
@@ -78,13 +79,13 @@ export function ProductInfo() {
 
       {/* CTA */}
       <div className="flex gap-3">
-        <button className="flex-1 flex items-center justify-center gap-2 bg-vous-soft-black text-white font-nav text-[12px] font-semibold tracking-[0.15em] uppercase py-3.5 hover:bg-vous-gray-dark transition-colors">
+        <Button variant="default" size="lg" className="flex-1 gap-2">
           <ShoppingBag size={15} />
           Agregar al Carrito
-        </button>
-        <button className="w-12 h-12 border border-vous-gray-light flex items-center justify-center text-vous-gray hover:border-vous-gold hover:text-vous-gold transition-colors">
+        </Button>
+        <Button variant="outline" size="icon" className="w-12 h-12" aria-label="Guardar en favoritos">
           <Heart size={16} />
-        </button>
+        </Button>
       </div>
 
       {/* Detalles */}

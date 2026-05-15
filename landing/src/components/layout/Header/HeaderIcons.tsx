@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 import { Search, ShoppingBag, User, LogOut, Package } from "lucide-react";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 import { useAuthContext } from "@/context/AuthContext";
 import { useCartContext } from "@/context/CartContext";
 
@@ -38,47 +44,39 @@ export function HeaderIcons({ onSearchOpen }: HeaderIconsProps) {
       </Link>
 
       {user ? (
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger asChild>
-            <button
-              aria-label="Mi cuenta"
-              className="text-vous-soft-black hover:text-vous-gold transition-colors duration-200"
-            >
-              <User size={20} strokeWidth={1.5} />
-            </button>
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Portal>
-            <DropdownMenu.Content
-              align="end"
-              sideOffset={8}
-              className="bg-white border border-vous-gray-light shadow-sm min-w-[180px] z-50 py-1"
-            >
-              <DropdownMenu.Item asChild>
-                <Link
-                  href="/cuenta"
-                  className="flex items-center gap-2 px-4 py-2.5 text-sm font-sans text-vous-soft-black hover:bg-vous-cream hover:text-vous-gold transition-colors cursor-pointer"
-                >
-                  <User size={15} /> Mi Cuenta
-                </Link>
-              </DropdownMenu.Item>
-              <DropdownMenu.Item asChild>
-                <Link
-                  href="/cuenta/pedidos"
-                  className="flex items-center gap-2 px-4 py-2.5 text-sm font-sans text-vous-soft-black hover:bg-vous-cream hover:text-vous-gold transition-colors cursor-pointer"
-                >
-                  <Package size={15} /> Mis Pedidos
-                </Link>
-              </DropdownMenu.Item>
-              <DropdownMenu.Separator className="h-px bg-vous-gray-light my-1" />
-              <DropdownMenu.Item
-                onSelect={() => void signOut()}
-                className="flex items-center gap-2 px-4 py-2.5 text-sm font-sans text-vous-soft-black hover:bg-vous-cream hover:text-vous-gold transition-colors cursor-pointer"
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            aria-label="Mi cuenta"
+            className="text-vous-soft-black hover:text-vous-gold transition-colors duration-200"
+          >
+            <User size={20} strokeWidth={1.5} />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" sideOffset={8}>
+            <DropdownMenuItem asChild className="p-0 focus:bg-transparent">
+              <Link
+                href="/cuenta"
+                className="flex items-center gap-2 px-4 py-2.5 text-sm font-sans text-vous-soft-black hover:bg-vous-cream hover:text-vous-gold transition-colors w-full"
               >
-                <LogOut size={15} /> Cerrar Sesión
-              </DropdownMenu.Item>
-            </DropdownMenu.Content>
-          </DropdownMenu.Portal>
-        </DropdownMenu.Root>
+                <User size={15} /> Mi Cuenta
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild className="p-0 focus:bg-transparent">
+              <Link
+                href="/cuenta/pedidos"
+                className="flex items-center gap-2 px-4 py-2.5 text-sm font-sans text-vous-soft-black hover:bg-vous-cream hover:text-vous-gold transition-colors w-full"
+              >
+                <Package size={15} /> Mis Pedidos
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onSelect={() => void signOut()}
+              className="flex items-center gap-2 px-4 py-2.5 text-sm font-sans text-vous-soft-black hover:bg-vous-cream hover:text-vous-gold transition-colors cursor-pointer"
+            >
+              <LogOut size={15} /> Cerrar Sesión
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       ) : (
         <Link
           href="/auth/login"

@@ -4,7 +4,7 @@ import {
   NewInSection,
   MisionSection,
   CollectionsSection,
-  NewsletterSection,
+  ScheduleSection,
 } from "@/components/home";
 
 export default function HomePage() {
@@ -15,7 +15,7 @@ export default function HomePage() {
       <NewInSection />
       <MisionSection />
       <CollectionsSection />
-      <NewsletterSection />
+      <ScheduleSection />
     </>
   );
 }

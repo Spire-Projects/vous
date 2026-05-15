@@ -3,7 +3,13 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Search, X } from "lucide-react";
-import * as Dialog from "@radix-ui/react-dialog";
+import {
+  Dialog,
+  DialogPortal,
+  DialogOverlay,
+  DialogClose,
+  DialogContentRaw,
+} from "@/components/ui/dialog";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface SearchModalProps {
@@ -37,22 +43,17 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
   };
 
   return (
-    <Dialog.Root open={open} onOpenChange={(v) => !v && handleClose()}>
-      <Dialog.Portal>
+    <Dialog open={open} onOpenChange={(v) => !v && handleClose()}>
+      <DialogPortal>
         <AnimatePresence>
           {open && (
             <>
-              <Dialog.Overlay asChild>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="fixed inset-0 z-50 bg-vous-soft-black/50 backdrop-blur-sm"
-                  onClick={handleClose}
-                />
-              </Dialog.Overlay>
+              <DialogOverlay
+                className="fixed inset-0 z-50 bg-vous-soft-black/50 backdrop-blur-sm"
+                onClick={handleClose}
+              />
 
-              <Dialog.Content asChild>
+              <DialogContentRaw asChild>
                 <motion.div
                   initial={{ y: "-100%", opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
@@ -74,21 +75,19 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
                       className="flex-1 bg-transparent font-sans text-lg text-vous-soft-black placeholder:text-vous-gray outline-none"
                       aria-label="Buscar en VOUS"
                     />
-                    <Dialog.Close asChild>
-                      <button
-                        aria-label="Cerrar búsqueda"
-                        className="text-vous-gray hover:text-vous-soft-black transition-colors"
-                      >
-                        <X size={20} strokeWidth={1.5} />
-                      </button>
-                    </Dialog.Close>
+                    <DialogClose
+                      aria-label="Cerrar búsqueda"
+                      className="text-vous-gray hover:text-vous-soft-black transition-colors"
+                    >
+                      <X size={20} strokeWidth={1.5} />
+                    </DialogClose>
                   </form>
                 </motion.div>
-              </Dialog.Content>
+              </DialogContentRaw>
             </>
           )}
         </AnimatePresence>
-      </Dialog.Portal>
-    </Dialog.Root>
+      </DialogPortal>
+    </Dialog>
   );
 }

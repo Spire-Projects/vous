@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Label } from '@/components/ui/label'
 
 const CATEGORIES = [
   { label: 'Todas las Piezas', count: 42 },
@@ -76,13 +78,13 @@ export function CatalogFilters() {
         <h3 className="font-nav text-[10px] font-semibold tracking-[0.2em] text-vous-gold uppercase mb-3">
           Material
         </h3>
-        <ul className="space-y-2">
+        <ul className="space-y-3">
           {MATERIALS.map((mat) => (
-            <li key={mat}>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="accent-vous-gold" />
-                <span className="font-sans text-sm text-vous-gray">{mat}</span>
-              </label>
+            <li key={mat} className="flex items-center gap-2">
+              <Checkbox id={`mat-${mat}`} />
+              <Label htmlFor={`mat-${mat}`} className="font-sans text-sm normal-case tracking-normal text-vous-gray cursor-pointer">
+                {mat}
+              </Label>
             </li>
           ))}
         </ul>

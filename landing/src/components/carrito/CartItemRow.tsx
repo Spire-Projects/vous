@@ -1,6 +1,7 @@
 'use client'
 
 import { X, Minus, Plus } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 interface CartItemProps {
   name: string
@@ -24,30 +25,36 @@ export function CartItemRow({ name, variant, price, qty, bg, onRemove, onQty }: 
               Variante: {variant}
             </p>
           </div>
-          <button
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={onRemove}
-            className="text-vous-gray hover:text-vous-soft-black transition-colors shrink-0"
             aria-label="Eliminar"
+            className="text-vous-gray hover:text-vous-soft-black border-none pb-0 shrink-0"
           >
             <X size={15} />
-          </button>
+          </Button>
         </div>
 
         <div className="flex items-center justify-between mt-4">
           <div className="flex items-center border border-vous-gray-light">
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => onQty(-1)}
-              className="w-8 h-8 flex items-center justify-center text-vous-gray hover:text-vous-soft-black transition-colors"
+              className="w-8 h-8 text-vous-gray hover:text-vous-soft-black border-none pb-0"
             >
               <Minus size={13} />
-            </button>
+            </Button>
             <span className="w-8 text-center font-sans text-sm text-vous-soft-black">{qty}</span>
-            <button
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => onQty(1)}
-              className="w-8 h-8 flex items-center justify-center text-vous-gray hover:text-vous-soft-black transition-colors"
+              className="w-8 h-8 text-vous-gray hover:text-vous-soft-black border-none pb-0"
             >
               <Plus size={13} />
-            </button>
+            </Button>
           </div>
           <p className="font-serif text-lg text-vous-soft-black">{price}</p>
         </div>
