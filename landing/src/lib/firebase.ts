@@ -1,6 +1,11 @@
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import {
+  initializeApp,
+  getApps,
+  getApp as _getApp,
+  type FirebaseApp,
+} from "firebase/app";
+import { getAuth, type Auth } from "firebase/auth";
+import { getFirestore, type Firestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -11,10 +16,25 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Singleton pattern: evita re-inicializar en hot-reload de Next.js
-const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+// ── Lazy singletons ─────────────────────────────────────────────────────────
+// Firebase is NOT initialized at module load time. Initialization is deferred
+// until first use so that Next.js can statically build pages without requiring
+// env vars to be present at build time.
+let _app: FirebaseApp | undefined;
+let _auth: Auth | undefined;
+let _db: Firestore | undefined;
 
-export const auth = getAuth(app);
-export const db = getFirestore(app);
+function getFirebaseApp(): FirebaseApp {
+  if (!_app) _app = getApps().length ? _getApp() : initializeApp(firebaseConfig);
+  return _app;
+}
 
-export default app;
+export function getFirebaseAuth(): Auth {
+  if (!_auth) _auth = getAuth(getFirebaseApp());
+  return _auth;
+}
+
+export function getFirebaseDb(): Firestore {
+  if (!_db) _db = getFirestore(getFirebaseApp());
+  return _db;
+}

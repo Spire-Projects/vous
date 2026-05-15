@@ -1,11 +1,11 @@
-import { db } from "@/lib/firebase";
+import { getFirebaseDb } from "@/lib/firebase";
 import { doc, getDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import type { UserRepository } from "@/domain/repositories/user.repository";
 import type { User } from "@/domain/entities/user.entity";
 
 export const firestoreUserRepository: UserRepository = {
   async findById(uid: string): Promise<User | null> {
-    const snap = await getDoc(doc(db, "users", uid));
+    const snap = await getDoc(doc(getFirebaseDb(), "users", uid));
     if (!snap.exists()) return null;
     const data = snap.data();
     return {
@@ -22,7 +22,7 @@ export const firestoreUserRepository: UserRepository = {
   },
 
   async update(uid, data): Promise<void> {
-    await updateDoc(doc(db, "users", uid), {
+    await updateDoc(doc(getFirebaseDb(), "users", uid), {
       ...data,
       updatedAt: serverTimestamp(),
     });

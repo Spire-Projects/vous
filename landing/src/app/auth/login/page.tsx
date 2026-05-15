@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { sendPasswordResetEmail } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { getFirebaseAuth } from "@/lib/firebase";
 import { useAuthContext } from "@/context/AuthContext";
 
 export default function LoginPage() {
@@ -27,7 +27,7 @@ export default function LoginPage() {
     }
     setResetLoading(true);
     try {
-      await sendPasswordResetEmail(auth, email.trim());
+      await sendPasswordResetEmail(getFirebaseAuth(), email.trim());
       setResetSent(true);
       setError("");
     } catch {

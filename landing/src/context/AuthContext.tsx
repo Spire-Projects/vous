@@ -15,7 +15,7 @@ import {
   updateDoc,
   serverTimestamp,
 } from "firebase/firestore";
-import { auth, db } from "@/lib/firebase";
+import { getFirebaseAuth, getFirebaseDb } from "@/lib/firebase";
 import type { AuthContextValue, AuthUser, UserProfile, UserRole } from "@/types/auth.types";
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -26,7 +26,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(getFirebaseAuth(), async (firebaseUser) => {
       try {
         if (firebaseUser) {
           const tokenResult = await firebaseUser.getIdTokenResult();
@@ -39,7 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           });
 
           // Fetch Firestore profile
-          const snap = await getDoc(doc(db, "users", firebaseUser.uid));
+          const snap = await getDoc(doc(getFirebaseDb(), "users", firebaseUser.uid));
           if (snap.exists()) {
             const data = snap.data();
             setUserProfile({
@@ -71,7 +71,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    await signInWithEmailAndPassword(auth, email, password);
+    await signInWithEmailAndPassword(getFirebaseAuth(), email, password);
   };
 
   const createAccount = async (
@@ -81,11 +81,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     phone?: string,
     departamento?: string
   ) => {
-    const { user: newUser } = await createUserWithEmailAndPassword(auth, email, password);
+    const { user: newUser } = await createUserWithEmailAndPassword(getFirebaseAuth(), email, password);
     await fbUpdateProfile(newUser, { displayName: name });
 
     // Create Firestore user document
-    await setDoc(doc(db, "users", newUser.uid), {
+    await setDoc(doc(getFirebaseDb(), "users", newUser.uid), {
       uid: newUser.uid,
       name,
       email,
@@ -103,17 +103,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     data: Partial<Pick<UserProfile, "name" | "phone" | "departamento" | "birthDate">>
   ) => {
     if (!user) return;
-    const ref = doc(db, "users", user.uid);
+    const ref = doc(getFirebaseDb(), "users", user.uid);
     await updateDoc(ref, { ...data, updatedAt: serverTimestamp() });
     if (data.name) {
-      const currentUser = auth.currentUser;
+      const currentUser = getFirebaseAuth().currentUser;
       if (currentUser) await fbUpdateProfile(currentUser, { displayName: data.name });
     }
     setUserProfile((prev) => (prev ? { ...prev, ...data } : prev));
   };
 
   const signOut = async () => {
-    await firebaseSignOut(auth);
+    await firebaseSignOut(getFirebaseAuth());
     setUser(null);
     setUserProfile(null);
   };

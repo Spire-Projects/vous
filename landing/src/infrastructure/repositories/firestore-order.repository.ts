@@ -1,4 +1,4 @@
-import { db } from "@/lib/firebase";
+import { getFirebaseDb } from "@/lib/firebase";
 import {
   collection,
   getDocs,
@@ -14,19 +14,19 @@ import type { Order } from "@/domain/entities/order.entity";
 
 export const firestoreOrderRepository: OrderRepository = {
   async findByUser(userId: string): Promise<Order[]> {
-    const q = query(collection(db, "orders"), where("userId", "==", userId));
+    const q = query(collection(getFirebaseDb(), "orders"), where("userId", "==", userId));
     const snap = await getDocs(q);
     return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Order);
   },
 
   async findById(id: string): Promise<Order | null> {
-    const snap = await getDoc(doc(db, "orders", id));
+    const snap = await getDoc(doc(getFirebaseDb(), "orders", id));
     if (!snap.exists()) return null;
     return { id: snap.id, ...snap.data() } as Order;
   },
 
   async create(order): Promise<Order> {
-    const ref = await addDoc(collection(db, "orders"), {
+    const ref = await addDoc(collection(getFirebaseDb(), "orders"), {
       ...order,
       status: "pending",
       createdAt: serverTimestamp(),

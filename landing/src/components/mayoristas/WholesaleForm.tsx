@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import { CheckCircle, MessageCircle, Upload, X, AlertCircle } from 'lucide-react'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
-import { db } from '@/lib/firebase'
+import { getFirebaseDb } from '@/lib/firebase'
 import { CLOUDINARY_UPLOAD_PRESET, CLOUDINARY_CLOUD_NAME } from '@/lib/cloudinary.client'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -95,7 +95,7 @@ export function WholesaleForm() {
       if (files.length && CLOUDINARY_CLOUD_NAME && CLOUDINARY_UPLOAD_PRESET) {
         fileUrls = await Promise.all(files.map(uploadToCloudinary))
       }
-      await addDoc(collection(db, 'wholesaleRequests'), {
+      await addDoc(collection(getFirebaseDb(), 'wholesaleRequests'), {
         contactName:         form.nombre.trim(),
         carnetIdentidad:     form.carnet.trim(),
         phone:               form.telefono.trim(),
