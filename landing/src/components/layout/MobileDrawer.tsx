@@ -24,7 +24,7 @@ export function MobileDrawer({ open, onClose, pathname = "/" }: MobileDrawerProp
   const { user } = useAuthContext();
 
   return (
-    <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
+    <Dialog open={open} onOpenChange={(v: boolean) => !v && onClose()}>
       <DialogPortal>
         <AnimatePresence>
           {open && (
