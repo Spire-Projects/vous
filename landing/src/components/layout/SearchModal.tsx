@@ -43,7 +43,7 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={(v) => !v && handleClose()}>
+    <Dialog open={open} onOpenChange={(v: boolean) => !v && handleClose()}>
       <DialogPortal>
         <AnimatePresence>
           {open && (
