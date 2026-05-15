@@ -1,59 +1,99 @@
-export type UserRole = "admin" | "superadmin";
+// ── Barrel export de todos los tipos de VOUS (Admin Panel) ─────────────────
 
-export interface AdminUser {
-  uid: string;
-  email: string;
-  displayName: string;
-  role: UserRole;
-  photoURL?: string;
-}
+export type { FS, SerializedTimestamp, AnyTimestamp, BaseDocument } from "./base.types";
 
-export type OrderStatus =
-  | "PENDIENTE"
-  | "CONFIRMADO"
-  | "PREPARANDO"
-  | "ENVIADO"
-  | "ENTREGADO"
-  | "CANCELADO";
+export type {
+  CustomerRole,
+  WholesaleStatus,
+  User,
+  CustomerSnapshot,
+  CreateUserPayload,
+  UpdateUserPayload,
+  AdminRole,
+  AdminUser,
+  CreateAdminUserPayload,
+  UpdateAdminUserPayload,
+} from "./user.types";
 
-export interface Order {
-  id: string;
-  customerName: string;
-  customerEmail: string;
-  date: string;
-  total: number;
-  status: OrderStatus;
-}
+export type {
+  Category,
+  CreateCategoryPayload,
+  UpdateCategoryPayload,
+  VariantType,
+  ProductAttributes,
+  Product,
+  ProductVariant,
+  CreateProductPayload,
+  UpdateProductPayload,
+  CreateVariantPayload,
+  UpdateVariantPayload,
+  ProductWithVariants,
+  CatalogFilters,
+} from "./product.types";
 
-export type StockStatus = "ACTIVO" | "INACTIVO" | "AGOTADO";
+export type {
+  OrderStatus,
+  PaymentMethod,
+  OrderItem,
+  BillingInfo,
+  ShippingType,
+  ShippingInfo,
+  Order,
+  OrderStatusEntry,
+  StatusHistoryActor,
+  CreateOrderPayload,
+  UpdateOrderPayload,
+} from "./order.types";
 
-export interface ProductVariant {
-  size: string;
-  color: string;
-}
+export type {
+  WholesaleRequestStatus,
+  WholesaleRequest,
+  CreateWholesaleRequestPayload,
+  ReviewWholesaleRequestPayload,
+  WholesaleRules,
+} from "./wholesale.types";
 
-export interface Product {
-  id: string;
-  name: string;
-  sku: string;
-  category: string;
-  variants: ProductVariant[];
-  stock: number;
-  status: StockStatus;
-  isCritical?: boolean;
-}
+export type {
+  BlogPostStatus,
+  BlogPost,
+  CreateBlogPostPayload,
+  UpdateBlogPostPayload,
+} from "./blog.types";
 
-export type WholesaleStatus = "PENDIENTE" | "APROBADO" | "RECHAZADO";
+export type {
+  Banner,
+  CreateBannerPayload,
+  UpdateBannerPayload,
+  FAQ,
+  CreateFAQPayload,
+  UpdateFAQPayload,
+  LandingSection,
+  SocialLinks,
+  ContactInfo,
+  LandingConfig,
+  PaymentConfig,
+  SiteConfig,
+} from "./content.types";
 
-export interface WholesaleRequest {
-  id: string;
-  businessName: string;
-  contactName: string;
-  email: string;
-  location: string;
-  date: string;
-  status: WholesaleStatus;
-}
+export type {
+  DiscountType,
+  DiscountScope,
+  Discount,
+  CreateDiscountPayload,
+  UpdateDiscountPayload,
+} from "./discount.types";
+
+export type {
+  ReportPeriod,
+  DateRange,
+  SalesSummary,
+  SalesDataPoint,
+  TopProduct,
+  OrderSummaryRow,
+  ReportData,
+} from "./report.types";
+
+// ── Tipos de UI (solo admin panel) ─────────────────────────────────────────
 
 export interface MetricCard {
   label: string;
