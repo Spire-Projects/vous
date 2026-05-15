@@ -2,7 +2,7 @@ import type { BaseDocument } from "./base.types";
 
 // ── Colección: users ────────────────────────────────────────────────────────
 
-export type CustomerRole = "customer" | "wholesale";
+export type CustomerRole = "customer" | "wholesaler";
 export type WholesaleStatus = "none" | "pending" | "approved" | "rejected";
 
 /**

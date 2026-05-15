@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, LogIn } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 export function LoginPage() {
-  const { login } = useAuth();
+  const { login, user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -15,13 +15,20 @@ export function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Navigate to dashboard once auth context confirms user is loaded
+  useEffect(() => {
+    if (!authLoading && user) {
+      navigate("/", { replace: true });
+    }
+  }, [authLoading, user, navigate]);
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
     setLoading(true);
     try {
       await login(email, password);
-      navigate("/", { replace: true });
+      // Navigation handled by useEffect above once AuthContext resolves
     } catch (err: unknown) {
       const code = (err as { code?: string }).code ?? "";
       if (

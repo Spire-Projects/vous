@@ -93,6 +93,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       departamento: departamento ?? null,
       birthDate: null,
       role: "customer",
+      isActive: true,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     });

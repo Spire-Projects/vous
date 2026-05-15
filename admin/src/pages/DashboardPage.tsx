@@ -1,4 +1,4 @@
-import { TrendingUp, ShoppingBag, Package, Users } from "lucide-react";
+import { TrendingUp, ShoppingBag, Users } from "lucide-react";
 import { PageHeader } from "../components/ui/PageHeader";
 import { StatCard } from "../components/ui/StatCard";
 import { Badge, type BadgeProps } from "@/components/ui/badge";

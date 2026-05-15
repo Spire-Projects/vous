@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Star, CheckCircle, Pencil, X, Check, Loader2 } from 'lucide-react'
 import { AccountSidebar } from '@/components/cuenta/AccountSidebar'
@@ -48,10 +48,10 @@ function TabPerfil() {
     setSaving(true)
     try {
       await updateProfile({
-        name: name.trim() || undefined,
-        phone: phone.trim() || undefined,
-        departamento: departamento || undefined,
-        birthDate: birthDate || undefined,
+        ...(name.trim() && { name: name.trim() }),
+        phone: phone.trim() || null,
+        departamento: departamento || null,
+        birthDate: birthDate || null,
       })
       setEditing(false)
     } catch {
@@ -294,10 +294,13 @@ export default function CuentaPage() {
   const [tab, setTab] = useState<TabId>('perfil')
 
   // Redirect to login if not authenticated
-  if (!loading && !user) {
-    router.replace('/auth/login')
-    return null
-  }
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace('/auth/login')
+    }
+  }, [loading, user, router])
+
+  if (loading || !user) return null
 
   const handleLogout = async () => {
     await signOut()

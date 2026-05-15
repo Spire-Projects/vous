@@ -27,7 +27,12 @@ export function useProductsByCategory(categoryId: string) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!categoryId) return;
+    if (!categoryId) {
+      setProducts([]);
+      setError(null);
+      setLoading(false);
+      return;
+    }
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     getProductsByCategory(firestoreProductRepository, categoryId)

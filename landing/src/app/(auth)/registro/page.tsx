@@ -36,7 +36,7 @@ export default function RegistroPage() {
     setError("");
     setLoading(true);
     try {
-      await createAccount(name, email, password);
+      await createAccount(name, email, password, phone, departamento);
       router.replace("/cuenta");
     } catch (err: unknown) {
       const code = (err as { code?: string }).code ?? "";

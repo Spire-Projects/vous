@@ -73,6 +73,16 @@ export function RegisterPage() {
 
     setLoading(true);
     try {
+      // Re-verify server-side that no superadmin exists yet (race condition guard)
+      const existingSnap = await getDocs(
+        query(collection(db, "adminUsers"), where("role", "==", "superadmin"))
+      );
+      if (!existingSnap.empty) {
+        setError("Ya existe un superadmin. Esta página ya no está disponible.");
+        setSetupState("unavailable");
+        return;
+      }
+
       const { user: newUser } = await createUserWithEmailAndPassword(
         auth,
         email.trim(),

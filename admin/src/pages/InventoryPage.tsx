@@ -67,6 +67,18 @@ export function InventoryPage() {
               className="pl-9"
             />
           </div>
+          <button
+            type="button"
+            onClick={() => setFilterLowStock((v) => !v)}
+            className={`flex items-center gap-1.5 px-3 py-2 font-nav text-[11px] uppercase tracking-wide border transition-colors ${
+              filterLowStock
+                ? "border-red-400 bg-red-50 text-red-600"
+                : "border-vous-border text-vous-gray hover:border-vous-black"
+            }`}
+          >
+            <AlertTriangle size={13} />
+            Stock Crítico
+          </button>
         </div>
 
         <Table>
