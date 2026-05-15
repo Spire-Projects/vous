@@ -7,8 +7,8 @@ export async function submitWholesaleRequest(
   repo: WholesaleRepository,
   input: WholesaleInput
 ): Promise<void> {
-  if (!input.nombre || !input.email || !input.empresa) {
-    throw new Error("Nombre, email y empresa son requeridos");
+  if (!input.nombre || !input.email || !input.empresa || !input.telefono || !input.departamento) {
+    throw new Error("Nombre, email, empresa, teléfono y departamento son requeridos");
   }
   return repo.submit(input);
 }

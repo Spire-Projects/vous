@@ -5,7 +5,8 @@ import type { Product } from "@/domain/entities/product.entity";
 
 export const firestoreProductRepository: ProductRepository = {
   async findAll(): Promise<Product[]> {
-    const q = query(collection(db, "products"), orderBy("sortOrder", "asc"));
+    // Order by sortOrder when present; fall back to createdAt for products without it
+    const q = query(collection(db, "products"), orderBy("createdAt", "desc"));
     const snap = await getDocs(q);
     return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as Product);
   },

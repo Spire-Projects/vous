@@ -12,9 +12,16 @@ function mapOrder(d: { id: string; data: () => Record<string, unknown> }): Order
     id: d.id,
     orderNumber: data["orderNumber"] as string,
     customer: {
-      uid: (data["customerId"] as string) ?? "",
-      name: (data["customerSnapshot"] as { name?: string })?.name ?? "",
-      email: (data["customerSnapshot"] as { email?: string })?.email ?? "",
+      // Support both storefront schema (userId + direct fields) and admin schema (customerId + customerSnapshot)
+      uid: (data["customerId"] as string) ?? (data["userId"] as string) ?? "",
+      name:
+        (data["customerSnapshot"] as { name?: string })?.name ??
+        (data["customerName"] as string) ??
+        "",
+      email:
+        (data["customerSnapshot"] as { email?: string })?.email ??
+        (data["customerEmail"] as string) ??
+        "",
     },
     items: (data["items"] as Order["items"]) ?? [],
     subtotal: data["subtotal"] as number,

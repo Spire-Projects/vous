@@ -24,7 +24,7 @@ export function useProducts() {
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
 
   const toggleActive = useCallback(async (id: string, isActive: boolean) => {
-    await setProductActive(firestoreProductRepository, id, isActive);
+    await setProductActive(firestoreProductRepository, id, !isActive);
     await fetchProducts();
   }, [fetchProducts]);
 

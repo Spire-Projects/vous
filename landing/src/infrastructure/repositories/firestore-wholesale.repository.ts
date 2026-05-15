@@ -4,7 +4,7 @@ import type { WholesaleRepository } from "@/domain/repositories/wholesale.reposi
 
 export const firestoreWholesaleRepository: WholesaleRepository = {
   async submit(request): Promise<void> {
-    await addDoc(collection(db, "wholesale_requests"), {
+    await addDoc(collection(db, "wholesaleRequests"), {
       ...request,
       status: "pending",
       createdAt: serverTimestamp(),

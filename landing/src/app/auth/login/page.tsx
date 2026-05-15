@@ -4,6 +4,8 @@ import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 import { useAuthContext } from "@/context/AuthContext";
 
 export default function LoginPage() {
@@ -15,6 +17,25 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
+
+  async function handleReset() {
+    if (!email.trim()) {
+      setError("Ingresa tu correo para restablecer la contraseña.");
+      return;
+    }
+    setResetLoading(true);
+    try {
+      await sendPasswordResetEmail(auth, email.trim());
+      setResetSent(true);
+      setError("");
+    } catch {
+      setError("No se pudo enviar el correo. Verifica que el correo sea correcto.");
+    } finally {
+      setResetLoading(false);
+    }
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -85,12 +106,14 @@ export default function LoginPage() {
               <label className="font-nav text-[10px] font-semibold uppercase tracking-[0.2em] text-vous-gray">
                 Contraseña
               </label>
-              <Link
-                href="/auth/recuperar"
-                className="font-nav text-[10px] font-semibold uppercase tracking-[0.12em] text-vous-gray hover:text-vous-gold transition-colors"
+              <button
+                type="button"
+                onClick={() => void handleReset()}
+                disabled={resetLoading}
+                className="font-nav text-[10px] font-semibold uppercase tracking-[0.12em] text-vous-gray hover:text-vous-gold transition-colors disabled:opacity-50"
               >
-                ¿Olvidó su contraseña?
-              </Link>
+                {resetSent ? "Correo enviado ✓" : resetLoading ? "Enviando…" : "¿Olvidó su contraseña?"}
+              </button>
             </div>
             <div className="relative">
               <input
