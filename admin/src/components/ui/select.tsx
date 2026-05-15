@@ -30,10 +30,6 @@ type IndicatorRef = React.ForwardRefExoticComponent<
   React.PropsWithChildren<React.HTMLAttributes<HTMLSpanElement>> &
     React.RefAttributes<HTMLSpanElement>
 >;
-type SpanRef = React.ForwardRefExoticComponent<
-  React.PropsWithChildren<React.HTMLAttributes<HTMLSpanElement>> &
-    React.RefAttributes<HTMLSpanElement> & { placeholder?: string }
->;
 type ScrollRef = React.ForwardRefExoticComponent<
   React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>> & React.RefAttributes<HTMLDivElement>
 >;
@@ -42,9 +38,7 @@ const _Trigger = SelectPrimitive.Trigger as unknown as ButtonRef;
 const _Content = SelectPrimitive.Content as unknown as DivRef;
 const _Item    = SelectPrimitive.Item    as unknown as ItemRef;
 const _Label   = SelectPrimitive.Label  as unknown as GroupRef;
-const _Group   = SelectPrimitive.Group  as unknown as GroupRef;
 const _ItemIndicator = SelectPrimitive.ItemIndicator as unknown as IndicatorRef;
-const _Value   = SelectPrimitive.Value  as unknown as SpanRef;
 const _ScrollUp   = SelectPrimitive.ScrollUpButton  as unknown as ScrollRef;
 const _ScrollDown = SelectPrimitive.ScrollDownButton as unknown as ScrollRef;
 

@@ -221,7 +221,7 @@ export function CustomersPage() {
       </div>
 
       {/* Detail dialog */}
-      <Dialog open={!!selected} onOpenChange={(open) => { if (!open) setSelected(null); }}>
+      <Dialog open={!!selected} onOpenChange={(open: boolean) => { if (!open) setSelected(null); }}>
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>{selected?.name}</DialogTitle>

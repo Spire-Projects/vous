@@ -242,7 +242,7 @@ export function WholesalePage() {
       </div>
 
       {/* Detail / Review Dialog */}
-      <Dialog open={!!selected} onOpenChange={(open) => { if (!open) setSelected(null); }}>
+      <Dialog open={!!selected} onOpenChange={(open: boolean) => { if (!open) setSelected(null); }}>
         <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle>{selected?.contactName}</DialogTitle>
