@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 import { X, User } from "lucide-react";
-import * as Dialog from "@radix-ui/react-dialog";
+import {
+  Dialog,
+  DialogPortal,
+  DialogOverlay,
+  DialogClose,
+  DialogContentRaw,
+} from "@/components/ui/dialog";
 import { motion, AnimatePresence } from "framer-motion";
 import { clsx } from "clsx";
 import { NAV_LINKS } from "./Header/HeaderNav";
@@ -18,22 +24,17 @@ export function MobileDrawer({ open, onClose, pathname = "/" }: MobileDrawerProp
   const { user } = useAuthContext();
 
   return (
-    <Dialog.Root open={open} onOpenChange={(v) => !v && onClose()}>
-      <Dialog.Portal>
+    <Dialog open={open} onOpenChange={(v: boolean) => !v && onClose()}>
+      <DialogPortal>
         <AnimatePresence>
           {open && (
             <>
-              <Dialog.Overlay asChild>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="fixed inset-0 z-50 bg-vous-soft-black/40 backdrop-blur-sm"
-                  onClick={onClose}
-                />
-              </Dialog.Overlay>
+              <DialogOverlay
+                className="fixed inset-0 z-50 bg-vous-soft-black/40 backdrop-blur-sm"
+                onClick={onClose}
+              />
 
-              <Dialog.Content asChild>
+              <DialogContentRaw asChild>
                 <motion.aside
                   initial={{ x: "-100%" }}
                   animate={{ x: 0 }}
@@ -46,14 +47,12 @@ export function MobileDrawer({ open, onClose, pathname = "/" }: MobileDrawerProp
                     <span className="font-serif text-2xl font-bold tracking-[0.08em] text-vous-soft-black">
                       VOUS
                     </span>
-                    <Dialog.Close asChild>
-                      <button
-                        aria-label="Cerrar menú"
-                        className="text-vous-soft-black hover:text-vous-gold transition-colors"
-                      >
-                        <X size={22} strokeWidth={1.5} />
-                      </button>
-                    </Dialog.Close>
+                    <DialogClose
+                      aria-label="Cerrar menú"
+                      className="text-vous-soft-black hover:text-vous-gold transition-colors"
+                    >
+                      <X size={22} strokeWidth={1.5} />
+                    </DialogClose>
                   </div>
 
                   <nav className="flex-1 overflow-y-auto px-6 py-8 space-y-1">
@@ -95,11 +94,11 @@ export function MobileDrawer({ open, onClose, pathname = "/" }: MobileDrawerProp
                     )}
                   </div>
                 </motion.aside>
-              </Dialog.Content>
+              </DialogContentRaw>
             </>
           )}
         </AnimatePresence>
-      </Dialog.Portal>
-    </Dialog.Root>
+      </DialogPortal>
+    </Dialog>
   );
 }

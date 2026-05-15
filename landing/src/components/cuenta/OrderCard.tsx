@@ -1,6 +1,9 @@
-const STATUS_STYLES: Record<string, string> = {
-  ENVIADO: 'bg-vous-gold/10 text-vous-gold',
-  PENDIENTE: 'bg-vous-gray-light/30 text-vous-gray',
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+
+const STATUS_VARIANT: Record<string, 'default' | 'ghost'> = {
+  ENVIADO: 'default',
+  PENDIENTE: 'ghost',
 }
 
 interface OrderCardProps {
@@ -24,17 +27,17 @@ export function OrderCard({ id, productName, detail, status, statusNote, price, 
             <h3 className="font-serif text-base text-vous-soft-black mt-0.5">{productName}</h3>
             <p className="font-sans text-xs text-vous-gray mt-1">{detail}</p>
           </div>
-          <span className={`shrink-0 font-nav text-[10px] tracking-[0.1em] uppercase px-2.5 py-1 ${STATUS_STYLES[status] ?? 'bg-vous-gray-light/30 text-vous-gray'}`}>
+          <Badge variant={STATUS_VARIANT[status] ?? 'ghost'} className="shrink-0">
             {status}
-          </span>
+          </Badge>
         </div>
         <p className="font-sans text-xs text-vous-gray mt-3">{statusNote}</p>
         <div className="flex items-center justify-between mt-3">
           <p className="font-serif text-base text-vous-soft-black">{price}</p>
           {status === 'ENVIADO' ? (
-            <button className="font-nav text-[11px] tracking-[0.1em] uppercase border border-vous-gray-light px-4 py-2 text-vous-gray hover:border-vous-soft-black hover:text-vous-soft-black transition-colors">
+            <Button variant="outline" size="sm">
               Rastrear
-            </button>
+            </Button>
           ) : (
             <span className="font-nav text-[11px] tracking-[0.1em] uppercase text-vous-gray">
               En Espera

@@ -52,7 +52,7 @@ export function AdminSidebar() {
               <NavLink
                 to={path}
                 end={path === "/"}
-                className={({ isActive }) =>
+                className={({ isActive }: { isActive: boolean }) =>
                   `flex items-center gap-3 px-3 py-2.5 rounded text-[13px] font-['Montserrat'] tracking-wide transition-colors ${
                     isActive
                       ? "bg-[#C9A84C] text-[#1A1A1A] font-semibold"
@@ -70,7 +70,7 @@ export function AdminSidebar() {
             <li>
               <NavLink
                 to="/usuarios"
-                className={({ isActive }) =>
+                className={({ isActive }: { isActive: boolean }) =>
                   `flex items-center gap-3 px-3 py-2.5 rounded text-[13px] font-['Montserrat'] tracking-wide transition-colors ${
                     isActive
                       ? "bg-[#C9A84C] text-[#1A1A1A] font-semibold"

@@ -1,4 +1,12 @@
 import { ProductCard, type Product } from './ProductCard'
+import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 const PRODUCTS: Product[] = [
   { slug: 'sobretodo-lana-estructurado', name: 'Sobretodo de Lana Estructurado', category: 'Ropa de Abrigo', price: 'Bs. 890', bg: 'from-[#b8b0a4] to-[#8a8278]' },
@@ -16,12 +24,17 @@ export function CatalogGrid() {
         <p className="font-sans text-sm text-vous-gray">
           Mostrando <span className="text-vous-soft-black font-medium">6</span> de 42 productos
         </p>
-        <select className="font-sans text-sm border border-vous-gray-light text-vous-gray bg-transparent px-3 py-1.5 outline-none focus:border-vous-gold">
-          <option>Más Relevantes</option>
-          <option>Precio: Menor a Mayor</option>
-          <option>Precio: Mayor a Menor</option>
-          <option>Nuevas Llegadas</option>
-        </select>
+        <Select defaultValue="relevantes">
+          <SelectTrigger className="w-48">
+            <SelectValue placeholder="Ordenar por" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="relevantes">Más Relevantes</SelectItem>
+            <SelectItem value="precio-asc">Precio: Menor a Mayor</SelectItem>
+            <SelectItem value="precio-desc">Precio: Mayor a Menor</SelectItem>
+            <SelectItem value="nuevos">Nuevas Llegadas</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
@@ -31,9 +44,9 @@ export function CatalogGrid() {
       </div>
 
       <div className="mt-14 text-center">
-        <button className="font-nav text-[12px] font-semibold tracking-[0.15em] uppercase border border-vous-soft-black text-vous-soft-black px-10 py-3 hover:bg-vous-soft-black hover:text-white transition-colors duration-200">
+        <Button variant="outline" size="lg">
           Cargar Más
-        </button>
+        </Button>
       </div>
     </div>
   )

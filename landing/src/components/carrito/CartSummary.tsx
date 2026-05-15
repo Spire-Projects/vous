@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Lock, Truck, RefreshCcw } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 interface CartSummaryProps {
   subtotal: string
@@ -31,12 +32,9 @@ export function CartSummary({ subtotal, total }: CartSummaryProps) {
           </div>
         </div>
 
-        <Link
-          href="/checkout"
-          className="block w-full text-center font-nav text-[12px] font-semibold tracking-[0.15em] uppercase bg-vous-soft-black text-white py-4 hover:bg-vous-gray-dark transition-colors duration-200"
-        >
-          Finalizar Compra
-        </Link>
+        <Button asChild variant="default" size="lg" className="w-full">
+          <Link href="/checkout">Finalizar Compra</Link>
+        </Button>
 
         <div className="mt-5 space-y-2">
           {[

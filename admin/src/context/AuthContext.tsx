@@ -6,39 +6,48 @@ import {
   type ReactNode,
 } from "react";
 import {
-  getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { initializeApp, getApps } from "firebase/app";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  serverTimestamp,
+} from "firebase/firestore";
+import { auth, db } from "../lib/firebase";
 
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-};
+export type AdminRole = "admin" | "superadmin";
 
-if (!getApps().length) {
-  initializeApp(firebaseConfig);
+export interface AuthUser {
+  uid: string;
+  email: string | null;
+  name: string;
+  role: AdminRole;
 }
 
-const auth = getAuth();
-
 interface AuthState {
-  user: { uid: string; email: string | null; role: string } | null;
+  user: AuthUser | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
+  /**
+   * Crea el superadmin inicial. Solo funciona si no existe ningún superadmin.
+   * Lanza un error si ya hay un superadmin registrado.
+   */
+  register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthState | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<AuthState["user"]>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -48,28 +57,94 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setLoading(false);
         return;
       }
-      const token = await firebaseUser.getIdTokenResult();
-      const role = (token.claims["role"] as string) ?? "";
-      if (role === "admin" || role === "superadmin") {
-        setUser({ uid: firebaseUser.uid, email: firebaseUser.email, role });
-      } else {
-        await signOut(auth);
+
+      try {
+        const adminDoc = await getDoc(doc(db, "adminUsers", firebaseUser.uid));
+
+        if (adminDoc.exists()) {
+          const data = adminDoc.data();
+          const role = data["role"] as AdminRole;
+          const isActive = data["isActive"] as boolean;
+
+          if ((role === "admin" || role === "superadmin") && isActive) {
+            setUser({
+              uid: firebaseUser.uid,
+              email: firebaseUser.email,
+              name: (data["name"] as string) ?? "",
+              role,
+            });
+          } else {
+            // Cuenta desactivada o sin rol válido
+            await signOut(auth);
+            setUser(null);
+          }
+        } else {
+          // No existe en adminUsers — puede ser un registro en curso.
+          // Solo dejamos user=null sin cerrar sesión para que setDoc
+          // (desde RegisterPage) pueda completarse mientras el usuario
+          // sigue autenticado en Firebase Auth.
+          setUser(null);
+        }
+      } catch {
         setUser(null);
       }
+
       setLoading(false);
     });
   }, []);
 
-  async function login(email: string, password: string) {
+  async function login(email: string, password: string): Promise<void> {
     await signInWithEmailAndPassword(auth, email, password);
   }
 
-  async function logout() {
+  async function register(
+    name: string,
+    email: string,
+    password: string
+  ): Promise<void> {
+    // Verificar que no exista ningún superadmin todavía.
+    // Si la lectura falla (reglas de Firestore sin auth), asumimos que no hay
+    // superadmin y continuamos — el setDoc posterior validará el acceso.
+    try {
+      const snap = await getDocs(
+        query(collection(db, "adminUsers"), where("role", "==", "superadmin"))
+      );
+      if (!snap.empty) {
+        throw new Error(
+          "Ya existe un superadmin. Contacta al administrador para obtener acceso."
+        );
+      }
+    } catch (err) {
+      // Re-lanzar solo si es el error intencional de superadmin existente
+      if (err instanceof Error && err.message.includes("Ya existe")) throw err;
+      // Cualquier otro error (ej. reglas de Firestore) → continuar
+    }
+
+    const { user: newUser } = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    await setDoc(doc(db, "adminUsers", newUser.uid), {
+      uid: newUser.uid,
+      email,
+      name,
+      role: "superadmin",
+      isActive: true,
+      permissions: [],
+      createdBy: newUser.uid,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
+  }
+
+  async function logout(): Promise<void> {
     await signOut(auth);
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

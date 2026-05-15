@@ -1,6 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,700;1,400&family=Montserrat:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
+/* ── VOUS Admin — Design Tokens (Tailwind v4 theme) ─────────────────────── */
+@theme {
+  --color-vous-black:    #1A1A1A;
+  --color-vous-gold:     #C9A84C;
+  --color-vous-gold-muted: #BF8F54;
+  --color-vous-gray:     #9E9E9E;
+  --color-vous-border:   #E8E5E1;
+  --color-vous-cream:    #F2F1F0;
+  --color-vous-surface:  #FAFAF9;
+  --color-vous-white:    #FFFFFF;
+
+  --font-serif:  'Bodoni Moda', serif;
+  --font-nav:    'Montserrat', sans-serif;
+  --font-sans:   'Inter', sans-serif;
+}
+
+/* Legacy CSS vars (kept for gradual migration) */
 :root {
   --color-cream: #F2F1F0;
   --color-black: #1A1A1A;

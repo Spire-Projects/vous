@@ -2,16 +2,30 @@ import { useState } from "react";
 import { Search, Plus, MoreVertical, AlertTriangle } from "lucide-react";
 import { PageHeader } from "../components/ui/PageHeader";
 import { StatCard } from "../components/ui/StatCard";
-import { Badge } from "../components/ui/Badge";
-import { getStockStatusClass } from "../utils";
-import type { Product } from "../types";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Table, TableHeader, TableBody, TableRow, TableHead, TableCell,
+} from "@/components/ui/table";
 
-const PRODUCTS: Product[] = [
-  { id: "1", name: "Abrigo Noir Silk", sku: "VO-24-SH-001", category: "Exterior", variants: [{ size: "M", color: "Negro" }, { size: "L", color: "Negro" }], stock: 45, status: "ACTIVO" },
-  { id: "2", name: "Pantalón Avante-Garde", sku: "VO-24-TR-012", category: "Pantalones", variants: [{ size: "S", color: "Crema" }, { size: "M", color: "Crema" }], stock: 3, status: "ACTIVO", isCritical: true },
-  { id: "3", name: "Tee Estructura V1", sku: "VO-24-TS-044", category: "Camisetas", variants: [{ size: "L", color: "Blanco" }, { size: "XL", color: "Blanco" }], stock: 112, status: "INACTIVO" },
-  { id: "4", name: "Vestido Editorial", sku: "VO-24-VE-007", category: "Vestidos", variants: [{ size: "S", color: "Negro" }], stock: 8, status: "ACTIVO", isCritical: true },
-  { id: "5", name: "Reloj Urbano Límite", sku: "VO-24-AC-088", category: "Accesorios", variants: [{ size: "Única", color: "Oro" }], stock: 12, status: "ACTIVO" },
+type ProductPreview = {
+  id: string;
+  name: string;
+  sku: string;
+  category: string;
+  variants: { size: string; color: string }[];
+  stock: number;
+  isActive: boolean;
+  isCritical?: boolean;
+};
+
+const PRODUCTS: ProductPreview[] = [
+  { id: "1", name: "Abrigo Noir Silk", sku: "VO-24-SH-001", category: "Exterior", variants: [{ size: "M", color: "Negro" }, { size: "L", color: "Negro" }], stock: 45, isActive: true },
+  { id: "2", name: "Pantalón Avante-Garde", sku: "VO-24-TR-012", category: "Pantalones", variants: [{ size: "S", color: "Crema" }, { size: "M", color: "Crema" }], stock: 3, isActive: true, isCritical: true },
+  { id: "3", name: "Tee Estructura V1", sku: "VO-24-TS-044", category: "Camisetas", variants: [{ size: "L", color: "Blanco" }, { size: "XL", color: "Blanco" }], stock: 112, isActive: false },
+  { id: "4", name: "Vestido Editorial", sku: "VO-24-VE-007", category: "Vestidos", variants: [{ size: "S", color: "Negro" }], stock: 8, isActive: true, isCritical: true },
+  { id: "5", name: "Reloj Urbano Límite", sku: "VO-24-AC-088", category: "Accesorios", variants: [{ size: "Única", color: "Oro" }], stock: 12, isActive: true },
 ];
 
 export function InventoryPage() {
@@ -30,98 +44,101 @@ export function InventoryPage() {
         title="Inventario de Productos"
         subtitle="Gestione su catálogo con precisión editorial."
         action={
-          <button className="flex items-center gap-2 px-4 py-2 bg-[#1A1A1A] text-white text-[12px] font-['Montserrat'] uppercase tracking-wider hover:bg-[#333] transition-colors">
+          <Button>
             <Plus size={14} strokeWidth={2} />
             Añadir Producto
-          </button>
+          </Button>
         }
       />
 
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
         <StatCard label="Total Productos" value="1,248" />
-        <StatCard label="Stock Bajo" value="12 SKU" isPositive={false} />
         <StatCard label="Categorías Activas" value="8" />
-        <StatCard label="Ventas (24h)" value="+42" isPositive change="+9% vs ayer" />
       </div>
 
-      <div className="bg-white border border-[#E8E5E1]">
-        <div className="p-4 border-b border-[#E8E5E1] flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+      <div className="bg-vous-white border border-vous-border">
+        <div className="p-4 border-b border-vous-border flex flex-col sm:flex-row gap-3 items-start sm:items-center">
           <div className="relative flex-1 max-w-xs">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9E9E9E]" />
-            <input
-              type="text"
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-vous-gray" />
+            <Input
               placeholder="Buscar producto o SKU..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 border border-[#E8E5E1] text-sm font-['Inter'] bg-[#FAFAF9] focus:outline-none focus:border-[#C9A84C]"
+              className="pl-9"
             />
           </div>
           <button
-            onClick={() => setFilterLowStock(!filterLowStock)}
-            className={`flex items-center gap-2 px-3 py-2 text-[11px] font-['Montserrat'] uppercase tracking-wider border transition-colors ${
-              filterLowStock ? "bg-amber-50 border-amber-400 text-amber-700" : "border-[#E8E5E1] text-[#9E9E9E] hover:border-[#1A1A1A]"
+            type="button"
+            onClick={() => setFilterLowStock((v) => !v)}
+            className={`flex items-center gap-1.5 px-3 py-2 font-nav text-[11px] uppercase tracking-wide border transition-colors ${
+              filterLowStock
+                ? "border-red-400 bg-red-50 text-red-600"
+                : "border-vous-border text-vous-gray hover:border-vous-black"
             }`}
           >
-            <AlertTriangle size={12} />
-            Stock Bajo
+            <AlertTriangle size={13} />
+            Stock Crítico
           </button>
         </div>
 
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-[#E8E5E1]">
+        <Table>
+          <TableHeader>
+            <TableRow>
               {["Producto", "Categoría", "Variantes", "Stock", "Estado", ""].map((h) => (
-                <th key={h} className="text-left text-[10px] font-['Montserrat'] uppercase tracking-wider text-[#9E9E9E] px-4 py-3">
-                  {h}
-                </th>
+                <TableHead key={h}>{h}</TableHead>
               ))}
-            </tr>
-          </thead>
-          <tbody>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {filtered.map((product) => (
-              <tr key={product.id} className="border-b border-[#F2F1F0] hover:bg-[#FAFAF9] transition-colors">
-                <td className="px-4 py-3">
-                  <p className="font-['Montserrat'] text-[13px] font-semibold text-[#1A1A1A]">{product.name}</p>
-                  <p className="text-[11px] text-[#9E9E9E] font-['Inter']">SKU: {product.sku}</p>
-                </td>
-                <td className="px-4 py-3 text-[12px] font-['Inter'] text-[#9E9E9E]">{product.category}</td>
-                <td className="px-4 py-3">
+              <TableRow key={product.id}>
+                <TableCell>
+                  <p className="font-nav text-[13px] font-semibold text-vous-black">{product.name}</p>
+                  <p className="text-[11px] text-vous-gray font-sans">SKU: {product.sku}</p>
+                </TableCell>
+                <TableCell className="text-[12px] font-sans text-vous-gray">{product.category}</TableCell>
+                <TableCell>
                   <div className="flex flex-wrap gap-1">
                     {product.variants.map((v, i) => (
-                      <span key={i} className="text-[10px] font-['Montserrat'] bg-[#F2F1F0] px-2 py-0.5 text-[#9E9E9E]">
+                      <span key={i} className="text-[10px] font-nav bg-vous-cream px-2 py-0.5 text-vous-gray">
                         {v.size} / {v.color}
                       </span>
                     ))}
                   </div>
-                </td>
-                <td className="px-4 py-3">
-                  <span className={`font-['Montserrat'] text-[13px] font-semibold ${product.isCritical ? "text-red-600" : "text-[#1A1A1A]"}`}>
+                </TableCell>
+                <TableCell>
+                  <span className={`font-nav text-[13px] font-semibold ${product.isCritical ? "text-red-600" : "text-vous-black"}`}>
                     {product.stock}
                   </span>
                   {product.isCritical && (
-                    <span className="ml-1.5 text-[10px] font-['Montserrat'] text-red-500 uppercase">CRÍTICO</span>
+                    <span className="ml-1.5 text-[10px] font-nav text-red-500 uppercase">CRÍTICO</span>
                   )}
-                </td>
-                <td className="px-4 py-3">
-                  <Badge label={product.status} className={getStockStatusClass(product.status)} />
-                </td>
-                <td className="px-4 py-3">
-                  <button className="text-[#9E9E9E] hover:text-[#1A1A1A] transition-colors">
+                </TableCell>
+                <TableCell>
+                  <Badge variant={product.isActive ? "active" : "inactive"}>
+                    {product.isActive ? "Activo" : "Inactivo"}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  <button className="text-vous-gray hover:text-vous-black transition-colors">
                     <MoreVertical size={16} strokeWidth={1.5} />
                   </button>
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
 
-        <div className="px-4 py-3 border-t border-[#E8E5E1] flex items-center justify-between">
-          <p className="text-[11px] text-[#9E9E9E] font-['Montserrat']">
+        <div className="px-4 py-3 border-t border-vous-border flex items-center justify-between">
+          <p className="text-[11px] text-vous-gray font-nav">
             Mostrando {filtered.length} de 1,248 productos
           </p>
           <div className="flex gap-1">
             {[1, 2, 3].map((p) => (
-              <button key={p} className={`w-7 h-7 text-[12px] font-['Montserrat'] border ${p === 1 ? "bg-[#1A1A1A] text-white border-[#1A1A1A]" : "border-[#E8E5E1] text-[#9E9E9E] hover:border-[#1A1A1A]"}`}>
+              <button
+                key={p}
+                className={`w-7 h-7 text-[12px] font-nav border ${p === 1 ? "bg-vous-black text-vous-white border-vous-black" : "border-vous-border text-vous-gray hover:border-vous-black"}`}
+              >
                 {p}
               </button>
             ))}
