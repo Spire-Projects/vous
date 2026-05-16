@@ -22,6 +22,7 @@ const NAV_ITEMS = [
   { label: "Clientes", path: "/clientes", icon: Users },
   { label: "Mayoristas", path: "/mayoristas", icon: UserCog },
   { label: "Blog / Revista", path: "/blog", icon: FileText },
+  { label: "FAQ", path: "/faq", icon: FileText },
   { label: "Descuentos", path: "/descuentos", icon: Tag },
   { label: "Reportes", path: "/reportes", icon: BarChart2 },
   { label: "Configuración", path: "/configuracion", icon: Settings },

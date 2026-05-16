@@ -5,3 +5,4 @@ export { CollectionsSection } from "./CollectionsSection";
 export { MisionSection } from "./MisionSection";
 export { ScheduleSection } from "./ScheduleSection";
 export { RevistaSection } from "./RevistaSection";
+export { FAQSection } from "./FAQSection";

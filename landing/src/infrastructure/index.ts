@@ -3,3 +3,4 @@ export { firestoreOrderRepository } from "./repositories/firestore-order.reposit
 export { firestoreUserRepository } from "./repositories/firestore-user.repository";
 export { firestoreWholesaleRepository } from "./repositories/firestore-wholesale.repository";
 export { firestoreBlogPostRepository } from "./repositories/firestore-blog-post.repository";
+export { firestoreFAQRepository } from "./repositories/firestore-faq.repository";

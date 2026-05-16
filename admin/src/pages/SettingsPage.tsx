@@ -67,32 +67,6 @@ export function SettingsPage() {
           </div>
         </section>
 
-        {/* FAQ */}
-        <section className="bg-white border border-[#E8E5E1] p-6">
-          <h2 className="font-['Bodoni_Moda'] text-xl text-[#1A1A1A] mb-5">Gestión de FAQ</h2>
-          <div className="space-y-2">
-            {FAQ_ITEMS.map((item) => (
-              <div key={item.id} className="border border-[#E8E5E1]">
-                <button
-                  onClick={() => setOpenFaq(openFaq === item.id ? null : item.id)}
-                  className="w-full flex items-center justify-between px-4 py-3 text-left"
-                >
-                  <span className="text-[13px] font-['Inter'] text-[#1A1A1A]">{item.question}</span>
-                  <span className="text-[#9E9E9E] text-lg">{openFaq === item.id ? "−" : "+"}</span>
-                </button>
-                {openFaq === item.id && item.answer && (
-                  <div className="px-4 pb-3">
-                    <p className="text-sm font-['Inter'] text-[#9E9E9E]">{item.answer}</p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-          <button className="mt-3 flex items-center gap-1.5 text-[11px] font-['Montserrat'] uppercase tracking-wider text-[#C9A84C] hover:underline">
-            <Plus size={12} strokeWidth={2} /> Agregar Nueva Pregunta Frecuente
-          </button>
-        </section>
-
         {/* QR */}
         <section className="bg-white border border-[#E8E5E1] p-6">
           <h2 className="font-['Bodoni_Moda'] text-xl text-[#1A1A1A] mb-5">Métodos de Pago (QR)</h2>
