@@ -1,13 +1,24 @@
 import { useRef, useState } from "react";
 import { uploadImageToCloudinary } from "@/utils/cloudinary-upload";
 import { ImageIcon, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
-interface CoverImagePickerProps {
+interface ImagePickerProps {
   value: string;
   onChange: (url: string) => void;
+  folder?: string;
+  label?: string;
+  aspect?: "video" | "square" | "logo";
 }
 
-export function CoverImagePicker({ value, onChange }: CoverImagePickerProps) {
+const ASPECT_CLASSES: Record<string, string> = {
+  video: "aspect-video",
+  square: "aspect-square",
+  logo: "h-[80px]",
+};
+
+export function ImagePicker({ value, onChange, folder = "vous/uploads", label = "Subir imagen", aspect = "video" }: ImagePickerProps) {
   const [uploading, setUploading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -16,7 +27,7 @@ export function CoverImagePicker({ value, onChange }: CoverImagePickerProps) {
     if (!file) return;
     setUploading(true);
     try {
-      const url = await uploadImageToCloudinary(file);
+      const url = await uploadImageToCloudinary(file, folder);
       onChange(url);
     } catch {
       alert("Error al subir imagen. Verifica la configuración de Cloudinary.");
@@ -28,34 +39,36 @@ export function CoverImagePicker({ value, onChange }: CoverImagePickerProps) {
   return (
     <div className="space-y-2">
       {value ? (
-        <div className="relative aspect-video w-full max-w-sm overflow-hidden border border-vous-border">
-          <img src={value} alt="Portada" className="w-full h-full object-cover" />
-          <button
+        <div className={`relative w-full max-w-sm overflow-hidden border border-vous-border ${ASPECT_CLASSES[aspect] ?? "aspect-video"} ${aspect === "logo" ? "bg-white flex items-center justify-center" : ""}`}>
+          <img src={value} alt="Preview" className={`${aspect === "logo" ? "max-w-full max-h-full object-contain" : "w-full h-full object-cover"}`} />
+            <Button
             type="button"
+            variant="danger"
+            size="sm"
             onClick={() => onChange("")}
-            className="absolute top-1 right-1 bg-red-500 text-white text-xs px-2 py-0.5"
+            className="absolute top-1 right-1 text-xs px-2 py-0.5 h-auto"
           >
             Eliminar
-          </button>
+          </Button>
         </div>
       ) : (
-        <button
+        <Button
           type="button"
+          variant="outline"
           onClick={() => inputRef.current?.click()}
           disabled={uploading}
-          className="flex items-center gap-2 border border-dashed border-vous-border px-4 py-3 text-vous-gray hover:border-vous-black hover:text-vous-black transition-colors font-nav text-[11px] uppercase tracking-wide"
+          className="flex items-center gap-2 border-dashed font-nav text-[11px] uppercase tracking-wide"
         >
           {uploading ? <Loader2 size={14} className="animate-spin" /> : <ImageIcon size={14} />}
-          {uploading ? "Subiendo..." : "Subir imagen de portada"}
-        </button>
+          {uploading ? "Subiendo..." : label}
+        </Button>
       )}
       <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
-      <input
+      <Input
         type="url"
         placeholder="O pega una URL de imagen..."
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full border border-vous-border px-3 py-2 text-[13px] font-sans focus:outline-none focus:border-vous-black"
       />
     </div>
   );

@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Plus, Pencil, Trash2, Eye, EyeOff, GripVertical } from "lucide-react";
-import { PageHeader } from "../components/ui/PageHeader";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { StatCard } from "@/components/ui/StatCard";
 import { FaqFormDialog } from "@/components/faq/FaqFormDialog";
+import { ConfirmDeleteDialog } from "@/components/shared/ConfirmDeleteDialog";
 import { useFAQs } from "@/hooks/useFaqs";
 import type { FAQ, CreateFAQInput } from "@/domain/entities/faq.entity";
 
@@ -37,18 +39,9 @@ export function FaqPage() {
       />
 
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
-        <div className="border border-vous-border bg-vous-white p-4">
-          <p className="text-[11px] font-nav uppercase tracking-wider text-vous-gray mb-1">Total</p>
-          <p className="text-2xl font-serif text-vous-black">{faqs.length}</p>
-        </div>
-        <div className="border border-vous-border bg-vous-white p-4">
-          <p className="text-[11px] font-nav uppercase tracking-wider text-vous-gray mb-1">Activas</p>
-          <p className="text-2xl font-serif text-vous-black">{activeCount}</p>
-        </div>
-        <div className="border border-vous-border bg-vous-white p-4">
-          <p className="text-[11px] font-nav uppercase tracking-wider text-vous-gray mb-1">Inactivas</p>
-          <p className="text-2xl font-serif text-vous-black">{faqs.length - activeCount}</p>
-        </div>
+        <StatCard label="Total" value={String(faqs.length)} />
+        <StatCard label="Activas" value={String(activeCount)} />
+        <StatCard label="Inactivas" value={String(faqs.length - activeCount)} />
       </div>
 
       <div className="bg-vous-white border border-vous-border">
@@ -76,19 +69,15 @@ export function FaqPage() {
                   <p className="text-[10px] text-vous-gray-light font-nav mt-1">Orden: {faq.order}</p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
-                  <button
-                    onClick={() => toggleActive(faq.id, faq.isActive)}
-                    title={faq.isActive ? "Desactivar" : "Activar"}
-                    className="text-vous-gray hover:text-vous-black transition-colors"
-                  >
+                  <Button variant="ghost" size="icon-sm" onClick={() => toggleActive(faq.id, faq.isActive)} title={faq.isActive ? "Desactivar" : "Activar"}>
                     {faq.isActive ? <EyeOff size={14} /> : <Eye size={14} />}
-                  </button>
-                  <button onClick={() => handleEdit(faq)} className="text-vous-gray hover:text-vous-black transition-colors">
+                  </Button>
+                  <Button variant="ghost" size="icon-sm" onClick={() => handleEdit(faq)}>
                     <Pencil size={14} />
-                  </button>
-                  <button onClick={() => setConfirmDelete(faq.id)} className="text-vous-gray hover:text-red-500 transition-colors">
+                  </Button>
+                  <Button variant="ghost" size="icon-sm" onClick={() => setConfirmDelete(faq.id)} className="hover:text-red-500">
                     <Trash2 size={14} />
-                  </button>
+                  </Button>
                 </div>
               </div>
             ))}
@@ -98,18 +87,12 @@ export function FaqPage() {
 
       <FaqFormDialog open={dialogOpen} faq={editing} onClose={() => setDialogOpen(false)} onSave={handleSave} />
 
-      {confirmDelete && (
-        <div className="fixed inset-0 bg-vous-black/50 z-50 flex items-center justify-center">
-          <div className="bg-vous-white border border-vous-border p-6 max-w-sm w-full mx-4">
-            <p className="font-nav text-[13px] uppercase tracking-wide text-vous-black mb-2">¿Eliminar pregunta?</p>
-            <p className="font-sans text-sm text-vous-gray mb-6">Esta acción no se puede deshacer.</p>
-            <div className="flex gap-3">
-              <Button variant="outline" onClick={() => setConfirmDelete(null)}>Cancelar</Button>
-              <Button variant="danger" onClick={() => handleDelete(confirmDelete)}>Eliminar</Button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmDeleteDialog
+        open={!!confirmDelete}
+        title="¿Eliminar pregunta?"
+        onCancel={() => setConfirmDelete(null)}
+        onConfirm={() => confirmDelete && handleDelete(confirmDelete)}
+      />
     </div>
   );
 }

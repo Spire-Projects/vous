@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Search, Plus, Star, Eye, EyeOff, Pencil, Trash2 } from "lucide-react";
-import { PageHeader } from "../components/ui/PageHeader";
-import { StatCard } from "../components/ui/StatCard";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { StatCard } from "@/components/ui/StatCard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { BlogPostFormDialog } from "@/components/blog/BlogPostFormDialog";
+import { ConfirmDeleteDialog } from "@/components/shared/ConfirmDeleteDialog";
 import { useBlogPosts } from "@/hooks/useBlogPosts";
 import type { BlogPost, CreateBlogPostInput } from "@/domain/entities/blog-post.entity";
 
@@ -84,20 +85,20 @@ export function BlogPage() {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <button onClick={() => toggleFeatured(post.id, post.featured)} title={post.featured ? "Quitar destacado" : "Fijar como destacado"}>
+                    <Button variant="ghost" size="icon-sm" onClick={() => toggleFeatured(post.id, post.featured)} title={post.featured ? "Quitar destacado" : "Fijar como destacado"}>
                       <Star size={15} className={post.featured ? "fill-vous-gold text-vous-gold" : "text-vous-gray-light"} />
-                    </button>
+                    </Button>
                   </TableCell>
                   <TableCell className="text-[12px] font-sans text-vous-gray">
                     {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString("es-BO") : "—"}
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <button onClick={() => toggleStatus(post.id, post.status)} title={post.status === "published" ? "Despublicar" : "Publicar"} className="text-vous-gray hover:text-vous-black transition-colors">
+                      <Button variant="ghost" size="icon-sm" onClick={() => toggleStatus(post.id, post.status)} title={post.status === "published" ? "Despublicar" : "Publicar"}>
                         {post.status === "published" ? <EyeOff size={14} /> : <Eye size={14} />}
-                      </button>
-                      <button onClick={() => handleEdit(post)} className="text-vous-gray hover:text-vous-black transition-colors"><Pencil size={14} /></button>
-                      <button onClick={() => setConfirmDelete(post.id)} className="text-vous-gray hover:text-red-500 transition-colors"><Trash2 size={14} /></button>
+                      </Button>
+                      <Button variant="ghost" size="icon-sm" onClick={() => handleEdit(post)}><Pencil size={14} /></Button>
+                      <Button variant="ghost" size="icon-sm" onClick={() => setConfirmDelete(post.id)} className="hover:text-red-500"><Trash2 size={14} /></Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -109,18 +110,12 @@ export function BlogPage() {
 
       <BlogPostFormDialog open={dialogOpen} post={editing} onClose={() => setDialogOpen(false)} onSave={handleSave} />
 
-      {confirmDelete && (
-        <div className="fixed inset-0 bg-vous-black/50 z-50 flex items-center justify-center">
-          <div className="bg-vous-white border border-vous-border p-6 max-w-sm w-full mx-4">
-            <p className="font-nav text-[13px] uppercase tracking-wide text-vous-black mb-2">¿Eliminar artículo?</p>
-            <p className="font-sans text-sm text-vous-gray mb-6">Esta acción no se puede deshacer.</p>
-            <div className="flex gap-3">
-              <Button variant="outline" onClick={() => setConfirmDelete(null)}>Cancelar</Button>
-              <Button variant="danger" onClick={() => handleDelete(confirmDelete)}>Eliminar</Button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmDeleteDialog
+        open={!!confirmDelete}
+        title="¿Eliminar artículo?"
+        onCancel={() => setConfirmDelete(null)}
+        onConfirm={() => confirmDelete && handleDelete(confirmDelete)}
+      />
     </div>
   );
 }

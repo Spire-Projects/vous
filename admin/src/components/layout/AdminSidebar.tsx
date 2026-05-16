@@ -11,6 +11,7 @@ import {
   UserCog,
   Layers,
   LogOut,
+  Image,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
@@ -23,6 +24,7 @@ const NAV_ITEMS = [
   { label: "Mayoristas", path: "/mayoristas", icon: UserCog },
   { label: "Blog / Revista", path: "/blog", icon: FileText },
   { label: "FAQ", path: "/faq", icon: FileText },
+  { label: "Banners", path: "/banners", icon: Image },
   { label: "Descuentos", path: "/descuentos", icon: Tag },
   { label: "Reportes", path: "/reportes", icon: BarChart2 },
   { label: "Configuración", path: "/configuracion", icon: Settings },

@@ -1,33 +1,13 @@
 import Link from "next/link";
+import type { Product } from "@/domain/entities/product.entity";
 
-const RELATED = [
-  {
-    slug: "pantalon-sastrero",
-    name: "Pantalón Sastrero",
-    price: "Bs. 420",
-    bg: "from-[#3d3d38] to-[#1a1a18]",
-  },
-  {
-    slug: "sueter-cachemira",
-    name: "Suéter de Cachemira",
-    price: "Bs. 550",
-    bg: "from-[#d4cfc6] to-[#b0a898]",
-  },
-  {
-    slug: "bufanda-estructural",
-    name: "Bufanda Estructural",
-    price: "Bs. 210",
-    bg: "from-[#b8b0a4] to-[#8a8278]",
-  },
-  {
-    slug: "botas-cuero",
-    name: "Botas de Cuero",
-    price: "Bs. 740",
-    bg: "from-[#6b5a3a] to-[#3d2e15]",
-  },
-];
+interface RelatedProductsProps {
+  products: Product[];
+}
 
-export function RelatedProducts() {
+export function RelatedProducts({ products }: RelatedProductsProps) {
+  if (products.length === 0) return null;
+
   return (
     <section className="border-t border-vous-gray-light/40 pt-14 mt-14">
       <div className="flex items-end justify-between mb-10">
@@ -43,13 +23,25 @@ export function RelatedProducts() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-8">
-        {RELATED.map(({ slug, name, price, bg }) => (
-          <Link key={slug} href={`/catalogo/${slug}`} className="group block">
-            <div className={`aspect-[3/4] bg-gradient-to-b ${bg} mb-3`} />
+        {products.map((p) => (
+          <Link key={p.id} href={`/catalogo/${p.slug}`} className="group block">
+            <div className="aspect-[3/4] bg-vous-cream overflow-hidden mb-3">
+              {p.images[0] ? (
+                <img
+                  src={p.images[0]}
+                  alt={p.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              ) : (
+                <div className="w-full h-full bg-gradient-to-b from-[#d4cfc6] to-[#b0a898]" />
+              )}
+            </div>
             <h3 className="font-serif text-base text-vous-soft-black group-hover:text-vous-gold transition-colors">
-              {name}
+              {p.name}
             </h3>
-            <p className="font-sans text-sm text-vous-gray mt-1">{price}</p>
+            <p className="font-sans text-sm text-vous-gray mt-1">
+              Bs. {p.price.toLocaleString("es-BO")}
+            </p>
           </Link>
         ))}
       </div>

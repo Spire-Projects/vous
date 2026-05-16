@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { RichTextEditor } from "@/components/blog/RichTextEditor";
 import type { FAQ, CreateFAQInput } from "@/domain/entities/faq.entity";
 
@@ -80,15 +81,8 @@ export function FaqFormDialog({ open, faq, onClose, onSave }: FaqFormDialogProps
               />
             </div>
             <div className="flex items-center gap-2 pt-6">
-              <input
-                type="checkbox"
-                checked={isActive}
-                onChange={(e) => setIsActive(e.target.checked)}
-                className="accent-vous-gold w-4 h-4"
-              />
-              <span className="font-nav text-[12px] uppercase tracking-wide text-vous-black">
-                Activa
-              </span>
+              <Checkbox checked={isActive} onCheckedChange={(v) => setIsActive(v === true)} />
+              <Label className="mb-0">Activa</Label>
             </div>
           </div>
           <div className="flex justify-end gap-3 pt-2">

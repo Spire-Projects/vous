@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { RichTextEditor } from "./RichTextEditor";
-import { CoverImagePicker } from "./CoverImagePicker";
+import { ImagePicker } from "@/components/shared/ImagePicker";
 import type { BlogPost, CreateBlogPostInput, BlogPostStatus } from "@/domain/entities/blog-post.entity";
 import { useAuth } from "@/context/AuthContext";
 
@@ -104,7 +105,7 @@ export function BlogPostFormDialog({ open, post, onClose, onSave }: BlogPostForm
           </div>
           <div className="space-y-1">
             <Label>Imagen de portada</Label>
-            <CoverImagePicker value={coverImage} onChange={setCoverImage} />
+            <ImagePicker value={coverImage} onChange={setCoverImage} folder="vous/blog" label="Subir imagen de portada" />
           </div>
           <div className="space-y-1">
             <Label>Contenido *</Label>
@@ -126,10 +127,10 @@ export function BlogPostFormDialog({ open, post, onClose, onSave }: BlogPostForm
               </Select>
             </div>
           </div>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" checked={featured} onChange={(e) => setFeatured(e.target.checked)} className="accent-vous-gold w-4 h-4" />
-            <span className="font-nav text-[12px] uppercase tracking-wide text-vous-black">Fijar como artículo destacado</span>
-          </label>
+          <div className="flex items-center gap-2">
+            <Checkbox checked={featured} onCheckedChange={(v) => setFeatured(v === true)} />
+            <Label className="mb-0">Fijar como artículo destacado</Label>
+          </div>
           <div className="flex justify-end gap-3 pt-2">
             <Button type="button" variant="outline" onClick={onClose}>Cancelar</Button>
             <Button type="submit" disabled={saving}>{saving ? "Guardando..." : post ? "Guardar cambios" : "Crear artículo"}</Button>
