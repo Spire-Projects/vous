@@ -1,12 +1,5 @@
 import { getFirebaseDb } from "@/lib/firebase";
-import {
-  collection,
-  getDocs,
-  doc,
-  getDoc,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, query, where } from "firebase/firestore";
 import type { ProductRepository } from "@/domain/repositories/product.repository";
 import type { Product } from "@/domain/entities/product.entity";
 

@@ -1,10 +1,10 @@
 const SCHEDULE = [
-  { day: "Martes",    hours: "9 am a 7 pm" },
+  { day: "Martes", hours: "9 am a 7 pm" },
   { day: "Miércoles", hours: "5 pm a 7 pm" },
-  { day: "Jueves",    hours: "9 am a 7 pm" },
-  { day: "Viernes",   hours: "9 am a 7 pm" },
-  { day: "Sábado",    hours: "5 pm a 7 pm" },
-  { day: "Domingo",   hours: "9 am a 7 pm" },
+  { day: "Jueves", hours: "9 am a 7 pm" },
+  { day: "Viernes", hours: "9 am a 7 pm" },
+  { day: "Sábado", hours: "5 pm a 7 pm" },
+  { day: "Domingo", hours: "9 am a 7 pm" },
 ];
 
 const WHATSAPP_HREF =
@@ -15,7 +15,6 @@ export function ScheduleSection() {
     <section className="bg-vous-warm-white overflow-hidden">
       <div className="max-w-[1440px] mx-auto px-5 md:px-20 py-20 md:py-28">
         <div className="flex flex-col lg:flex-row items-start lg:items-center gap-12 lg:gap-20">
-
           {/* Left — large decorative title */}
           <div className="relative shrink-0 select-none">
             {/* Handwritten label */}
@@ -38,10 +37,7 @@ export function ScheduleSection() {
 
             <div className="divide-y divide-vous-gray-light/30">
               {SCHEDULE.map(({ day, hours }) => (
-                <div
-                  key={day}
-                  className="flex items-center justify-between py-4 gap-4"
-                >
+                <div key={day} className="flex items-center justify-between py-4 gap-4">
                   <span className="font-nav text-[13px] font-semibold tracking-[0.2em] uppercase text-vous-soft-black">
                     {day}
                   </span>
@@ -64,7 +60,6 @@ export function ScheduleSection() {
               </a>
             </div>
           </div>
-
         </div>
       </div>
     </section>

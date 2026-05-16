@@ -8,13 +8,7 @@ import {
   updateProfile as fbUpdateProfile,
   signOut as firebaseSignOut,
 } from "firebase/auth";
-import {
-  doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-  serverTimestamp,
-} from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { getFirebaseAuth, getFirebaseDb } from "@/lib/firebase";
 import type { AuthContextValue, AuthUser, UserProfile, UserRole } from "@/types/auth.types";
 
@@ -81,7 +75,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     phone?: string,
     departamento?: string
   ) => {
-    const { user: newUser } = await createUserWithEmailAndPassword(getFirebaseAuth(), email, password);
+    const { user: newUser } = await createUserWithEmailAndPassword(
+      getFirebaseAuth(),
+      email,
+      password
+    );
     await fbUpdateProfile(newUser, { displayName: name });
 
     // Create Firestore user document
@@ -119,7 +117,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, userProfile, loading, signIn, createAccount, updateProfile, signOut }}>
+    <AuthContext.Provider
+      value={{ user, userProfile, loading, signIn, createAccount, updateProfile, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );

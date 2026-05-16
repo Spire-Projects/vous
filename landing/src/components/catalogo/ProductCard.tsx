@@ -1,12 +1,12 @@
-import Link from 'next/link'
+import Link from "next/link";
 
 export interface Product {
-  slug: string
-  name: string
-  category: string
-  price: string
-  badge?: string
-  bg: string
+  slug: string;
+  name: string;
+  category: string;
+  price: string;
+  badge?: string;
+  bg: string;
 }
 
 export function ProductCard({ slug, name, category, price, badge, bg }: Product) {
@@ -33,5 +33,5 @@ export function ProductCard({ slug, name, category, price, badge, bg }: Product)
       </h3>
       <p className="font-sans text-sm text-vous-gray mt-1">{price}</p>
     </Link>
-  )
+  );
 }

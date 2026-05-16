@@ -8,7 +8,11 @@ interface FeaturedPostProps {
 
 export function FeaturedPost({ post }: FeaturedPostProps) {
   const date = post.publishedAt
-    ? new Date(post.publishedAt).toLocaleDateString("es-BO", { day: "numeric", month: "long", year: "numeric" })
+    ? new Date(post.publishedAt).toLocaleDateString("es-BO", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
     : "";
 
   return (
@@ -35,9 +39,7 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
           {post.title}
         </h2>
         {post.excerpt && (
-          <p className="font-sans text-sm text-vous-gray leading-relaxed mb-6">
-            {post.excerpt}
-          </p>
+          <p className="font-sans text-sm text-vous-gray leading-relaxed mb-6">{post.excerpt}</p>
         )}
         <p className="font-nav text-[10px] tracking-[0.12em] uppercase text-vous-gray">{date}</p>
       </div>

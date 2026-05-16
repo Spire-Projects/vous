@@ -1,118 +1,139 @@
-'use client'
+"use client";
 
-import { useState, useRef } from 'react'
-import { CheckCircle, MessageCircle, Upload, X, AlertCircle } from 'lucide-react'
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
-import { getFirebaseDb } from '@/lib/firebase'
-import { CLOUDINARY_UPLOAD_PRESET, CLOUDINARY_CLOUD_NAME } from '@/lib/cloudinary.client'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
+import { useState, useRef } from "react";
+import { CheckCircle, MessageCircle, Upload, X, AlertCircle } from "lucide-react";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { getFirebaseDb } from "@/lib/firebase";
+import { CLOUDINARY_UPLOAD_PRESET, CLOUDINARY_CLOUD_NAME } from "@/lib/cloudinary.client";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
-} from '@/components/ui/select'
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // ── Constantes ─────────────────────────────────────────────────────────────
 
 const DEPARTMENTS = [
-  'Santa Cruz', 'Beni', 'Tarija', 'Cochabamba', 'Oruro',
-  'La Paz', 'Potosí', 'Chuquisaca', 'Pando',
-]
+  "Santa Cruz",
+  "Beni",
+  "Tarija",
+  "Cochabamba",
+  "Oruro",
+  "La Paz",
+  "Potosí",
+  "Chuquisaca",
+  "Pando",
+];
 
 const HOW_FOUND_OPTIONS = [
-  { value: 'tiktok',         label: 'TikTok' },
-  { value: 'instagram',      label: 'Instagram' },
-  { value: 'tienda_fisica',  label: 'Tienda Física Cbba' },
-  { value: 'recomendacion',  label: 'Me lo recomendaron' },
-]
+  { value: "tiktok", label: "TikTok" },
+  { value: "instagram", label: "Instagram" },
+  { value: "tienda_fisica", label: "Tienda Física Cbba" },
+  { value: "recomendacion", label: "Me lo recomendaron" },
+];
 
-const MAX_FILES = 10
-const MAX_FILE_SIZE_MB = 10
-const MAX_FILE_SIZE = MAX_FILE_SIZE_MB * 1024 * 1024
+const MAX_FILES = 10;
+const MAX_FILE_SIZE_MB = 10;
+const MAX_FILE_SIZE = MAX_FILE_SIZE_MB * 1024 * 1024;
 
 // ── Cloudinary upload ──────────────────────────────────────────────────────
 
 async function uploadToCloudinary(file: File): Promise<string> {
-  const formData = new FormData()
-  formData.append('file', file)
-  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET)
-  const res = await fetch(
-    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/upload`,
-    { method: 'POST', body: formData }
-  )
-  if (!res.ok) throw new Error(`Error al subir: ${file.name}`)
-  const data = await res.json() as { secure_url: string }
-  return data.secure_url
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/upload`, {
+    method: "POST",
+    body: formData,
+  });
+  if (!res.ok) throw new Error(`Error al subir: ${file.name}`);
+  const data = (await res.json()) as { secure_url: string };
+  return data.secure_url;
 }
 
 // ── Componente ─────────────────────────────────────────────────────────────
 
 interface FormState {
-  nombre: string
-  carnet: string
-  telefono: string
-  departamento: string
-  comoNosConocio: string
-  direccion: string
+  nombre: string;
+  carnet: string;
+  telefono: string;
+  departamento: string;
+  comoNosConocio: string;
+  direccion: string;
 }
 
 export function WholesaleForm() {
   const [form, setForm] = useState<FormState>({
-    nombre: '', carnet: '', telefono: '',
-    departamento: '', comoNosConocio: '', direccion: '',
-  })
-  const [files, setFiles] = useState<File[]>([])
-  const [fileError, setFileError] = useState('')
-  const [submitted, setSubmitted] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-  const fileInputRef = useRef<HTMLInputElement>(null)
+    nombre: "",
+    carnet: "",
+    telefono: "",
+    departamento: "",
+    comoNosConocio: "",
+    direccion: "",
+  });
+  const [files, setFiles] = useState<File[]>([]);
+  const [fileError, setFileError] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const set = (k: keyof FormState, v: string) => setForm((p) => ({ ...p, [k]: v }))
+  const set = (k: keyof FormState, v: string) => setForm((p) => ({ ...p, [k]: v }));
 
   function handleFiles(newFiles: FileList | null) {
-    if (!newFiles) return
-    setFileError('')
-    const arr = Array.from(newFiles)
-    const oversized = arr.filter((f) => f.size > MAX_FILE_SIZE)
+    if (!newFiles) return;
+    setFileError("");
+    const arr = Array.from(newFiles);
+    const oversized = arr.filter((f) => f.size > MAX_FILE_SIZE);
     if (oversized.length) {
-      setFileError(`Archivos superan ${MAX_FILE_SIZE_MB} MB: ${oversized.map((f) => f.name).join(', ')}`)
-      return
+      setFileError(
+        `Archivos superan ${MAX_FILE_SIZE_MB} MB: ${oversized.map((f) => f.name).join(", ")}`
+      );
+      return;
     }
-    setFiles((prev) => [...prev, ...arr].slice(0, MAX_FILES))
+    setFiles((prev) => [...prev, ...arr].slice(0, MAX_FILES));
   }
 
   const isValid =
-    form.nombre.trim() && form.carnet.trim() && form.telefono.trim() &&
-    form.departamento && form.comoNosConocio && form.direccion.trim()
+    form.nombre.trim() &&
+    form.carnet.trim() &&
+    form.telefono.trim() &&
+    form.departamento &&
+    form.comoNosConocio &&
+    form.direccion.trim();
 
   async function handleSubmit() {
-    if (!isValid || loading) return
-    setLoading(true)
-    setError('')
+    if (!isValid || loading) return;
+    setLoading(true);
+    setError("");
     try {
-      let fileUrls: string[] = []
+      let fileUrls: string[] = [];
       if (files.length && CLOUDINARY_CLOUD_NAME && CLOUDINARY_UPLOAD_PRESET) {
-        fileUrls = await Promise.all(files.map(uploadToCloudinary))
+        fileUrls = await Promise.all(files.map(uploadToCloudinary));
       }
-      await addDoc(collection(getFirebaseDb(), 'wholesaleRequests'), {
-        contactName:         form.nombre.trim(),
-        carnetIdentidad:     form.carnet.trim(),
-        phone:               form.telefono.trim(),
-        department:          form.departamento,
-        howFound:            form.comoNosConocio,
+      await addDoc(collection(getFirebaseDb(), "wholesaleRequests"), {
+        contactName: form.nombre.trim(),
+        carnetIdentidad: form.carnet.trim(),
+        phone: form.telefono.trim(),
+        department: form.departamento,
+        howFound: form.comoNosConocio,
         distributionAddress: form.direccion.trim(),
-        onlineStoreFiles:    fileUrls,
-        status:              'pending',
-        submittedAt:         serverTimestamp(),
-        createdAt:           serverTimestamp(),
-        updatedAt:           serverTimestamp(),
-      })
-      setSubmitted(true)
+        onlineStoreFiles: fileUrls,
+        status: "pending",
+        submittedAt: serverTimestamp(),
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
+      setSubmitted(true);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Error al enviar. Inténtalo de nuevo.')
+      setError(e instanceof Error ? e.message : "Error al enviar. Inténtalo de nuevo.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -125,7 +146,8 @@ export function WholesaleForm() {
         <div className="space-y-2">
           <h3 className="font-serif text-2xl text-vous-soft-black">Formulario Enviado</h3>
           <p className="font-sans text-sm text-vous-gray leading-relaxed max-w-xs mx-auto">
-            Gracias por registrarte. Recuerda sacar captura a tu pantalla y enviarla a tu asesora de ventas.
+            Gracias por registrarte. Recuerda sacar captura a tu pantalla y enviarla a tu asesora de
+            ventas.
           </p>
         </div>
         <a
@@ -135,7 +157,7 @@ export function WholesaleForm() {
           gabriela.garcia.villalobos.dev@gmail.com
         </a>
       </div>
-    )
+    );
   }
 
   // ── Form ─────────────────────────────────────────────────────────────────
@@ -151,14 +173,23 @@ export function WholesaleForm() {
       </h3>
       <div className="space-y-2 mb-7 pb-7 border-b border-vous-gray-light/40">
         <p className="font-sans text-xs text-vous-gray leading-relaxed">
-          Somos una empresa de industria boliviana registrada en el <strong className="text-vous-soft-black font-medium">SENAPI</strong>. Para proteger nuestra marca y garantizar una correcta distribución, recopilamos los datos de todos nuestros distribuidores VOUS.
+          Somos una empresa de industria boliviana registrada en el{" "}
+          <strong className="text-vous-soft-black font-medium">SENAPI</strong>. Para proteger
+          nuestra marca y garantizar una correcta distribución, recopilamos los datos de todos
+          nuestros distribuidores VOUS.
         </p>
         <p className="font-sans text-xs text-vous-gray leading-relaxed">
-          Como parte de nuestro compromiso, compartimos la ubicación y nombre de tu tienda con clientes de otros departamentos, para ayudarte a generar mayor visibilidad y ventas.
+          Como parte de nuestro compromiso, compartimos la ubicación y nombre de tu tienda con
+          clientes de otros departamentos, para ayudarte a generar mayor visibilidad y ventas.
         </p>
         <p className="font-sans text-xs leading-relaxed">
-          <span className="text-vous-soft-black font-medium">Al enviar este formulario aceptas todas nuestras reglas y condiciones. No aceptamos reclamos en contra de nuestras reglas una vez enviado.</span>{' '}
-          <span className="text-vous-gray">Recuerda tomar captura a tu pantalla y enviarla a la asesora de ventas.</span>
+          <span className="text-vous-soft-black font-medium">
+            Al enviar este formulario aceptas todas nuestras reglas y condiciones. No aceptamos
+            reclamos en contra de nuestras reglas una vez enviado.
+          </span>{" "}
+          <span className="text-vous-gray">
+            Recuerda tomar captura a tu pantalla y enviarla a la asesora de ventas.
+          </span>
         </p>
       </div>
 
@@ -173,7 +204,7 @@ export function WholesaleForm() {
             type="text"
             placeholder="Tu nombre completo"
             value={form.nombre}
-            onChange={(e) => set('nombre', e.target.value)}
+            onChange={(e) => set("nombre", e.target.value)}
           />
         </div>
 
@@ -187,7 +218,7 @@ export function WholesaleForm() {
             type="text"
             placeholder="Ej: 12345678"
             value={form.carnet}
-            onChange={(e) => set('carnet', e.target.value)}
+            onChange={(e) => set("carnet", e.target.value)}
           />
         </div>
 
@@ -204,7 +235,7 @@ export function WholesaleForm() {
             type="tel"
             placeholder="+591 7X XXX XXX"
             value={form.telefono}
-            onChange={(e) => set('telefono', e.target.value)}
+            onChange={(e) => set("telefono", e.target.value)}
           />
         </div>
 
@@ -213,13 +244,15 @@ export function WholesaleForm() {
           <Label>
             Departamento a Distribuir la Marca <span className="text-red-500">*</span>
           </Label>
-          <Select value={form.departamento} onValueChange={(v: string) => set('departamento', v)}>
+          <Select value={form.departamento} onValueChange={(v: string) => set("departamento", v)}>
             <SelectTrigger>
               <SelectValue placeholder="Seleccionar departamento" />
             </SelectTrigger>
             <SelectContent>
               {DEPARTMENTS.map((d) => (
-                <SelectItem key={d} value={d}>{d}</SelectItem>
+                <SelectItem key={d} value={d}>
+                  {d}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -227,17 +260,19 @@ export function WholesaleForm() {
 
         {/* ¿Cómo nos conoció? */}
         <div className="space-y-2">
-          <Label>¿Cómo nos conoció? <span className="text-red-500">*</span></Label>
+          <Label>
+            ¿Cómo nos conoció? <span className="text-red-500">*</span>
+          </Label>
           <div className="grid grid-cols-2 gap-2">
             {HOW_FOUND_OPTIONS.map(({ value, label }) => (
               <button
                 key={value}
                 type="button"
-                onClick={() => set('comoNosConocio', value)}
+                onClick={() => set("comoNosConocio", value)}
                 className={`py-3 px-4 text-left font-nav text-[10px] tracking-[0.1em] uppercase border transition-colors ${
                   form.comoNosConocio === value
-                    ? 'bg-vous-soft-black text-white border-vous-soft-black'
-                    : 'border-vous-gray-light text-vous-gray hover:border-vous-soft-black hover:text-vous-soft-black bg-transparent'
+                    ? "bg-vous-soft-black text-white border-vous-soft-black"
+                    : "border-vous-gray-light text-vous-gray hover:border-vous-soft-black hover:text-vous-soft-black bg-transparent"
                 }`}
               >
                 {label}
@@ -259,7 +294,7 @@ export function WholesaleForm() {
             rows={3}
             placeholder="Ej: Av. Blanco Galindo Km 5, Galería XYZ, Local 23, Cochabamba"
             value={form.direccion}
-            onChange={(e) => set('direccion', e.target.value)}
+            onChange={(e) => set("direccion", e.target.value)}
             className="flex w-full border border-vous-gray-light bg-transparent px-4 py-3 font-sans text-sm text-vous-soft-black placeholder:text-vous-gray outline-none focus:border-vous-gold transition-colors resize-none"
           />
         </div>
@@ -267,13 +302,14 @@ export function WholesaleForm() {
         {/* Screenshots tienda online */}
         <div className="space-y-2">
           <Label>
-            Capturas de Tienda Online{' '}
+            Capturas de Tienda Online{" "}
             <span className="font-sans normal-case text-[11px] text-vous-gray tracking-normal">
               (opcional — máx. {MAX_FILES} archivos, {MAX_FILE_SIZE_MB} MB c/u)
             </span>
           </Label>
           <p className="font-sans text-[11px] text-vous-gray leading-relaxed">
-            Si vendes por Facebook Marketplace, TikTok Shop u otra plataforma, adjunta capturas de tu perfil como respaldo.
+            Si vendes por Facebook Marketplace, TikTok Shop u otra plataforma, adjunta capturas de
+            tu perfil como respaldo.
           </p>
 
           <button
@@ -307,7 +343,9 @@ export function WholesaleForm() {
             <ul className="space-y-1.5">
               {files.map((file, i) => (
                 <li key={i} className="flex items-center justify-between bg-white/60 px-3 py-2">
-                  <span className="font-sans text-[12px] text-vous-soft-black truncate max-w-[80%]">{file.name}</span>
+                  <span className="font-sans text-[12px] text-vous-soft-black truncate max-w-[80%]">
+                    {file.name}
+                  </span>
                   <button
                     type="button"
                     onClick={() => setFiles((prev) => prev.filter((_, idx) => idx !== i))}
@@ -341,7 +379,7 @@ export function WholesaleForm() {
               Enviando…
             </span>
           ) : (
-            'Enviar Registro'
+            "Enviar Registro"
           )}
         </Button>
       </div>
@@ -363,5 +401,5 @@ export function WholesaleForm() {
         </a>
       </Button>
     </div>
-  )
+  );
 }

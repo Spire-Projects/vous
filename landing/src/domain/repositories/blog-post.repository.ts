@@ -1,4 +1,9 @@
-import type { BlogPost, CreateBlogPostInput, UpdateBlogPostInput, BlogPostStatus } from "@/domain/entities/blog-post.entity";
+import type {
+  BlogPost,
+  CreateBlogPostInput,
+  UpdateBlogPostInput,
+  BlogPostStatus,
+} from "@/domain/entities/blog-post.entity";
 
 export interface BlogPostRepository {
   findPublished(): Promise<BlogPost[]>;

@@ -1,6 +1,6 @@
-import { ProductGallery } from '@/components/producto/ProductGallery'
-import { ProductInfo } from '@/components/producto/ProductInfo'
-import { RelatedProducts } from '@/components/producto/RelatedProducts'
+import { ProductGallery } from "@/components/producto/ProductGallery";
+import { ProductInfo } from "@/components/producto/ProductInfo";
+import { RelatedProducts } from "@/components/producto/RelatedProducts";
 
 export default function ProductoPage() {
   return (
@@ -16,5 +16,5 @@ export default function ProductoPage() {
         <RelatedProducts />
       </div>
     </div>
-  )
+  );
 }

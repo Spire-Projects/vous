@@ -8,7 +8,11 @@ interface PostCardProps {
 
 export function PostCard({ post }: PostCardProps) {
   const date = post.publishedAt
-    ? new Date(post.publishedAt).toLocaleDateString("es-BO", { day: "numeric", month: "long", year: "numeric" })
+    ? new Date(post.publishedAt).toLocaleDateString("es-BO", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
     : "";
 
   return (

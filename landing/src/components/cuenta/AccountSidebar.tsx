@@ -1,17 +1,20 @@
-'use client'
+"use client";
 
-interface Tab { id: string; label: string }
+interface Tab {
+  id: string;
+  label: string;
+}
 const TABS: Tab[] = [
-  { id: 'perfil', label: 'Datos Personales' },
-  { id: 'pedidos', label: 'Mis Pedidos' },
-  { id: 'mayorista', label: 'Solicitud Mayorista' },
-  { id: 'direcciones', label: 'Direcciones' },
-]
+  { id: "perfil", label: "Datos Personales" },
+  { id: "pedidos", label: "Mis Pedidos" },
+  { id: "mayorista", label: "Solicitud Mayorista" },
+  { id: "direcciones", label: "Direcciones" },
+];
 
 interface AccountSidebarProps {
-  active: string
-  onTab: (id: string) => void
-  onLogout: () => void
+  active: string;
+  onTab: (id: string) => void;
+  onLogout: () => void;
 }
 
 export function AccountSidebar({ active, onTab, onLogout }: AccountSidebarProps) {
@@ -28,8 +31,8 @@ export function AccountSidebar({ active, onTab, onLogout }: AccountSidebarProps)
               onClick={() => onTab(id)}
               className={`block w-full text-left font-sans text-sm py-2.5 px-3 transition-colors ${
                 active === id
-                  ? 'bg-vous-soft-black text-white'
-                  : 'text-vous-gray hover:text-vous-soft-black hover:bg-vous-gray-light/20'
+                  ? "bg-vous-soft-black text-white"
+                  : "text-vous-gray hover:text-vous-soft-black hover:bg-vous-gray-light/20"
               }`}
             >
               {label}
@@ -44,5 +47,5 @@ export function AccountSidebar({ active, onTab, onLogout }: AccountSidebarProps)
         </nav>
       </div>
     </aside>
-  )
+  );
 }

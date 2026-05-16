@@ -56,9 +56,7 @@ export function NewInSection() {
           {CARDS.map(({ slug, name, category, price, badge, bg }) => (
             <Link key={slug} href={`/catalogo/${slug}`} className="group block">
               <div className={`relative aspect-[3/4] overflow-hidden bg-gradient-to-b ${bg} mb-4`}>
-                {badge && (
-                  <Badge className="absolute top-3 left-3">{badge}</Badge>
-                )}
+                {badge && <Badge className="absolute top-3 left-3">{badge}</Badge>}
               </div>
               <p className="font-nav text-[11px] tracking-[0.15em] uppercase text-vous-gray mb-1">
                 {category}
@@ -75,7 +73,9 @@ export function NewInSection() {
             href={`/catalogo/${FEATURED.slug}`}
             className="group relative aspect-[3/4] overflow-hidden bg-gradient-to-b block"
           >
-            <div className={`absolute inset-0 bg-gradient-to-b ${FEATURED.bg} group-hover:scale-105 transition-transform duration-500`} />
+            <div
+              className={`absolute inset-0 bg-gradient-to-b ${FEATURED.bg} group-hover:scale-105 transition-transform duration-500`}
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-vous-soft-black/80 via-transparent to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-6">
               <p className="font-nav text-[11px] tracking-[0.2em] uppercase text-vous-gold mb-1">

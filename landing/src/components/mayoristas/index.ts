@@ -1,1 +1,1 @@
-export { WholesaleForm } from './WholesaleForm'
+export { WholesaleForm } from "./WholesaleForm";

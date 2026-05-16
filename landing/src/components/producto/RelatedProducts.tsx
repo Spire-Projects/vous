@@ -1,11 +1,31 @@
-import Link from 'next/link'
+import Link from "next/link";
 
 const RELATED = [
-  { slug: 'pantalon-sastrero', name: 'Pantalón Sastrero', price: 'Bs. 420', bg: 'from-[#3d3d38] to-[#1a1a18]' },
-  { slug: 'sueter-cachemira', name: 'Suéter de Cachemira', price: 'Bs. 550', bg: 'from-[#d4cfc6] to-[#b0a898]' },
-  { slug: 'bufanda-estructural', name: 'Bufanda Estructural', price: 'Bs. 210', bg: 'from-[#b8b0a4] to-[#8a8278]' },
-  { slug: 'botas-cuero', name: 'Botas de Cuero', price: 'Bs. 740', bg: 'from-[#6b5a3a] to-[#3d2e15]' },
-]
+  {
+    slug: "pantalon-sastrero",
+    name: "Pantalón Sastrero",
+    price: "Bs. 420",
+    bg: "from-[#3d3d38] to-[#1a1a18]",
+  },
+  {
+    slug: "sueter-cachemira",
+    name: "Suéter de Cachemira",
+    price: "Bs. 550",
+    bg: "from-[#d4cfc6] to-[#b0a898]",
+  },
+  {
+    slug: "bufanda-estructural",
+    name: "Bufanda Estructural",
+    price: "Bs. 210",
+    bg: "from-[#b8b0a4] to-[#8a8278]",
+  },
+  {
+    slug: "botas-cuero",
+    name: "Botas de Cuero",
+    price: "Bs. 740",
+    bg: "from-[#6b5a3a] to-[#3d2e15]",
+  },
+];
 
 export function RelatedProducts() {
   return (
@@ -34,5 +54,5 @@ export function RelatedProducts() {
         ))}
       </div>
     </section>
-  )
+  );
 }

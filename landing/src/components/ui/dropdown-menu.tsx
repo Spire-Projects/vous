@@ -95,7 +95,8 @@ type DivItemWrapperProps = DivBaseProps & {
   textValue?: string;
 };
 type _ItemIndicatorType = React.ForwardRefExoticComponent<
-  React.PropsWithChildren<React.HTMLAttributes<HTMLSpanElement>> & React.RefAttributes<HTMLSpanElement>
+  React.PropsWithChildren<React.HTMLAttributes<HTMLSpanElement>> &
+    React.RefAttributes<HTMLSpanElement>
 >;
 const _ItemIndicator = DropdownMenuPrimitive.ItemIndicator as unknown as _ItemIndicatorType;
 

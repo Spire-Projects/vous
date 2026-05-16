@@ -1,23 +1,36 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { Shield, Upload, CheckCircle } from 'lucide-react'
-import Link from 'next/link'
+import { useState } from "react";
+import { Shield, Upload, CheckCircle } from "lucide-react";
+import Link from "next/link";
 
 const ORDER_ITEMS = [
-  { name: 'Abrigo de Lana Tailored', detail: 'Talle: M | Color: Carbono', price: 'Bs. 450', bg: 'from-[#3d3d38] to-[#1a1a18]' },
-  { name: 'Pantalón Palazzo Seda', detail: 'Talle: S | Color: Crema', price: 'Bs. 320', bg: 'from-[#d4cfc6] to-[#b0a898]' },
-]
+  {
+    name: "Abrigo de Lana Tailored",
+    detail: "Talle: M | Color: Carbono",
+    price: "Bs. 450",
+    bg: "from-[#3d3d38] to-[#1a1a18]",
+  },
+  {
+    name: "Pantalón Palazzo Seda",
+    detail: "Talle: S | Color: Crema",
+    price: "Bs. 320",
+    bg: "from-[#d4cfc6] to-[#b0a898]",
+  },
+];
 
 export default function CheckoutPage() {
-  const [file, setFile] = useState<File | null>(null)
+  const [file, setFile] = useState<File | null>(null);
 
   return (
     <div className="bg-vous-warm-white min-h-screen">
       {/* Header bar */}
       <div className="border-b border-vous-gray-light/40 py-4 px-5 md:px-20">
         <div className="max-w-[1440px] mx-auto flex items-center justify-between">
-          <Link href="/" className="font-serif text-2xl font-bold tracking-[0.08em] text-vous-soft-black">
+          <Link
+            href="/"
+            className="font-serif text-2xl font-bold tracking-[0.08em] text-vous-soft-black"
+          >
             VOUS
           </Link>
           <div className="flex items-center gap-2 font-sans text-xs text-vous-gray">
@@ -39,13 +52,31 @@ export default function CheckoutPage() {
                 Información de Envío
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {['Nombre Completo', 'Correo Electrónico', 'Celular', 'Departamento / Provincia'].map((label) => (
-                  <div key={label} className={label === 'Nombre Completo' || label === 'Correo Electrónico' ? 'md:col-span-1' : ''}>
+                {[
+                  "Nombre Completo",
+                  "Correo Electrónico",
+                  "Celular",
+                  "Departamento / Provincia",
+                ].map((label) => (
+                  <div
+                    key={label}
+                    className={
+                      label === "Nombre Completo" || label === "Correo Electrónico"
+                        ? "md:col-span-1"
+                        : ""
+                    }
+                  >
                     <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mb-1.5">
                       {label}
                     </label>
                     <input
-                      type={label === 'Correo Electrónico' ? 'email' : label === 'Celular' ? 'tel' : 'text'}
+                      type={
+                        label === "Correo Electrónico"
+                          ? "email"
+                          : label === "Celular"
+                            ? "tel"
+                            : "text"
+                      }
                       className="w-full border border-vous-gray-light bg-transparent font-sans text-sm text-vous-soft-black px-3 py-2.5 outline-none focus:border-vous-gold transition-colors"
                       placeholder=""
                     />
@@ -64,7 +95,10 @@ export default function CheckoutPage() {
                 <div className="w-44 h-44 bg-vous-cream border border-vous-gray-light/60 flex items-center justify-center shrink-0">
                   <div className="w-36 h-36 grid grid-cols-3 gap-1 opacity-40">
                     {Array.from({ length: 9 }).map((_, i) => (
-                      <div key={i} className={`${[0,2,4,6,8].includes(i) ? 'bg-vous-soft-black' : 'bg-transparent'}`} />
+                      <div
+                        key={i}
+                        className={`${[0, 2, 4, 6, 8].includes(i) ? "bg-vous-soft-black" : "bg-transparent"}`}
+                      />
                     ))}
                   </div>
                 </div>
@@ -116,19 +150,25 @@ export default function CheckoutPage() {
                   <div key={name} className="flex gap-3">
                     <div className={`w-16 h-20 shrink-0 bg-gradient-to-b ${bg}`} />
                     <div>
-                      <h3 className="font-serif text-sm text-vous-soft-black leading-snug">{name}</h3>
+                      <h3 className="font-serif text-sm text-vous-soft-black leading-snug">
+                        {name}
+                      </h3>
                       <p className="font-sans text-xs text-vous-gray mt-0.5">{detail}</p>
-                      <p className="font-sans text-sm text-vous-soft-black font-medium mt-1">{price}</p>
+                      <p className="font-sans text-sm text-vous-soft-black font-medium mt-1">
+                        {price}
+                      </p>
                     </div>
                   </div>
                 ))}
               </div>
               <div className="border-t border-vous-gray-light/40 pt-4 space-y-2 font-sans text-sm">
                 <div className="flex justify-between text-vous-gray">
-                  <span>Subtotal</span><span>Bs. 770</span>
+                  <span>Subtotal</span>
+                  <span>Bs. 770</span>
                 </div>
                 <div className="flex justify-between text-vous-gold font-medium">
-                  <span>Envío</span><span>Gratis</span>
+                  <span>Envío</span>
+                  <span>Gratis</span>
                 </div>
                 <div className="flex justify-between text-vous-soft-black font-medium border-t border-vous-gray-light/40 pt-2">
                   <span className="font-nav tracking-[0.1em] uppercase text-sm">Total</span>
@@ -144,5 +184,5 @@ export default function CheckoutPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

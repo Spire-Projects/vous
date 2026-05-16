@@ -33,6 +33,8 @@ export interface AuthContextValue {
     phone?: string,
     departamento?: string
   ) => Promise<void>;
-  updateProfile: (data: Partial<Pick<UserProfile, "name" | "phone" | "departamento" | "birthDate">>) => Promise<void>;
+  updateProfile: (
+    data: Partial<Pick<UserProfile, "name" | "phone" | "departamento" | "birthDate">>
+  ) => Promise<void>;
   signOut: () => Promise<void>;
 }

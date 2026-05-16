@@ -1,37 +1,53 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { Gift } from 'lucide-react'
-import { CartItemRow } from '@/components/carrito/CartItemRow'
-import { CartSummary } from '@/components/carrito/CartSummary'
+import { useState } from "react";
+import Link from "next/link";
+import { Gift } from "lucide-react";
+import { CartItemRow } from "@/components/carrito/CartItemRow";
+import { CartSummary } from "@/components/carrito/CartSummary";
 
 const RELATED = [
-  { name: 'Vestido Solsticio', price: 'Bs. 210', bg: 'from-[#d4cfc6] to-[#b0a898]' },
-  { name: 'Chaqueta Denim Estructura', price: 'Bs. 195', bg: 'from-[#2a2015] to-[#1a1a18]' },
-  { name: 'Bolso Atelier Cuero', price: 'Bs. 480', bg: 'from-[#6b5a3a] to-[#3d2e15]' },
-]
+  { name: "Vestido Solsticio", price: "Bs. 210", bg: "from-[#d4cfc6] to-[#b0a898]" },
+  { name: "Chaqueta Denim Estructura", price: "Bs. 195", bg: "from-[#2a2015] to-[#1a1a18]" },
+  { name: "Bolso Atelier Cuero", price: "Bs. 480", bg: "from-[#6b5a3a] to-[#3d2e15]" },
+];
 
-interface Item { name: string; variant: string; price: number; qty: number; bg: string }
+interface Item {
+  name: string;
+  variant: string;
+  price: number;
+  qty: number;
+  bg: string;
+}
 
 const INITIAL_ITEMS: Item[] = [
-  { name: 'Camisa Lino Estructural', variant: 'Blanco Óptico / Medium', price: 185, qty: 1, bg: 'from-[#fdfaf5] to-[#e8e2d8]' },
-  { name: 'Blazer Sastre Onyx', variant: 'Negro Mate / Small', price: 340, qty: 1, bg: 'from-[#1a1a18] to-[#0d0d0b]' },
-]
+  {
+    name: "Camisa Lino Estructural",
+    variant: "Blanco Óptico / Medium",
+    price: 185,
+    qty: 1,
+    bg: "from-[#fdfaf5] to-[#e8e2d8]",
+  },
+  {
+    name: "Blazer Sastre Onyx",
+    variant: "Negro Mate / Small",
+    price: 340,
+    qty: 1,
+    bg: "from-[#1a1a18] to-[#0d0d0b]",
+  },
+];
 
 export default function CarritoPage() {
-  const [items, setItems] = useState<Item[]>(INITIAL_ITEMS)
+  const [items, setItems] = useState<Item[]>(INITIAL_ITEMS);
 
-  const remove = (i: number) => setItems((prev) => prev.filter((_, idx) => idx !== i))
+  const remove = (i: number) => setItems((prev) => prev.filter((_, idx) => idx !== i));
   const changeQty = (i: number, delta: number) =>
     setItems((prev) =>
-      prev.map((item, idx) =>
-        idx === i ? { ...item, qty: Math.max(1, item.qty + delta) } : item
-      )
-    )
+      prev.map((item, idx) => (idx === i ? { ...item, qty: Math.max(1, item.qty + delta) } : item))
+    );
 
-  const subtotal = items.reduce((acc, it) => acc + it.price * it.qty, 0)
-  const fmt = (n: number) => `Bs. ${n.toLocaleString('es-BO')}`
+  const subtotal = items.reduce((acc, it) => acc + it.price * it.qty, 0);
+  const fmt = (n: number) => `Bs. ${n.toLocaleString("es-BO")}`;
 
   return (
     <div className="bg-vous-warm-white min-h-screen">
@@ -43,7 +59,10 @@ export default function CarritoPage() {
         {items.length === 0 ? (
           <div className="text-center py-24">
             <p className="font-sans text-vous-gray mb-6">Tu carrito está vacío.</p>
-            <Link href="/catalogo" className="font-nav text-[12px] font-semibold tracking-[0.15em] uppercase bg-vous-soft-black text-white px-8 py-3 hover:bg-vous-gray-dark transition-colors">
+            <Link
+              href="/catalogo"
+              className="font-nav text-[12px] font-semibold tracking-[0.15em] uppercase bg-vous-soft-black text-white px-8 py-3 hover:bg-vous-gray-dark transition-colors"
+            >
               Explorar Catálogo
             </Link>
           </div>
@@ -74,7 +93,9 @@ export default function CarritoPage() {
                   {RELATED.map(({ name, price, bg }) => (
                     <div key={name} className="group cursor-pointer">
                       <div className={`aspect-[3/4] bg-gradient-to-b ${bg} mb-3`} />
-                      <h3 className="font-serif text-sm text-vous-soft-black group-hover:text-vous-gold transition-colors">{name}</h3>
+                      <h3 className="font-serif text-sm text-vous-soft-black group-hover:text-vous-gold transition-colors">
+                        {name}
+                      </h3>
                       <p className="font-sans text-xs text-vous-gray mt-0.5">{price}</p>
                     </div>
                   ))}
@@ -87,5 +108,5 @@ export default function CarritoPage() {
         )}
       </div>
     </div>
-  )
+  );
 }

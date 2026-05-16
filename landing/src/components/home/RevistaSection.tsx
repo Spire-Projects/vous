@@ -33,9 +33,7 @@ export function RevistaSection() {
           <p className="font-nav text-[11px] tracking-[0.25em] text-vous-gold uppercase mb-3">
             Editorial
           </p>
-          <h2 className="font-serif text-3xl md:text-4xl text-vous-soft-black">
-            Revista VOUS
-          </h2>
+          <h2 className="font-serif text-3xl md:text-4xl text-vous-soft-black">Revista VOUS</h2>
           <p className="font-sans text-sm text-vous-gray mt-3 max-w-md leading-relaxed">
             Historias, tendencias y el proceso detrás de cada colección.
           </p>

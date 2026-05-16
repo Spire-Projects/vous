@@ -1,2 +1,2 @@
-export { AccountSidebar } from './AccountSidebar'
-export { OrderCard } from './OrderCard'
+export { AccountSidebar } from "./AccountSidebar";
+export { OrderCard } from "./OrderCard";

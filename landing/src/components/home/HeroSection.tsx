@@ -17,8 +17,8 @@ export function HeroSection() {
         </h1>
 
         <p className="font-sans text-base text-white/70 max-w-sm mb-10 leading-relaxed">
-          La perfección nunca nos inspiró. Nos inspira lo real. VOUS nace para
-          quienes rompen moldes y crean su propia esencia.
+          La perfección nunca nos inspiró. Nos inspira lo real. VOUS nace para quienes rompen moldes
+          y crean su propia esencia.
         </p>
 
         <div className="flex items-center gap-4 flex-wrap">
@@ -37,8 +37,12 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-br from-[#3d2e15] via-[#2a2015] to-[#0d0d0b]" />
         <div className="absolute inset-0 bg-gradient-to-t from-vous-soft-black/60 via-transparent to-transparent" />
         {/* Decorative grain */}
-        <div className="absolute inset-0 opacity-10 mix-blend-overlay"
-          style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'300\' height=\'300\' filter=\'url(%23n)\'/%3E%3C/svg%3E")' }}
+        <div
+          className="absolute inset-0 opacity-10 mix-blend-overlay"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E\")",
+          }}
         />
       </div>
     </section>

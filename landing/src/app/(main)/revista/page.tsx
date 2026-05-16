@@ -50,9 +50,7 @@ export default function RevistaPage() {
   }
 
   const featuredPost = featured ?? posts[0] ?? null;
-  const otherPosts = featuredPost
-    ? posts.filter((p) => p.id !== featuredPost.id)
-    : posts;
+  const otherPosts = featuredPost ? posts.filter((p) => p.id !== featuredPost.id) : posts;
 
   return (
     <div className="bg-vous-warm-white min-h-screen">

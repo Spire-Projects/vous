@@ -57,7 +57,6 @@ export default function RegistroPage() {
   return (
     <div className="flex-1 flex items-center justify-center px-6 py-16">
       <div className="w-full max-w-[420px]">
-
         {/* Heading */}
         <div className="mb-10">
           <p className="font-nav text-[11px] font-semibold uppercase tracking-[0.22em] text-vous-gold mb-3">
@@ -73,7 +72,6 @@ export default function RegistroPage() {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
-
           {/* Nombre */}
           <div>
             <label className="block font-nav text-[10px] font-semibold uppercase tracking-[0.2em] text-vous-gray mb-2">
@@ -132,14 +130,24 @@ export default function RegistroPage() {
                 onChange={(e) => setDepartamento(e.target.value)}
                 className="w-full appearance-none bg-transparent border-b border-vous-gray-light focus:border-vous-gold outline-none py-2.5 pr-6 font-sans text-[14px] text-vous-soft-black transition-colors duration-200"
               >
-                <option value="" disabled>Selecciona tu departamento</option>
+                <option value="" disabled>
+                  Selecciona tu departamento
+                </option>
                 {DEPARTAMENTOS.map((dep) => (
-                  <option key={dep} value={dep}>{dep}</option>
+                  <option key={dep} value={dep}>
+                    {dep}
+                  </option>
                 ))}
               </select>
               <span className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 text-vous-gray">
                 <svg width="12" height="7" viewBox="0 0 12 7" fill="none">
-                  <path d="M1 1l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path
+                    d="M1 1l5 5 5-5"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </span>
             </div>
@@ -177,9 +185,7 @@ export default function RegistroPage() {
           </div>
 
           {/* Error */}
-          {error && (
-            <p className="font-sans text-[13px] text-red-600">{error}</p>
-          )}
+          {error && <p className="font-sans text-[13px] text-red-600">{error}</p>}
 
           {/* Submit */}
           <button

@@ -1,12 +1,4 @@
-import {
-  collection,
-  getDocs,
-  doc,
-  getDoc,
-  query,
-  where,
-  orderBy,
-} from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, query, where, orderBy } from "firebase/firestore";
 import { getFirebaseDb } from "@/lib/firebase";
 import type { BlogPostRepository } from "@/domain/repositories/blog-post.repository";
 import type { BlogPost, BlogPostStatus } from "@/domain/entities/blog-post.entity";
@@ -41,10 +33,7 @@ export const firestoreBlogPostRepository: BlogPostRepository = {
   async findPublished(): Promise<BlogPost[]> {
     // Sin where + orderBy combinados para evitar índices compuestos.
     // Traemos todos ordenados por createdAt y filtramos en memoria.
-    const q = query(
-      collection(getFirebaseDb(), "posts"),
-      orderBy("createdAt", "desc")
-    );
+    const q = query(collection(getFirebaseDb(), "posts"), orderBy("createdAt", "desc"));
     const snap = await getDocs(q);
     return snap.docs
       .map((d) => mapDoc(d.id, d.data() as Record<string, unknown>))
@@ -52,10 +41,7 @@ export const firestoreBlogPostRepository: BlogPostRepository = {
   },
 
   async findFeatured(): Promise<BlogPost[]> {
-    const q = query(
-      collection(getFirebaseDb(), "posts"),
-      orderBy("createdAt", "desc")
-    );
+    const q = query(collection(getFirebaseDb(), "posts"), orderBy("createdAt", "desc"));
     const snap = await getDocs(q);
     return snap.docs
       .map((d) => mapDoc(d.id, d.data() as Record<string, unknown>))
@@ -65,10 +51,7 @@ export const firestoreBlogPostRepository: BlogPostRepository = {
 
   async findBySlug(slug: string): Promise<BlogPost | null> {
     // Solo where("slug") — no requiere índice compuesto.
-    const q = query(
-      collection(getFirebaseDb(), "posts"),
-      where("slug", "==", slug)
-    );
+    const q = query(collection(getFirebaseDb(), "posts"), where("slug", "==", slug));
     const snap = await getDocs(q);
     if (snap.empty) {
       const docRef = doc(getFirebaseDb(), "posts", slug);

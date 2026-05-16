@@ -1,5 +1,5 @@
-import { CatalogFilters } from '@/components/catalogo/CatalogFilters'
-import { CatalogGrid } from '@/components/catalogo/CatalogGrid'
+import { CatalogFilters } from "@/components/catalogo/CatalogFilters";
+import { CatalogGrid } from "@/components/catalogo/CatalogGrid";
 
 export default function CatalogoPage() {
   return (
@@ -28,5 +28,5 @@ export default function CatalogoPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

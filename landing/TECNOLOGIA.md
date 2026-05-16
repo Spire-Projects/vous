@@ -2,17 +2,17 @@
 
 ## Stack Principal
 
-| Tecnología         | Versión          | Rol                                          |
-| ------------------ | ---------------- | -------------------------------------------- |
+| Tecnología         | Versión           | Rol                                          |
+| ------------------ | ----------------- | -------------------------------------------- |
 | Next.js            | 16.x (App Router) | Framework principal, SSR / ISR / SSG         |
 | React              | 19.x              | UI library                                   |
 | TypeScript         | 5+ (strict)       | Tipado estático en todo el proyecto          |
 | TailwindCSS        | 4+                | Sistema de estilos utilitario                |
-| Firebase Auth      | 10+              | Autenticación y gestión de sesiones          |
-| Firestore          | 10+              | Base de datos NoSQL serverless (colecciones) |
-| Firebase Admin SDK | 12+              | Operaciones privilegiadas en servidor        |
-| Cloudinary         | Latest           | Almacenamiento y optimización de imágenes    |
-| Vercel             | —                | Plataforma de despliegue y edge functions    |
+| Firebase Auth      | 10+               | Autenticación y gestión de sesiones          |
+| Firestore          | 10+               | Base de datos NoSQL serverless (colecciones) |
+| Firebase Admin SDK | 12+               | Operaciones privilegiadas en servidor        |
+| Cloudinary         | Latest            | Almacenamiento y optimización de imágenes    |
+| Vercel             | —                 | Plataforma de despliegue y edge functions    |
 
 ---
 

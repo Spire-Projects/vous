@@ -1,68 +1,75 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { Star, CheckCircle, Pencil, X, Check, Loader2 } from 'lucide-react'
-import { AccountSidebar } from '@/components/cuenta/AccountSidebar'
-import { OrderCard } from '@/components/cuenta/OrderCard'
-import { useAuthContext } from '@/context/AuthContext'
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Star, CheckCircle, Pencil, X, Check, Loader2 } from "lucide-react";
+import { AccountSidebar } from "@/components/cuenta/AccountSidebar";
+import { OrderCard } from "@/components/cuenta/OrderCard";
+import { useAuthContext } from "@/context/AuthContext";
 
-type TabId = 'perfil' | 'pedidos' | 'mayorista' | 'direcciones'
+type TabId = "perfil" | "pedidos" | "mayorista" | "direcciones";
 
 const DEPARTAMENTOS = [
-  'La Paz', 'Cochabamba', 'Santa Cruz', 'Oruro',
-  'Potosí', 'Chuquisaca', 'Tarija', 'Beni', 'Pando',
-]
+  "La Paz",
+  "Cochabamba",
+  "Santa Cruz",
+  "Oruro",
+  "Potosí",
+  "Chuquisaca",
+  "Tarija",
+  "Beni",
+  "Pando",
+];
 
 function TabPerfil() {
-  const { user, userProfile, updateProfile } = useAuthContext()
+  const { user, userProfile, updateProfile } = useAuthContext();
 
-  const [editing, setEditing] = useState(false)
-  const [saving, setSaving] = useState(false)
-  const [saveError, setSaveError] = useState('')
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState("");
 
-  const [name, setName] = useState('')
-  const [phone, setPhone] = useState('')
-  const [departamento, setDepartamento] = useState('')
-  const [birthDate, setBirthDate] = useState('')
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [departamento, setDepartamento] = useState("");
+  const [birthDate, setBirthDate] = useState("");
 
-  const displayName = userProfile?.name ?? user?.displayName ?? ''
-  const firstName = displayName.split(' ')[0] || user?.email?.split('@')[0] || 'usuario'
+  const displayName = userProfile?.name ?? user?.displayName ?? "";
+  const firstName = displayName.split(" ")[0] || user?.email?.split("@")[0] || "usuario";
 
   function startEditing() {
-    setName(userProfile?.name ?? user?.displayName ?? '')
-    setPhone(userProfile?.phone ?? '')
-    setDepartamento(userProfile?.departamento ?? '')
-    setBirthDate(userProfile?.birthDate ?? '')
-    setSaveError('')
-    setEditing(true)
+    setName(userProfile?.name ?? user?.displayName ?? "");
+    setPhone(userProfile?.phone ?? "");
+    setDepartamento(userProfile?.departamento ?? "");
+    setBirthDate(userProfile?.birthDate ?? "");
+    setSaveError("");
+    setEditing(true);
   }
 
   function cancelEditing() {
-    setEditing(false)
-    setSaveError('')
+    setEditing(false);
+    setSaveError("");
   }
 
   async function handleSave() {
-    setSaveError('')
-    setSaving(true)
+    setSaveError("");
+    setSaving(true);
     try {
       await updateProfile({
         ...(name.trim() && { name: name.trim() }),
         phone: phone.trim() || null,
         departamento: departamento || null,
         birthDate: birthDate || null,
-      })
-      setEditing(false)
+      });
+      setEditing(false);
     } catch {
-      setSaveError('Error al guardar. Intenta de nuevo.')
+      setSaveError("Error al guardar. Intenta de nuevo.");
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
   }
 
   const inputClass =
-    'w-full bg-transparent border-b border-vous-gray-light focus:border-vous-gold outline-none py-1.5 font-sans text-sm text-vous-soft-black transition-colors duration-200'
+    "w-full bg-transparent border-b border-vous-gray-light focus:border-vous-gold outline-none py-1.5 font-sans text-sm text-vous-soft-black transition-colors duration-200";
 
   return (
     <div className="space-y-8">
@@ -106,7 +113,7 @@ function TabPerfil() {
               Email
             </label>
             <p className="font-sans text-sm text-vous-gray py-1.5 border-b border-vous-gray-light/40">
-              {userProfile?.email ?? user?.email ?? '—'}
+              {userProfile?.email ?? user?.email ?? "—"}
             </p>
           </div>
 
@@ -137,12 +144,20 @@ function TabPerfil() {
               >
                 <option value="">Selecciona tu departamento</option>
                 {DEPARTAMENTOS.map((dep) => (
-                  <option key={dep} value={dep}>{dep}</option>
+                  <option key={dep} value={dep}>
+                    {dep}
+                  </option>
                 ))}
               </select>
               <span className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 text-vous-gray">
                 <svg width="11" height="6" viewBox="0 0 12 7" fill="none">
-                  <path d="M1 1l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path
+                    d="M1 1l5 5 5-5"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </span>
             </div>
@@ -161,9 +176,7 @@ function TabPerfil() {
             />
           </div>
 
-          {saveError && (
-            <p className="font-sans text-[13px] text-red-600">{saveError}</p>
-          )}
+          {saveError && <p className="font-sans text-[13px] text-red-600">{saveError}</p>}
 
           <div className="flex items-center gap-3">
             <button
@@ -172,7 +185,7 @@ function TabPerfil() {
               className="flex items-center gap-2 font-nav text-[11px] font-semibold tracking-[0.15em] uppercase bg-vous-soft-black text-white px-6 py-2.5 hover:bg-vous-gold-dark disabled:opacity-50 transition-colors"
             >
               {saving ? <Loader2 size={13} className="animate-spin" /> : <Check size={13} />}
-              {saving ? 'Guardando…' : 'Guardar'}
+              {saving ? "Guardando…" : "Guardar"}
             </button>
             <button
               onClick={cancelEditing}
@@ -188,14 +201,18 @@ function TabPerfil() {
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
-              { label: 'Nombre', value: userProfile?.name ?? user?.displayName ?? '—' },
-              { label: 'Email', value: userProfile?.email ?? user?.email ?? '—' },
-              { label: 'Teléfono', value: userProfile?.phone ?? '—' },
-              { label: 'Departamento', value: userProfile?.departamento ?? '—' },
-              ...(userProfile?.birthDate ? [{ label: 'Nacimiento', value: userProfile.birthDate }] : []),
+              { label: "Nombre", value: userProfile?.name ?? user?.displayName ?? "—" },
+              { label: "Email", value: userProfile?.email ?? user?.email ?? "—" },
+              { label: "Teléfono", value: userProfile?.phone ?? "—" },
+              { label: "Departamento", value: userProfile?.departamento ?? "—" },
+              ...(userProfile?.birthDate
+                ? [{ label: "Nacimiento", value: userProfile.birthDate }]
+                : []),
             ].map(({ label, value }) => (
               <div key={label}>
-                <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mb-1">{label}</p>
+                <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mb-1">
+                  {label}
+                </p>
                 <p className="font-sans text-sm text-vous-soft-black">{value}</p>
               </div>
             ))}
@@ -215,7 +232,7 @@ function TabPerfil() {
         </>
       )}
     </div>
-  )
+  );
 }
 
 function TabMayorista() {
@@ -233,7 +250,7 @@ function TabMayorista() {
         </div>
         <h3 className="font-serif text-lg text-vous-soft-black">Beneficios VIP Activados</h3>
         <ul className="space-y-2">
-          {['Precios de Curaduría', 'Acceso Early-Release', 'Soporte Personalizado'].map((b) => (
+          {["Precios de Curaduría", "Acceso Early-Release", "Soporte Personalizado"].map((b) => (
             <li key={b} className="flex items-center gap-2 font-sans text-sm text-vous-gray">
               <CheckCircle size={14} className="text-vous-gold shrink-0" />
               {b}
@@ -242,7 +259,7 @@ function TabMayorista() {
         </ul>
       </div>
     </div>
-  )
+  );
 }
 
 function TabPedidos() {
@@ -273,7 +290,7 @@ function TabPedidos() {
         Ver Historial Completo
       </button>
     </div>
-  )
+  );
 }
 
 function TabDirecciones() {
@@ -285,41 +302,45 @@ function TabDirecciones() {
         Agregar Dirección
       </button>
     </div>
-  )
+  );
 }
 
 export default function CuentaPage() {
-  const { user, loading, signOut } = useAuthContext()
-  const router = useRouter()
-  const [tab, setTab] = useState<TabId>('perfil')
+  const { user, loading, signOut } = useAuthContext();
+  const router = useRouter();
+  const [tab, setTab] = useState<TabId>("perfil");
 
   // Redirect to login if not authenticated
   useEffect(() => {
     if (!loading && !user) {
-      router.replace('/auth/login')
+      router.replace("/auth/login");
     }
-  }, [loading, user, router])
+  }, [loading, user, router]);
 
-  if (loading || !user) return null
+  if (loading || !user) return null;
 
   const handleLogout = async () => {
-    await signOut()
-    router.replace('/')
-  }
+    await signOut();
+    router.replace("/");
+  };
 
   return (
     <div className="bg-vous-warm-white min-h-screen">
       <div className="max-w-[1440px] mx-auto px-5 md:px-20 py-12 md:py-16">
         <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
-          <AccountSidebar active={tab} onTab={(id) => setTab(id as TabId)} onLogout={handleLogout} />
+          <AccountSidebar
+            active={tab}
+            onTab={(id) => setTab(id as TabId)}
+            onLogout={handleLogout}
+          />
           <main className="flex-1 min-w-0">
-            {tab === 'perfil' && <TabPerfil />}
-            {tab === 'pedidos' && <TabPedidos />}
-            {tab === 'mayorista' && <TabMayorista />}
-            {tab === 'direcciones' && <TabDirecciones />}
+            {tab === "perfil" && <TabPerfil />}
+            {tab === "pedidos" && <TabPedidos />}
+            {tab === "mayorista" && <TabMayorista />}
+            {tab === "direcciones" && <TabDirecciones />}
           </main>
         </div>
       </div>
     </div>
-  )
+  );
 }
