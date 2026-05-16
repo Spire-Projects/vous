@@ -21,6 +21,7 @@ export function useOrders(limitCount?: number) {
     }
   }, [limitCount]);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { fetchOrders(); }, [fetchOrders]);
 
   const changeStatus = useCallback(async (input: UpdateOrderStatusInput) => {

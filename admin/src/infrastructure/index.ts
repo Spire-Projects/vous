@@ -6,3 +6,4 @@ export {
   firestoreAdminUserRepository,
 } from "./repositories/firestore-user.repository";
 export { firestoreWholesaleRepository } from "./repositories/firestore-wholesale.repository";
+export { firestoreBlogPostRepository } from "./repositories/firestore-blog-post.repository";
