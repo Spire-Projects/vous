@@ -1,15 +1,9 @@
-import { useState } from "react";
 import { Plus, Edit2, Trash2, QrCode, Save, Eye } from "lucide-react";
 import { PageHeader } from "../components/ui/PageHeader";
 
 const BANNERS = [
   { id: 1, title: "Colección Urban Luxury 2024", active: true },
   { id: 2, title: "Próximamente: Editorial Verano", active: false },
-];
-
-const FAQ_ITEMS = [
-  { id: 1, question: "¿Cuáles son los tiempos de envío internacional?", answer: "Nuestros envíos internacionales suelen tardar entre 7 y 12 días hábiles dependiendo de la zona de destino." },
-  { id: 2, question: "Política de Devoluciones Editorial", answer: "" },
 ];
 
 const USERS = [
@@ -19,8 +13,6 @@ const USERS = [
 ];
 
 export function SettingsPage() {
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
-
   return (
     <div className="p-8">
       <PageHeader
