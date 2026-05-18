@@ -9,5 +9,18 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
+    dedupe: ['react', 'react-dom', 'firebase'],
+  },
+  optimizeDeps: {
+    include: [
+      'firebase/app',
+      'firebase/auth',
+      'firebase/firestore',
+    ],
+  },
+  server: {
+    fs: {
+      allow: ['..'],
+    },
   },
 })
