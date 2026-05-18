@@ -7,8 +7,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { ImagePicker } from "@/components/shared/ImagePicker";
+import { ColorPicker, type ColorItem } from "@/components/shared/ColorPicker";
 import type { Product, CreateProductInput } from "@/domain/entities/product.entity";
 import type { Category } from "@/domain/entities/category.entity";
+import { toSlug } from "@/utils/slug";
 
 interface ProductFormDialogProps {
   open: boolean;
@@ -28,8 +30,14 @@ export function ProductFormDialog({ open, product, categories, onClose, onSave }
   const [stock, setStock] = useState(0);
   const [images, setImages] = useState<string[]>([]);
   const [sizes, setSizes] = useState("");
-  const [colors, setColors] = useState("");
+  const [colors, setColors] = useState<ColorItem[]>([]);
   const [materials, setMaterials] = useState("");
+  const [slugManual, setSlugManual] = useState(false);
+
+  function handleNameChange(v: string) {
+    setName(v);
+    if (!slugManual) setSlug(toSlug(v));
+  }
   const [badge, setBadge] = useState("");
   const [isActive, setIsActive] = useState(true);
   const [isFeatured, setIsFeatured] = useState(false);
@@ -44,13 +52,13 @@ export function ProductFormDialog({ open, product, categories, onClose, onSave }
     if (product) {
       setName(product.name); setSlug(product.slug); setDescription(product.description); setDetail(product.detail);
       setCategoryId(product.categoryId); setPrice(product.price); setStock(product.stock);
-      setImages(product.images); setSizes(product.sizes.join(", ")); setColors(product.colors.map((c) => `${c.hex}:${c.name}`).join(", "));
-      setMaterials(product.materials.join(", ")); setBadge(product.badge ?? "");
+      setImages(product.images); setSizes(product.sizes.join(", ")); setColors(product.colors);
+      setMaterials(product.materials.join(", ")); setBadge(product.badge ?? ""); setSlugManual(true);
       setIsActive(product.isActive); setIsFeatured(product.isFeatured); setIsDiscounted(product.isDiscounted);
       setDiscountPercentage(product.discountPercentage ?? 0);
     } else {
       setName(""); setSlug(""); setDescription(""); setDetail(""); setCategoryId(""); setPrice(0); setStock(0);
-      setImages([]); setSizes(""); setColors(""); setMaterials(""); setBadge("");
+      setImages([]); setSizes(""); setColors([]); setMaterials(""); setBadge(""); setSlugManual(false);
       setIsActive(true); setIsFeatured(false); setIsDiscounted(false); setDiscountPercentage(0);
     }
   }, [product, open]);
@@ -68,11 +76,12 @@ export function ProductFormDialog({ open, product, categories, onClose, onSave }
         name, slug, description, detail, categoryId, categoryName: catName,
         images, price, stock,
         sizes: sizes.split(",").map((s) => s.trim()).filter(Boolean),
-        colors: colors.split(",").map((c) => { const [hex, name] = c.trim().split(":"); return { hex: hex ?? c.trim(), name: name ?? "" }; }).filter((c) => c.hex),
+        colors,
         materials: materials.split(",").map((m) => m.trim()).filter(Boolean),
         badge: badge || undefined,
-        hasVariants: sizes.trim().length > 0 || colors.trim().length > 0,
-        isActive, isFeatured, isDiscounted, discountPercentage: isDiscounted ? discountPercentage : undefined,
+        hasVariants: sizes.trim().length > 0 || colors.length > 0,
+        isActive, isFeatured, isDiscounted,
+        discountPercentage: isDiscounted ? discountPercentage : 0,
         sortOrder: 0,
       });
       onClose();
@@ -87,8 +96,8 @@ export function ProductFormDialog({ open, product, categories, onClose, onSave }
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-1"><Label>Nombre *</Label><Input required value={name} onChange={(e) => setName(e.target.value)} /></div>
-            <div className="space-y-1"><Label>Slug *</Label><Input required value={slug} onChange={(e) => setSlug(e.target.value)} placeholder="nombre-del-producto" /></div>
+            <div className="space-y-1"><Label>Nombre *</Label><Input required value={name} onChange={(e) => handleNameChange(e.target.value)} /></div>
+            <div className="space-y-1"><Label>Slug *</Label><Input required value={slug} onChange={(e) => { setSlug(e.target.value); setSlugManual(true); }} placeholder="nombre-del-producto" /></div>
           </div>
           <div className="space-y-1"><Label>Descripción</Label><Textarea value={description} onChange={(e) => setDescription(e.target.value)} /></div>
           <div className="space-y-1"><Label>Detalle</Label><Textarea value={detail} onChange={(e) => setDetail(e.target.value)} /></div>
@@ -117,7 +126,7 @@ export function ProductFormDialog({ open, product, categories, onClose, onSave }
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-1"><Label>Tallas (separadas por coma)</Label><Input value={sizes} onChange={(e) => setSizes(e.target.value)} placeholder="XS, S, M, L, XL" /></div>
-            <div className="space-y-1"><Label>Colores (hex:nombre)</Label><Input value={colors} onChange={(e) => setColors(e.target.value)} placeholder="#000000:Negro, #FFFFFF:Blanco" /></div>
+            <div className="space-y-1 col-span-3"><Label>Colores</Label><ColorPicker value={colors} onChange={setColors} /></div>
             <div className="space-y-1"><Label>Materiales</Label><Input value={materials} onChange={(e) => setMaterials(e.target.value)} placeholder="Lana, Algodón" /></div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

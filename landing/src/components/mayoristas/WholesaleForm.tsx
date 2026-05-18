@@ -47,11 +47,15 @@ async function uploadToCloudinary(file: File): Promise<string> {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/upload`, {
-    method: "POST",
-    body: formData,
-  });
-  if (!res.ok) throw new Error(`Error al subir: ${file.name}`);
+  const res = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`,
+    { method: "POST", body: formData }
+  );
+  if (!res.ok) {
+    const errData = await res.json().catch(() => ({})) as { error?: { message?: string } };
+    const msg = errData?.error?.message ?? `Error ${res.status}`;
+    throw new Error(`Error al subir "${file.name}": ${msg}`);
+  }
   const data = (await res.json()) as { secure_url: string };
   return data.secure_url;
 }
@@ -113,7 +117,10 @@ export function WholesaleForm() {
     setError("");
     try {
       let fileUrls: string[] = [];
-      if (files.length && CLOUDINARY_CLOUD_NAME && CLOUDINARY_UPLOAD_PRESET) {
+      if (files.length > 0) {
+        if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) {
+          throw new Error("La subida de imágenes no está configurada. Contacta al administrador.");
+        }
         fileUrls = await Promise.all(files.map(uploadToCloudinary));
       }
       await addDoc(collection(getFirebaseDb(), "wholesaleRequests"), {

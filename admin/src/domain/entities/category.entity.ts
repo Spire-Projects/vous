@@ -10,3 +10,13 @@ export interface Category {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface CreateCategoryInput {
+  name: string;
+  slug: string;
+  description?: string;
+  image?: string;
+  banner?: string;
+  isActive: boolean;
+  sortOrder: number;
+}

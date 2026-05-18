@@ -23,7 +23,6 @@ const FOOTER_SECTIONS = [
     title: "Mayoristas",
     links: [
       { href: "/mayoristas", label: "Portal Mayoristas" },
-      { href: "/mayoristas/registro", label: "Crear Cuenta B2B" },
       { href: "/mayoristas/catalogo", label: "Catálogo Mayoreo" },
     ],
   },

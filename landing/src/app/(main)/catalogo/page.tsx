@@ -8,7 +8,7 @@ export default function CatalogoPage() {
       <div className="bg-vous-soft-black py-14 md:py-20 px-5 md:px-20">
         <div className="max-w-[1440px] mx-auto">
           <p className="font-nav text-[11px] font-semibold tracking-[0.25em] text-vous-gold uppercase mb-3">
-            Temporada 2025
+            Temporada 2026
           </p>
           <h1 className="font-serif text-4xl md:text-5xl font-medium text-white mb-4">
             Compra la Colección
