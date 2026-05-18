@@ -1,150 +1,118 @@
 import { useState } from "react";
-import { Search, Plus, MoreVertical, AlertTriangle } from "lucide-react";
-import { PageHeader } from "../components/ui/PageHeader";
-import { StatCard } from "../components/ui/StatCard";
+import { Search, Plus, Pencil, MoreVertical, AlertTriangle, Eye, EyeOff } from "lucide-react";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { StatCard } from "@/components/ui/StatCard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Table, TableHeader, TableBody, TableRow, TableHead, TableCell,
-} from "@/components/ui/table";
-
-type ProductPreview = {
-  id: string;
-  name: string;
-  sku: string;
-  category: string;
-  variants: { size: string; color: string }[];
-  stock: number;
-  isActive: boolean;
-  isCritical?: boolean;
-};
-
-const PRODUCTS: ProductPreview[] = [
-  { id: "1", name: "Abrigo Noir Silk", sku: "VO-24-SH-001", category: "Exterior", variants: [{ size: "M", color: "Negro" }, { size: "L", color: "Negro" }], stock: 45, isActive: true },
-  { id: "2", name: "Pantalón Avante-Garde", sku: "VO-24-TR-012", category: "Pantalones", variants: [{ size: "S", color: "Crema" }, { size: "M", color: "Crema" }], stock: 3, isActive: true, isCritical: true },
-  { id: "3", name: "Tee Estructura V1", sku: "VO-24-TS-044", category: "Camisetas", variants: [{ size: "L", color: "Blanco" }, { size: "XL", color: "Blanco" }], stock: 112, isActive: false },
-  { id: "4", name: "Vestido Editorial", sku: "VO-24-VE-007", category: "Vestidos", variants: [{ size: "S", color: "Negro" }], stock: 8, isActive: true, isCritical: true },
-  { id: "5", name: "Reloj Urbano Límite", sku: "VO-24-AC-088", category: "Accesorios", variants: [{ size: "Única", color: "Oro" }], stock: 12, isActive: true },
-];
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
+import { ProductFormDialog } from "@/components/product/ProductFormDialog";
+import { useProducts } from "@/hooks/useProducts";
+import { useCategories } from "@/hooks/useCategories";
+import type { Product, CreateProductInput } from "@/domain/entities/product.entity";
 
 export function InventoryPage() {
+  const { products, loading, create, update, toggleActive } = useProducts();
+  const { categories } = useCategories();
   const [search, setSearch] = useState("");
   const [filterLowStock, setFilterLowStock] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editing, setEditing] = useState<Product | null>(null);
 
-  const filtered = PRODUCTS.filter((p) => {
-    const matchSearch = !search || p.name.toLowerCase().includes(search.toLowerCase()) || p.sku.toLowerCase().includes(search.toLowerCase());
-    const matchLow = !filterLowStock || p.isCritical;
+  const filtered = products.filter((p) => {
+    const matchSearch = !search || p.name.toLowerCase().includes(search.toLowerCase());
+    const matchLow = !filterLowStock || (p.stock <= 5);
     return matchSearch && matchLow;
   });
+
+  const activeCount = products.filter((p) => p.isActive).length;
+  const lowStockCount = products.filter((p) => p.stock <= 5).length;
+
+  function handleNew() { setEditing(null); setDialogOpen(true); }
+  function handleEdit(product: Product) { setEditing(product); setDialogOpen(true); }
+
+  async function handleSave(data: CreateProductInput) {
+    if (editing) await update(editing.id, data);
+    else await create(data);
+  }
 
   return (
     <div className="p-8">
       <PageHeader
         title="Inventario de Productos"
         subtitle="Gestione su catálogo con precisión editorial."
-        action={
-          <Button>
-            <Plus size={14} strokeWidth={2} />
-            Añadir Producto
-          </Button>
-        }
+        action={<Button onClick={handleNew}><Plus size={14} strokeWidth={2} />Añadir Producto</Button>}
       />
 
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
-        <StatCard label="Total Productos" value="1,248" />
-        <StatCard label="Categorías Activas" value="8" />
+        <StatCard label="Total Productos" value={String(products.length)} />
+        <StatCard label="Activos" value={String(activeCount)} />
+        <StatCard label="Stock Crítico" value={String(lowStockCount)} />
       </div>
 
       <div className="bg-vous-white border border-vous-border">
         <div className="p-4 border-b border-vous-border flex flex-col sm:flex-row gap-3 items-start sm:items-center">
           <div className="relative flex-1 max-w-xs">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-vous-gray" />
-            <Input
-              placeholder="Buscar producto o SKU..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="pl-9"
-            />
+            <Input placeholder="Buscar producto..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
           </div>
-          <button
-            type="button"
+          <Button
+            variant={filterLowStock ? "danger" : "outline"}
+            size="sm"
             onClick={() => setFilterLowStock((v) => !v)}
-            className={`flex items-center gap-1.5 px-3 py-2 font-nav text-[11px] uppercase tracking-wide border transition-colors ${
-              filterLowStock
-                ? "border-red-400 bg-red-50 text-red-600"
-                : "border-vous-border text-vous-gray hover:border-vous-black"
-            }`}
+            className="gap-1.5"
           >
-            <AlertTriangle size={13} />
-            Stock Crítico
-          </button>
+            <AlertTriangle size={13} /> Stock Crítico
+          </Button>
         </div>
 
-        <Table>
-          <TableHeader>
-            <TableRow>
-              {["Producto", "Categoría", "Variantes", "Stock", "Estado", ""].map((h) => (
-                <TableHead key={h}>{h}</TableHead>
-              ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filtered.map((product) => (
-              <TableRow key={product.id}>
-                <TableCell>
-                  <p className="font-nav text-[13px] font-semibold text-vous-black">{product.name}</p>
-                  <p className="text-[11px] text-vous-gray font-sans">SKU: {product.sku}</p>
-                </TableCell>
-                <TableCell className="text-[12px] font-sans text-vous-gray">{product.category}</TableCell>
-                <TableCell>
-                  <div className="flex flex-wrap gap-1">
-                    {product.variants.map((v, i) => (
-                      <span key={i} className="text-[10px] font-nav bg-vous-cream px-2 py-0.5 text-vous-gray">
-                        {v.size} / {v.color}
-                      </span>
-                    ))}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <span className={`font-nav text-[13px] font-semibold ${product.isCritical ? "text-red-600" : "text-vous-black"}`}>
-                    {product.stock}
-                  </span>
-                  {product.isCritical && (
-                    <span className="ml-1.5 text-[10px] font-nav text-red-500 uppercase">CRÍTICO</span>
-                  )}
-                </TableCell>
-                <TableCell>
-                  <Badge variant={product.isActive ? "active" : "inactive"}>
-                    {product.isActive ? "Activo" : "Inactivo"}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <button className="text-vous-gray hover:text-vous-black transition-colors">
-                    <MoreVertical size={16} strokeWidth={1.5} />
-                  </button>
-                </TableCell>
+        {loading ? (
+          <div className="p-12 text-center text-vous-gray font-nav text-[11px] uppercase tracking-wider">Cargando productos...</div>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                {["Producto", "Categoría", "Precio", "Stock", "Estado", ""].map((h) => <TableHead key={h}>{h}</TableHead>)}
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-
-        <div className="px-4 py-3 border-t border-vous-border flex items-center justify-between">
-          <p className="text-[11px] text-vous-gray font-nav">
-            Mostrando {filtered.length} de 1,248 productos
-          </p>
-          <div className="flex gap-1">
-            {[1, 2, 3].map((p) => (
-              <button
-                key={p}
-                className={`w-7 h-7 text-[12px] font-nav border ${p === 1 ? "bg-vous-black text-vous-white border-vous-black" : "border-vous-border text-vous-gray hover:border-vous-black"}`}
-              >
-                {p}
-              </button>
-            ))}
-          </div>
-        </div>
+            </TableHeader>
+            <TableBody>
+              {filtered.map((product) => (
+                <TableRow key={product.id}>
+                  <TableCell>
+                    <p className="font-nav text-[13px] font-semibold text-vous-black">{product.name}</p>
+                    <p className="text-[11px] text-vous-gray font-sans">{product.slug}</p>
+                  </TableCell>
+                  <TableCell className="text-[12px] font-sans text-vous-gray">{product.categoryName}</TableCell>
+                  <TableCell className="text-[12px] font-sans text-vous-gray">
+                    Bs. {product.price.toLocaleString("es-BO")}
+                    {product.isDiscounted && product.discountPercentage ? (
+                      <span className="ml-1.5 text-[10px] font-nav text-red-500">-{product.discountPercentage}%</span>
+                    ) : null}
+                  </TableCell>
+                  <TableCell>
+                    <span className={`font-nav text-[13px] font-semibold ${product.stock <= 5 ? "text-red-600" : "text-vous-black"}`}>{product.stock}</span>
+                    {product.stock <= 5 && <span className="ml-1.5 text-[10px] font-nav text-red-500 uppercase">CRÍTICO</span>}
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={product.isActive ? "active" : "inactive"}>{product.isActive ? "Activo" : "Inactivo"}</Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Button variant="ghost" size="icon-sm" onClick={() => toggleActive(product.id, product.isActive)} title={product.isActive ? "Desactivar" : "Activar"}>
+                        {product.isActive ? <EyeOff size={14} /> : <Eye size={14} />}
+                      </Button>
+                      <Button variant="ghost" size="icon-sm" onClick={() => handleEdit(product)}><Pencil size={14} /></Button>
+                      <Button variant="ghost" size="icon-sm"><MoreVertical size={16} /></Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </div>
+
+      <ProductFormDialog open={dialogOpen} product={editing} categories={categories} onClose={() => setDialogOpen(false)} onSave={handleSave} />
     </div>
   );
 }

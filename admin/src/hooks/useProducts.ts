@@ -1,8 +1,10 @@
 import { useEffect, useState, useCallback } from "react";
 import { firestoreProductRepository } from "@/infrastructure";
 import { getProducts } from "@/application/use-cases/product/get-products";
+import { createProduct } from "@/application/use-cases/product/create-product";
+import { updateProduct } from "@/application/use-cases/product/update-product";
 import { setProductActive } from "@/application/use-cases/product/set-product-active";
-import type { Product } from "@/domain/entities/product.entity";
+import type { Product, CreateProductInput, UpdateProductInput } from "@/domain/entities/product.entity";
 
 export function useProducts() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -21,12 +23,23 @@ export function useProducts() {
     }
   }, []);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { fetchProducts(); }, [fetchProducts]);
+
+  const create = useCallback(async (input: CreateProductInput) => {
+    await createProduct(firestoreProductRepository, input);
+    await fetchProducts();
+  }, [fetchProducts]);
+
+  const update = useCallback(async (id: string, input: UpdateProductInput) => {
+    await updateProduct(firestoreProductRepository, id, input);
+    await fetchProducts();
+  }, [fetchProducts]);
 
   const toggleActive = useCallback(async (id: string, isActive: boolean) => {
     await setProductActive(firestoreProductRepository, id, !isActive);
     await fetchProducts();
   }, [fetchProducts]);
 
-  return { products, loading, error, refetch: fetchProducts, toggleActive };
+  return { products, loading, error, refetch: fetchProducts, create, update, toggleActive };
 }

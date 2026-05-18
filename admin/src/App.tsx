@@ -11,9 +11,11 @@ import { CategoriesPage } from "./pages/CategoriesPage";
 import { CustomersPage } from "./pages/CustomersPage";
 import { WholesalePage } from "./pages/WholesalePage";
 import { BlogPage } from "./pages/BlogPage";
+import { FaqPage } from "./pages/FaqPage";
 import { DiscountsPage } from "./pages/DiscountsPage";
 import { ReportsPage } from "./pages/ReportsPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { BannersPage } from "./pages/BannersPage";
 import { AdminUsersPage } from "./pages/AdminUsersPage";
 
 function AdminRoutes() {
@@ -28,6 +30,8 @@ function AdminRoutes() {
           <Route path="clientes" element={<CustomersPage />} />
           <Route path="mayoristas" element={<WholesalePage />} />
           <Route path="blog" element={<BlogPage />} />
+          <Route path="faq" element={<FaqPage />} />
+          <Route path="banners" element={<BannersPage />} />
           <Route path="descuentos" element={<DiscountsPage />} />
           <Route path="reportes" element={<ReportsPage />} />
           <Route path="configuracion" element={<SettingsPage />} />

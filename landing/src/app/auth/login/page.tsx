@@ -67,7 +67,6 @@ export default function LoginPage() {
   return (
     <div className="flex-1 flex items-center justify-center px-6 py-16">
       <div className="w-full max-w-[400px]">
-
         {/* Heading */}
         <div className="mb-10">
           <p className="font-nav text-[11px] font-semibold uppercase tracking-[0.22em] text-vous-gold mb-3">
@@ -83,7 +82,6 @@ export default function LoginPage() {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
-
           {/* Email */}
           <div>
             <label className="block font-nav text-[10px] font-semibold uppercase tracking-[0.2em] text-vous-gray mb-2">
@@ -112,7 +110,11 @@ export default function LoginPage() {
                 disabled={resetLoading}
                 className="font-nav text-[10px] font-semibold uppercase tracking-[0.12em] text-vous-gray hover:text-vous-gold transition-colors disabled:opacity-50"
               >
-                {resetSent ? "Correo enviado ✓" : resetLoading ? "Enviando…" : "¿Olvidó su contraseña?"}
+                {resetSent
+                  ? "Correo enviado ✓"
+                  : resetLoading
+                    ? "Enviando…"
+                    : "¿Olvidó su contraseña?"}
               </button>
             </div>
             <div className="relative">
@@ -131,15 +133,17 @@ export default function LoginPage() {
                 aria-label={showPassword ? "Ocultar contraseña" : "Ver contraseña"}
                 className="absolute right-0 top-1/2 -translate-y-1/2 text-vous-gray hover:text-vous-soft-black transition-colors"
               >
-                {showPassword ? <EyeOff size={15} strokeWidth={1.5} /> : <Eye size={15} strokeWidth={1.5} />}
+                {showPassword ? (
+                  <EyeOff size={15} strokeWidth={1.5} />
+                ) : (
+                  <Eye size={15} strokeWidth={1.5} />
+                )}
               </button>
             </div>
           </div>
 
           {/* Error */}
-          {error && (
-            <p className="font-sans text-[13px] text-red-600">{error}</p>
-          )}
+          {error && <p className="font-sans text-[13px] text-red-600">{error}</p>}
 
           {/* Submit */}
           <button

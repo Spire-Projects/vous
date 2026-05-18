@@ -32,6 +32,12 @@ export const firestoreOrderRepository: OrderRepository = {
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     });
-    return { ...order, id: ref.id, status: "pending", createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+    return {
+      ...order,
+      id: ref.id,
+      status: "pending",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
   },
 };

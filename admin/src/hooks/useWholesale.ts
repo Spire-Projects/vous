@@ -20,6 +20,7 @@ export function useWholesale() {
     }
   }, []);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { fetchRequests(); }, [fetchRequests]);
 
   const review = useCallback(async (input: ReviewWholesaleInput) => {

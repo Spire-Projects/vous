@@ -6,3 +6,8 @@ export {
   firestoreAdminUserRepository,
 } from "./repositories/firestore-user.repository";
 export { firestoreWholesaleRepository } from "./repositories/firestore-wholesale.repository";
+export { firestoreBlogPostRepository } from "./repositories/firestore-blog-post.repository";
+export { firestoreFAQRepository } from "./repositories/firestore-faq.repository";
+export { firestoreBannerRepository } from "./repositories/firestore-banner.repository";
+export { firestoreSiteConfigRepository } from "./repositories/firestore-site-config.repository";
+export { firestoreCategoryRepository } from "./repositories/firestore-category.repository";

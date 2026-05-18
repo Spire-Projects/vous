@@ -1,16 +1,16 @@
-'use client'
+"use client";
 
-import { X, Minus, Plus } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { X, Minus, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface CartItemProps {
-  name: string
-  variant: string
-  price: string
-  qty: number
-  bg: string
-  onRemove: () => void
-  onQty: (delta: number) => void
+  name: string;
+  variant: string;
+  price: string;
+  qty: number;
+  bg: string;
+  onRemove: () => void;
+  onQty: (delta: number) => void;
 }
 
 export function CartItemRow({ name, variant, price, qty, bg, onRemove, onQty }: CartItemProps) {
@@ -60,5 +60,5 @@ export function CartItemRow({ name, variant, price, qty, bg, onRemove, onQty }: 
         </div>
       </div>
     </div>
-  )
+  );
 }

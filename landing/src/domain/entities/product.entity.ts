@@ -8,6 +8,7 @@ export interface Product {
   slug: string;
   name: string;
   description: string;
+  detail: string;
   price: number;
   categoryId: string;
   categoryName: string;
@@ -16,8 +17,14 @@ export interface Product {
   sizes: string[];
   colors: ProductColor[];
   materials: string[];
+  hasVariants: boolean;
+  isActive: boolean;
+  isFeatured: boolean;
+  isDiscounted: boolean;
+  discountPercentage?: number;
   stock: number;
-  collectionId?: string;
+  sortOrder: number;
+  tags?: string[];
   createdAt: string;
   updatedAt: string;
 }

@@ -1,6 +1,8 @@
-import Link from "next/link";
+"use client";
 
-// SVG mínimos para redes sociales (lucide-react no incluye íconos de marcas)
+import Link from "next/link";
+import { useSiteConfig } from "@/hooks/useSiteConfig";
+
 function InstagramIcon() {
   return (
     <svg
@@ -28,6 +30,14 @@ function TikTokIcon() {
   );
 }
 
+function FacebookIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+    </svg>
+  );
+}
+
 function PinterestIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -36,27 +46,44 @@ function PinterestIcon() {
   );
 }
 
-const SOCIAL_LINKS = [
-  { href: "https://www.instagram.com/vous.style", label: "Instagram", icon: InstagramIcon },
-  { href: "https://www.tiktok.com/@vous.bo", label: "TikTok", icon: TikTokIcon },
-  { href: "https://pinterest.com/vous_bo", label: "Pinterest", icon: PinterestIcon },
-] as const;
+const ICON_MAP = {
+  instagram: InstagramIcon,
+  tiktok: TikTokIcon,
+  facebook: FacebookIcon,
+  pinterest: PinterestIcon,
+} as const;
 
 export function FooterSocial() {
+  const { config } = useSiteConfig();
+
+  const networks = [
+    { key: "instagram" as const, label: "Instagram", data: config?.instagram },
+    { key: "tiktok" as const, label: "TikTok", data: config?.tiktok },
+    { key: "facebook" as const, label: "Facebook", data: config?.facebook },
+    { key: "pinterest" as const, label: "Pinterest", data: config?.pinterest },
+  ];
+
+  const activeNetworks = networks.filter((n) => n.data?.active && n.data?.url);
+
+  if (activeNetworks.length === 0) return null;
+
   return (
     <div className="flex items-center gap-4">
-      {SOCIAL_LINKS.map(({ href, label, icon: Icon }) => (
-        <Link
-          key={href}
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={label}
-          className="w-8 h-8 rounded-full border border-vous-gold/30 flex items-center justify-center text-vous-gold hover:bg-vous-gold hover:text-vous-soft-black transition-all duration-200"
-        >
-          <Icon />
-        </Link>
-      ))}
+      {activeNetworks.map(({ key, label, data }) => {
+        const Icon = ICON_MAP[key];
+        return (
+          <Link
+            key={key}
+            href={data!.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={label}
+            className="w-8 h-8 rounded-full border border-vous-gold/30 flex items-center justify-center text-vous-gold hover:bg-vous-gold hover:text-vous-soft-black transition-all duration-200"
+          >
+            <Icon />
+          </Link>
+        );
+      })}
     </div>
   );
 }

@@ -20,6 +20,7 @@ export function useCustomers() {
     }
   }, []);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { fetchCustomers(); }, [fetchCustomers]);
 
   const toggleActive = useCallback(async (uid: string, current: boolean) => {

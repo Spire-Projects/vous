@@ -1,10 +1,10 @@
-import Link from 'next/link'
-import { Lock, Truck, RefreshCcw } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import Link from "next/link";
+import { Lock, Truck, RefreshCcw } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface CartSummaryProps {
-  subtotal: string
-  total: string
+  subtotal: string;
+  total: string;
 }
 
 export function CartSummary({ subtotal, total }: CartSummaryProps) {
@@ -38,11 +38,14 @@ export function CartSummary({ subtotal, total }: CartSummaryProps) {
 
         <div className="mt-5 space-y-2">
           {[
-            { icon: Lock, text: 'Pago 100% Seguro' },
-            { icon: Truck, text: 'Envío Express Disponible' },
-            { icon: RefreshCcw, text: 'Devoluciones en 14 días' },
+            { icon: Lock, text: "Pago 100% Seguro" },
+            { icon: Truck, text: "Envío Express Disponible" },
+            { icon: RefreshCcw, text: "Devoluciones en 14 días" },
           ].map(({ icon: Icon, text }) => (
-            <div key={text} className="flex items-center gap-2 font-sans text-[11px] text-vous-gray">
+            <div
+              key={text}
+              className="flex items-center gap-2 font-sans text-[11px] text-vous-gray"
+            >
               <Icon size={12} className="shrink-0 text-vous-gold" />
               {text}
             </div>
@@ -50,5 +53,5 @@ export function CartSummary({ subtotal, total }: CartSummaryProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

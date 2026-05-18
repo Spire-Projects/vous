@@ -1,25 +1,170 @@
-import { useState } from "react";
-import { Plus, Edit2, Trash2, QrCode, Save, Eye } from "lucide-react";
-import { PageHeader } from "../components/ui/PageHeader";
+import { useState, useEffect } from "react";
+import { Save, Eye, Loader2 } from "lucide-react";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { ImagePicker } from "@/components/shared/ImagePicker";
+import { RichTextEditor } from "@/components/blog/RichTextEditor";
+import { useSiteConfig } from "@/hooks/useSiteConfig";
+import type { SiteConfig, UpdateSiteConfigInput, ScheduleItem } from "@/domain/entities/site-config.entity";
 
-const BANNERS = [
-  { id: 1, title: "Colección Urban Luxury 2024", active: true },
-  { id: 2, title: "Próximamente: Editorial Verano", active: false },
+const DEFAULT_SCHEDULE: ScheduleItem[] = [
+  { day: "Lunes", hours: "" },
+  { day: "Martes", hours: "" },
+  { day: "Miércoles", hours: "" },
+  { day: "Jueves", hours: "" },
+  { day: "Viernes", hours: "" },
+  { day: "Sábado", hours: "" },
+  { day: "Domingo", hours: "" },
 ];
 
-const FAQ_ITEMS = [
-  { id: 1, question: "¿Cuáles son los tiempos de envío internacional?", answer: "Nuestros envíos internacionales suelen tardar entre 7 y 12 días hábiles dependiendo de la zona de destino." },
-  { id: 2, question: "Política de Devoluciones Editorial", answer: "" },
-];
+function useSettingsForm(config: SiteConfig | null) {
+  const [logoUrl, setLogoUrl] = useState("");
+  const [storeName, setStoreName] = useState("VOUS");
+  const [tagline, setTagline] = useState("");
+  const [whatsappNumber, setWhatsappNumber] = useState("");
+  const [whatsappMessage, setWhatsappMessage] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [instagramUrl, setInstagramUrl] = useState("");
+  const [instagramActive, setInstagramActive] = useState(false);
+  const [tiktokUrl, setTiktokUrl] = useState("");
+  const [tiktokActive, setTiktokActive] = useState(false);
+  const [facebookUrl, setFacebookUrl] = useState("");
+  const [facebookActive, setFacebookActive] = useState(false);
+  const [pinterestUrl, setPinterestUrl] = useState("");
+  const [pinterestActive, setPinterestActive] = useState(false);
+  const [shippingPolicy, setShippingPolicy] = useState("");
+  const [returnPolicy, setReturnPolicy] = useState("");
+  const [schedule, setSchedule] = useState<ScheduleItem[]>(DEFAULT_SCHEDULE);
 
-const USERS = [
-  { id: 1, initials: "MA", name: "Maria Alvarez", role: "Editora de Contenidos" },
-  { id: 2, initials: "JR", name: "Julian Rivas", role: "Gestor de Stock" },
-  { id: 3, initials: "SR", name: "Sofia Rojas", role: "Finanzas" },
-];
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    if (!config) return;
+    setLogoUrl(config.logoUrl);
+    setStoreName(config.storeName);
+    setTagline(config.tagline);
+    setWhatsappNumber(config.whatsappNumber);
+    setWhatsappMessage(config.whatsappMessage);
+    setEmail(config.email);
+    setAddress(config.address);
+    setCity(config.city);
+    setInstagramUrl(config.instagram?.url ?? "");
+    setInstagramActive(config.instagram?.active ?? false);
+    setTiktokUrl(config.tiktok?.url ?? "");
+    setTiktokActive(config.tiktok?.active ?? false);
+    setFacebookUrl(config.facebook?.url ?? "");
+    setFacebookActive(config.facebook?.active ?? false);
+    setPinterestUrl(config.pinterest?.url ?? "");
+    setPinterestActive(config.pinterest?.active ?? false);
+    setShippingPolicy(config.shippingPolicy);
+    setReturnPolicy(config.returnPolicy);
+    setSchedule(config.schedule?.length ? config.schedule : DEFAULT_SCHEDULE);
+  }, [config]);
+  /* eslint-enable react-hooks/set-state-in-effect */
+
+  function toInput(): UpdateSiteConfigInput {
+    return {
+      logoUrl,
+      storeName,
+      tagline,
+      whatsappNumber,
+      whatsappMessage,
+      email,
+      address,
+      city,
+      instagram: { url: instagramUrl, active: instagramActive },
+      tiktok: { url: tiktokUrl, active: tiktokActive },
+      facebook: { url: facebookUrl, active: facebookActive },
+      pinterest: { url: pinterestUrl, active: pinterestActive },
+      shippingPolicy,
+      returnPolicy,
+      schedule: schedule.filter((s) => s.hours.trim() !== ""),
+    };
+  }
+
+  return {
+    logoUrl, setLogoUrl,
+    storeName, setStoreName,
+    tagline, setTagline,
+    whatsappNumber, setWhatsappNumber,
+    whatsappMessage, setWhatsappMessage,
+    email, setEmail,
+    address, setAddress,
+    city, setCity,
+    instagramUrl, setInstagramUrl, instagramActive, setInstagramActive,
+    tiktokUrl, setTiktokUrl, tiktokActive, setTiktokActive,
+    facebookUrl, setFacebookUrl, facebookActive, setFacebookActive,
+    pinterestUrl, setPinterestUrl, pinterestActive, setPinterestActive,
+    shippingPolicy, setShippingPolicy,
+    returnPolicy, setReturnPolicy,
+    schedule, setSchedule,
+    toInput,
+  };
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="bg-white border border-[#E8E5E1] p-6">
+      <h2 className="font-serif text-xl text-vous-soft-black mb-5">{title}</h2>
+      {children}
+    </section>
+  );
+}
+
+function SocialRow({
+  label,
+  url,
+  setUrl,
+  active,
+  setActive,
+}: {
+  label: string;
+  url: string;
+  setUrl: (v: string) => void;
+  active: boolean;
+  setActive: (v: boolean) => void;
+}) {
+  return (
+    <div className="flex items-center gap-4">
+      <div className="flex-1 min-w-0">
+        <Label>{label}</Label>
+        <Input value={url} onChange={(e) => setUrl(e.target.value)} placeholder={`https://${label.toLowerCase()}.com/...`} />
+      </div>
+      <div className="flex items-center gap-2 pt-5 shrink-0">
+        <input
+          type="checkbox"
+          checked={active}
+          onChange={(e) => setActive(e.target.checked)}
+          className="accent-vous-gold w-4 h-4"
+        />
+        <span className="font-nav text-[12px] uppercase tracking-wide text-vous-black">Activo</span>
+      </div>
+    </div>
+  );
+}
 
 export function SettingsPage() {
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const { config, loading, saving, update } = useSiteConfig();
+  const form = useSettingsForm(config);
+
+  async function handleSave() {
+    await update(form.toInput());
+  }
+
+  if (loading) {
+    return (
+      <div className="p-8">
+        <PageHeader title="Configuración del Sistema" subtitle="Gestiona la identidad visual y operativa de VOUS." />
+        <div className="flex items-center justify-center py-20">
+          <Loader2 size={24} className="animate-spin text-vous-gold" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-8">
@@ -28,113 +173,116 @@ export function SettingsPage() {
         subtitle="Gestiona la identidad visual y operativa de VOUS."
         action={
           <div className="flex gap-2">
-            <button className="flex items-center gap-2 px-4 py-2 border border-[#1A1A1A] text-[12px] font-['Montserrat'] uppercase tracking-wider hover:bg-[#1A1A1A] hover:text-white transition-colors">
-              <Eye size={14} strokeWidth={1.5} />
-              Vista Previa
-            </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-[#C9A84C] text-[#1A1A1A] text-[12px] font-['Montserrat'] uppercase tracking-wider hover:bg-[#BF8F54] transition-colors">
-              <Save size={14} strokeWidth={1.5} />
-              Guardar Cambios
-            </button>
+            <Button variant="outline" onClick={() => window.open("/", "_blank")}>
+              <Eye size={14} strokeWidth={2} /> Vista Previa
+            </Button>
+            <Button onClick={handleSave} disabled={saving}>
+              {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} strokeWidth={2} />}
+              {saving ? "Guardando..." : "Guardar Cambios"}
+            </Button>
           </div>
         }
       />
 
-      <div className="space-y-8">
-        {/* Banners */}
-        <section className="bg-white border border-[#E8E5E1] p-6">
-          <div className="flex items-center justify-between mb-5">
-            <h2 className="font-['Bodoni_Moda'] text-xl text-[#1A1A1A]">Banners de Landing</h2>
-            <button className="flex items-center gap-1.5 text-[11px] font-['Montserrat'] uppercase tracking-wider text-[#C9A84C] hover:underline">
-              <Plus size={12} strokeWidth={2} /> Añadir Nuevo Banner
-            </button>
-          </div>
-          <div className="space-y-3">
-            {BANNERS.map((banner) => (
-              <div key={banner.id} className="flex items-center justify-between p-4 border border-[#E8E5E1] bg-[#FAFAF9]">
-                <div>
-                  <p className="text-[13px] font-['Montserrat'] font-semibold text-[#1A1A1A]">{banner.title}</p>
-                  <span className={`text-[10px] font-['Montserrat'] uppercase tracking-wider mt-1 inline-block ${banner.active ? "text-green-600" : "text-[#9E9E9E]"}`}>
-                    {banner.active ? "ACTIVO" : "INACTIVO"}
-                  </span>
-                </div>
-                <div className="flex gap-2">
-                  <button className="p-1.5 text-[#9E9E9E] hover:text-[#1A1A1A] transition-colors"><Edit2 size={14} strokeWidth={1.5} /></button>
-                  <button className="p-1.5 text-[#9E9E9E] hover:text-red-500 transition-colors"><Trash2 size={14} strokeWidth={1.5} /></button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* FAQ */}
-        <section className="bg-white border border-[#E8E5E1] p-6">
-          <h2 className="font-['Bodoni_Moda'] text-xl text-[#1A1A1A] mb-5">Gestión de FAQ</h2>
-          <div className="space-y-2">
-            {FAQ_ITEMS.map((item) => (
-              <div key={item.id} className="border border-[#E8E5E1]">
-                <button
-                  onClick={() => setOpenFaq(openFaq === item.id ? null : item.id)}
-                  className="w-full flex items-center justify-between px-4 py-3 text-left"
-                >
-                  <span className="text-[13px] font-['Inter'] text-[#1A1A1A]">{item.question}</span>
-                  <span className="text-[#9E9E9E] text-lg">{openFaq === item.id ? "−" : "+"}</span>
-                </button>
-                {openFaq === item.id && item.answer && (
-                  <div className="px-4 pb-3">
-                    <p className="text-sm font-['Inter'] text-[#9E9E9E]">{item.answer}</p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-          <button className="mt-3 flex items-center gap-1.5 text-[11px] font-['Montserrat'] uppercase tracking-wider text-[#C9A84C] hover:underline">
-            <Plus size={12} strokeWidth={2} /> Agregar Nueva Pregunta Frecuente
-          </button>
-        </section>
-
-        {/* QR */}
-        <section className="bg-white border border-[#E8E5E1] p-6">
-          <h2 className="font-['Bodoni_Moda'] text-xl text-[#1A1A1A] mb-5">Métodos de Pago (QR)</h2>
-          <div className="flex items-start gap-6">
-            <div className="w-32 h-32 border-2 border-dashed border-[#E8E5E1] flex flex-col items-center justify-center gap-2 text-[#9E9E9E] cursor-pointer hover:border-[#C9A84C] transition-colors">
-              <QrCode size={28} strokeWidth={1} />
-              <span className="text-[10px] font-['Montserrat'] uppercase tracking-wider text-center">Subir imagen QR</span>
+      <div className="space-y-8 max-w-4xl">
+        {/* Identidad de Marca */}
+        <Section title="Identidad de Marca">
+          <div className="space-y-4">
+            <div className="space-y-1">
+              <Label>Logo del sitio</Label>
+              <ImagePicker value={form.logoUrl} onChange={form.setLogoUrl} folder="vous/logos" label="Subir logo" aspect="logo" />
             </div>
-            <div className="flex-1">
-              <label className="block text-[10px] font-['Montserrat'] uppercase tracking-wider text-[#9E9E9E] mb-1">Nombre del Método</label>
-              <input
-                type="text"
-                defaultValue="Transferencia Directa"
-                className="w-full max-w-xs border border-[#E8E5E1] px-3 py-2 text-sm font-['Inter'] focus:outline-none focus:border-[#C9A84C]"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <Label>Nombre de la tienda</Label>
+                <Input value={form.storeName} onChange={(e) => form.setStoreName(e.target.value)} />
+              </div>
+              <div className="space-y-1">
+                <Label>Tagline</Label>
+                <Input value={form.tagline} onChange={(e) => form.setTagline(e.target.value)} placeholder="Moda urbana contemporánea" />
+              </div>
+            </div>
+          </div>
+        </Section>
+
+        {/* Contacto */}
+        <Section title="Contacto">
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <Label>Número de WhatsApp</Label>
+                <Input value={form.whatsappNumber} onChange={(e) => form.setWhatsappNumber(e.target.value)} placeholder="59165359595" />
+                <p className="text-[11px] text-vous-gray font-sans">Sin + ni espacios. Ej: 59165359595</p>
+              </div>
+              <div className="space-y-1">
+                <Label>Email de contacto</Label>
+                <Input value={form.email} onChange={(e) => form.setEmail(e.target.value)} placeholder="hola@vous.com.bo" />
+              </div>
+            </div>
+            <div className="space-y-1">
+              <Label>Mensaje pre-cargado de WhatsApp</Label>
+              <Textarea
+                value={form.whatsappMessage}
+                onChange={(e) => form.setWhatsappMessage(e.target.value)}
+                placeholder="Hola, quisiera información sobre..."
               />
             </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <Label>Dirección</Label>
+                <Input value={form.address} onChange={(e) => form.setAddress(e.target.value)} placeholder="C. Esteban Arze 1355" />
+              </div>
+              <div className="space-y-1">
+                <Label>Ciudad</Label>
+                <Input value={form.city} onChange={(e) => form.setCity(e.target.value)} placeholder="Cochabamba" />
+              </div>
+            </div>
           </div>
-        </section>
+        </Section>
 
-        {/* Perfiles */}
-        <section className="bg-white border border-[#E8E5E1] p-6">
-          <h2 className="font-['Bodoni_Moda'] text-xl text-[#1A1A1A] mb-5">Perfiles de Usuario</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {USERS.map((u) => (
-              <div key={u.id} className="flex items-center gap-3 p-4 border border-[#E8E5E1]">
-                <div className="w-9 h-9 bg-[#1A1A1A] text-white rounded-full flex items-center justify-center text-xs font-['Montserrat'] font-bold flex-shrink-0">
-                  {u.initials}
-                </div>
-                <div className="overflow-hidden">
-                  <p className="text-[13px] font-['Inter'] font-medium text-[#1A1A1A] truncate">{u.name}</p>
-                  <p className="text-[11px] text-[#9E9E9E] truncate">{u.role}</p>
-                </div>
-                <button className="ml-auto text-[10px] font-['Montserrat'] uppercase tracking-wider text-[#C9A84C] hover:underline flex-shrink-0">
-                  Editar
-                </button>
+        {/* Redes Sociales */}
+        <Section title="Redes Sociales">
+          <div className="space-y-4">
+            <SocialRow label="Instagram" url={form.instagramUrl} setUrl={form.setInstagramUrl} active={form.instagramActive} setActive={form.setInstagramActive} />
+            <SocialRow label="TikTok" url={form.tiktokUrl} setUrl={form.setTiktokUrl} active={form.tiktokActive} setActive={form.setTiktokActive} />
+            <SocialRow label="Facebook" url={form.facebookUrl} setUrl={form.setFacebookUrl} active={form.facebookActive} setActive={form.setFacebookActive} />
+            <SocialRow label="Pinterest" url={form.pinterestUrl} setUrl={form.setPinterestUrl} active={form.pinterestActive} setActive={form.setPinterestActive} />
+          </div>
+        </Section>
+
+        {/* Políticas */}
+        <Section title="Políticas">
+          <div className="space-y-4">
+            <div className="space-y-1">
+              <Label>Política de Envíos</Label>
+              <RichTextEditor content={form.shippingPolicy} onChange={form.setShippingPolicy} />
+            </div>
+            <div className="space-y-1">
+              <Label>Política de Devoluciones</Label>
+              <RichTextEditor content={form.returnPolicy} onChange={form.setReturnPolicy} />
+            </div>
+          </div>
+        </Section>
+
+        {/* Horarios */}
+        <Section title="Horarios de Atención">
+          <div className="space-y-3">
+            {form.schedule.map((item, idx) => (
+              <div key={item.day} className="grid grid-cols-[120px_1fr] gap-3 items-center">
+                <span className="font-nav text-[12px] uppercase tracking-wide text-vous-black">{item.day}</span>
+                <Input
+                  value={item.hours}
+                  onChange={(e) => {
+                    const next = [...form.schedule];
+                    next[idx] = { ...item, hours: e.target.value };
+                    form.setSchedule(next);
+                  }}
+                  placeholder="Cerrado"
+                />
               </div>
             ))}
           </div>
-          <button className="mt-3 text-[11px] font-['Montserrat'] uppercase tracking-wider text-[#9E9E9E] hover:text-[#1A1A1A] transition-colors">
-            Ver Todos los Usuarios →
-          </button>
-        </section>
+        </Section>
       </div>
     </div>
   );

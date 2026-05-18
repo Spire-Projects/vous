@@ -1,32 +1,35 @@
-import { WholesaleForm } from '@/components/mayoristas/WholesaleForm'
-import { CheckCircle } from 'lucide-react'
+import { WholesaleForm } from "@/components/mayoristas/WholesaleForm";
+import { CheckCircle } from "lucide-react";
 
 const FEATURES = [
-  { title: 'Inventario Seleccionado', desc: 'Acceso a piezas de temporada antes del lanzamiento público.' },
-  { title: 'Soporte Personalizado', desc: 'Un asesor dedicado para cada cuenta mayorista.' },
-  { title: 'Presencia Global', desc: 'Red de distribución en mercados premium de Latinoamérica.' },
-]
+  {
+    title: "Inventario Seleccionado",
+    desc: "Acceso a piezas de temporada antes del lanzamiento público.",
+  },
+  { title: "Soporte Personalizado", desc: "Un asesor dedicado para cada cuenta mayorista." },
+  { title: "Presencia Global", desc: "Red de distribución en mercados premium de Latinoamérica." },
+];
 
 const REQUESTS = [
   {
-    ref: '#VQ-9821',
-    status: 'REVISIÓN PENDIENTE',
-    statusStyle: 'bg-vous-gold/10 text-vous-gold',
-    desc: 'Tus credenciales están siendo verificadas por nuestro equipo.',
+    ref: "#VQ-9821",
+    status: "REVISIÓN PENDIENTE",
+    statusStyle: "bg-vous-gold/10 text-vous-gold",
+    desc: "Tus credenciales están siendo verificadas por nuestro equipo.",
   },
   {
-    ref: '#VQ-7742',
-    status: 'DISTRIBUIDOR APROBADO',
-    statusStyle: 'bg-green-50 text-green-700',
-    desc: 'Autorizado. Acceso al catálogo digital habilitado.',
+    ref: "#VQ-7742",
+    status: "DISTRIBUIDOR APROBADO",
+    statusStyle: "bg-green-50 text-green-700",
+    desc: "Autorizado. Acceso al catálogo digital habilitado.",
   },
   {
-    ref: '#VQ-1205',
-    status: 'NO ELEGIBLE',
-    statusStyle: 'bg-red-50 text-red-600',
-    desc: 'La solicitud no cumple con nuestros estándares actuales.',
+    ref: "#VQ-1205",
+    status: "NO ELEGIBLE",
+    statusStyle: "bg-red-50 text-red-600",
+    desc: "La solicitud no cumple con nuestros estándares actuales.",
   },
-]
+];
 
 export default function MayoristasPage() {
   return (
@@ -41,8 +44,8 @@ export default function MayoristasPage() {
             Excelencia en Alianzas
           </h1>
           <p className="font-sans text-sm text-white/60 max-w-lg leading-relaxed">
-            Únete al programa exclusivo de distribución mayorista de VOUS y accede a
-            condiciones preferenciales, inventario curado y soporte editorial personalizado.
+            Únete al programa exclusivo de distribución mayorista de VOUS y accede a condiciones
+            preferenciales, inventario curado y soporte editorial personalizado.
           </p>
         </div>
       </div>
@@ -74,8 +77,12 @@ export default function MayoristasPage() {
             {REQUESTS.map(({ ref, status, statusStyle, desc }) => (
               <div key={ref} className="border border-vous-gray-light/40 p-5 space-y-2">
                 <div className="flex items-center justify-between gap-2 flex-wrap">
-                  <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray">Ref {ref}</p>
-                  <span className={`font-nav text-[9px] tracking-[0.1em] uppercase px-2 py-1 ${statusStyle}`}>
+                  <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray">
+                    Ref {ref}
+                  </p>
+                  <span
+                    className={`font-nav text-[9px] tracking-[0.1em] uppercase px-2 py-1 ${statusStyle}`}
+                  >
                     {status}
                   </span>
                 </div>
@@ -86,5 +93,5 @@ export default function MayoristasPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -135,14 +135,14 @@ export function useProductsByCategory(categoryId: string) {
 
 ### Cómo aplicarla
 
-| Situación                    | Solución                                                                      |
-| ---------------------------- | ----------------------------------------------------------------------------- |
-| Componente largo             | Extraer subcomponentes en archivos separados                                  |
-| Hook con mucha lógica        | Separar en hooks más pequeños y componerlos                                   |
-| Caso de uso extenso          | Dividir en casos de uso más pequeños y componerlos                            |
-| Repositorio con muchas ops   | Dividir por dominio (`product.repository.ts`, `product.queries.repository.ts`) |
-| Archivo de tipos creciente   | Separar por módulo (`product.types.ts`, `order.types.ts`)                     |
-| Utilidades extensas          | Un archivo por utilidad o familia de utilidades                               |
+| Situación                  | Solución                                                                       |
+| -------------------------- | ------------------------------------------------------------------------------ |
+| Componente largo           | Extraer subcomponentes en archivos separados                                   |
+| Hook con mucha lógica      | Separar en hooks más pequeños y componerlos                                    |
+| Caso de uso extenso        | Dividir en casos de uso más pequeños y componerlos                             |
+| Repositorio con muchas ops | Dividir por dominio (`product.repository.ts`, `product.queries.repository.ts`) |
+| Archivo de tipos creciente | Separar por módulo (`product.types.ts`, `order.types.ts`)                      |
+| Utilidades extensas        | Un archivo por utilidad o familia de utilidades                                |
 
 ---
 
@@ -236,7 +236,13 @@ import { Button } from "@/components/ui/button"; // shadcn instalado
 
 // Solo sobreescribir la variante con clases Tailwind de la marca VOUS
 export function VousButton(props: React.ComponentProps<typeof Button>) {
-  return <Button variant="default" className="rounded-full bg-stone-900 text-white hover:bg-stone-700 font-medium" {...props} />;
+  return (
+    <Button
+      variant="default"
+      className="rounded-full bg-stone-900 text-white hover:bg-stone-700 font-medium"
+      {...props}
+    />
+  );
 }
 ```
 
@@ -258,20 +264,20 @@ export function Button({ children }: { children: React.ReactNode }) {
 
 ## Convenciones de Nomenclatura
 
-| Elemento              | Convención                | Ejemplo                        |
-| --------------------- | ------------------------- | ------------------------------ |
-| Componentes React     | PascalCase                | `ProductCard.tsx`              |
-| Hooks                 | camelCase con `use`       | `useCart.ts`                   |
-| Casos de uso          | kebab-case                | `get-products-by-category.ts`  |
-| Repositorios          | kebab-case + `.repository`| `firestore-product.repository.ts` |
-| Entidades             | PascalCase + `.entity`    | `product.entity.ts`            |
-| Types / Interfaces    | PascalCase + `.types`     | `product.types.ts`             |
-| Utilidades            | camelCase                 | `formatCurrency.ts`            |
-| Rutas (carpetas)      | kebab-case                | `app/(main)/product-detail/`   |
-| Variables / funciones | camelCase                 | `const productList`            |
-| Constantes globales   | UPPER_SNAKE_CASE          | `MAX_CART_ITEMS`               |
-| Interfaces TypeScript | sin prefijo               | `Product`, `Order`             |
-| Enums                 | PascalCase                | `OrderStatus.PENDING`          |
+| Elemento              | Convención                 | Ejemplo                           |
+| --------------------- | -------------------------- | --------------------------------- |
+| Componentes React     | PascalCase                 | `ProductCard.tsx`                 |
+| Hooks                 | camelCase con `use`        | `useCart.ts`                      |
+| Casos de uso          | kebab-case                 | `get-products-by-category.ts`     |
+| Repositorios          | kebab-case + `.repository` | `firestore-product.repository.ts` |
+| Entidades             | PascalCase + `.entity`     | `product.entity.ts`               |
+| Types / Interfaces    | PascalCase + `.types`      | `product.types.ts`                |
+| Utilidades            | camelCase                  | `formatCurrency.ts`               |
+| Rutas (carpetas)      | kebab-case                 | `app/(main)/product-detail/`      |
+| Variables / funciones | camelCase                  | `const productList`               |
+| Constantes globales   | UPPER_SNAKE_CASE           | `MAX_CART_ITEMS`                  |
+| Interfaces TypeScript | sin prefijo                | `Product`, `Order`                |
+| Enums                 | PascalCase                 | `OrderStatus.PENDING`             |
 
 ---
 
@@ -451,14 +457,14 @@ export async function POST(req: NextRequest) {
 
 ## Regla de Dependencias entre Capas
 
-| Capa            | Puede importar de             | NO puede importar de              |
-| --------------- | ----------------------------- | --------------------------------- |
-| `domain/`       | Nada externo                  | `infrastructure/`, `application/`, React, Firebase |
-| `application/`  | `domain/`                     | `infrastructure/`, React, Firebase |
-| `infrastructure/` | `domain/`, `lib/`           | `application/`, `components/`     |
-| `components/`   | `hooks/`, `types/`, `utils/`, `domain/entities/` | `infrastructure/` directamente |
-| `hooks/`        | `application/`, `infrastructure/`, `context/` | — |
-| `app/`          | `components/`, `hooks/`, `context/` | `infrastructure/` directamente    |
+| Capa              | Puede importar de                                | NO puede importar de                               |
+| ----------------- | ------------------------------------------------ | -------------------------------------------------- |
+| `domain/`         | Nada externo                                     | `infrastructure/`, `application/`, React, Firebase |
+| `application/`    | `domain/`                                        | `infrastructure/`, React, Firebase                 |
+| `infrastructure/` | `domain/`, `lib/`                                | `application/`, `components/`                      |
+| `components/`     | `hooks/`, `types/`, `utils/`, `domain/entities/` | `infrastructure/` directamente                     |
+| `hooks/`          | `application/`, `infrastructure/`, `context/`    | —                                                  |
+| `app/`            | `components/`, `hooks/`, `context/`              | `infrastructure/` directamente                     |
 
 ---
 

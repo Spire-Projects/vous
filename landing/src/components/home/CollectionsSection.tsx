@@ -39,7 +39,9 @@ export function CollectionsSection() {
               href={href}
               className="group relative block aspect-[4/5] overflow-hidden bg-vous-gray-dark"
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${bg} group-hover:scale-105 transition-transform duration-500`} />
+              <div
+                className={`absolute inset-0 bg-gradient-to-br ${bg} group-hover:scale-105 transition-transform duration-500`}
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-vous-soft-black/80 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
                 <p className="font-nav text-[11px] tracking-[0.2em] text-vous-gold uppercase mb-2">
