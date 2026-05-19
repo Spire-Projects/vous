@@ -20,10 +20,14 @@ export interface Product {
   hasVariants: boolean;
   isActive: boolean;
   isFeatured: boolean;
+  isPreorder: boolean;
+  isSpecialCollection: boolean;
+  isBestseller: boolean;
   isDiscounted: boolean;
   discountPercentage?: number;
   stock: number;
   sortOrder: number;
+  attributes: Record<string, string>;
   tags?: string[];
   createdAt: string;
   updatedAt: string;

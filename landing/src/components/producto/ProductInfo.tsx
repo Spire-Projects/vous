@@ -349,6 +349,25 @@ export function ProductInfo({ product, variants = [], variantsLoading = false }:
         </div>
       )}
 
+      {/* Características (atributos configurables: tela, corte, pretina, largo, etc.) */}
+      {product.attributes && Object.keys(product.attributes).length > 0 && (
+        <div className="border-t border-vous-gray-light/40 pt-5">
+          <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mb-3">
+            Características
+          </p>
+          <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
+            {Object.entries(product.attributes)
+              .filter(([, v]) => v)
+              .map(([key, val]) => (
+                <div key={key} className="flex gap-1.5 text-xs font-sans">
+                  <span className="text-vous-gray capitalize">{key}:</span>
+                  <span className="text-vous-soft-black">{val}</span>
+                </div>
+              ))}
+          </div>
+        </div>
+      )}
+
       {/* Descripción */}
       {product.description && (
         <div className="border-t border-vous-gray-light/40 pt-5">
