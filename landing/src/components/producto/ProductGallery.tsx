@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import type { MouseEvent, TouchEvent } from "react";
+import type { MouseEvent, TouchEvent, RefObject } from "react";
 import { proxyCldUrl } from "@/utils/proxyCldUrl";
 
 interface ProductGalleryProps {
@@ -12,14 +12,16 @@ interface ProductGalleryProps {
 export function ProductGallery({ images, name }: ProductGalleryProps) {
   const [active, setActive] = useState(0);
   const [zoomed, setZoomed] = useState(false);
-  const [zoomOrigin, setZoomOrigin] = useState("50% 50%");
+  const imgRef = useRef<HTMLImageElement>(null);
   const touchStartX = useRef<number | null>(null);
 
   function handleMouseMove(e: MouseEvent<HTMLDivElement>) {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
-    setZoomOrigin(`${x}% ${y}%`);
+    if (imgRef.current) {
+      imgRef.current.style.transformOrigin = `${x}% ${y}%`;
+    }
   }
 
   function handleTouchStart(e: TouchEvent<HTMLDivElement>) {
@@ -77,10 +79,11 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
         onTouchEnd={handleTouchEnd}
       >
         <img
+          ref={imgRef as RefObject<HTMLImageElement>}
           src={proxyCldUrl(images[active])}
           alt={name}
           className="w-full h-full object-cover transition-transform duration-150 ease-out"
-          style={zoomed ? { transform: "scale(2)", transformOrigin: zoomOrigin } : undefined}
+          style={zoomed ? { transform: "scale(2)" } : undefined}
           draggable={false}
         />
 

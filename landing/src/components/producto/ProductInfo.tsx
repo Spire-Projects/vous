@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Heart, ShoppingBag, MessageCircle, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -60,6 +60,13 @@ export function ProductInfo({ product }: ProductInfoProps) {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [added, setAdded] = useState(false);
+  const addedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (addedTimerRef.current) clearTimeout(addedTimerRef.current);
+    };
+  }, []);
 
   const discountPrice =
     product.isDiscounted && product.discountPercentage
@@ -88,7 +95,8 @@ export function ProductInfo({ product }: ProductInfoProps) {
       color: selectedColor ?? undefined,
     });
     setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
+    if (addedTimerRef.current) clearTimeout(addedTimerRef.current);
+    addedTimerRef.current = setTimeout(() => setAdded(false), 2000);
   }
 
   const whatsappNumber = config?.whatsappNumber ?? "59165359595";
