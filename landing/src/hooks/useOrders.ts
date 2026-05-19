@@ -14,17 +14,13 @@ export function useOrders(userId: string | null) {
     if (!userId) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setOrders([]);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLoading(false);
       return;
     }
 
     // Reset before fetching so a previous user's orders don't persist
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setOrders([]);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setError(null);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
 
     getOrdersByUser(firestoreOrderRepository, userId)

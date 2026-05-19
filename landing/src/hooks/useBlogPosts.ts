@@ -11,9 +11,6 @@ export function useBlogPosts() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
-
     Promise.all([
       firestoreBlogPostRepository.findPublished(),
       firestoreBlogPostRepository.findFeatured(),
@@ -23,7 +20,6 @@ export function useBlogPosts() {
         setFeatured(featuredList[0] ?? null);
       })
       .catch((err) => {
-        // eslint-disable-next-line no-console
         console.error("Error cargando blog posts:", err);
         setError("No se pudieron cargar los artículos. Intenta de nuevo más tarde.");
       })

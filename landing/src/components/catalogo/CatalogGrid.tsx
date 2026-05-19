@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import { ProductCard } from "./ProductCard";
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -19,7 +18,8 @@ function sortProducts(products: Product[], key: SortKey): Product[] {
   const copy = [...products];
   if (key === "precio-asc") return copy.sort((a, b) => a.price - b.price);
   if (key === "precio-desc") return copy.sort((a, b) => b.price - a.price);
-  if (key === "nuevos") return copy.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  if (key === "nuevos")
+    return copy.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   return copy.sort((a, b) => a.sortOrder - b.sortOrder);
 }
 

@@ -10,9 +10,6 @@ export function useBanners() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
-
     firestoreBannerRepository
       .findActive()
       .then(setBanners)
