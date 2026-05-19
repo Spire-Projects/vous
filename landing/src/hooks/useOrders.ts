@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { firestoreOrderRepository } from "@/infrastructure/repositories/firestore-order.repository";
-import { getOrdersByUser } from "@/application/use-cases/order/get-orders-by-user";
 import type { Order } from "@/domain/entities/order.entity";
 
 export function useOrders(userId: string | null) {
@@ -14,19 +13,35 @@ export function useOrders(userId: string | null) {
     if (!userId) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setOrders([]);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLoading(false);
       return;
     }
 
-    // Reset before fetching so a previous user's orders don't persist
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setOrders([]);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setError(null);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
 
-    getOrdersByUser(firestoreOrderRepository, userId)
-      .then(setOrders)
-      .catch(() => setError("Error al cargar los pedidos"))
-      .finally(() => setLoading(false));
+    const unsubscribe = firestoreOrderRepository.subscribeToUserOrders(
+      userId,
+      (data) => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setOrders(data);
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setLoading(false);
+      },
+      () => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setError("Error al cargar los pedidos");
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setLoading(false);
+      }
+    );
+
+    return unsubscribe;
   }, [userId]);
 
   return { orders, loading, error };

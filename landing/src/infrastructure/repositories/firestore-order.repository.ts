@@ -6,8 +6,10 @@ import {
   getDoc,
   addDoc,
   updateDoc,
+  onSnapshot,
   query,
   where,
+  orderBy,
   serverTimestamp,
 } from "firebase/firestore";
 import type { OrderRepository } from "@/domain/repositories/order.repository";
@@ -86,5 +88,22 @@ export const firestoreOrderRepository: OrderRepository = {
       status: "payment_sent",
       updatedAt: serverTimestamp(),
     });
+  },
+
+  subscribeToUserOrders(
+    userId: string,
+    onNext: (orders: Order[]) => void,
+    onError: (err: Error) => void
+  ): () => void {
+    const q = query(
+      collection(getFirebaseDb(), "orders"),
+      where("customerId", "==", userId),
+      orderBy("createdAt", "desc")
+    );
+    return onSnapshot(
+      q,
+      (snap) => onNext(snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>))),
+      (err) => onError(err)
+    );
   },
 };

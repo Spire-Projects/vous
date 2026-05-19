@@ -2,10 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Star, CheckCircle, Pencil, X, Check, Loader2 } from "lucide-react";
+import { Star, CheckCircle, Pencil, X, Check, Loader2, PackageSearch } from "lucide-react";
 import { AccountSidebar } from "@/components/cuenta/AccountSidebar";
 import { OrderCard } from "@/components/cuenta/OrderCard";
+import { OrderDetailModal } from "@/components/cuenta/OrderDetailModal";
 import { useAuthContext } from "@/context/AuthContext";
+import { useOrders } from "@/hooks/useOrders";
+import type { Order } from "@/domain/entities/order.entity";
 
 type TabId = "perfil" | "pedidos" | "mayorista" | "direcciones";
 
@@ -262,33 +265,54 @@ function TabMayorista() {
   );
 }
 
-function TabPedidos() {
+function TabPedidos({ userId }: { userId: string }) {
+  const { orders, loading, error } = useOrders(userId);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 gap-3 text-vous-gray">
+        <Loader2 size={22} className="animate-spin" />
+        <p className="font-sans text-sm">Cargando pedidos…</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return <p className="font-sans text-sm text-red-600 py-8">{error}</p>;
+  }
+
   return (
     <div className="space-y-6">
       <h2 className="font-serif text-2xl text-vous-soft-black">Mis Pedidos</h2>
-      <div className="space-y-4">
-        <OrderCard
-          id="Pedido #VOUS-9821"
-          productName="Abrigo Estructurado Noir"
-          detail="Talla L · Qty 1"
-          status="ENVIADO"
-          statusNote="Llega el 18 de Noviembre"
-          price="Bs. 1.250"
-          bg="from-[#1a1a18] to-[#0d0d0b]"
-        />
-        <OrderCard
-          id="Pedido #VOUS-9810"
-          productName="Vestido Seda Champagne"
-          detail="Talla M · Qty 1"
-          status="PENDIENTE"
-          statusNote="Procesando pago"
-          price="Bs. 980"
-          bg="from-[#d4cfc6] to-[#b0a898]"
-        />
-      </div>
-      <button className="font-nav text-[11px] tracking-[0.15em] uppercase text-vous-gray border-b border-vous-gray hover:text-vous-gold hover:border-vous-gold transition-colors pb-0.5">
-        Ver Historial Completo
-      </button>
+
+      {orders.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-16 gap-4 text-vous-gray border border-vous-gray-light/40">
+          <PackageSearch size={36} strokeWidth={1} />
+          <div className="text-center">
+            <p className="font-sans text-sm">Todavía no tienes pedidos.</p>
+            <p className="font-sans text-xs mt-1">
+              Cuando realices tu primera compra aparecerá aquí.
+            </p>
+          </div>
+          <a
+            href="/catalogo"
+            className="font-nav text-[11px] font-semibold tracking-[0.15em] uppercase border border-vous-soft-black text-vous-soft-black px-6 py-2.5 hover:bg-vous-soft-black hover:text-white transition-colors"
+          >
+            Ver Catálogo
+          </a>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {orders.map((order) => (
+            <OrderCard key={order.id} order={order} onViewDetail={setSelectedOrder} />
+          ))}
+        </div>
+      )}
+
+      {selectedOrder && (
+        <OrderDetailModal order={selectedOrder} onClose={() => setSelectedOrder(null)} />
+      )}
     </div>
   );
 }
@@ -335,7 +359,7 @@ export default function CuentaPage() {
           />
           <main className="flex-1 min-w-0">
             {tab === "perfil" && <TabPerfil />}
-            {tab === "pedidos" && <TabPedidos />}
+            {tab === "pedidos" && <TabPedidos userId={user.uid} />}
             {tab === "mayorista" && <TabMayorista />}
             {tab === "direcciones" && <TabDirecciones />}
           </main>
