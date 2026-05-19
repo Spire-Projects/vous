@@ -1,33 +1,44 @@
 import { useEffect, useState, useCallback } from "react";
 import { firestoreOrderRepository } from "@/infrastructure";
-import { getOrders } from "@/application/use-cases/order/get-orders";
 import { updateOrderStatus } from "@/application/use-cases/order/update-order-status";
 import type { Order, UpdateOrderStatusInput } from "@/domain/entities/order.entity";
 
-export function useOrders(limitCount?: number) {
+/**
+ * Real-time orders hook backed by Firestore onSnapshot.
+ * The subscription stays active for the component's lifetime and
+ * automatically delivers updates without manual refetching.
+ */
+export function useOrders() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchOrders = useCallback(async () => {
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
-    try {
-      const data = await getOrders(firestoreOrderRepository, limitCount);
+    setError(null);
+    const unsubscribe = firestoreOrderRepository.subscribeAll((data) => {
       setOrders(data);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Error al cargar pedidos");
-    } finally {
       setLoading(false);
-    }
-  }, [limitCount]);
-
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { fetchOrders(); }, [fetchOrders]);
+    });
+    return unsubscribe;
+  }, []);
 
   const changeStatus = useCallback(async (input: UpdateOrderStatusInput) => {
     await updateOrderStatus(firestoreOrderRepository, input);
-    await fetchOrders();
-  }, [fetchOrders]);
+    // onSnapshot delivers the updated doc automatically
+  }, []);
 
-  return { orders, loading, error, refetch: fetchOrders, changeStatus };
+  const cancelWithStockRestore = useCallback(
+    async (orderId: string, adminNotes?: string) => {
+      await firestoreOrderRepository.cancelAndRestoreStock(orderId, adminNotes);
+    },
+    []
+  );
+
+  const updateNotes = useCallback(async (orderId: string, notes: string) => {
+    await firestoreOrderRepository.updateNotes(orderId, notes);
+  }, []);
+
+  return { orders, loading, error, changeStatus, cancelWithStockRestore, updateNotes };
 }

@@ -13,6 +13,17 @@ export type OrderStatus =
 
 export type PaymentMethod = "qr" | "libelula";
 
+export interface ShippingInfo {
+  fullName: string;
+  phone: string;
+  department: string;
+  city: string;
+  address: string;
+  shippingType: "local" | "national";
+  carrier?: string;
+  trackingInfo?: string;
+}
+
 export interface OrderItem {
   productId: string;
   productName: string;
@@ -21,6 +32,7 @@ export interface OrderItem {
   subtotal: number;
   isWholesalePrice: boolean;
   variantId?: string;
+  variantDescription?: string;
   imageUrl?: string;
 }
 
@@ -29,6 +41,7 @@ export interface OrderCustomer {
   name: string;
   email: string;
   phone?: string;
+  department?: string;
 }
 
 export interface Order {
@@ -41,10 +54,14 @@ export interface Order {
   total: number;
   status: OrderStatus;
   paymentMethod: PaymentMethod;
+  paymentProof?: string;
+  shippingInfo?: ShippingInfo;
   isWholesale: boolean;
+  discountCode?: string;
+  carrierRef?: string;
   adminNotes?: string;
-  createdAt?: unknown;
-  updatedAt?: unknown;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface UpdateOrderStatusInput {
