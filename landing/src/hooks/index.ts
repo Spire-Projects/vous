@@ -1,6 +1,7 @@
 export { useAuth } from "./useAuth";
 export { useCart } from "./useCart";
 export { useProducts, useProductsByCategory } from "./useProducts";
+export { useProductVariants } from "./useProductVariants";
 export { useOrders } from "./useOrders";
 export { useBlogPosts } from "./useBlogPosts";
 export { useBlogPost } from "./useBlogPost";

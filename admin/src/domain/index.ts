@@ -1,5 +1,12 @@
 // ── Domain layer — barrel export ──────────────────────────────────────────
-export type { Product, CreateProductInput, UpdateProductInput } from "./entities/product.entity";
+export type {
+  Product,
+  CreateProductInput,
+  UpdateProductInput,
+  ProductVariant,
+  CreateVariantInput,
+  UpdateVariantInput,
+} from "./entities/product.entity";
 export type { Order, OrderItem, OrderStatus, PaymentMethod, UpdateOrderStatusInput } from "./entities/order.entity";
 export type { Customer, AdminUser, CustomerRole, AdminRole } from "./entities/user.entity";
 export type { WholesaleRequest, WholesaleRequestStatus, ReviewWholesaleInput } from "./entities/wholesale.entity";

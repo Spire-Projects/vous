@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { Heart, ShoppingBag, MessageCircle, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCartContext } from "@/context/CartContext";
 import { useSiteConfig } from "@/hooks/useSiteConfig";
-import type { Product } from "@/domain/entities/product.entity";
+import type { Product, ProductVariant } from "@/domain/entities/product.entity";
 
 function buildWhatsAppHref(number: string, message: string): string {
   const clean = number.replace(/\D/g, "");
@@ -51,9 +51,11 @@ function StockBadge({ stock }: { stock: number }) {
 
 interface ProductInfoProps {
   product: Product;
+  variants?: ProductVariant[];
+  variantsLoading?: boolean;
 }
 
-export function ProductInfo({ product }: ProductInfoProps) {
+export function ProductInfo({ product, variants = [], variantsLoading = false }: ProductInfoProps) {
   const { addItem } = useCartContext();
   const { config } = useSiteConfig();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
@@ -73,20 +75,63 @@ export function ProductInfo({ product }: ProductInfoProps) {
       ? Math.round(product.price * (1 - product.discountPercentage / 100))
       : null;
 
+  /** Variant that matches the current size/color selection */
+  const selectedVariant = useMemo(() => {
+    if (!product.hasVariants || variants.length === 0) return null;
+    return (
+      variants.find((v) => {
+        const sizeMatch = !product.sizes.length || v.size === selectedSize;
+        const colorMatch = !product.colors.length || v.color === selectedColor;
+        return sizeMatch && colorMatch;
+      }) ?? null
+    );
+  }, [variants, selectedSize, selectedColor, product]);
+
+  function isSizeUnavailable(size: string): boolean {
+    if (variants.length === 0) return false;
+    if (!product.colors.length) return !variants.some((v) => v.size === size && v.stock > 0);
+    if (selectedColor)
+      return !variants.some((v) => v.size === size && v.color === selectedColor && v.stock > 0);
+    return !variants.some((v) => v.size === size && v.stock > 0);
+  }
+
+  function isColorUnavailable(colorName: string): boolean {
+    if (variants.length === 0) return false;
+    if (!product.sizes.length) return !variants.some((v) => v.color === colorName && v.stock > 0);
+    if (selectedSize)
+      return !variants.some((v) => v.color === colorName && v.size === selectedSize && v.stock > 0);
+    return !variants.some((v) => v.color === colorName && v.stock > 0);
+  }
+
+  const effectiveStock = selectedVariant ? selectedVariant.stock : product.stock;
+
   function handleAddToCart() {
-    if (product.hasVariants && (!selectedSize || !selectedColor)) {
-      setError(
-        product.sizes.length > 0 && product.colors.length > 0
-          ? "Selecciona talla y color antes de agregar al carrito."
-          : product.sizes.length > 0
-            ? "Selecciona una talla antes de agregar al carrito."
-            : "Selecciona un color antes de agregar al carrito."
-      );
+    if (product.hasVariants && (variantsLoading || variants.length === 0)) {
+      setError("Cargando opciones de variantes. Intenta nuevamente.");
       return;
+    }
+    if (product.hasVariants) {
+      const needsSize = product.sizes.length > 0 && !selectedSize;
+      const needsColor = product.colors.length > 0 && !selectedColor;
+      if (needsSize || needsColor) {
+        setError(
+          needsSize && needsColor
+            ? "Selecciona talla y color antes de agregar al carrito."
+            : needsSize
+              ? "Selecciona una talla antes de agregar al carrito."
+              : "Selecciona un color antes de agregar al carrito."
+        );
+        return;
+      }
+      if (selectedVariant && selectedVariant.stock <= 0) {
+        setError("Esta combinación está agotada.");
+        return;
+      }
     }
     setError(null);
     addItem({
       productId: product.id,
+      variantId: selectedVariant?.id,
       name: product.name,
       price: discountPrice ?? product.price,
       quantity: 1,
@@ -165,7 +210,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
           )}
         </div>
         <div className="mt-3">
-          <StockBadge stock={product.stock} />
+          <StockBadge stock={effectiveStock} />
         </div>
       </div>
 
@@ -181,25 +226,30 @@ export function ProductInfo({ product }: ProductInfoProps) {
             )}
           </p>
           <div className="flex gap-2.5">
-            {product.colors.map((c) => (
-              <button
-                key={c.hex}
-                onClick={() => {
-                  setSelectedColor(c.name);
-                  setError(null);
-                }}
-                style={{ backgroundColor: c.hex }}
-                aria-label={c.name}
-                aria-pressed={selectedColor === c.name}
-                disabled={product.stock <= 0}
-                className={`w-7 h-7 rounded-full border-2 transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
-                  selectedColor === c.name
-                    ? "border-vous-gold scale-110"
-                    : "border-transparent hover:border-vous-gray-light"
-                }`}
-                title={c.name}
-              />
-            ))}
+            {product.colors.map((c) => {
+              const unavailable = isColorUnavailable(c.name);
+              return (
+                <button
+                  key={c.hex}
+                  onClick={() => {
+                    if (!unavailable) {
+                      setSelectedColor(c.name);
+                      setError(null);
+                    }
+                  }}
+                  style={{ backgroundColor: c.hex }}
+                  aria-label={c.name}
+                  aria-pressed={selectedColor === c.name}
+                  disabled={unavailable}
+                  className={`w-7 h-7 rounded-full border-2 transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
+                    selectedColor === c.name
+                      ? "border-vous-gold scale-110"
+                      : "border-transparent hover:border-vous-gray-light"
+                  }`}
+                  title={unavailable ? `${c.name} — Agotado` : c.name}
+                />
+              );
+            })}
           </div>
         </div>
       )}
@@ -211,24 +261,30 @@ export function ProductInfo({ product }: ProductInfoProps) {
             Talla
           </p>
           <div className="flex flex-wrap gap-2">
-            {product.sizes.map((s) => (
-              <button
-                key={s}
-                onClick={() => {
-                  setSelectedSize(s);
-                  setError(null);
-                }}
-                disabled={product.stock <= 0}
-                aria-pressed={selectedSize === s}
-                className={`min-w-[44px] h-11 px-3 font-sans text-sm border transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
-                  selectedSize === s
-                    ? "bg-vous-soft-black text-white border-vous-soft-black"
-                    : "border-vous-gray-light text-vous-gray hover:border-vous-soft-black hover:text-vous-soft-black"
-                }`}
-              >
-                {s}
-              </button>
-            ))}
+            {product.sizes.map((s) => {
+              const unavailable = isSizeUnavailable(s);
+              return (
+                <button
+                  key={s}
+                  onClick={() => {
+                    if (!unavailable) {
+                      setSelectedSize(s);
+                      setError(null);
+                    }
+                  }}
+                  disabled={unavailable}
+                  aria-pressed={selectedSize === s}
+                  className={`min-w-[44px] h-11 px-3 font-sans text-sm border transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
+                    selectedSize === s
+                      ? "bg-vous-soft-black text-white border-vous-soft-black"
+                      : "border-vous-gray-light text-vous-gray hover:border-vous-soft-black hover:text-vous-soft-black"
+                  }`}
+                  title={unavailable ? `${s} — Agotado` : s}
+                >
+                  {s}
+                </button>
+              );
+            })}
           </div>
         </div>
       )}
@@ -243,10 +299,16 @@ export function ProductInfo({ product }: ProductInfoProps) {
           size="lg"
           className="flex-1 gap-2"
           onClick={handleAddToCart}
-          disabled={product.stock <= 0}
+          disabled={effectiveStock <= 0 || variantsLoading}
         >
           <ShoppingBag size={15} />
-          {product.stock <= 0 ? "Agotado" : added ? "¡Agregado!" : "Agregar al Carrito"}
+          {variantsLoading
+            ? "Cargando opciones..."
+            : effectiveStock <= 0
+              ? "Agotado"
+              : added
+                ? "¡Agregado!"
+                : "Agregar al Carrito"}
         </Button>
         <Button
           variant="outline"

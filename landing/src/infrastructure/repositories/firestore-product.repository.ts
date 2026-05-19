@@ -1,7 +1,16 @@
 import { getFirebaseDb } from "@/lib/firebase";
-import { collection, getDocs, doc, getDoc, query, where, limit } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  query,
+  where,
+  limit,
+  runTransaction,
+} from "firebase/firestore";
 import type { ProductRepository } from "@/domain/repositories/product.repository";
-import type { Product } from "@/domain/entities/product.entity";
+import type { Product, ProductVariant } from "@/domain/entities/product.entity";
 
 function mapDoc(id: string, data: Record<string, unknown>): Product {
   return {
@@ -65,5 +74,39 @@ export const firestoreProductRepository: ProductRepository = {
     );
     const snap = await getDocs(q);
     return snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>));
+  },
+
+  async findVariants(productId: string): Promise<ProductVariant[]> {
+    const snap = await getDocs(collection(getFirebaseDb(), "products", productId, "variants"));
+    return snap.docs
+      .map((d) => {
+        const data = d.data() as Record<string, unknown>;
+        return {
+          id: d.id,
+          sku: (data.sku as string) ?? undefined,
+          color: (data.color as string | null) ?? null,
+          colorHex: (data.colorHex as string | null) ?? null,
+          size: (data.size as string | null) ?? null,
+          stock: (data.stock as number) ?? 0,
+          isActive: (data.isActive as boolean) ?? true,
+        } satisfies ProductVariant;
+      })
+      .filter((v) => v.isActive);
+  },
+
+  async decrementVariantStock(
+    productId: string,
+    variantId: string,
+    quantity: number
+  ): Promise<void> {
+    const db = getFirebaseDb();
+    const variantRef = doc(db, "products", productId, "variants", variantId);
+    await runTransaction(db, async (tx) => {
+      const snap = await tx.get(variantRef);
+      if (!snap.exists()) throw new Error("Variante no encontrada");
+      const current = (snap.data().stock as number) ?? 0;
+      if (current < quantity) throw new Error(`Stock insuficiente. Disponible: ${current}`);
+      tx.update(variantRef, { stock: current - quantity });
+    });
   },
 };
