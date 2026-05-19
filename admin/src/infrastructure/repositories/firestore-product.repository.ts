@@ -1,6 +1,6 @@
 import {
   collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc,
-  query, orderBy, serverTimestamp,
+  query, orderBy, where, serverTimestamp,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import type { ProductRepository } from "@/domain/repositories/product.repository";

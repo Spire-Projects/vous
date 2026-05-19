@@ -16,6 +16,7 @@ export function ProductoPageClient() {
 
   const [product, setProduct] = useState<Product | null>(null);
   const [variants, setVariants] = useState<ProductVariant[]>([]);
+  const [variantsLoading, setVariantsLoading] = useState(false);
   const [related, setRelated] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
@@ -41,17 +42,25 @@ export function ProductoPageClient() {
           return;
         }
         setProduct(p);
-        const [rel, vars] = await Promise.all([
-          firestoreProductRepository
-            .findByCategory(p.categoryId)
-            .then((all) => all.filter((r) => r.id !== p.id).slice(0, 4))
-            .catch(() => []),
-          p.hasVariants
-            ? firestoreProductRepository.findVariants(p.id).catch(() => [])
-            : Promise.resolve([]),
-        ]);
-        setRelated(rel);
-        setVariants(vars);
+
+        // Load related products and variants in parallel, but don't block rendering
+        const relPromise = firestoreProductRepository
+          .findByCategory(p.categoryId)
+          .then((all) => all.filter((r) => r.id !== p.id).slice(0, 4))
+          .catch(() => [] as Product[]);
+
+        if (p.hasVariants) {
+          setVariantsLoading(true);
+          const [rel, vars] = await Promise.all([
+            relPromise,
+            firestoreProductRepository.findVariants(p.id).catch(() => [] as ProductVariant[]),
+          ]);
+          setRelated(rel);
+          setVariants(vars);
+          setVariantsLoading(false);
+        } else {
+          setRelated(await relPromise);
+        }
       })
       .catch(() => setNotFound(true))
       .finally(() => setLoading(false));
@@ -84,7 +93,7 @@ export function ProductoPageClient() {
       <div className="max-w-[1440px] mx-auto px-5 md:px-20 py-12 md:py-16">
         <div className="flex flex-col md:flex-row gap-10 lg:gap-20 mb-16">
           <ProductGallery images={product.images} name={product.name} />
-          <ProductInfo product={product} variants={variants} />
+          <ProductInfo product={product} variants={variants} variantsLoading={variantsLoading} />
         </div>
         <RelatedProducts products={related} />
       </div>

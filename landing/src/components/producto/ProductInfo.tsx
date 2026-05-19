@@ -52,9 +52,10 @@ function StockBadge({ stock }: { stock: number }) {
 interface ProductInfoProps {
   product: Product;
   variants?: ProductVariant[];
+  variantsLoading?: boolean;
 }
 
-export function ProductInfo({ product, variants = [] }: ProductInfoProps) {
+export function ProductInfo({ product, variants = [], variantsLoading = false }: ProductInfoProps) {
   const { addItem } = useCartContext();
   const { config } = useSiteConfig();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
@@ -105,6 +106,10 @@ export function ProductInfo({ product, variants = [] }: ProductInfoProps) {
   const effectiveStock = selectedVariant ? selectedVariant.stock : product.stock;
 
   function handleAddToCart() {
+    if (product.hasVariants && (variantsLoading || variants.length === 0)) {
+      setError("Cargando opciones de variantes. Intenta nuevamente.");
+      return;
+    }
     if (product.hasVariants) {
       const needsSize = product.sizes.length > 0 && !selectedSize;
       const needsColor = product.colors.length > 0 && !selectedColor;
@@ -294,10 +299,16 @@ export function ProductInfo({ product, variants = [] }: ProductInfoProps) {
           size="lg"
           className="flex-1 gap-2"
           onClick={handleAddToCart}
-          disabled={effectiveStock <= 0}
+          disabled={effectiveStock <= 0 || variantsLoading}
         >
           <ShoppingBag size={15} />
-          {effectiveStock <= 0 ? "Agotado" : added ? "¡Agregado!" : "Agregar al Carrito"}
+          {variantsLoading
+            ? "Cargando opciones..."
+            : effectiveStock <= 0
+              ? "Agotado"
+              : added
+                ? "¡Agregado!"
+                : "Agregar al Carrito"}
         </Button>
         <Button
           variant="outline"

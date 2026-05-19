@@ -8,6 +8,7 @@ import { firestoreOrderRepository } from "@/infrastructure/repositories/firestor
 import { firestoreProductRepository } from "@/infrastructure/repositories/firestore-product.repository";
 import { createOrder } from "@/application/use-cases/order/create-order";
 import { validateStock, type OutOfStockItem } from "@/application/use-cases/order/validate-stock";
+import { decrementVariantStock } from "@/application/use-cases/product/decrement-variant-stock";
 import { uploadPaymentProof } from "@/application/use-cases/order/upload-payment-proof";
 import { uploadFileToCloudinary } from "@/utils/cloudinary-upload";
 import type { ShippingInfo, CreateOrderInput } from "@/domain/entities/order.entity";
@@ -107,6 +108,14 @@ export function useCheckout() {
         isWholesale: false,
       };
       const order = await createOrder(firestoreOrderRepository, input);
+      // Decrement variant stock atomically for each variant item
+      await Promise.all(
+        items
+          .filter((i) => i.variantId)
+          .map((i) =>
+            decrementVariantStock(firestoreProductRepository, i.productId, i.variantId!, i.quantity)
+          )
+      );
       setCreatedOrderId(order.id);
       setOrderNumber(order.orderNumber);
       setStep("payment");
