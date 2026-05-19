@@ -91,7 +91,7 @@ export function useCheckout() {
         },
         items: items.map((item) => ({
           productId: item.productId,
-          variantId: null,
+          variantId: item.variantId ?? null,
           productName: item.name,
           variantDescription: [item.size, item.color].filter(Boolean).join(" / ") || undefined,
           imageUrl: item.image,

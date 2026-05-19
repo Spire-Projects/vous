@@ -28,3 +28,13 @@ export interface Product {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface ProductVariant {
+  id: string;
+  sku?: string;
+  color?: string | null;
+  colorHex?: string | null;
+  size?: string | null;
+  stock: number;
+  isActive: boolean;
+}

@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ProductFormDialog } from "@/components/product/ProductFormDialog";
+import { VariantDrawer } from "@/components/product/VariantDrawer";
 import { useProducts } from "@/hooks/useProducts";
 import { useCategories } from "@/hooks/useCategories";
 import type { Product, CreateProductInput } from "@/domain/entities/product.entity";
@@ -21,6 +22,7 @@ export function InventoryPage() {
   const [editing, setEditing] = useState<Product | null>(null);
   const [preview, setPreview] = useState<Product | null>(null);
   const [previewImg, setPreviewImg] = useState<string | null>(null);
+  const [variantProduct, setVariantProduct] = useState<Product | null>(null);
 
   const filtered = products.filter((p) => {
     const matchSearch = !search || p.name.toLowerCase().includes(search.toLowerCase());
@@ -173,6 +175,11 @@ export function InventoryPage() {
                         {product.isActive ? <EyeOff size={14} /> : <Eye size={14} />}
                       </Button>
                       <Button variant="ghost" size="icon-sm" onClick={() => handleEdit(product)}><Pencil size={14} /></Button>
+                      {product.hasVariants && (
+                        <Button variant="ghost" size="icon-sm" title="Gestionar variantes" onClick={() => setVariantProduct(product)}>
+                          <Package size={14} />
+                        </Button>
+                      )}
                       <Button variant="ghost" size="icon-sm"><MoreVertical size={16} /></Button>
                     </div>
                   </TableCell>
@@ -184,6 +191,7 @@ export function InventoryPage() {
       </div>
 
       <ProductFormDialog open={dialogOpen} product={editing} categories={categories} onClose={() => setDialogOpen(false)} onSave={handleSave} />
+      <VariantDrawer product={variantProduct} onClose={() => setVariantProduct(null)} />
 
       {/* Product Detail Modal */}
       <Dialog open={!!preview} onOpenChange={(o) => { if (!o) { setPreview(null); setPreviewImg(null); } }}>

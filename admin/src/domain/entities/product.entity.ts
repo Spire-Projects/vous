@@ -53,3 +53,26 @@ export interface CreateProductInput {
 }
 
 export type UpdateProductInput = Partial<CreateProductInput>;
+
+export interface ProductVariant {
+  id: string;
+  sku?: string;
+  color?: string | null;
+  colorHex?: string | null;
+  size?: string | null;
+  stock: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateVariantInput {
+  sku?: string;
+  color?: string | null;
+  colorHex?: string | null;
+  size?: string | null;
+  stock: number;
+  isActive: boolean;
+}
+
+export type UpdateVariantInput = Partial<CreateVariantInput>;

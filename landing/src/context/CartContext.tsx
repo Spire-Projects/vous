@@ -22,8 +22,9 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       const existing = state.items.find(
         (i) =>
           i.productId === action.payload.productId &&
-          i.size === action.payload.size &&
-          i.color === action.payload.color
+          (action.payload.variantId
+            ? i.variantId === action.payload.variantId
+            : i.size === action.payload.size && i.color === action.payload.color)
       );
       const items = existing
         ? state.items.map((i) =>

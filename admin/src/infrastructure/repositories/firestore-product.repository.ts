@@ -1,7 +1,13 @@
-import { collection, getDocs, doc, getDoc, addDoc, updateDoc, query, orderBy, where, serverTimestamp } from "firebase/firestore";
+import {
+  collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc,
+  query, orderBy, serverTimestamp,
+} from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import type { ProductRepository } from "@/domain/repositories/product.repository";
-import type { Product, CreateProductInput, UpdateProductInput } from "@/domain/entities/product.entity";
+import type {
+  Product, CreateProductInput, UpdateProductInput,
+  ProductVariant, CreateVariantInput, UpdateVariantInput,
+} from "@/domain/entities/product.entity";
 
 function mapDoc(id: string, data: Record<string, unknown>): Product {
   return {
@@ -36,8 +42,25 @@ function mapDoc(id: string, data: Record<string, unknown>): Product {
   };
 }
 
+function mapVariant(id: string, data: Record<string, unknown>): ProductVariant {
+  return {
+    id,
+    sku: (data.sku as string) ?? undefined,
+    color: (data.color as string | null) ?? null,
+    colorHex: (data.colorHex as string | null) ?? null,
+    size: (data.size as string | null) ?? null,
+    stock: (data.stock as number) ?? 0,
+    isActive: (data.isActive as boolean) ?? true,
+    createdAt:
+      (data.createdAt as { toDate?: () => Date })?.toDate?.().toISOString() ??
+      new Date().toISOString(),
+    updatedAt:
+      (data.updatedAt as { toDate?: () => Date })?.toDate?.().toISOString() ??
+      new Date().toISOString(),
+  };
+}
+
 export const firestoreProductRepository: ProductRepository = {
-  async findAll(): Promise<Product[]> {
     const q = query(collection(db, "products"), orderBy("createdAt", "desc"));
     const snap = await getDocs(q);
     return snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>));
@@ -77,5 +100,34 @@ export const firestoreProductRepository: ProductRepository = {
 
   async setActive(id: string, isActive: boolean): Promise<void> {
     await updateDoc(doc(db, "products", id), { isActive, updatedAt: serverTimestamp() });
+  },
+
+  async findVariants(productId: string): Promise<ProductVariant[]> {
+    const q = query(collection(db, "products", productId, "variants"), orderBy("createdAt", "asc"));
+    const snap = await getDocs(q);
+    return snap.docs.map((d) => mapVariant(d.id, d.data() as Record<string, unknown>));
+  },
+
+  async createVariant(productId: string, input: CreateVariantInput): Promise<ProductVariant> {
+    const payload = Object.fromEntries(Object.entries({ ...input }).filter(([, v]) => v !== undefined));
+    const docRef = await addDoc(collection(db, "products", productId, "variants"), {
+      ...payload,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
+    const snap = await getDoc(docRef);
+    return mapVariant(snap.id, snap.data() as Record<string, unknown>);
+  },
+
+  async updateVariant(productId: string, variantId: string, input: UpdateVariantInput): Promise<void> {
+    const payload = Object.fromEntries(Object.entries({ ...input }).filter(([, v]) => v !== undefined));
+    await updateDoc(doc(db, "products", productId, "variants", variantId), {
+      ...payload,
+      updatedAt: serverTimestamp(),
+    });
+  },
+
+  async deleteVariant(productId: string, variantId: string): Promise<void> {
+    await deleteDoc(doc(db, "products", productId, "variants", variantId));
   },
 };

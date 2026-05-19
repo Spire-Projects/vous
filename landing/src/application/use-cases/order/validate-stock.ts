@@ -10,15 +10,29 @@ export interface OutOfStockItem {
 
 /**
  * Checks stock availability for all cart items.
- * Returns a list of items that have insufficient stock.
- * Empty array means all items are available.
+ * If the item has a variantId, checks the variant's stock.
+ * Otherwise falls back to the product-level stock.
+ * Returns items with insufficient stock (empty array = all OK).
  */
 export async function validateStock(
   repo: ProductRepository,
   items: CartItem[]
 ): Promise<OutOfStockItem[]> {
   const results = await Promise.all(
-    items.map(async (item) => {
+    items.map(async (item): Promise<OutOfStockItem | null> => {
+      if (item.variantId) {
+        const variants = await repo.findVariants(item.productId);
+        const variant = variants.find((v) => v.id === item.variantId);
+        if (!variant || variant.stock < item.quantity) {
+          return {
+            productId: item.productId,
+            productName: item.name,
+            requested: item.quantity,
+            available: variant?.stock ?? 0,
+          };
+        }
+        return null;
+      }
       const product = await repo.findById(item.productId);
       if (!product || product.stock < item.quantity) {
         return {
