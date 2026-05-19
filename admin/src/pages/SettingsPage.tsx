@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Save, Eye, Loader2 } from "lucide-react";
+import { Save, Eye, Loader2, QrCode } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ImagePicker } from "@/components/shared/ImagePicker";
 import { RichTextEditor } from "@/components/blog/RichTextEditor";
 import { useSiteConfig } from "@/hooks/useSiteConfig";
+import { usePaymentConfig } from "@/hooks/usePaymentConfig";
 import type { SiteConfig, UpdateSiteConfigInput, ScheduleItem } from "@/domain/entities/site-config.entity";
 
 const DEFAULT_SCHEDULE: ScheduleItem[] = [
@@ -149,6 +150,7 @@ function SocialRow({
 
 export function SettingsPage() {
   const { config, loading, saving, update } = useSiteConfig();
+  const paymentConfig = usePaymentConfig();
   const form = useSettingsForm(config);
 
   async function handleSave() {
@@ -281,6 +283,49 @@ export function SettingsPage() {
                 />
               </div>
             ))}
+          </div>
+        </Section>
+
+        {/* QR de Pago */}
+        <Section title="Configuración de Pagos">
+          <div className="space-y-4">
+            <p className="font-sans text-sm text-vous-gray">
+              Imagen del código QR que los clientes escanearán para realizar el pago por
+              transferencia bancaria. Se muestra en el checkout de la tienda.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-6 items-start">
+              <div className="space-y-1 w-full sm:w-80">
+                <Label className="flex items-center gap-1.5">
+                  <QrCode size={13} /> Imagen del QR activo
+                </Label>
+                <ImagePicker
+                  value={paymentConfig.config?.qrImageUrl ?? ""}
+                  onChange={async (url) => {
+                    await paymentConfig.update({ qrImageUrl: url });
+                  }}
+                  folder="vous/qr"
+                  label="Subir QR"
+                  aspect="square"
+                />
+              </div>
+              {paymentConfig.config?.qrImageUrl && (
+                <div className="flex flex-col gap-2">
+                  <span className="font-nav text-[10px] uppercase tracking-wide text-vous-gray">
+                    QR actual
+                  </span>
+                  <img
+                    src={paymentConfig.config.qrImageUrl}
+                    alt="QR de pago activo"
+                    className="w-36 h-36 object-contain border border-vous-border"
+                  />
+                </div>
+              )}
+            </div>
+            {paymentConfig.saving && (
+              <div className="flex items-center gap-2 text-vous-gray font-sans text-xs">
+                <Loader2 size={12} className="animate-spin" /> Guardando QR…
+              </div>
+            )}
           </div>
         </Section>
       </div>
