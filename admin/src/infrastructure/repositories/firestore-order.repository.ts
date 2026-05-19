@@ -81,11 +81,7 @@ export const firestoreOrderRepository: OrderRepository = {
   },
 
   async findByStatus(status: Order["status"]): Promise<Order[]> {
-    const q = query(
-      collection(db, "orders"),
-      where("status", "==", status),
-      orderBy("createdAt", "desc")
-    );
+    const q = query(collection(db, "orders"), where("status", "==", status));
     const snap = await getDocs(q);
     return snap.docs.map((d) => mapOrder({ id: d.id, data: d.data.bind(d) }));
   },
@@ -96,10 +92,18 @@ export const firestoreOrderRepository: OrderRepository = {
     await updateDoc(doc(db, "orders", orderId), updates);
   },
 
-  subscribeAll(onNext: (orders: Order[]) => void, limitCount?: number): () => void {
-    return onSnapshot(buildQuery(limitCount), (snap) => {
-      onNext(snap.docs.map((d) => mapOrder({ id: d.id, data: d.data.bind(d) })));
-    });
+  subscribeAll(
+    onNext: (orders: Order[]) => void,
+    onError?: (error: Error) => void,
+    limitCount?: number,
+  ): () => void {
+    return onSnapshot(
+      buildQuery(limitCount),
+      (snap) => {
+        onNext(snap.docs.map((d) => mapOrder({ id: d.id, data: d.data.bind(d) })));
+      },
+      onError,
+    );
   },
 
   async cancelAndRestoreStock(orderId: string, adminNotes?: string): Promise<void> {
@@ -111,15 +115,22 @@ export const firestoreOrderRepository: OrderRepository = {
 
       const items = (orderSnap.data()["items"] ?? []) as Array<{
         productId: string;
+        variantId?: string;
         quantity: number;
       }>;
-      const productRefs = items.map((item) => doc(db, "products", item.productId));
-      const productSnaps = await Promise.all(productRefs.map((ref) => transaction.get(ref)));
+      // Stock lives in the variant doc when variantId is present,
+      // or in the product doc itself for products without variants.
+      const stockRefs = items.map((item) =>
+        item.variantId
+          ? doc(db, "products", item.productId, "variants", item.variantId)
+          : doc(db, "products", item.productId)
+      );
+      const stockSnaps = await Promise.all(stockRefs.map((ref) => transaction.get(ref)));
 
       // ── All writes ───────────────────────────────────────────────────────
-      productSnaps.forEach((snap, i) => {
+      stockSnaps.forEach((snap, i) => {
         if (snap.exists()) {
-          transaction.update(productRefs[i], {
+          transaction.update(stockRefs[i], {
             stock: ((snap.data()["stock"] as number) ?? 0) + items[i].quantity,
             updatedAt: serverTimestamp(),
           });

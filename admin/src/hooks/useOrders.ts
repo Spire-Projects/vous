@@ -1,6 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { firestoreOrderRepository } from "@/infrastructure";
 import { updateOrderStatus } from "@/application/use-cases/order/update-order-status";
+import { cancelOrderRestoreStock } from "@/application/use-cases/order/cancel-order-restore-stock";
+import { updateAdminNotes } from "@/application/use-cases/order/update-admin-notes";
 import type { Order, UpdateOrderStatusInput } from "@/domain/entities/order.entity";
 
 /**
@@ -17,10 +19,16 @@ export function useOrders() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     setError(null);
-    const unsubscribe = firestoreOrderRepository.subscribeAll((data) => {
-      setOrders(data);
-      setLoading(false);
-    });
+    const unsubscribe = firestoreOrderRepository.subscribeAll(
+      (data) => {
+        setOrders(data);
+        setLoading(false);
+      },
+      (err) => {
+        setError(err.message);
+        setLoading(false);
+      },
+    );
     return unsubscribe;
   }, []);
 
@@ -31,13 +39,13 @@ export function useOrders() {
 
   const cancelWithStockRestore = useCallback(
     async (orderId: string, adminNotes?: string) => {
-      await firestoreOrderRepository.cancelAndRestoreStock(orderId, adminNotes);
+      await cancelOrderRestoreStock(firestoreOrderRepository, orderId, adminNotes);
     },
     []
   );
 
   const updateNotes = useCallback(async (orderId: string, notes: string) => {
-    await firestoreOrderRepository.updateNotes(orderId, notes);
+    await updateAdminNotes(firestoreOrderRepository, orderId, notes);
   }, []);
 
   return { orders, loading, error, changeStatus, cancelWithStockRestore, updateNotes };

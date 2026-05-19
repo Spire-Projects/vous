@@ -551,7 +551,7 @@ export function OrderDetailDrawer({
 
       {/* ── Confirm cancel dialog ──────────────────────────────────────────── */}
       {showCancelConfirm && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-vous-black/60" onClick={() => setShowCancelConfirm(false)} />
           <div className="relative bg-vous-white border border-vous-border p-6 max-w-sm w-full mx-4 shadow-xl">
             <div className="flex items-center gap-2 mb-3 text-red-600">
