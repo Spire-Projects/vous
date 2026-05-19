@@ -1,7 +1,8 @@
-import type { Order } from "@/domain/entities/order.entity";
+import type { Order, CreateOrderInput } from "@/domain/entities/order.entity";
 
 export interface OrderRepository {
   findByUser(userId: string): Promise<Order[]>;
   findById(id: string): Promise<Order | null>;
-  create(order: Omit<Order, "id" | "createdAt" | "updatedAt">): Promise<Order>;
+  create(input: CreateOrderInput): Promise<Order>;
+  updatePaymentProof(orderId: string, proofUrl: string): Promise<void>;
 }

@@ -6,3 +6,4 @@ export { useBlogPosts } from "./useBlogPosts";
 export { useBanners } from "./useBanners";
 export { useSiteConfig } from "./useSiteConfig";
 export { useCategories } from "./useCategories";
+export { usePaymentConfig } from "./usePaymentConfig";
