@@ -19,7 +19,7 @@ function sortProducts(products: Product[], key: SortKey): Product[] {
   const copy = [...products];
   if (key === "precio-asc") return copy.sort((a, b) => a.price - b.price);
   if (key === "precio-desc") return copy.sort((a, b) => b.price - a.price);
-  if (key === "nuevos") return copy.sort((a, b) => (b.createdAt > a.createdAt ? 1 : -1));
+  if (key === "nuevos") return copy.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   return copy.sort((a, b) => a.sortOrder - b.sortOrder);
 }
 
@@ -33,10 +33,13 @@ export function CatalogGrid() {
     <div className="flex-1 min-w-0">
       <div className="flex items-center justify-between mb-8">
         <p className="font-sans text-sm text-vous-gray">
-          {loading
-            ? "Cargando productos…"
-            : <><span className="text-vous-soft-black font-medium">{sorted.length}</span> productos</>
-          }
+          {loading ? (
+            "Cargando productos…"
+          ) : (
+            <>
+              <span className="text-vous-soft-black font-medium">{sorted.length}</span> productos
+            </>
+          )}
         </p>
         <Select value={sort} onValueChange={(v) => setSort(v as SortKey)}>
           <SelectTrigger className="w-48">
@@ -73,7 +76,9 @@ export function CatalogGrid() {
       {!loading && !error && sorted.length === 0 && (
         <div className="text-center py-20">
           <p className="font-serif text-2xl text-vous-soft-black">Sin productos disponibles</p>
-          <p className="font-sans text-vous-gray mt-2">Vuelve pronto para descubrir nuevas piezas.</p>
+          <p className="font-sans text-vous-gray mt-2">
+            Vuelve pronto para descubrir nuevas piezas.
+          </p>
         </div>
       )}
 

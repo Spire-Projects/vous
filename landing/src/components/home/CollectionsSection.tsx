@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCategories } from "@/hooks/useCategories";
+import { proxyCldUrl } from "@/utils/proxyCldUrl";
 
 const PLACEHOLDER_BGS = [
   "from-[#d4cfc6] via-[#b8b0a4] to-[#8a8278]",
@@ -46,7 +47,7 @@ export function CollectionsSection() {
               >
                 {cat.banner || cat.image ? (
                   <img
-                    src={cat.banner ?? cat.image}
+                    src={proxyCldUrl(cat.banner ?? cat.image ?? "")}
                     alt={cat.name}
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />

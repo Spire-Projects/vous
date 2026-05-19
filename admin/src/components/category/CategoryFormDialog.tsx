@@ -27,6 +27,7 @@ export function CategoryFormDialog({ open, category, nextOrder, onClose, onSave 
   const [saving, setSaving] = useState(false);
   const [slugManual, setSlugManual] = useState(false);
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (category) {
       setName(category.name); setSlug(category.slug);
@@ -36,6 +37,7 @@ export function CategoryFormDialog({ open, category, nextOrder, onClose, onSave 
       setName(""); setSlug(""); setDescription(""); setImage(""); setBanner(""); setIsActive(true); setSlugManual(false);
     }
   }, [category, open]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   function handleNameChange(v: string) {
     setName(v);

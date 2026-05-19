@@ -4,7 +4,7 @@ function isCloudinaryHost(hostname: string): boolean {
   return hostname === "res.cloudinary.com" || hostname.endsWith(".cloudinary.com");
 }
 
-const CACHE_CONTROL = "public, max-age=31536000, immutable";
+const CACHE_CONTROL = "public, max-age=86400, stale-while-revalidate=604800";
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const raw = req.nextUrl.searchParams.get("url");

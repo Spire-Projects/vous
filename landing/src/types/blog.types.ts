@@ -37,8 +37,5 @@ export interface BlogPost extends BaseDocument {
   };
 }
 
-export type CreateBlogPostPayload = Omit<
-  BlogPost,
-  "id" | "createdAt" | "updatedAt"
->;
+export type CreateBlogPostPayload = Omit<BlogPost, "id" | "createdAt" | "updatedAt">;
 export type UpdateBlogPostPayload = Partial<CreateBlogPostPayload>;

@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useBlogPost } from "@/hooks/useBlogPost";
 import { ArrowLeft } from "lucide-react";
+import { proxyCldUrl } from "@/utils/proxyCldUrl";
 
 export function BlogPostClient() {
   const params = useParams();
@@ -22,7 +23,10 @@ export function BlogPostClient() {
     return (
       <div className="bg-vous-warm-white min-h-screen flex flex-col items-center justify-center gap-4">
         <p className="font-sans text-sm text-vous-gray">Artículo no encontrado.</p>
-        <Link href="/revista" className="font-nav text-[11px] uppercase tracking-wider text-vous-gold hover:underline">
+        <Link
+          href="/revista"
+          className="font-nav text-[11px] uppercase tracking-wider text-vous-gold hover:underline"
+        >
           Volver a la revista
         </Link>
       </div>
@@ -43,7 +47,7 @@ export function BlogPostClient() {
       <div className="relative aspect-[21/9] md:aspect-[21/7] bg-vous-soft-black overflow-hidden">
         {post.coverImage ? (
           <img
-            src={post.coverImage}
+            src={proxyCldUrl(post.coverImage)}
             alt={post.title}
             className="w-full h-full object-cover opacity-80"
           />

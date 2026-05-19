@@ -47,12 +47,12 @@ async function uploadToCloudinary(file: File): Promise<string> {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-  const res = await fetch(
-    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`,
-    { method: "POST", body: formData }
-  );
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`, {
+    method: "POST",
+    body: formData,
+  });
   if (!res.ok) {
-    const errData = await res.json().catch(() => ({})) as { error?: { message?: string } };
+    const errData = (await res.json().catch(() => ({}))) as { error?: { message?: string } };
     const msg = errData?.error?.message ?? `Error ${res.status}`;
     throw new Error(`Error al subir "${file.name}": ${msg}`);
   }

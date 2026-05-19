@@ -244,7 +244,7 @@ export function BlogPage() {
               <div className="flex justify-end gap-2 pt-2 border-t border-vous-border">
                 {preview.status === "published" && (
                   <a
-                    href={`http://localhost:3000/revista/${preview.slug}`}
+                    href={`${import.meta.env.VITE_LANDING_URL ?? "http://localhost:3000"}/revista/${preview.slug}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

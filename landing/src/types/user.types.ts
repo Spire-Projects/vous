@@ -36,6 +36,4 @@ export interface CustomerSnapshot {
 export type CreateUserPayload = Omit<User, "id" | "createdAt" | "updatedAt">;
 
 /** Payload para actualizar un usuario */
-export type UpdateUserPayload = Partial<
-  Omit<User, "id" | "uid" | "createdAt" | "updatedAt">
->;
+export type UpdateUserPayload = Partial<Omit<User, "id" | "uid" | "createdAt" | "updatedAt">>;

@@ -1,19 +1,30 @@
 import Link from "next/link";
 import type { Product } from "@/domain/entities/product.entity";
+import { proxyCldUrl } from "@/utils/proxyCldUrl";
 
-export function ProductCard({ slug, name, categoryName, price, badge, images, isDiscounted, discountPercentage }: Product) {
+export function ProductCard({
+  slug,
+  name,
+  categoryName,
+  price,
+  badge,
+  images,
+  isDiscounted,
+  discountPercentage,
+}: Product) {
   const coverImage = images?.[0];
   const formattedPrice = `Bs. ${price.toLocaleString("es-BO")}`;
-  const discountedPrice = isDiscounted && discountPercentage
-    ? `Bs. ${Math.round(price * (1 - discountPercentage / 100)).toLocaleString("es-BO")}`
-    : null;
+  const discountedPrice =
+    isDiscounted && discountPercentage
+      ? `Bs. ${Math.round(price * (1 - discountPercentage / 100)).toLocaleString("es-BO")}`
+      : null;
 
   return (
     <Link href={`/catalogo/${slug}`} className="group block">
       <div className="relative aspect-[3/4] overflow-hidden bg-vous-soft-black mb-4">
         {coverImage ? (
           <img
-            src={coverImage}
+            src={proxyCldUrl(coverImage)}
             alt={name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCategories } from "@/hooks/useCategories";
+import { proxyCldUrl } from "@/utils/proxyCldUrl";
 
 const PLACEHOLDER_BGS = [
   "from-[#1a1a18] to-[#2a2015]",
@@ -55,7 +56,9 @@ export default function CategoriasPage() {
         {!loading && !error && categories.length === 0 && (
           <div className="text-center py-20">
             <p className="font-serif text-2xl text-vous-soft-black">No hay categorías aún</p>
-            <p className="font-sans text-vous-gray mt-2">Vuelve pronto para descubrir nuevas colecciones.</p>
+            <p className="font-sans text-vous-gray mt-2">
+              Vuelve pronto para descubrir nuevas colecciones.
+            </p>
           </div>
         )}
 
@@ -70,7 +73,7 @@ export default function CategoriasPage() {
                 >
                   {(image || banner) && (
                     <img
-                      src={image ?? banner}
+                      src={proxyCldUrl(image ?? banner ?? "")}
                       alt={name}
                       className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />

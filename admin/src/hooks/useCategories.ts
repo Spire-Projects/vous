@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { firestoreCategoryRepository } from "@/infrastructure/repositories/firestore-category.repository";
 import type { Category, CreateCategoryInput } from "@/domain/entities/category.entity";
 
@@ -7,21 +7,16 @@ export function useCategories() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const load = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await firestoreCategoryRepository.findAll();
-      setCategories(data);
-    } catch (err) {
-      console.error("[useCategories] Error cargando categorías:", err);
-      setError("Error al cargar las categorías");
-    } finally {
-      setLoading(false);
-    }
+  useEffect(() => {
+    firestoreCategoryRepository
+      .findAll()
+      .then(setCategories)
+      .catch((err) => {
+        console.error("[useCategories] Error cargando categorías:", err);
+        setError("Error al cargar las categorías");
+      })
+      .finally(() => setLoading(false));
   }, []);
-
-  useEffect(() => { load(); }, [load]);
 
   async function create(data: CreateCategoryInput) {
     const cat = await firestoreCategoryRepository.save(data);

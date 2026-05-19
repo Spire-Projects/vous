@@ -20,10 +20,7 @@ export interface Category extends BaseDocument {
   sortOrder: number;
 }
 
-export type CreateCategoryPayload = Omit<
-  Category,
-  "id" | "createdAt" | "updatedAt"
->;
+export type CreateCategoryPayload = Omit<Category, "id" | "createdAt" | "updatedAt">;
 export type UpdateCategoryPayload = Partial<CreateCategoryPayload>;
 
 // ── Colección: products ─────────────────────────────────────────────────────
@@ -130,16 +127,10 @@ export interface ProductVariant extends BaseDocument {
   isActive: boolean;
 }
 
-export type CreateProductPayload = Omit<
-  Product,
-  "id" | "createdAt" | "updatedAt"
->;
+export type CreateProductPayload = Omit<Product, "id" | "createdAt" | "updatedAt">;
 export type UpdateProductPayload = Partial<CreateProductPayload>;
 
-export type CreateVariantPayload = Omit<
-  ProductVariant,
-  "id" | "createdAt" | "updatedAt"
->;
+export type CreateVariantPayload = Omit<ProductVariant, "id" | "createdAt" | "updatedAt">;
 export type UpdateVariantPayload = Partial<CreateVariantPayload>;
 
 // ── Tipos de utilidad para el catálogo ─────────────────────────────────────
