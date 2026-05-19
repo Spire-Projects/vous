@@ -102,7 +102,12 @@ export const firestoreOrderRepository: OrderRepository = {
     );
     return onSnapshot(
       q,
-      (snap) => onNext(snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>))),
+      (snap) =>
+        onNext(
+          snap.docs.map((d) =>
+            mapDoc(d.id, d.data({ serverTimestamps: "estimate" }) as Record<string, unknown>)
+          )
+        ),
       (err) => onError(err)
     );
   },

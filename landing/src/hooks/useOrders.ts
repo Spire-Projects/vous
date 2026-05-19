@@ -14,6 +14,8 @@ export function useOrders(userId: string | null) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setOrders([]);
       // eslint-disable-next-line react-hooks/set-state-in-effect
+      setError(null);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLoading(false);
       return;
     }

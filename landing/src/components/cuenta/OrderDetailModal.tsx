@@ -1,8 +1,14 @@
 "use client";
 
-import { useEffect } from "react";
-import { X, MessageCircle } from "lucide-react";
+import { MessageCircle, X } from "lucide-react";
 import type { Order } from "@/domain/entities/order.entity";
+import {
+  Dialog,
+  DialogPortal,
+  DialogOverlay,
+  DialogClose,
+  DialogContentRaw,
+} from "@/components/ui/dialog";
 import { OrderStatusBadge } from "./OrderStatusBadge";
 import { OrderStatusTimeline } from "./OrderStatusTimeline";
 
@@ -19,15 +25,6 @@ interface OrderDetailModalProps {
 }
 
 export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
-  // Close on Escape key
-  useEffect(() => {
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
-    }
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [onClose]);
-
   const createdDate = new Date(order.createdAt).toLocaleDateString("es-BO", {
     day: "numeric",
     month: "long",
@@ -40,177 +37,180 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
   const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMsg}`;
 
   return (
-    /* Backdrop */
-    <div
-      className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center p-0 sm:p-4"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
-    >
-      {/* Panel */}
-      <div className="bg-vous-warm-white w-full sm:max-w-2xl max-h-[92dvh] overflow-y-auto sm:rounded-none shadow-2xl flex flex-col">
-        {/* Header */}
-        <div className="flex items-start justify-between gap-4 px-6 py-5 border-b border-vous-gray-light/40 sticky top-0 bg-vous-warm-white z-10">
-          <div>
-            <p className="font-nav text-[10px] tracking-[0.2em] uppercase text-vous-gray mb-0.5">
-              Detalle del Pedido
-            </p>
-            <h2 className="font-serif text-xl text-vous-soft-black">{order.orderNumber}</h2>
-            <p className="font-sans text-xs text-vous-gray mt-0.5">{createdDate}</p>
-          </div>
-          <div className="flex items-center gap-3 shrink-0">
-            <OrderStatusBadge status={order.status} />
-            <button
-              onClick={onClose}
-              className="p-1.5 text-vous-gray hover:text-vous-soft-black transition-colors"
-              aria-label="Cerrar"
-            >
-              <X size={18} />
-            </button>
-          </div>
-        </div>
+    <Dialog open onOpenChange={(open) => !open && onClose()}>
+      <DialogPortal>
+        <DialogOverlay />
+        <DialogContentRaw className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
+          {/* Panel */}
+          <div className="bg-vous-warm-white w-full sm:max-w-2xl max-h-[92dvh] overflow-y-auto shadow-2xl flex flex-col">
+            {/* Header */}
+            <div className="flex items-start justify-between gap-4 px-6 py-5 border-b border-vous-gray-light/40 sticky top-0 bg-vous-warm-white z-10">
+              <div>
+                <p className="font-nav text-[10px] tracking-[0.2em] uppercase text-vous-gray mb-0.5">
+                  Detalle del Pedido
+                </p>
+                <h2 className="font-serif text-xl text-vous-soft-black">{order.orderNumber}</h2>
+                <p className="font-sans text-xs text-vous-gray mt-0.5">{createdDate}</p>
+              </div>
+              <div className="flex items-center gap-3 shrink-0">
+                <OrderStatusBadge status={order.status} />
+                <DialogClose className="p-1.5 text-vous-gray hover:text-vous-soft-black transition-colors">
+                  <X size={18} />
+                  <span className="sr-only">Cerrar</span>
+                </DialogClose>
+              </div>
+            </div>
 
-        <div className="px-6 py-6 space-y-7">
-          {/* Timeline */}
-          <section>
-            <h3 className="font-nav text-[10px] tracking-[0.2em] uppercase text-vous-gray mb-4">
-              Estado del Pedido
-            </h3>
-            <OrderStatusTimeline status={order.status} />
-          </section>
+            <div className="px-6 py-6 space-y-7">
+              {/* Timeline */}
+              <section>
+                <h3 className="font-nav text-[10px] tracking-[0.2em] uppercase text-vous-gray mb-4">
+                  Estado del Pedido
+                </h3>
+                <OrderStatusTimeline status={order.status} />
+              </section>
 
-          {/* Items */}
-          <section>
-            <h3 className="font-nav text-[10px] tracking-[0.2em] uppercase text-vous-gray mb-4">
-              Productos
-            </h3>
-            <div className="space-y-4">
-              {order.items.map((item, idx) => (
-                <div
-                  key={`${item.productId}-${idx}`}
-                  className="flex gap-3 py-3 border-b border-vous-gray-light/30 last:border-0"
-                >
-                  {item.imageUrl ? (
-                    <img
-                      src={item.imageUrl}
-                      alt={item.productName}
-                      className="w-14 h-18 object-cover border border-vous-gray-light/40 shrink-0"
-                    />
-                  ) : (
-                    <div className="w-14 h-18 shrink-0 bg-vous-soft-black/10" />
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <p className="font-serif text-sm text-vous-soft-black leading-snug">
-                      {item.productName}
-                    </p>
-                    {item.variantDescription && (
-                      <p className="font-sans text-xs text-vous-gray mt-0.5">
-                        {item.variantDescription}
-                      </p>
-                    )}
-                    <p className="font-sans text-xs text-vous-gray mt-0.5">×{item.quantity}</p>
-                  </div>
-                  <div className="shrink-0 text-right">
-                    <p className="font-sans text-sm text-vous-soft-black font-medium">
-                      Bs. {item.subtotal.toLocaleString("es-BO")}
-                    </p>
-                    <p className="font-sans text-xs text-vous-gray">
-                      c/u Bs. {item.unitPrice.toLocaleString("es-BO")}
-                    </p>
+              {/* Items */}
+              <section>
+                <h3 className="font-nav text-[10px] tracking-[0.2em] uppercase text-vous-gray mb-4">
+                  Productos
+                </h3>
+                <div className="space-y-4">
+                  {order.items.map((item, idx) => (
+                    <div
+                      key={`${item.productId}-${idx}`}
+                      className="flex gap-3 py-3 border-b border-vous-gray-light/30 last:border-0"
+                    >
+                      {item.imageUrl ? (
+                        <img
+                          src={item.imageUrl}
+                          alt={item.productName}
+                          className="w-14 h-18 object-cover border border-vous-gray-light/40 shrink-0"
+                        />
+                      ) : (
+                        <div className="w-14 h-18 shrink-0 bg-vous-soft-black/10" />
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="font-serif text-sm text-vous-soft-black leading-snug">
+                          {item.productName}
+                        </p>
+                        {item.variantDescription && (
+                          <p className="font-sans text-xs text-vous-gray mt-0.5">
+                            {item.variantDescription}
+                          </p>
+                        )}
+                        <p className="font-sans text-xs text-vous-gray mt-0.5">×{item.quantity}</p>
+                      </div>
+                      <div className="shrink-0 text-right">
+                        <p className="font-sans text-sm text-vous-soft-black font-medium">
+                          Bs. {item.subtotal.toLocaleString("es-BO")}
+                        </p>
+                        <p className="font-sans text-xs text-vous-gray">
+                          c/u Bs. {item.unitPrice.toLocaleString("es-BO")}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Totals */}
+                <div className="mt-3 space-y-1.5 font-sans text-sm">
+                  {order.discountAmount && order.discountAmount > 0 ? (
+                    <>
+                      <div className="flex justify-between text-vous-gray">
+                        <span>Subtotal</span>
+                        <span>Bs. {order.subtotal.toLocaleString("es-BO")}</span>
+                      </div>
+                      <div className="flex justify-between text-green-600">
+                        <span>Descuento {order.discountCode && `(${order.discountCode})`}</span>
+                        <span>− Bs. {order.discountAmount.toLocaleString("es-BO")}</span>
+                      </div>
+                    </>
+                  ) : null}
+                  <div className="flex justify-between text-vous-soft-black font-medium border-t border-vous-gray-light/40 pt-2 mt-2">
+                    <span className="font-nav tracking-[0.1em] uppercase">Total</span>
+                    <span className="font-serif text-lg">
+                      Bs. {order.total.toLocaleString("es-BO")}
+                    </span>
                   </div>
                 </div>
-              ))}
-            </div>
+              </section>
 
-            {/* Totals */}
-            <div className="mt-3 space-y-1.5 font-sans text-sm">
-              {order.discountAmount && order.discountAmount > 0 ? (
-                <>
-                  <div className="flex justify-between text-vous-gray">
-                    <span>Subtotal</span>
-                    <span>Bs. {order.subtotal.toLocaleString("es-BO")}</span>
+              {/* Shipping info */}
+              {order.shippingInfo && (
+                <section>
+                  <h3 className="font-nav text-[10px] tracking-[0.2em] uppercase text-vous-gray mb-3">
+                    Envío
+                  </h3>
+                  <div className="bg-vous-cream p-4 space-y-1.5">
+                    <p className="font-sans text-sm text-vous-soft-black">
+                      {order.shippingInfo.fullName}
+                    </p>
+                    <p className="font-sans text-xs text-vous-gray">
+                      {order.shippingInfo.address}, {order.shippingInfo.city},{" "}
+                      {order.shippingInfo.department}
+                    </p>
+                    <p className="font-sans text-xs text-vous-gray">
+                      Tel. {order.shippingInfo.phone}
+                    </p>
+                    {order.shippingInfo.carrier && (
+                      <p className="font-sans text-xs text-vous-gold">
+                        Transportista: {order.shippingInfo.carrier}
+                      </p>
+                    )}
+                    {order.shippingInfo.trackingInfo && (
+                      <p className="font-sans text-xs text-vous-gray">
+                        Seguimiento: {order.shippingInfo.trackingInfo}
+                      </p>
+                    )}
                   </div>
-                  <div className="flex justify-between text-green-600">
-                    <span>Descuento {order.discountCode && `(${order.discountCode})`}</span>
-                    <span>− Bs. {order.discountAmount.toLocaleString("es-BO")}</span>
-                  </div>
-                </>
-              ) : null}
-              <div className="flex justify-between text-vous-soft-black font-medium border-t border-vous-gray-light/40 pt-2 mt-2">
-                <span className="font-nav tracking-[0.1em] uppercase">Total</span>
-                <span className="font-serif text-lg">
-                  Bs. {order.total.toLocaleString("es-BO")}
-                </span>
-              </div>
-            </div>
-          </section>
+                </section>
+              )}
 
-          {/* Shipping info */}
-          {order.shippingInfo && (
-            <section>
-              <h3 className="font-nav text-[10px] tracking-[0.2em] uppercase text-vous-gray mb-3">
-                Envío
-              </h3>
-              <div className="bg-vous-cream p-4 space-y-1.5">
+              {/* Payment */}
+              <section>
+                <h3 className="font-nav text-[10px] tracking-[0.2em] uppercase text-vous-gray mb-3">
+                  Pago
+                </h3>
                 <p className="font-sans text-sm text-vous-soft-black">
-                  {order.shippingInfo.fullName}
+                  {PAYMENT_METHOD_LABEL[order.paymentMethod] ?? order.paymentMethod}
                 </p>
-                <p className="font-sans text-xs text-vous-gray">
-                  {order.shippingInfo.address}, {order.shippingInfo.city},{" "}
-                  {order.shippingInfo.department}
+              </section>
+
+              {/* Admin notes */}
+              {order.adminNotes && (
+                <section>
+                  <h3 className="font-nav text-[10px] tracking-[0.2em] uppercase text-vous-gray mb-2">
+                    Nota
+                  </h3>
+                  <p className="font-sans text-sm text-vous-gray italic">{order.adminNotes}</p>
+                </section>
+              )}
+
+              {/* Contact support */}
+              <section className="border-t border-vous-gray-light/40 pt-5">
+                <p className="font-sans text-xs text-vous-gray mb-3">
+                  ¿Tienes alguna consulta sobre este pedido?
                 </p>
-                <p className="font-sans text-xs text-vous-gray">Tel. {order.shippingInfo.phone}</p>
-                {order.shippingInfo.carrier && (
-                  <p className="font-sans text-xs text-vous-gold">
-                    Transportista: {order.shippingInfo.carrier}
-                  </p>
-                )}
-                {order.shippingInfo.trackingInfo && (
-                  <p className="font-sans text-xs text-vous-gray">
-                    Seguimiento: {order.shippingInfo.trackingInfo}
-                  </p>
-                )}
-              </div>
-            </section>
-          )}
-
-          {/* Payment */}
-          <section>
-            <h3 className="font-nav text-[10px] tracking-[0.2em] uppercase text-vous-gray mb-3">
-              Pago
-            </h3>
-            <p className="font-sans text-sm text-vous-soft-black">
-              {PAYMENT_METHOD_LABEL[order.paymentMethod] ?? order.paymentMethod}
-            </p>
-          </section>
-
-          {/* Admin notes */}
-          {order.adminNotes && (
-            <section>
-              <h3 className="font-nav text-[10px] tracking-[0.2em] uppercase text-vous-gray mb-2">
-                Nota
-              </h3>
-              <p className="font-sans text-sm text-vous-gray italic">{order.adminNotes}</p>
-            </section>
-          )}
-
-          {/* Contact support */}
-          <section className="border-t border-vous-gray-light/40 pt-5">
-            <p className="font-sans text-xs text-vous-gray mb-3">
-              ¿Tienes alguna consulta sobre este pedido?
-            </p>
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 font-nav text-[11px] font-semibold tracking-[0.15em] uppercase border border-vous-soft-black text-vous-soft-black px-5 py-2.5 hover:bg-vous-soft-black hover:text-white transition-colors"
-            >
-              <MessageCircle size={13} />
-              Contactar soporte
-            </a>
-          </section>
-        </div>
-      </div>
-    </div>
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 font-nav text-[11px] font-semibold tracking-[0.15em] uppercase border border-vous-soft-black text-vous-soft-black px-5 py-2.5 hover:bg-vous-soft-black hover:text-white transition-colors"
+                >
+                  <MessageCircle size={13} />
+                  Contactar soporte
+                </a>
+              </section>
+            </div>
+          </div>
+        </DialogContentRaw>
+      </DialogPortal>
+    </Dialog>
   );
+}
+
+interface OrderDetailModalProps {
+  order: Order;
+  onClose: () => void;
 }

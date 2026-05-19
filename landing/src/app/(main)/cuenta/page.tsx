@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Star, CheckCircle, Pencil, X, Check, Loader2, PackageSearch } from "lucide-react";
 import { AccountSidebar } from "@/components/cuenta/AccountSidebar";
 import { OrderCard } from "@/components/cuenta/OrderCard";
@@ -295,12 +296,12 @@ function TabPedidos({ userId }: { userId: string }) {
               Cuando realices tu primera compra aparecerá aquí.
             </p>
           </div>
-          <a
+          <Link
             href="/catalogo"
             className="font-nav text-[11px] font-semibold tracking-[0.15em] uppercase border border-vous-soft-black text-vous-soft-black px-6 py-2.5 hover:bg-vous-soft-black hover:text-white transition-colors"
           >
             Ver Catálogo
-          </a>
+          </Link>
         </div>
       ) : (
         <div className="space-y-3">
