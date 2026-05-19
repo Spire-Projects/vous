@@ -20,7 +20,7 @@ export function ProductCard({
       : null;
 
   return (
-    <Link href={`/catalogo/${slug}`} className="group block">
+    <Link href={`/producto/${slug}`} className="group block">
       <div className="relative aspect-[3/4] overflow-hidden bg-vous-soft-black mb-4">
         {coverImage ? (
           <img
