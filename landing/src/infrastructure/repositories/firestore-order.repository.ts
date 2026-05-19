@@ -50,10 +50,7 @@ function mapDoc(id: string, data: Record<string, unknown>): Order {
 
 export const firestoreOrderRepository: OrderRepository = {
   async findByUser(userId: string): Promise<Order[]> {
-    const q = query(
-      collection(getFirebaseDb(), "orders"),
-      where("customerId", "==", userId)
-    );
+    const q = query(collection(getFirebaseDb(), "orders"), where("customerId", "==", userId));
     const snap = await getDocs(q);
     return snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>));
   },

@@ -73,4 +73,3 @@ export interface CreateOrderInput {
   shippingInfo: ShippingInfo;
   isWholesale: boolean;
 }
-

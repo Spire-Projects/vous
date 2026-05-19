@@ -100,8 +100,7 @@ export default function CheckoutPage() {
         productId: item.productId,
         variantId: null as null,
         productName: item.name,
-        variantDescription:
-          [item.size, item.color].filter(Boolean).join(" / ") || undefined,
+        variantDescription: [item.size, item.color].filter(Boolean).join(" / ") || undefined,
         imageUrl: item.image,
         unitPrice: item.price,
         quantity: item.quantity,
@@ -185,12 +184,10 @@ export default function CheckoutPage() {
     return (
       <div className="bg-vous-warm-white min-h-screen flex flex-col items-center justify-center px-5 text-center">
         <CheckCircle size={48} className="text-green-600 mb-4" />
-        <h1 className="font-serif text-3xl text-vous-soft-black mb-3">
-          ¡Pedido recibido!
-        </h1>
+        <h1 className="font-serif text-3xl text-vous-soft-black mb-3">¡Pedido recibido!</h1>
         <p className="font-sans text-sm text-vous-gray max-w-sm mb-2">
-          Tu pedido <strong>{orderNumber}</strong> fue registrado con éxito. Estamos verificando
-          tu pago y te notificaremos cuando sea confirmado.
+          Tu pedido <strong>{orderNumber}</strong> fue registrado con éxito. Estamos verificando tu
+          pago y te notificaremos cuando sea confirmado.
         </p>
         <p className="font-sans text-xs text-vous-gray max-w-sm mb-8">
           Si tienes dudas, escríbenos por WhatsApp.
@@ -231,7 +228,6 @@ export default function CheckoutPage() {
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-20">
           {/* Left column */}
           <div className="flex-1 min-w-0 space-y-10">
-
             {/* ── Step 1: Shipping form ─────────────────────────────────── */}
             {step === "form" && (
               <section>
@@ -289,7 +285,8 @@ export default function CheckoutPage() {
             {step === "payment" && (
               <section>
                 <div className="mb-6 p-3 bg-vous-cream border border-vous-border font-sans text-sm text-vous-soft-black">
-                  Pedido <strong>{orderNumber}</strong> creado. Ahora realiza la transferencia y sube tu comprobante.
+                  Pedido <strong>{orderNumber}</strong> creado. Ahora realiza la transferencia y
+                  sube tu comprobante.
                 </div>
 
                 <h2 className="font-nav text-[11px] font-semibold tracking-[0.25em] uppercase text-vous-gold mb-6">
@@ -312,9 +309,7 @@ export default function CheckoutPage() {
                     ) : (
                       <div className="w-44 h-44 bg-vous-cream border border-vous-border flex flex-col items-center justify-center gap-2 text-vous-gray">
                         <QrCode size={32} strokeWidth={1} />
-                        <span className="font-sans text-xs text-center px-2">
-                          QR no disponible
-                        </span>
+                        <span className="font-sans text-xs text-center px-2">QR no disponible</span>
                       </div>
                     )}
                   </div>
@@ -394,9 +389,7 @@ export default function CheckoutPage() {
           {/* Right column: order summary */}
           <div className="lg:w-80 shrink-0">
             <div className="bg-vous-cream p-6 sticky top-24">
-              <h2 className="font-serif text-xl text-vous-soft-black mb-6">
-                Resumen del Pedido
-              </h2>
+              <h2 className="font-serif text-xl text-vous-soft-black mb-6">Resumen del Pedido</h2>
 
               {items.length === 0 ? (
                 <p className="font-sans text-sm text-vous-gray">
@@ -469,4 +462,3 @@ export default function CheckoutPage() {
     </div>
   );
 }
-
