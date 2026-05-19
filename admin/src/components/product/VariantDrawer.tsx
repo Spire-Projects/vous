@@ -110,6 +110,7 @@ export function VariantDrawer({ product, onClose }: VariantDrawerProps) {
       </Dialog>
 
       <VariantFormDialog
+        key={editingVariant?.id ?? (formOpen ? "new" : "closed")}
         open={formOpen}
         variant={editingVariant}
         onClose={() => { setFormOpen(false); setEditingId(null); }}

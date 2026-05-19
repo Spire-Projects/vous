@@ -61,6 +61,7 @@ function mapVariant(id: string, data: Record<string, unknown>): ProductVariant {
 }
 
 export const firestoreProductRepository: ProductRepository = {
+  async findAll(): Promise<Product[]> {
     const q = query(collection(db, "products"), orderBy("createdAt", "desc"));
     const snap = await getDocs(q);
     return snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>));

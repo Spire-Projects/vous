@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,27 +14,13 @@ interface VariantFormDialogProps {
 }
 
 export function VariantFormDialog({ open, variant, onClose, onSave }: VariantFormDialogProps) {
-  const [size, setSize] = useState("");
-  const [color, setColor] = useState("");
-  const [colorHex, setColorHex] = useState("#000000");
-  const [sku, setSku] = useState("");
-  const [stock, setStock] = useState(0);
-  const [isActive, setIsActive] = useState(true);
+  const [size, setSize] = useState(variant?.size ?? "");
+  const [color, setColor] = useState(variant?.color ?? "");
+  const [colorHex, setColorHex] = useState(variant?.colorHex ?? "#000000");
+  const [sku, setSku] = useState(variant?.sku ?? "");
+  const [stock, setStock] = useState(variant?.stock ?? 0);
+  const [isActive, setIsActive] = useState(variant?.isActive ?? true);
   const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    if (variant) {
-      setSize(variant.size ?? "");
-      setColor(variant.color ?? "");
-      setColorHex(variant.colorHex ?? "#000000");
-      setSku(variant.sku ?? "");
-      setStock(variant.stock);
-      setIsActive(variant.isActive);
-    } else {
-      setSize(""); setColor(""); setColorHex("#000000");
-      setSku(""); setStock(0); setIsActive(true);
-    }
-  }, [variant, open]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
