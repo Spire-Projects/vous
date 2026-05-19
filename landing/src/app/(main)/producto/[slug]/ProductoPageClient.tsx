@@ -11,7 +11,8 @@ import type { Product } from "@/domain/entities/product.entity";
 
 export function ProductoPageClient() {
   const params = useParams();
-  const slug = typeof params.slug === "string" ? params.slug : "";
+  const slugRaw = params.slug;
+  const slug = Array.isArray(slugRaw) ? (slugRaw[0] ?? "") : (slugRaw ?? "");
 
   const [product, setProduct] = useState<Product | null>(null);
   const [related, setRelated] = useState<Product[]>([]);
@@ -19,9 +20,19 @@ export function ProductoPageClient() {
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    if (!slug) return;
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (!slug) {
+      setLoading(false);
+      setNotFound(true);
+      return;
+    }
+
     setLoading(true);
+
+    setNotFound(false);
+
+    setProduct(null);
+
+    setRelated([]);
     firestoreProductRepository
       .findBySlug(slug)
       .then(async (p) => {

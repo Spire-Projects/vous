@@ -24,7 +24,7 @@ export function RelatedProducts({ products }: RelatedProductsProps) {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-8">
         {products.map((p) => (
-          <Link key={p.id} href={`/catalogo/${p.slug}`} className="group block">
+          <Link key={p.id} href={`/producto/${p.slug}`} className="group block">
             <div className="aspect-[3/4] bg-vous-cream overflow-hidden mb-3">
               {p.images[0] ? (
                 <img

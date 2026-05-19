@@ -1,22 +1,8 @@
-import type { Metadata } from "next";
-import { ProductoPageClient } from "./ProductoPageClient";
+import { redirect } from "next/navigation";
 
-export const dynamic = "force-dynamic";
-
-export async function generateMetadata(props: {
+export default async function CatalogoProductoPage(props: {
   params: Promise<{ slug: string }> | { slug: string };
-}): Promise<Metadata> {
+}) {
   const { slug } = await Promise.resolve(props.params);
-  const name = slug
-    .split("-")
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ");
-  return {
-    title: `${name} — VOUS`,
-    description: "Descubre esta pieza en la colección VOUS.",
-  };
-}
-
-export default function ProductoPage() {
-  return <ProductoPageClient />;
+  redirect(`/producto/${slug}`);
 }
