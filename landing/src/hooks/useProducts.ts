@@ -28,12 +28,12 @@ export function useProductsByCategory(categoryId: string) {
 
   useEffect(() => {
     if (!categoryId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setProducts([]);
       setError(null);
       setLoading(false);
       return;
     }
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     getProductsByCategory(firestoreProductRepository, categoryId)
       .then(setProducts)

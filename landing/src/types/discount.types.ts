@@ -33,8 +33,5 @@ export interface Discount extends BaseDocument {
   endDate?: import("./base.types").AnyTimestamp | null;
 }
 
-export type CreateDiscountPayload = Omit<
-  Discount,
-  "id" | "createdAt" | "updatedAt" | "usedCount"
->;
+export type CreateDiscountPayload = Omit<Discount, "id" | "createdAt" | "updatedAt" | "usedCount">;
 export type UpdateDiscountPayload = Partial<CreateDiscountPayload>;

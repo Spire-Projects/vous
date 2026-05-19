@@ -10,9 +10,6 @@ export function useSiteConfig() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
-
     firestoreSiteConfigRepository
       .get()
       .then(setConfig)

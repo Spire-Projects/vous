@@ -29,8 +29,8 @@ export function ImagePicker({ value, onChange, folder = "vous/uploads", label = 
     try {
       const url = await uploadImageToCloudinary(file, folder);
       onChange(url);
-    } catch {
-      alert("Error al subir imagen. Verifica la configuración de Cloudinary.");
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Error al subir imagen. Verifica la configuración de Cloudinary.");
     } finally {
       setUploading(false);
     }

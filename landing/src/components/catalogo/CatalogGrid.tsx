@@ -1,5 +1,7 @@
-import { ProductCard, type Product } from "./ProductCard";
-import { Button } from "@/components/ui/button";
+"use client";
+
+import { useMemo, useState } from "react";
+import { ProductCard } from "./ProductCard";
 import {
   Select,
   SelectContent,
@@ -7,61 +9,39 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useProducts } from "@/hooks/useProducts";
+import type { Product } from "@/domain/entities/product.entity";
 
-const PRODUCTS: Product[] = [
-  {
-    slug: "sobretodo-lana-estructurado",
-    name: "Sobretodo de Lana Estructurado",
-    category: "Ropa de Abrigo",
-    price: "Bs. 890",
-    bg: "from-[#b8b0a4] to-[#8a8278]",
-  },
-  {
-    slug: "chaqueta-moto-esculpida",
-    name: "Chaqueta Moto Esculpida",
-    category: "Ropa de Abrigo",
-    price: "Bs. 1.250",
-    badge: "NUEVO",
-    bg: "from-[#2a2015] to-[#1a1a18]",
-  },
-  {
-    slug: "cuello-tortuga-cachemira",
-    name: "Cuello de Tortuga de Cachemira",
-    category: "Tejidos",
-    price: "Bs. 420",
-    bg: "from-[#d4cfc6] to-[#b0a898]",
-  },
-  {
-    slug: "pantalon-arquitectonico",
-    name: "Pantalón Arquitectónico",
-    category: "Pantalones",
-    price: "Bs. 340",
-    bg: "from-[#3d3d38] to-[#1a1a18]",
-  },
-  {
-    slug: "camisa-popelina-esencial",
-    name: "Camisa de Popelina Esencial",
-    category: "Camisas",
-    price: "Bs. 210",
-    bg: "from-[#fdfaf5] to-[#e8e2d8]",
-  },
-  {
-    slug: "bota-cuero-urbana",
-    name: "Bota de Cuero Urbana",
-    category: "Calzado",
-    price: "Bs. 580",
-    bg: "from-[#6b5a3a] to-[#3d2e15]",
-  },
-];
+type SortKey = "relevantes" | "precio-asc" | "precio-desc" | "nuevos";
+
+function sortProducts(products: Product[], key: SortKey): Product[] {
+  const copy = [...products];
+  if (key === "precio-asc") return copy.sort((a, b) => a.price - b.price);
+  if (key === "precio-desc") return copy.sort((a, b) => b.price - a.price);
+  if (key === "nuevos")
+    return copy.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  return copy.sort((a, b) => a.sortOrder - b.sortOrder);
+}
 
 export function CatalogGrid() {
+  const { products, loading, error } = useProducts();
+  const [sort, setSort] = useState<SortKey>("relevantes");
+
+  const sorted = useMemo(() => sortProducts(products, sort), [products, sort]);
+
   return (
     <div className="flex-1 min-w-0">
       <div className="flex items-center justify-between mb-8">
         <p className="font-sans text-sm text-vous-gray">
-          Mostrando <span className="text-vous-soft-black font-medium">6</span> de 42 productos
+          {loading ? (
+            "Cargando productos…"
+          ) : (
+            <>
+              <span className="text-vous-soft-black font-medium">{sorted.length}</span> productos
+            </>
+          )}
         </p>
-        <Select defaultValue="relevantes">
+        <Select value={sort} onValueChange={(v) => setSort(v as SortKey)}>
           <SelectTrigger className="w-48">
             <SelectValue placeholder="Ordenar por" />
           </SelectTrigger>
@@ -74,17 +54,41 @@ export function CatalogGrid() {
         </Select>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
-        {PRODUCTS.map((p) => (
-          <ProductCard key={p.slug} {...p} />
-        ))}
-      </div>
+      {loading && (
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="animate-pulse">
+              <div className="aspect-[3/4] bg-vous-gray-light/30 mb-4" />
+              <div className="h-3 bg-vous-gray-light/30 w-1/3 mb-2" />
+              <div className="h-5 bg-vous-gray-light/30 w-3/4 mb-2" />
+              <div className="h-3 bg-vous-gray-light/30 w-1/4" />
+            </div>
+          ))}
+        </div>
+      )}
 
-      <div className="mt-14 text-center">
-        <Button variant="outline" size="lg">
-          Cargar Más
-        </Button>
-      </div>
+      {error && (
+        <div className="text-center py-20">
+          <p className="font-sans text-vous-gray">{error}</p>
+        </div>
+      )}
+
+      {!loading && !error && sorted.length === 0 && (
+        <div className="text-center py-20">
+          <p className="font-serif text-2xl text-vous-soft-black">Sin productos disponibles</p>
+          <p className="font-sans text-vous-gray mt-2">
+            Vuelve pronto para descubrir nuevas piezas.
+          </p>
+        </div>
+      )}
+
+      {!loading && !error && sorted.length > 0 && (
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
+          {sorted.map((p) => (
+            <ProductCard key={p.id} {...p} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -56,8 +56,11 @@ export const firestoreProductRepository: ProductRepository = {
   },
 
   async create(input: CreateProductInput): Promise<Product> {
+    const payload = Object.fromEntries(
+      Object.entries({ ...input }).filter(([, v]) => v !== undefined)
+    );
     const docRef = await addDoc(collection(db, "products"), {
-      ...input,
+      ...payload,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     });
@@ -66,7 +69,10 @@ export const firestoreProductRepository: ProductRepository = {
   },
 
   async update(id: string, input: UpdateProductInput): Promise<void> {
-    await updateDoc(doc(db, "products", id), { ...input, updatedAt: serverTimestamp() });
+    const payload = Object.fromEntries(
+      Object.entries({ ...input }).filter(([, v]) => v !== undefined)
+    );
+    await updateDoc(doc(db, "products", id), { ...payload, updatedAt: serverTimestamp() });
   },
 
   async setActive(id: string, isActive: boolean): Promise<void> {

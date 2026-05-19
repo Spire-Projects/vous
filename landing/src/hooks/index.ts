@@ -7,3 +7,4 @@ export { useBlogPost } from "./useBlogPost";
 export { useFAQs } from "./useFaqs";
 export { useBanners } from "./useBanners";
 export { useSiteConfig } from "./useSiteConfig";
+export { useCategories } from "./useCategories";
