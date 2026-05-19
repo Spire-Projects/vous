@@ -8,21 +8,37 @@ interface CartItemProps {
   variant: string;
   price: string;
   qty: number;
-  bg: string;
+  imageUrl?: string;
   onRemove: () => void;
   onQty: (delta: number) => void;
 }
 
-export function CartItemRow({ name, variant, price, qty, bg, onRemove, onQty }: CartItemProps) {
+export function CartItemRow({
+  name,
+  variant,
+  price,
+  qty,
+  imageUrl,
+  onRemove,
+  onQty,
+}: CartItemProps) {
   return (
     <div className="flex gap-5 py-6 border-b border-vous-gray-light/40">
-      <div className={`w-24 h-32 shrink-0 bg-gradient-to-b ${bg}`} />
+      {imageUrl ? (
+        <img
+          src={imageUrl}
+          alt={name}
+          className="w-24 h-32 shrink-0 object-cover border border-vous-gray-light/30"
+        />
+      ) : (
+        <div className="w-24 h-32 shrink-0 bg-vous-cream border border-vous-gray-light/30" />
+      )}
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2">
           <div>
             <h3 className="font-serif text-lg text-vous-soft-black leading-tight">{name}</h3>
             <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mt-1">
-              Variante: {variant}
+              {variant}
             </p>
           </div>
           <Button

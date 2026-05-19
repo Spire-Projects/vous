@@ -1,17 +1,23 @@
 "use client";
 
-import { createContext, useContext, useReducer, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useReducer, useState, type ReactNode } from "react";
 import type { CartContextValue, CartItem, CartState } from "@/types/cart.types";
 import { nanoid } from "nanoid";
+
+const STORAGE_KEY = "vous_cart";
+const EMPTY_STATE: CartState = { items: [], totalItems: 0, totalPrice: 0 };
 
 type CartAction =
   | { type: "ADD_ITEM"; payload: Omit<CartItem, "id"> }
   | { type: "REMOVE_ITEM"; payload: string }
   | { type: "UPDATE_QUANTITY"; payload: { id: string; quantity: number } }
-  | { type: "CLEAR_CART" };
+  | { type: "CLEAR_CART" }
+  | { type: "HYDRATE"; payload: CartState };
 
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
+    case "HYDRATE":
+      return action.payload;
     case "ADD_ITEM": {
       const existing = state.items.find(
         (i) =>
@@ -36,7 +42,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         ),
       });
     case "CLEAR_CART":
-      return { items: [], totalItems: 0, totalPrice: 0 };
+      return EMPTY_STATE;
     default:
       return state;
   }
@@ -53,7 +59,25 @@ function computeTotals(state: CartState): CartState {
 const CartContext = createContext<CartContextValue | null>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(cartReducer, { items: [], totalItems: 0, totalPrice: 0 });
+  const [state, dispatch] = useReducer(cartReducer, EMPTY_STATE);
+  const [hydrated, setHydrated] = useState(false);
+
+  // Hydrate from localStorage after mount (avoids SSR mismatch)
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) dispatch({ type: "HYDRATE", payload: JSON.parse(raw) as CartState });
+    } catch {
+      // ignore corrupt storage
+    }
+    setHydrated(true);
+  }, []);
+
+  // Persist on every change after hydration
+  useEffect(() => {
+    if (!hydrated) return;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }, [state, hydrated]);
 
   const value: CartContextValue = {
     ...state,
