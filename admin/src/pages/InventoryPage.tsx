@@ -162,6 +162,15 @@ export function InventoryPage() {
                       {product.isFeatured && (
                         <span className="flex items-center gap-0.5 text-[10px] font-nav text-amber-500 uppercase"><Star size={10} fill="currentColor" />Destacado</span>
                       )}
+                      {product.isBestseller && (
+                        <span className="text-[10px] font-nav text-emerald-600 uppercase">Más Vendido</span>
+                      )}
+                      {product.isPreorder && (
+                        <span className="text-[10px] font-nav text-blue-600 uppercase">Preventa</span>
+                      )}
+                      {product.isSpecialCollection && (
+                        <span className="text-[10px] font-nav text-purple-600 uppercase">Col. Especial</span>
+                      )}
                     </div>
                   </TableCell>
 
@@ -190,7 +199,14 @@ export function InventoryPage() {
         )}
       </div>
 
-      <ProductFormDialog open={dialogOpen} product={editing} categories={categories} onClose={() => setDialogOpen(false)} onSave={handleSave} />
+      <ProductFormDialog
+        key={editing?.id ?? (dialogOpen ? "new" : "closed")}
+        open={dialogOpen}
+        product={editing}
+        categories={categories}
+        onClose={() => setDialogOpen(false)}
+        onSave={handleSave}
+      />
       <VariantDrawer product={variantProduct} onClose={() => setVariantProduct(null)} />
 
       {/* Product Detail Modal */}
@@ -281,6 +297,20 @@ export function InventoryPage() {
                     <p className="text-vous-gray">{preview.materials.join(", ")}</p>
                   </div>
                 )}
+                {preview.attributes && Object.keys(preview.attributes).length > 0 && (
+                  <div className="col-span-2">
+                    <p className="font-nav text-[10px] uppercase tracking-wider text-vous-gray mb-1">Atributos</p>
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
+                      {Object.entries(preview.attributes)
+                        .filter(([, v]) => v)
+                        .map(([k, v]) => (
+                          <span key={k} className="text-[11px] font-sans">
+                            <span className="text-vous-gray capitalize">{k}:</span> {v}
+                          </span>
+                        ))}
+                    </div>
+                  </div>
+                )}
                 {preview.tags && preview.tags.length > 0 && (
                   <div className="col-span-2">
                     <p className="font-nav text-[10px] uppercase tracking-wider text-vous-gray mb-1">Tags</p>
@@ -296,6 +326,9 @@ export function InventoryPage() {
                   <div className="flex gap-2 flex-wrap">
                     <Badge variant={preview.isActive ? "active" : "inactive"}>{preview.isActive ? "Activo" : "Inactivo"}</Badge>
                     {preview.isFeatured && <span className="flex items-center gap-0.5 text-[10px] font-nav text-amber-500 uppercase"><Star size={10} fill="currentColor" />Destacado</span>}
+                    {preview.isBestseller && <span className="text-[10px] font-nav text-emerald-600 uppercase">Más Vendido</span>}
+                    {preview.isPreorder && <span className="text-[10px] font-nav text-blue-600 uppercase">Preventa</span>}
+                    {preview.isSpecialCollection && <span className="text-[10px] font-nav text-purple-600 uppercase">Colección Especial</span>}
                     {preview.badge && <span className="px-1.5 py-0.5 text-[9px] font-nav uppercase tracking-wider bg-vous-black text-vous-white rounded">{preview.badge}</span>}
                   </div>
                 </div>

@@ -28,10 +28,14 @@ function mapDoc(id: string, data: Record<string, unknown>): Product {
     hasVariants: (data.hasVariants as boolean) ?? false,
     isActive: (data.isActive as boolean) ?? true,
     isFeatured: (data.isFeatured as boolean) ?? false,
+    isPreorder: (data.isPreorder as boolean) ?? false,
+    isSpecialCollection: (data.isSpecialCollection as boolean) ?? false,
+    isBestseller: (data.isBestseller as boolean) ?? false,
     isDiscounted: (data.isDiscounted as boolean) ?? false,
     discountPercentage: (data.discountPercentage as number) ?? undefined,
     stock: (data.stock as number) ?? 0,
     sortOrder: (data.sortOrder as number) ?? 0,
+    attributes: (data.attributes as Record<string, string>) ?? {},
     tags: (data.tags as string[]) ?? undefined,
     createdAt:
       (data.createdAt as { toDate?: () => Date })?.toDate?.().toISOString() ??
