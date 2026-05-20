@@ -4,6 +4,7 @@ import { getProducts } from "@/application/use-cases/product/get-products";
 import { createProduct } from "@/application/use-cases/product/create-product";
 import { updateProduct } from "@/application/use-cases/product/update-product";
 import { setProductActive } from "@/application/use-cases/product/set-product-active";
+import { deleteProduct } from "@/application/use-cases/product/delete-product";
 import type { Product, CreateProductInput, UpdateProductInput } from "@/domain/entities/product.entity";
 
 export function useProducts() {
@@ -41,5 +42,10 @@ export function useProducts() {
     await fetchProducts();
   }, [fetchProducts]);
 
-  return { products, loading, error, refetch: fetchProducts, create, update, toggleActive };
+  const remove = useCallback(async (id: string) => {
+    await deleteProduct(firestoreProductRepository, id);
+    await fetchProducts();
+  }, [fetchProducts]);
+
+  return { products, loading, error, refetch: fetchProducts, create, update, toggleActive, remove };
 }
