@@ -13,6 +13,7 @@ export interface ProductRepository {
   findByCategoryId(categoryId: string): Promise<Product[]>;
   create(input: CreateProductInput): Promise<Product>;
   update(id: string, input: UpdateProductInput): Promise<void>;
+  delete(id: string): Promise<void>;
   setActive(id: string, isActive: boolean): Promise<void>;
   findVariants(productId: string): Promise<ProductVariant[]>;
   createVariant(productId: string, input: CreateVariantInput): Promise<ProductVariant>;

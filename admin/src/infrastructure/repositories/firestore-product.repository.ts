@@ -107,6 +107,10 @@ export const firestoreProductRepository: ProductRepository = {
     await updateDoc(doc(db, "products", id), { isActive, updatedAt: serverTimestamp() });
   },
 
+  async delete(id: string): Promise<void> {
+    await deleteDoc(doc(db, "products", id));
+  },
+
   async findVariants(productId: string): Promise<ProductVariant[]> {
     const q = query(collection(db, "products", productId, "variants"), orderBy("createdAt", "asc"));
     const snap = await getDocs(q);

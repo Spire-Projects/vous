@@ -11,6 +11,9 @@ export function ProductCard({
   images,
   isDiscounted,
   discountPercentage,
+  isPreorder,
+  isSpecialCollection,
+  isBestseller,
 }: Product) {
   const coverImage = images?.[0];
   const formattedPrice = `Bs. ${price.toLocaleString("es-BO")}`;
@@ -34,6 +37,21 @@ export function ProductCard({
         {badge && (
           <span className="absolute top-3 left-3 font-nav text-[10px] font-semibold tracking-[0.15em] bg-vous-gold text-vous-soft-black px-2 py-1 z-10">
             {badge}
+          </span>
+        )}
+        {!badge && isPreorder && (
+          <span className="absolute top-3 left-3 font-nav text-[10px] font-semibold tracking-[0.15em] bg-blue-600 text-white px-2 py-1 z-10">
+            Preventa
+          </span>
+        )}
+        {!badge && !isPreorder && isSpecialCollection && (
+          <span className="absolute top-3 left-3 font-nav text-[10px] font-semibold tracking-[0.15em] bg-purple-700 text-white px-2 py-1 z-10">
+            Col. Especial
+          </span>
+        )}
+        {isBestseller && (
+          <span className="absolute bottom-10 left-3 font-nav text-[10px] font-semibold tracking-[0.15em] bg-emerald-700 text-white px-2 py-1 z-10">
+            Más Vendido
           </span>
         )}
         {isDiscounted && discountPercentage && (
