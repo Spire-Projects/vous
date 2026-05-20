@@ -163,7 +163,7 @@ export function InventoryPage() {
                         <span className="flex items-center gap-0.5 text-[10px] font-nav text-amber-500 uppercase"><Star size={10} fill="currentColor" />Destacado</span>
                       )}
                       {product.isBestseller && (
-                        <span className="text-[10px] font-nav text-emerald-600 uppercase">+ Vendido</span>
+                        <span className="text-[10px] font-nav text-emerald-600 uppercase">Más Vendido</span>
                       )}
                       {product.isPreorder && (
                         <span className="text-[10px] font-nav text-blue-600 uppercase">Preventa</span>

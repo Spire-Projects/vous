@@ -29,7 +29,7 @@ export function AttributeEditor({ value, onChange }: Props) {
   }
 
   function addCustom() {
-    const k = customKey.trim();
+    const k = customKey.trim().toLowerCase();
     if (!k || k in value) return;
     onChange({ ...value, [k]: "" });
     setCustomKey("");
