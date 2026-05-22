@@ -11,3 +11,4 @@ export { usePaymentConfig } from "./usePaymentConfig";
 export { useLandingSections } from "./useLandingSections";
 export { useDiscounts } from "./useDiscounts";
 export { useWholesaleRules } from "./useWholesaleRules";
+export { useReports } from "./useReports";
