@@ -11,3 +11,4 @@ export {
 } from "./checkout";
 export { AccountSidebar, OrderCard } from "./cuenta";
 export { WholesaleForm } from "./mayoristas";
+export { WholesaleWatermark } from "./shared/WholesaleWatermark";

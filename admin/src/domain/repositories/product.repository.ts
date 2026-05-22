@@ -31,4 +31,6 @@ export interface ProductRepository {
   createVariant(productId: string, input: CreateVariantInput): Promise<ProductVariant>;
   updateVariant(productId: string, variantId: string, input: UpdateVariantInput): Promise<void>;
   deleteVariant(productId: string, variantId: string): Promise<void>;
+  /** Ajuste manual de stock mayorista */
+  updateWholesaleStock(id: string, stock: number): Promise<void>;
 }

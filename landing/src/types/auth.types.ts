@@ -24,6 +24,8 @@ export interface UserProfile {
 export interface AuthContextValue {
   user: AuthUser | null;
   userProfile: UserProfile | null;
+  /** true cuando el usuario autenticado tiene rol wholesaler */
+  isWholesaler: boolean;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   createAccount: (

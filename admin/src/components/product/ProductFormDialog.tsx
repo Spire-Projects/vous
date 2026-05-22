@@ -64,6 +64,8 @@ export function ProductFormDialog({
   const [discountPercentage, setDiscountPercentage] = useState(
     product?.discountPercentage ?? 0,
   );
+  const [wholesaleOnly, setWholesaleOnly] = useState(product?.wholesaleOnly ?? false);
+  const [wholesaleStock, setWholesaleStock] = useState(product?.wholesaleStock ?? 0);
   const [slugManual, setSlugManual] = useState(!!product);
   const [saving, setSaving] = useState(false);
 
@@ -108,6 +110,8 @@ export function ProductFormDialog({
         isBestseller,
         isDiscounted,
         discountPercentage: isDiscounted ? discountPercentage : 0,
+        wholesaleOnly,
+        wholesaleStock: wholesaleOnly ? Math.max(0, Math.floor(wholesaleStock)) : undefined,
       });
       onClose();
     } finally {
@@ -260,6 +264,36 @@ export function ProductFormDialog({
                   className="w-28"
                   placeholder="% descuento"
                 />
+              )}
+            </div>
+            <div className="flex items-center gap-3 pt-1">
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  id="wholesaleOnly"
+                  checked={wholesaleOnly}
+                  onCheckedChange={(v) => setWholesaleOnly(v === true)}
+                />
+                <Label htmlFor="wholesaleOnly" className="mb-0">
+                  Solo mayoristas
+                </Label>
+              </div>
+              {wholesaleOnly && (
+                <div className="space-y-1">
+                  <Label className="text-[11px]">Stock Mayorista</Label>
+                  <Input
+                    type="number"
+                    min={0}
+                    value={wholesaleStock}
+                    onChange={(e) =>
+                      setWholesaleStock((prev) => {
+                        const parsed = Number(e.target.value);
+                        if (!Number.isFinite(parsed)) return prev;
+                        return Math.max(0, Math.floor(parsed));
+                      })
+                    }
+                    className="w-28"
+                  />
+                </div>
               )}
             </div>
           </section>

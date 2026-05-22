@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useProducts } from "@/hooks/useProducts";
+import { useAuthContext } from "@/context/AuthContext";
 import type { Product } from "@/domain/entities/product.entity";
 
 type SortKey = "relevantes" | "precio-asc" | "precio-desc" | "nuevos";
@@ -25,6 +26,7 @@ function sortProducts(products: Product[], key: SortKey): Product[] {
 
 export function CatalogGrid() {
   const { products, loading, error } = useProducts();
+  const { user, isWholesaler } = useAuthContext();
   const [sort, setSort] = useState<SortKey>("relevantes");
 
   const sorted = useMemo(() => sortProducts(products, sort), [products, sort]);
@@ -85,7 +87,7 @@ export function CatalogGrid() {
       {!loading && !error && sorted.length > 0 && (
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
           {sorted.map((p) => (
-            <ProductCard key={p.id} {...p} />
+            <ProductCard key={p.id} {...p} userRole={user?.role} userUid={user?.uid} />
           ))}
         </div>
       )}

@@ -1,12 +1,21 @@
 import Link from "next/link";
 import type { Product } from "@/domain/entities/product.entity";
+import type { UserRole } from "@/types/auth.types";
 import { proxyCldUrl } from "@/utils/proxyCldUrl";
+import { calculateFinalPrice } from "@/utils/calculate-price";
+import { WholesaleWatermark } from "@/components/shared/WholesaleWatermark";
+
+interface ProductCardProps extends Product {
+  userRole?: UserRole | null;
+  userUid?: string;
+}
 
 export function ProductCard({
   slug,
   name,
   categoryName,
   price,
+  wholesalePrice,
   badge,
   images,
   isDiscounted,
@@ -14,13 +23,22 @@ export function ProductCard({
   isPreorder,
   isSpecialCollection,
   isBestseller,
-}: Product) {
+  wholesaleOnly,
+  userRole,
+  userUid,
+}: ProductCardProps) {
   const coverImage = images?.[0];
-  const formattedPrice = `Bs. ${price.toLocaleString("es-BO")}`;
-  const discountedPrice =
-    isDiscounted && discountPercentage
-      ? `Bs. ${Math.round(price * (1 - discountPercentage / 100)).toLocaleString("es-BO")}`
-      : null;
+  const isWholesaler = userRole === "wholesaler";
+
+  const pricing = calculateFinalPrice(
+    { price, wholesalePrice, isDiscounted, discountPercentage },
+    { role: isWholesaler ? "wholesale" : "customer" }
+  );
+
+  const finalPriceLabel = `Bs. ${pricing.finalPrice.toLocaleString("es-BO")}`;
+  const originalPriceLabel = pricing.isDiscounted
+    ? `Bs. ${pricing.originalPrice.toLocaleString("es-BO")}`
+    : null;
 
   return (
     <Link href={`/producto/${slug}`} className="group block">
@@ -59,6 +77,14 @@ export function ProductCard({
             -{discountPercentage}%
           </span>
         )}
+        {wholesaleOnly && isWholesaler && userUid && <WholesaleWatermark userUid={userUid} />}
+        {wholesaleOnly && !isWholesaler && (
+          <div className="absolute inset-0 bg-vous-soft-black/80 flex items-center justify-center z-20">
+            <span className="font-nav text-[10px] tracking-[0.2em] uppercase text-white/80 border border-white/30 px-3 py-1.5">
+              Exclusivo Mayorista
+            </span>
+          </div>
+        )}
         <div className="absolute inset-x-0 bottom-0 bg-vous-soft-black/0 group-hover:bg-vous-soft-black/60 transition-all duration-300 flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100">
           <span className="font-nav text-[11px] font-semibold tracking-[0.15em] uppercase text-white border border-white/40 px-4 py-2">
             Vista Rápida
@@ -72,13 +98,18 @@ export function ProductCard({
         {name}
       </h3>
       <div className="flex items-center gap-2 mt-1">
-        {discountedPrice ? (
+        {originalPriceLabel ? (
           <>
-            <p className="font-sans text-sm text-vous-soft-black font-medium">{discountedPrice}</p>
-            <p className="font-sans text-xs text-vous-gray line-through">{formattedPrice}</p>
+            <p className="font-sans text-sm text-vous-soft-black font-medium">{finalPriceLabel}</p>
+            <p className="font-sans text-xs text-vous-gray line-through">{originalPriceLabel}</p>
           </>
         ) : (
-          <p className="font-sans text-sm text-vous-gray">{formattedPrice}</p>
+          <p className="font-sans text-sm text-vous-gray">{finalPriceLabel}</p>
+        )}
+        {isWholesaler && pricing.discountLabel && (
+          <span className="font-nav text-[10px] tracking-wider text-vous-gold ml-1">
+            {pricing.discountLabel}
+          </span>
         )}
       </div>
     </Link>
