@@ -110,7 +110,13 @@ export function LandingSectionFormDialog({
                 type="number"
                 min={0}
                 value={order}
-                onChange={(e) => setOrder(Number(e.target.value))}
+                onChange={(e) =>
+                  setOrder((prev) => {
+                    const parsed = Number(e.target.value);
+                    if (!Number.isFinite(parsed)) return prev;
+                    return Math.max(0, Math.floor(parsed));
+                  })
+                }
               />
             </div>
             <div className="flex items-center gap-2 pt-6">

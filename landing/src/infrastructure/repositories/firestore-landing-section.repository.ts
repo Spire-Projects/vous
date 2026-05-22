@@ -1,4 +1,4 @@
-import { collection, getDocs, doc, getDoc, query, where, orderBy } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, query, where, orderBy, documentId } from "firebase/firestore";
 import { getFirebaseDb } from "@/lib/firebase";
 import type {
   LandingSectionRepository,
@@ -48,15 +48,11 @@ async function fetchProductsByIds(ids: string[]): Promise<Product[]> {
   const db = getFirebaseDb();
   // Fetch up to 8 products; Firestore 'in' operator supports up to 30 items
   const batch = ids.slice(0, 8);
-  const results = await Promise.all(
-    batch.map(async (id) => {
-      const snap = await getDoc(doc(db, "products", id));
-      if (!snap.exists()) return null;
-      const product = mapProductDoc(snap.id, snap.data() as Record<string, unknown>);
-      return product.isActive ? product : null;
-    })
-  );
-  return results.filter((p): p is Product => p !== null);
+  const q = query(collection(db, "products"), where(documentId(), "in", batch));
+  const snap = await getDocs(q);
+  return snap.docs
+    .map((d) => mapProductDoc(d.id, d.data() as Record<string, unknown>))
+    .filter((p) => p.isActive);
 }
 
 export const firestoreLandingSectionRepository: LandingSectionRepository = {
@@ -95,8 +91,14 @@ export const firestoreLandingSectionRepository: LandingSectionRepository = {
       );
 
       return sectionsWithProducts.filter((s) => s.products.length > 0);
-    } catch {
-      // Fallback without compound index
+    } catch (err) {
+      // Only fall back to a client-side scan when the compound index is missing.
+      // Re-throw permission, network or other failures so they don't get masked.
+      const msg = err instanceof Error ? err.message : "";
+      const code = (err as { code?: string }).code ?? "";
+      const isMissingIndex = code === "failed-precondition" || msg.toLowerCase().includes("index");
+      if (!isMissingIndex) throw err;
+
       const snap = await getDocs(collection(db, "landingSections"));
       const sections = snap.docs
         .map((d) => {

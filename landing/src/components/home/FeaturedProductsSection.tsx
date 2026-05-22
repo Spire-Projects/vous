@@ -41,11 +41,7 @@ export function FeaturedProductsSection({ sections }: FeaturedProductsSectionPro
               {/* Header */}
               <div className="flex items-end justify-between mb-10 md:mb-14">
                 <div>
-                  <p
-                    className={`font-nav text-[11px] font-semibold tracking-[0.25em] uppercase mb-2 ${
-                      isDark ? "text-vous-gold" : "text-vous-gold"
-                    }`}
-                  >
+                  <p className="font-nav text-[11px] font-semibold tracking-[0.25em] uppercase mb-2 text-vous-gold">
                     {SECTION_EYEBROW[section.type]}
                   </p>
                   <h2
@@ -79,7 +75,11 @@ export function FeaturedProductsSection({ sections }: FeaturedProductsSectionPro
               <div className="mt-10 text-center md:hidden">
                 <Link
                   href={VIEW_ALL_HREF[section.type]}
-                  className="font-nav text-[11px] font-semibold tracking-[0.15em] uppercase text-vous-soft-black border-b border-vous-black/30 pb-0.5"
+                  className={`font-nav text-[11px] font-semibold tracking-[0.15em] uppercase border-b pb-0.5 transition-colors ${
+                    isDark
+                      ? "text-vous-gold border-vous-gold/50 hover:border-vous-gold"
+                      : "text-vous-soft-black border-vous-black/30 hover:border-vous-soft-black"
+                  }`}
                 >
                   Ver Todo
                 </Link>

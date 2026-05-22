@@ -32,7 +32,7 @@ const TYPE_BADGE_CLASSES: Record<string, string> = {
 };
 
 export function LandingSectionsPage() {
-  const { sections, loading, create, update, remove, toggleActive, reorder, updateProducts } =
+  const { sections, loading, error, create, update, remove, toggleActive, reorder, updateProducts } =
     useLandingSections();
   const { products } = useProducts();
 
@@ -105,6 +105,13 @@ export function LandingSectionsPage() {
           <div className="p-12 text-center text-vous-gray font-nav text-[11px] uppercase tracking-wider">
             Cargando secciones…
           </div>
+        ) : error ? (
+          <div className="p-12 text-center">
+            <p className="font-sans text-sm text-red-500">{error}</p>
+            <p className="font-sans text-xs text-vous-gray mt-1">
+              No se pudieron cargar las secciones. Revisa tu conexión e intenta de nuevo.
+            </p>
+          </div>
         ) : sections.length === 0 ? (
           <div className="p-12 text-center">
             <LayoutGrid size={32} className="mx-auto text-vous-gray-light mb-3" />
@@ -136,6 +143,8 @@ export function LandingSectionsPage() {
                         <button
                           onClick={() => handleMoveUp(index)}
                           disabled={index === 0}
+                          aria-label="Mover arriba"
+                          title="Mover arriba"
                           className="p-0.5 text-vous-gray-light hover:text-vous-black disabled:opacity-25"
                         >
                           <ChevronUp size={14} />
@@ -144,6 +153,8 @@ export function LandingSectionsPage() {
                         <button
                           onClick={() => handleMoveDown(index)}
                           disabled={index === sections.length - 1}
+                          aria-label="Mover abajo"
+                          title="Mover abajo"
                           className="p-0.5 text-vous-gray-light hover:text-vous-black disabled:opacity-25"
                         >
                           <ChevronDown size={14} />
