@@ -1,4 +1,4 @@
-import { TrendingUp, Package } from "lucide-react";
+import { Package } from "lucide-react";
 import {
   Table,
   TableHeader,

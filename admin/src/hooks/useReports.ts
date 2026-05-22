@@ -9,7 +9,7 @@ import type {
 
 export function useReports() {
   const [report, setReport] = useState<SalesReport | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const fetchReport = useCallback(
@@ -24,7 +24,9 @@ export function useReports() {
         );
         setReport(data);
       } catch (e) {
-        setError(e instanceof Error ? e.message : "Error al generar reporte");
+        setError(
+          e instanceof Error ? e.message : "Error al generar reporte",
+        );
       } finally {
         setLoading(false);
       }
@@ -33,8 +35,33 @@ export function useReports() {
   );
 
   useEffect(() => {
-    fetchReport("last_7_days");
-  }, [fetchReport]);
+    let cancelled = false;
+
+    async function load() {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await getSalesReport(
+          firestoreOrderRepository,
+          "last_7_days",
+        );
+        if (!cancelled) setReport(data);
+      } catch (e) {
+        if (!cancelled)
+          setError(
+            e instanceof Error ? e.message : "Error al generar reporte",
+          );
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    load();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return { report, loading, error, fetchReport };
 }

@@ -44,8 +44,8 @@ export function SalesChart({ data }: SalesChartProps) {
             tickFormatter={(v: number) => `Bs. ${(v / 1000).toFixed(0)}k`}
           />
           <Tooltip
-            formatter={(value: number, name: string) => [
-              name === "revenue" ? formatCurrency(value) : `${value} pedidos`,
+            formatter={(value, name) => [
+              name === "revenue" ? formatCurrency(Number(value)) : `${value} pedidos`,
               name === "revenue" ? "Ingresos" : "Pedidos",
             ]}
             contentStyle={{

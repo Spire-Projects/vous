@@ -1,4 +1,3 @@
-import type { ReportRepository } from "@/domain/repositories/report.repository";
 import type {
   SalesReport,
   ReportPeriod,
@@ -103,8 +102,6 @@ function buildChart(
     start.setDate(d.getDate() - d.getDay());
     return `Sem ${start.getDate()}`;
   };
-  const fmtMonth = (d: Date) =>
-    d.toLocaleDateString("es-BO", { month: "short" });
 
   let labelFn: (d: Date) => string;
   if (period === "today") {
