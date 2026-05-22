@@ -1,4 +1,13 @@
-import { collection, getDocs, doc, getDoc, query, where, orderBy, documentId } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  query,
+  where,
+  orderBy,
+  documentId,
+} from "firebase/firestore";
 import { getFirebaseDb } from "@/lib/firebase";
 import type {
   LandingSectionRepository,
