@@ -1,7 +1,31 @@
+"use client";
+
 import { CatalogFilters } from "@/components/catalogo/CatalogFilters";
 import { CatalogGrid } from "@/components/catalogo/CatalogGrid";
+import { useProducts } from "@/hooks/useProducts";
+import { useCategories } from "@/hooks/useCategories";
+import { useCatalogFilters } from "@/hooks/useCatalogFilters";
+import { Suspense } from "react";
 
-export default function CatalogoPage() {
+function CatalogoContent() {
+  const { products, loading, error } = useProducts();
+  const { categories } = useCategories();
+
+  const {
+    state,
+    filtered,
+    filters,
+    activeCount,
+    setQuery,
+    setCategory,
+    toggleSize,
+    toggleColor,
+    toggleMaterial,
+    setPriceRange,
+    toggleTag,
+    clearFilters,
+  } = useCatalogFilters(products, categories);
+
   return (
     <div className="bg-vous-warm-white min-h-screen">
       {/* Header */}
@@ -23,10 +47,36 @@ export default function CatalogoPage() {
       {/* Content */}
       <div className="max-w-[1440px] mx-auto px-5 md:px-20 py-12 md:py-16">
         <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
-          <CatalogFilters />
-          <CatalogGrid />
+          <CatalogFilters
+            filters={filters}
+            state={state}
+            activeCount={activeCount}
+            onQueryChange={setQuery}
+            onCategoryChange={setCategory}
+            onToggleSize={toggleSize}
+            onToggleColor={toggleColor}
+            onToggleMaterial={toggleMaterial}
+            onPriceChange={setPriceRange}
+            onToggleTag={toggleTag}
+            onClear={clearFilters}
+          />
+          <CatalogGrid products={filtered} loading={loading} error={error} />
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CatalogoPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="bg-vous-warm-white min-h-screen flex items-center justify-center">
+          <span className="inline-block w-5 h-5 border-2 border-vous-gold/30 border-t-vous-gold rounded-full animate-spin" />
+        </div>
+      }
+    >
+      <CatalogoContent />
+    </Suspense>
   );
 }

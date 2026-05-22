@@ -11,3 +11,4 @@ export { useSiteConfig } from "./useSiteConfig";
 export { useCategories } from "./useCategories";
 export { usePaymentConfig } from "./usePaymentConfig";
 export { useCheckout } from "./useCheckout";
+export { useCatalogFilters } from "./useCatalogFilters";

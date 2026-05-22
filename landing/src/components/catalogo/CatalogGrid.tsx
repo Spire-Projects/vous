@@ -9,7 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useProducts } from "@/hooks/useProducts";
 import { useAuthContext } from "@/context/AuthContext";
 import type { Product } from "@/domain/entities/product.entity";
 
@@ -24,8 +23,13 @@ function sortProducts(products: Product[], key: SortKey): Product[] {
   return copy.sort((a, b) => a.sortOrder - b.sortOrder);
 }
 
-export function CatalogGrid() {
-  const { products, loading, error } = useProducts();
+interface CatalogGridProps {
+  products: Product[];
+  loading: boolean;
+  error: string | null;
+}
+
+export function CatalogGrid({ products, loading, error }: CatalogGridProps) {
   const { user, isWholesaler } = useAuthContext();
   const [sort, setSort] = useState<SortKey>("relevantes");
 
@@ -79,7 +83,7 @@ export function CatalogGrid() {
         <div className="text-center py-20">
           <p className="font-serif text-2xl text-vous-soft-black">Sin productos disponibles</p>
           <p className="font-sans text-vous-gray mt-2">
-            Vuelve pronto para descubrir nuevas piezas.
+            Prueba ajustando los filtros o vuelve pronto.
           </p>
         </div>
       )}
