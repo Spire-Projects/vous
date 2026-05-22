@@ -33,3 +33,7 @@ export type { BannerRepository } from "./repositories/banner.repository";
 export type { SiteConfigRepository } from "./repositories/site-config.repository";
 export type { CategoryRepository } from "./repositories/category.repository";
 export type { LandingSectionRepository } from "./repositories/landing-section.repository";
+export type { Discount, DiscountType, DiscountScope, CreateDiscountInput, UpdateDiscountInput } from "./entities/discount.entity";
+export type { DiscountRepository } from "./repositories/discount.repository";
+export type { WholesaleRules, UpdateWholesaleRulesInput } from "./entities/wholesale-rules.entity";
+export type { WholesaleRulesRepository } from "./repositories/wholesale-rules.repository";

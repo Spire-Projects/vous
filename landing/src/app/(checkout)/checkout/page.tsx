@@ -27,8 +27,15 @@ export default function CheckoutPage() {
     setProofFile,
     proofError,
     uploading,
+    discountCode,
+    setDiscountCode,
+    discountAmount,
+    discountError,
+    wholesaleErrors,
+    finalTotal,
     handleProceedToPayment,
     handleSubmitProof,
+    handleApplyDiscount,
   } = useCheckout();
 
   if (step === "success") return <CheckoutSuccessStep orderNumber={orderNumber} />;
@@ -63,12 +70,13 @@ export default function CheckoutPage() {
                 submitting={creatingOrder}
                 onSubmit={handleProceedToPayment}
                 stockErrors={stockErrors}
+                wholesaleErrors={wholesaleErrors}
               />
             )}
             {step === "payment" && (
               <CheckoutPaymentStep
                 orderNumber={orderNumber}
-                subtotal={subtotal}
+                subtotal={finalTotal}
                 loadingQR={loadingQR}
                 paymentConfig={paymentConfig}
                 proofFile={proofFile}
@@ -79,7 +87,17 @@ export default function CheckoutPage() {
               />
             )}
           </div>
-          <CheckoutOrderSummary items={items} subtotal={subtotal} />
+          <CheckoutOrderSummary
+            items={items}
+            subtotal={subtotal}
+            discountCode={discountCode}
+            onDiscountCodeChange={setDiscountCode}
+            discountAmount={discountAmount}
+            discountError={discountError}
+            onApplyDiscount={handleApplyDiscount}
+            wholesaleErrors={wholesaleErrors}
+            finalTotal={finalTotal}
+          />
         </div>
       </div>
     </div>

@@ -11,6 +11,7 @@ import {
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
+import { WholesaleRulesPanel } from "@/components/wholesale/WholesaleRulesPanel";
 import { useWholesale } from "@/hooks";
 import { useAuth } from "@/context/AuthContext";
 import type { WholesaleRequest, WholesaleRequestStatus } from "@/domain/entities/wholesale.entity";
@@ -63,6 +64,7 @@ export function WholesalePage() {
   const [selected, setSelected] = useState<WholesaleRequest | null>(null);
   const [reviewLoading, setReviewLoading] = useState<string | null>(null);
   const [reviewNote, setReviewNote] = useState("");
+  const [activeTab, setActiveTab] = useState<"requests" | "rules">("requests");
 
   const filtered = requests.filter((r) => {
     const q = search.toLowerCase();
@@ -102,6 +104,36 @@ export function WholesalePage() {
         subtitle="Gestión de distribuidores VOUS — formulario oficial de clientes por mayor."
       />
 
+      {/* Tabs */}
+      <div className="flex gap-1 border-b border-vous-border">
+        <button
+          onClick={() => setActiveTab("requests")}
+          className={`px-4 py-2.5 font-nav text-[11px] uppercase tracking-wider transition-colors ${
+            activeTab === "requests"
+              ? "border-b-2 border-vous-black text-vous-black"
+              : "text-vous-gray hover:text-vous-black"
+          }`}
+        >
+          Solicitudes
+        </button>
+        <button
+          onClick={() => setActiveTab("rules")}
+          className={`px-4 py-2.5 font-nav text-[11px] uppercase tracking-wider transition-colors ${
+            activeTab === "rules"
+              ? "border-b-2 border-vous-black text-vous-black"
+              : "text-vous-gray hover:text-vous-black"
+          }`}
+        >
+          Reglas Comerciales
+        </button>
+      </div>
+
+      {activeTab === "rules" ? (
+        <div className="bg-vous-white border border-vous-border p-6">
+          <WholesaleRulesPanel />
+        </div>
+      ) : (
+        <>
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
         <StatCard label="Pendientes" value={loading ? "—" : String(pending)} />
@@ -352,6 +384,8 @@ export function WholesalePage() {
           )}
         </DialogContent>
       </Dialog>
+        </>
+      )}
     </div>
   );
 }

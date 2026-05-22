@@ -120,6 +120,11 @@ const DialogDescription = React.forwardRef<
 ));
 DialogDescription.displayName = "DialogDescription";
 
+const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn("flex items-center justify-end gap-2 mt-4", className)} {...props} />
+);
+DialogFooter.displayName = "DialogFooter";
+
 export {
   Dialog,
   DialogPortal,
@@ -128,6 +133,7 @@ export {
   DialogTrigger,
   DialogContent,
   DialogHeader,
+  DialogFooter,
   DialogTitle,
   DialogDescription,
 };

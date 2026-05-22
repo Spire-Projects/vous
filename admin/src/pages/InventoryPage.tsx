@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Plus, Pencil, MoreVertical, AlertTriangle, Eye, EyeOff, Maximize2, X, Star, Package, Trash2 } from "lucide-react";
+import { Search, Plus, Pencil, MoreVertical, AlertTriangle, Eye, EyeOff, Maximize2, X, Star, Package, Trash2, Settings2, Layers } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { StatCard } from "@/components/ui/StatCard";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ProductFormDialog } from "@/components/product/ProductFormDialog";
+import { ProductFlagsDialog } from "@/components/product/ProductFlagsDialog";
+import { CategoryDiscountDialog } from "@/components/product/CategoryDiscountDialog";
 import { VariantDrawer } from "@/components/product/VariantDrawer";
 import { ConfirmDeleteDialog } from "@/components/shared/ConfirmDeleteDialog";
 import { useProducts } from "@/hooks/useProducts";
@@ -15,7 +17,7 @@ import { useCategories } from "@/hooks/useCategories";
 import type { Product, CreateProductInput } from "@/domain/entities/product.entity";
 
 export function InventoryPage() {
-  const { products, loading, create, update, toggleActive, remove } = useProducts();
+  const { products, loading, create, update, toggleActive, remove, setFlags, applyDiscount, applyCatDiscount } = useProducts();
   const { categories } = useCategories();
   const [search, setSearch] = useState("");
   const [filterLowStock, setFilterLowStock] = useState(false);
@@ -25,6 +27,8 @@ export function InventoryPage() {
   const [previewImg, setPreviewImg] = useState<string | null>(null);
   const [variantProduct, setVariantProduct] = useState<Product | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [flagsProduct, setFlagsProduct] = useState<Product | null>(null);
+  const [categoryDiscountOpen, setCategoryDiscountOpen] = useState(false);
 
   const filtered = products.filter((p) => {
     const matchSearch = !search || p.name.toLowerCase().includes(search.toLowerCase());
@@ -53,7 +57,14 @@ export function InventoryPage() {
       <PageHeader
         title="Inventario de Productos"
         subtitle="Gestione su catálogo con precisión editorial."
-        action={<Button onClick={handleNew}><Plus size={14} strokeWidth={2} />Añadir Producto</Button>}
+        action={
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => setCategoryDiscountOpen(true)} title="Descuento por categoría">
+              <Layers size={14} strokeWidth={2} />Descuento Cat.
+            </Button>
+            <Button onClick={handleNew}><Plus size={14} strokeWidth={2} />Añadir Producto</Button>
+          </div>
+        }
       />
 
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
@@ -197,6 +208,9 @@ export function InventoryPage() {
                           <Package size={14} />
                         </Button>
                       )}
+                      <Button variant="ghost" size="icon-sm" title="Configurar marcadores" onClick={() => setFlagsProduct(product)}>
+                        <Settings2 size={14} />
+                      </Button>
                       <Button variant="ghost" size="icon-sm"><MoreVertical size={16} /></Button>
                     </div>
                   </TableCell>
@@ -222,6 +236,21 @@ export function InventoryPage() {
         description="Esta acción eliminará el producto permanentemente del catálogo. No se puede deshacer."
         onCancel={() => setConfirmDelete(null)}
         onConfirm={() => confirmDelete && handleDelete(confirmDelete)}
+      />
+
+      <ProductFlagsDialog
+        open={!!flagsProduct}
+        product={flagsProduct}
+        onClose={() => setFlagsProduct(null)}
+        onSave={setFlags}
+        onApplyDiscount={applyDiscount}
+      />
+
+      <CategoryDiscountDialog
+        open={categoryDiscountOpen}
+        categories={categories}
+        onClose={() => setCategoryDiscountOpen(false)}
+        onApply={applyCatDiscount}
       />
 
       {/* Product Detail Modal */}

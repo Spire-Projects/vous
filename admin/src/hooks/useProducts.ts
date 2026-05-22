@@ -5,7 +5,11 @@ import { createProduct } from "@/application/use-cases/product/create-product";
 import { updateProduct } from "@/application/use-cases/product/update-product";
 import { setProductActive } from "@/application/use-cases/product/set-product-active";
 import { deleteProduct } from "@/application/use-cases/product/delete-product";
+import { setProductFlags } from "@/application/use-cases/product/set-product-flags";
+import { applyProductDiscount } from "@/application/use-cases/product/apply-product-discount";
+import { applyCategoryDiscount } from "@/application/use-cases/product/apply-category-discount";
 import type { Product, CreateProductInput, UpdateProductInput } from "@/domain/entities/product.entity";
+import type { ProductFlags } from "@/domain/repositories/product.repository";
 
 export function useProducts() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -47,5 +51,20 @@ export function useProducts() {
     await fetchProducts();
   }, [fetchProducts]);
 
-  return { products, loading, error, refetch: fetchProducts, create, update, toggleActive, remove };
+  const setFlags = useCallback(async (id: string, flags: ProductFlags) => {
+    await setProductFlags(firestoreProductRepository, id, flags);
+    await fetchProducts();
+  }, [fetchProducts]);
+
+  const applyDiscount = useCallback(async (id: string, isDiscounted: boolean, discountPercentage?: number) => {
+    await applyProductDiscount(firestoreProductRepository, id, isDiscounted, discountPercentage);
+    await fetchProducts();
+  }, [fetchProducts]);
+
+  const applyCatDiscount = useCallback(async (categoryId: string, isDiscounted: boolean, discountPercentage?: number) => {
+    await applyCategoryDiscount(firestoreProductRepository, categoryId, isDiscounted, discountPercentage);
+    await fetchProducts();
+  }, [fetchProducts]);
+
+  return { products, loading, error, refetch: fetchProducts, create, update, toggleActive, remove, setFlags, applyDiscount, applyCatDiscount };
 }

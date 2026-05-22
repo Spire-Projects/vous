@@ -19,6 +19,7 @@ interface CheckoutFormStepProps {
   submitting: boolean;
   onSubmit: () => void;
   stockErrors: OutOfStockItem[];
+  wholesaleErrors?: string[];
 }
 
 const FIELDS = [
@@ -37,6 +38,7 @@ export function CheckoutFormStep({
   submitting,
   onSubmit,
   stockErrors,
+  wholesaleErrors,
 }: CheckoutFormStepProps) {
   return (
     <section>
@@ -70,6 +72,22 @@ export function CheckoutFormStep({
               <li key={e.productId} className="font-sans text-sm text-red-600">
                 <strong>{e.productName}</strong> — solicitado: {e.requested}, disponible:{" "}
                 {e.available}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {wholesaleErrors && wholesaleErrors.length > 0 && (
+        <div className="mt-4 p-4 bg-red-50 border border-red-200">
+          <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-red-600 mb-2">
+            Requisitos para compra mayorista
+          </p>
+          <ul className="space-y-1">
+            {wholesaleErrors.map((err, i) => (
+              <li key={i} className="font-sans text-sm text-red-600 flex items-start gap-1">
+                <AlertCircle size={13} className="mt-0.5 shrink-0" />
+                {err}
               </li>
             ))}
           </ul>

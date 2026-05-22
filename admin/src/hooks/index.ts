@@ -9,3 +9,5 @@ export { useSiteConfig } from "./useSiteConfig";
 export { useCategories } from "./useCategories";
 export { usePaymentConfig } from "./usePaymentConfig";
 export { useLandingSections } from "./useLandingSections";
+export { useDiscounts } from "./useDiscounts";
+export { useWholesaleRules } from "./useWholesaleRules";

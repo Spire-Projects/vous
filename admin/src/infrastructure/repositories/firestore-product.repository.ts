@@ -107,6 +107,43 @@ export const firestoreProductRepository: ProductRepository = {
     await updateDoc(doc(db, "products", id), { isActive, updatedAt: serverTimestamp() });
   },
 
+  async setFlags(id: string, flags: import("@/domain/repositories/product.repository").ProductFlags): Promise<void> {
+    const payload = Object.fromEntries(
+      Object.entries(flags).filter(([, v]) => v !== undefined)
+    );
+    await updateDoc(doc(db, "products", id), { ...payload, updatedAt: serverTimestamp() });
+  },
+
+  async applyDiscount(
+    id: string,
+    isDiscounted: boolean,
+    discountPercentage?: number
+  ): Promise<void> {
+    const product = await this.findById(id);
+    if (!product) return;
+    const discountedPrice = isDiscounted && discountPercentage
+      ? Math.max(Math.round(product.price * (1 - discountPercentage / 100)), 1)
+      : undefined;
+    await updateDoc(doc(db, "products", id), {
+      isDiscounted,
+      discountPercentage: isDiscounted ? (discountPercentage ?? 0) : 0,
+      ...(discountedPrice !== undefined ? { discountedPrice } : {}),
+      updatedAt: serverTimestamp(),
+    });
+  },
+
+  async applyCategoryDiscount(
+    categoryId: string,
+    isDiscounted: boolean,
+    discountPercentage?: number
+  ): Promise<void> {
+    const products = await this.findByCategoryId(categoryId);
+    for (const p of products) {
+      if (p.isDiscounted && isDiscounted) continue;
+      await this.applyDiscount(p.id, isDiscounted, discountPercentage);
+    }
+  },
+
   async delete(id: string): Promise<void> {
     await deleteDoc(doc(db, "products", id));
   },
