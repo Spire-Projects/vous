@@ -17,7 +17,7 @@ import { useCategories } from "@/hooks/useCategories";
 import type { Product, CreateProductInput } from "@/domain/entities/product.entity";
 
 export function InventoryPage() {
-  const { products, loading, create, update, toggleActive, remove, setFlags, applyDiscount, applyCatDiscount } = useProducts();
+  const { products, loading, create, update, toggleActive, remove, setFlags, applyDiscount, applyCatDiscount, adjustWholesaleStock } = useProducts();
   const { categories } = useCategories();
   const [search, setSearch] = useState("");
   const [filterLowStock, setFilterLowStock] = useState(false);
@@ -169,8 +169,28 @@ export function InventoryPage() {
 
                   {/* Stock */}
                   <TableCell>
-                    <span className={`font-nav text-[13px] font-semibold ${product.stock <= 5 ? "text-red-600" : "text-vous-black"}`}>{product.stock}</span>
-                    {product.stock <= 5 && <span className="ml-1.5 text-[10px] font-nav text-red-500 uppercase">CRÍTICO</span>}
+                    <div className="flex flex-col gap-0.5">
+                      <span className={`font-nav text-[13px] font-semibold ${product.stock <= 5 ? "text-red-600" : "text-vous-black"}`}>{product.stock}</span>
+                      {product.stock <= 5 && <span className="text-[10px] font-nav text-red-500 uppercase">CRÍTICO</span>}
+                      {product.wholesaleOnly && (
+                        <div className="flex items-center gap-1 mt-0.5">
+                          <span className="text-[10px] font-nav text-vous-gold uppercase">Mayorista:</span>
+                          <input
+                            type="number"
+                            min={0}
+                            defaultValue={product.wholesaleStock ?? 0}
+                            onBlur={(e) => {
+                              const val = Number(e.target.value);
+                              if (Number.isFinite(val) && val >= 0) {
+                                void adjustWholesaleStock(product.id, Math.floor(val));
+                              }
+                            }}
+                            className="w-14 text-[11px] font-sans border border-vous-border px-1 py-0.5 text-vous-black"
+                            title="Ajustar stock mayorista"
+                          />
+                        </div>
+                      )}
+                    </div>
                   </TableCell>
 
                   {/* Estado */}

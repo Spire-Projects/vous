@@ -10,6 +10,8 @@ export interface Product {
   description: string;
   detail: string;
   price: number;
+  /** Precio mayorista en BOB — solo visible a mayoristas aprobados */
+  wholesalePrice?: number;
   categoryId: string;
   categoryName: string;
   badge?: string;
@@ -25,6 +27,10 @@ export interface Product {
   isBestseller: boolean;
   isDiscounted: boolean;
   discountPercentage?: number;
+  /** Exclusivo para mayoristas aprobados */
+  wholesaleOnly?: boolean;
+  /** Stock separado para operaciones mayoristas */
+  wholesaleStock?: number;
   stock: number;
   sortOrder: number;
   attributes: Record<string, string>;

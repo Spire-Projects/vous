@@ -116,9 +116,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUserProfile(null);
   };
 
+  const isWholesaler = userProfile?.role === "wholesaler" || user?.role === "wholesaler";
+
   return (
     <AuthContext.Provider
-      value={{ user, userProfile, loading, signIn, createAccount, updateProfile, signOut }}
+      value={{
+        user,
+        userProfile,
+        isWholesaler,
+        loading,
+        signIn,
+        createAccount,
+        updateProfile,
+        signOut,
+      }}
     >
       {children}
     </AuthContext.Provider>

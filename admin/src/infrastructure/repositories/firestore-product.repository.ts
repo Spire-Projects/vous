@@ -33,6 +33,8 @@ function mapDoc(id: string, data: Record<string, unknown>): Product {
     isBestseller: (data.isBestseller as boolean) ?? false,
     isDiscounted: (data.isDiscounted as boolean) ?? false,
     discountPercentage: (data.discountPercentage as number) ?? undefined,
+    wholesaleOnly: (data.wholesaleOnly as boolean) ?? undefined,
+    wholesaleStock: (data.wholesaleStock as number) ?? undefined,
     stock: (data.stock as number) ?? 0,
     sortOrder: (data.sortOrder as number) ?? 0,
     attributes: (data.attributes as Record<string, string>) ?? {},
@@ -175,5 +177,12 @@ export const firestoreProductRepository: ProductRepository = {
 
   async deleteVariant(productId: string, variantId: string): Promise<void> {
     await deleteDoc(doc(db, "products", productId, "variants", variantId));
+  },
+
+  async updateWholesaleStock(id: string, stock: number): Promise<void> {
+    await updateDoc(doc(db, "products", id), {
+      wholesaleStock: Math.max(0, Math.floor(stock)),
+      updatedAt: serverTimestamp(),
+    });
   },
 };

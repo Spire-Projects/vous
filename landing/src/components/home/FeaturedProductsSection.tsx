@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { ProductCard } from "@/components/catalogo/ProductCard";
+import { useAuthContext } from "@/context/AuthContext";
 import type { LandingSectionWithProducts } from "@/domain/repositories/landing-section.repository";
 import type { LandingSectionType } from "@/domain/entities/landing-section.entity";
 
@@ -26,6 +29,7 @@ interface FeaturedProductsSectionProps {
 }
 
 export function FeaturedProductsSection({ sections }: FeaturedProductsSectionProps) {
+  const { user, isWholesaler } = useAuthContext();
   if (!sections.length) return null;
 
   return (
@@ -67,7 +71,12 @@ export function FeaturedProductsSection({ sections }: FeaturedProductsSectionPro
               {/* Product Grid */}
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-8">
                 {section.products.slice(0, 8).map((product) => (
-                  <ProductCard key={product.id} {...product} />
+                  <ProductCard
+                    key={product.id}
+                    {...product}
+                    userRole={user?.role}
+                    userUid={user?.uid}
+                  />
                 ))}
               </div>
 
