@@ -12,6 +12,7 @@ import {
   Layers,
   LogOut,
   Image,
+  LayoutGrid,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
@@ -25,6 +26,7 @@ const NAV_ITEMS = [
   { label: "Blog / Revista", path: "/blog", icon: FileText },
   { label: "FAQ", path: "/faq", icon: FileText },
   { label: "Banners", path: "/banners", icon: Image },
+  { label: "Secciones Landing", path: "/landing-secciones", icon: LayoutGrid },
   { label: "Descuentos", path: "/descuentos", icon: Tag },
   { label: "Reportes", path: "/reportes", icon: BarChart2 },
   { label: "Configuración", path: "/configuracion", icon: Settings },

@@ -7,3 +7,6 @@ export { firestoreFAQRepository } from "./repositories/firestore-faq.repository"
 export { firestoreBannerRepository } from "./repositories/firestore-banner.repository";
 export { firestoreSiteConfigRepository } from "./repositories/firestore-site-config.repository";
 export { firestoreCategoryRepository } from "./repositories/firestore-category.repository";
+export { firestoreLandingSectionRepository } from "./repositories/firestore-landing-section.repository";
+export { firestoreDiscountRepository } from "./repositories/firestore-discount.repository";
+export { firestoreWholesaleRulesRepository } from "./repositories/firestore-wholesale-rules.repository";

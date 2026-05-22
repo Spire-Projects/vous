@@ -1,6 +1,7 @@
 import { initializeApp, getApps, getApp as _getApp, type FirebaseApp } from "firebase/app";
 import { getAuth, type Auth } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";
+import { getFirestore as getFirestoreLite } from "firebase/firestore/lite";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -30,6 +31,14 @@ export function getFirebaseAuth(): Auth {
 }
 
 export function getFirebaseDb(): Firestore {
-  if (!_db) _db = getFirestore(getFirebaseApp());
+  if (!_db) {
+    // Use the lite SDK on the server to avoid gRPC issues in Node.js.
+    // In the browser we use the full SDK for offline persistence support.
+    if (typeof window === "undefined") {
+      _db = getFirestoreLite(getFirebaseApp()) as unknown as Firestore;
+    } else {
+      _db = getFirestore(getFirebaseApp());
+    }
+  }
   return _db;
 }

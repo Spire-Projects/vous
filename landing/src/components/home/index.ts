@@ -6,3 +6,4 @@ export { MisionSection } from "./MisionSection";
 export { ScheduleSection } from "./ScheduleSection";
 export { RevistaSection } from "./RevistaSection";
 export { FAQSection } from "./FAQSection";
+export { FeaturedProductsSection } from "./FeaturedProductsSection";

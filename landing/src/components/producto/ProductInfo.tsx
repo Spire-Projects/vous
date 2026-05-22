@@ -138,6 +138,7 @@ export function ProductInfo({ product, variants = [], variantsLoading = false }:
       image: product.images[0] ?? "",
       size: selectedSize ?? undefined,
       color: selectedColor ?? undefined,
+      categoryId: product.categoryId,
     });
     setAdded(true);
     if (addedTimerRef.current) clearTimeout(addedTimerRef.current);

@@ -6,11 +6,15 @@ import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
 import { firestoreOrderRepository } from "@/infrastructure/repositories/firestore-order.repository";
 import { firestoreProductRepository } from "@/infrastructure/repositories/firestore-product.repository";
+import { firestoreDiscountRepository } from "@/infrastructure/repositories/firestore-discount.repository";
+import { firestoreWholesaleRulesRepository } from "@/infrastructure/repositories/firestore-wholesale-rules.repository";
 import { createOrder } from "@/application/use-cases/order/create-order";
 import { validateStock, type OutOfStockItem } from "@/application/use-cases/order/validate-stock";
 import { decrementVariantStock } from "@/application/use-cases/product/decrement-variant-stock";
 import { uploadPaymentProof } from "@/application/use-cases/order/upload-payment-proof";
 import { uploadFileToCloudinary } from "@/utils/cloudinary-upload";
+import { validateDiscountCode } from "@/application/use-cases/discount/validate-discount-code";
+import { validateWholesaleCheckout } from "@/application/use-cases/wholesale/validate-wholesale-checkout";
 import type { ShippingInfo, CreateOrderInput } from "@/domain/entities/order.entity";
 import type { ShippingForm } from "@/components/checkout/CheckoutFormStep";
 
@@ -38,6 +42,10 @@ export function useCheckout() {
   const [proofFile, setProofFile] = useState<File | null>(null);
   const [proofError, setProofError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [discountCode, setDiscountCode] = useState("");
+  const [discountAmount, setDiscountAmount] = useState(0);
+  const [discountError, setDiscountError] = useState<string | null>(null);
+  const [wholesaleErrors, setWholesaleErrors] = useState<string[]>([]);
 
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
 
@@ -67,6 +75,22 @@ export function useCheckout() {
 
     setCreatingOrder(true);
     try {
+      // Validate wholesale checkout rules
+      const role = (userProfile?.role ?? "") as string;
+      const isWholesaler = role === "wholesale" || role === "wholesaler";
+      if (isWholesaler) {
+        const whResult = await validateWholesaleCheckout(firestoreWholesaleRulesRepository, {
+          subtotal: subtotal - discountAmount,
+          unitCount: items.reduce((s, i) => s + i.quantity, 0),
+          userRole: "wholesale",
+        });
+        if (!whResult.allowed) {
+          setWholesaleErrors(whResult.errors);
+          return;
+        }
+      }
+      setWholesaleErrors([]);
+
       const outOfStock = await validateStock(firestoreProductRepository, items);
       if (outOfStock.length > 0) {
         setStockErrors(outOfStock);
@@ -102,10 +126,12 @@ export function useCheckout() {
           isWholesalePrice: false,
         })),
         subtotal,
-        total: subtotal,
+        discountAmount: discountAmount > 0 ? discountAmount : undefined,
+        total: discountAmount > 0 ? subtotal - discountAmount : subtotal,
         paymentMethod: "qr",
         shippingInfo,
-        isWholesale: false,
+        isWholesale: isWholesaler,
+        discountCode: discountAmount > 0 ? discountCode : undefined,
       };
       const order = await createOrder(firestoreOrderRepository, input);
       // Decrement variant stock atomically for each variant item
@@ -142,6 +168,31 @@ export function useCheckout() {
     }
   }
 
+  async function handleApplyDiscount() {
+    if (!discountCode.trim()) return;
+    setDiscountError(null);
+    try {
+      const result = await validateDiscountCode(firestoreDiscountRepository, {
+        code: discountCode.trim(),
+        subtotal,
+        categoryIds: items.map((i) => i.categoryId).filter((id): id is string => !!id),
+        productIds: items.map((i) => i.productId),
+      });
+      if (result.valid) {
+        setDiscountAmount(result.discountAmount);
+        setDiscountError(null);
+      } else {
+        setDiscountAmount(0);
+        setDiscountError(result.error ?? "Código no válido");
+      }
+    } catch {
+      setDiscountError("Error al validar el código de descuento");
+      setDiscountAmount(0);
+    }
+  }
+
+  const finalTotal = subtotal - discountAmount;
+
   return {
     step,
     items,
@@ -156,7 +207,14 @@ export function useCheckout() {
     setProofFile,
     proofError,
     uploading,
+    discountCode,
+    setDiscountCode,
+    discountAmount,
+    discountError,
+    wholesaleErrors,
+    finalTotal,
     handleProceedToPayment,
     handleSubmitProof,
+    handleApplyDiscount,
   };
 }

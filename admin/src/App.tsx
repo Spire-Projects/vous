@@ -17,6 +17,7 @@ import { ReportsPage } from "./pages/ReportsPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { BannersPage } from "./pages/BannersPage";
 import { AdminUsersPage } from "./pages/AdminUsersPage";
+import { LandingSectionsPage } from "./pages/LandingSectionsPage";
 
 function AdminRoutes() {
   return (
@@ -32,6 +33,7 @@ function AdminRoutes() {
           <Route path="blog" element={<BlogPage />} />
           <Route path="faq" element={<FaqPage />} />
           <Route path="banners" element={<BannersPage />} />
+          <Route path="landing-secciones" element={<LandingSectionsPage />} />
           <Route path="descuentos" element={<DiscountsPage />} />
           <Route path="reportes" element={<ReportsPage />} />
           <Route path="configuracion" element={<SettingsPage />} />
