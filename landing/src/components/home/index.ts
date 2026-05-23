@@ -1,9 +1,10 @@
 export { HeroSection } from "./HeroSection";
 export { ValuesSection } from "./ValuesSection";
+export { SaleProductsSection } from "./SaleProductsSection";
 export { NewInSection } from "./NewInSection";
-export { CollectionsSection } from "./CollectionsSection";
 export { MisionSection } from "./MisionSection";
-export { ScheduleSection } from "./ScheduleSection";
+export { CollectionsSection } from "./CollectionsSection";
+export { NewsletterSection } from "./NewsletterSection";
 export { RevistaSection } from "./RevistaSection";
 export { FAQSection } from "./FAQSection";
 export { FeaturedProductsSection } from "./FeaturedProductsSection";

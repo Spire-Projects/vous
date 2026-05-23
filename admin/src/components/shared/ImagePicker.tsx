@@ -1,8 +1,7 @@
 import { useRef, useState } from "react";
 import { uploadImageToCloudinary } from "@/utils/cloudinary-upload";
-import { ImageIcon, Loader2 } from "lucide-react";
+import { ImageIcon, Loader2, Link2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 interface ImagePickerProps {
   value: string;
@@ -64,12 +63,28 @@ export function ImagePicker({ value, onChange, folder = "vous/uploads", label = 
         </Button>
       )}
       <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
-      <Input
-        type="url"
-        placeholder="O pega una URL de imagen..."
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
+
+      {/* Paste URL by button — hidden input, no text visible */}
+      <div className="flex items-center gap-2">
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={() => {
+            const pasted = prompt("Pega la URL de la imagen:");
+            if (pasted?.trim()) onChange(pasted.trim());
+          }}
+          className="font-nav text-[11px] uppercase tracking-wide text-vous-gray"
+        >
+          <Link2 size={12} className="mr-1" />
+          Pegar URL
+        </Button>
+        {value && (
+          <span className="font-nav text-[10px] text-vous-gold uppercase tracking-wide">
+            Imagen cargada
+          </span>
+        )}
+      </div>
     </div>
   );
 }

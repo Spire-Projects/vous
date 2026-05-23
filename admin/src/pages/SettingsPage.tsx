@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Save, Eye, Loader2, QrCode } from "lucide-react";
+import { Save, Loader2, QrCode } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,6 +40,7 @@ function useSettingsForm(config: SiteConfig | null) {
   const [pinterestActive, setPinterestActive] = useState(false);
   const [shippingPolicy, setShippingPolicy] = useState("");
   const [returnPolicy, setReturnPolicy] = useState("");
+  const [termsAndConditions, setTermsAndConditions] = useState("");
   const [schedule, setSchedule] = useState<ScheduleItem[]>(DEFAULT_SCHEDULE);
 
   /* eslint-disable react-hooks/set-state-in-effect */
@@ -63,6 +64,7 @@ function useSettingsForm(config: SiteConfig | null) {
     setPinterestActive(config.pinterest?.active ?? false);
     setShippingPolicy(config.shippingPolicy);
     setReturnPolicy(config.returnPolicy);
+    setTermsAndConditions(config.termsAndConditions);
     setSchedule(config.schedule?.length ? config.schedule : DEFAULT_SCHEDULE);
   }, [config]);
   /* eslint-enable react-hooks/set-state-in-effect */
@@ -83,6 +85,7 @@ function useSettingsForm(config: SiteConfig | null) {
       pinterest: { url: pinterestUrl, active: pinterestActive },
       shippingPolicy,
       returnPolicy,
+      termsAndConditions,
       schedule: schedule.filter((s) => s.hours.trim() !== ""),
     };
   }
@@ -102,6 +105,7 @@ function useSettingsForm(config: SiteConfig | null) {
     pinterestUrl, setPinterestUrl, pinterestActive, setPinterestActive,
     shippingPolicy, setShippingPolicy,
     returnPolicy, setReturnPolicy,
+    termsAndConditions, setTermsAndConditions,
     schedule, setSchedule,
     toInput,
   };
@@ -175,9 +179,6 @@ export function SettingsPage() {
         subtitle="Gestiona la identidad visual y operativa de VOUS."
         action={
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => window.open("/", "_blank")}>
-              <Eye size={14} strokeWidth={2} /> Vista Previa
-            </Button>
             <Button onClick={handleSave} disabled={saving}>
               {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} strokeWidth={2} />}
               {saving ? "Guardando..." : "Guardar Cambios"}
@@ -262,6 +263,10 @@ export function SettingsPage() {
             <div className="space-y-1">
               <Label>Política de Devoluciones</Label>
               <RichTextEditor content={form.returnPolicy} onChange={form.setReturnPolicy} />
+            </div>
+            <div className="space-y-1">
+              <Label>Términos y Condiciones</Label>
+              <RichTextEditor content={form.termsAndConditions} onChange={form.setTermsAndConditions} />
             </div>
           </div>
         </Section>

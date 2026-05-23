@@ -23,6 +23,7 @@ function mapDoc(data: Record<string, unknown>): SiteConfig {
     pinterest: (data.pinterest as SiteConfig["pinterest"]) ?? { url: "", active: false },
     shippingPolicy: (data.shippingPolicy as string) ?? "",
     returnPolicy: (data.returnPolicy as string) ?? "",
+    termsAndConditions: (data.termsAndConditions as string) ?? "",
     schedule: (data.schedule as SiteConfig["schedule"]) ?? [],
     updatedAt:
       (data.updatedAt as { toDate?: () => Date })?.toDate?.().toISOString() ??

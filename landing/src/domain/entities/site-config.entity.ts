@@ -27,6 +27,7 @@ export interface SiteConfig {
   pinterest: SocialNetwork;
   shippingPolicy: string;
   returnPolicy: string;
+  termsAndConditions: string;
   schedule: ScheduleItem[];
   updatedAt: string;
 }

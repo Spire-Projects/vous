@@ -13,17 +13,15 @@ function buildWhatsAppHref(number: string, message: string): string {
 }
 
 export function Footer() {
-  const { config } = useSiteConfig();
+  const { config, loading } = useSiteConfig();
   const year = new Date().getFullYear();
 
   const storeName = config?.storeName ?? "VOUS";
-  const tagline =
-    config?.tagline ??
-    "Moda urbana contemporánea. Exclusividad, estilo y autenticidad en cada pieza.";
-  const email = config?.email ?? "hola@vous.com.bo";
-  const address = config?.address ?? "C. Esteban Arze 1355";
+  const tagline = config?.tagline ?? "";
+  const email = config?.email ?? "vous@gmail.com";
+  const address = config?.address ?? "C. Esteban Arze 1355-1313";
   const city = config?.city ?? "Cochabamba";
-  const whatsappNumber = config?.whatsappNumber ?? "59165359595";
+  const whatsappNumber = config?.whatsappNumber ?? "+591 76435692";
   const whatsappMessage = config?.whatsappMessage ?? "";
   const whatsappHref = buildWhatsAppHref(whatsappNumber, whatsappMessage);
 
@@ -33,17 +31,20 @@ export function Footer() {
 
   return (
     <footer className="bg-vous-soft-black text-white">
-      <div className="max-w-[1440px] mx-auto px-5 md:px-20 py-16 md:py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-12 lg:gap-20 mb-12">
+      <div className="max-w-[1440px] mx-auto px-5 md:px-20 py-16 md:py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-12 lg:gap-24 mb-14">
           {/* Brand */}
-          <div className="space-y-4 max-w-[240px]">
+          <div className="space-y-5 max-w-[280px]">
             <Link
               href="/"
-              className="font-serif text-3xl font-bold tracking-[0.08em] text-white hover:text-vous-gold transition-colors"
+              className="font-serif text-3xl font-bold tracking-[0.08em] text-white hover:text-vous-gold transition-colors inline-block"
             >
               {storeName}
             </Link>
-            <p className="font-sans text-sm text-vous-gray-light leading-relaxed">{tagline}</p>
+
+            {!loading && tagline && (
+              <p className="font-sans text-sm text-vous-gray-light leading-relaxed">{tagline}</p>
+            )}
 
             {email && (
               <a
@@ -60,7 +61,7 @@ export function Footer() {
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 font-sans text-sm text-vous-gray-light hover:text-white transition-colors"
+                className="flex items-center gap-2 font-sans text-sm text-vous-gray-light hover:text-white transition-colors"
               >
                 <MessageCircle size={14} />
                 WhatsApp
@@ -72,7 +73,7 @@ export function Footer() {
                 href={mapsHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 font-sans text-sm text-vous-gray-light hover:text-white transition-colors"
+                className="flex items-center gap-2 font-sans text-sm text-vous-gray-light hover:text-white transition-colors"
               >
                 <MapPin size={14} />
                 {address}
@@ -88,7 +89,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
+        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="font-sans text-[12px] text-vous-gray tracking-wide">
             © {year} {storeName}. Todos los derechos reservados.
           </p>
