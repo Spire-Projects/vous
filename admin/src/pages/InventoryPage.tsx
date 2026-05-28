@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Plus, Pencil, MoreVertical, AlertTriangle, Eye, EyeOff, Maximize2, X, Star, Package, Trash2, Settings2, Layers } from "lucide-react";
+import { Search, Plus, Pencil, MoreVertical, AlertTriangle, Eye, EyeOff, Maximize2, X, Star, Package, Trash2, Settings2, Layers, GripVertical } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { StatCard } from "@/components/ui/StatCard";
 import { Badge } from "@/components/ui/badge";
@@ -17,7 +17,7 @@ import { useCategories } from "@/hooks/useCategories";
 import type { Product, CreateProductInput } from "@/domain/entities/product.entity";
 
 export function InventoryPage() {
-  const { products, loading, create, update, toggleActive, remove, setFlags, applyDiscount, applyCatDiscount, adjustWholesaleStock } = useProducts();
+  const { products, loading, create, update, toggleActive, remove, setFlags, applyDiscount, applyCatDiscount, adjustWholesaleStock, reorder } = useProducts();
   const { categories } = useCategories();
   const [search, setSearch] = useState("");
   const [filterLowStock, setFilterLowStock] = useState(false);
@@ -29,6 +29,7 @@ export function InventoryPage() {
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   const [flagsProduct, setFlagsProduct] = useState<Product | null>(null);
   const [categoryDiscountOpen, setCategoryDiscountOpen] = useState(false);
+  const [dragIdx, setDragIdx] = useState<number | null>(null);
 
   const filtered = products.filter((p) => {
     const matchSearch = !search || p.name.toLowerCase().includes(search.toLowerCase());
@@ -50,6 +51,16 @@ export function InventoryPage() {
   async function handleDelete(id: string) {
     await remove(id);
     setConfirmDelete(null);
+  }
+
+  function handleDrop(targetIdx: number) {
+    if (dragIdx === null || dragIdx === targetIdx) return;
+    const reordered = [...filtered];
+    const [moved] = reordered.splice(dragIdx, 1);
+    reordered.splice(targetIdx, 0, moved);
+    const ordered = reordered.map((p, i) => ({ id: p.id, sortOrder: i }));
+    reorder(ordered);
+    setDragIdx(null);
   }
 
   return (
@@ -99,22 +110,32 @@ export function InventoryPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filtered.map((product) => (
-                <TableRow key={product.id}>
+              {filtered.map((product, idx) => (
+                <TableRow
+                  key={product.id}
+                  draggable
+                  onDragStart={() => setDragIdx(idx)}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={() => handleDrop(idx)}
+                  className={dragIdx === idx ? "opacity-40" : ""}
+                >
                   {/* Thumbnail */}
                   <TableCell className="w-14">
-                    {product.images[0] ? (
-                      <button
-                        onClick={() => { setPreview(product); setPreviewImg(product.images[0]); }}
-                        className="w-11 h-11 rounded border border-vous-border overflow-hidden hover:opacity-80 transition-opacity"
-                      >
-                        <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
-                      </button>
-                    ) : (
-                      <div className="w-11 h-11 rounded border border-vous-border bg-vous-bg flex items-center justify-center">
-                        <Package size={16} className="text-vous-gray" />
-                      </div>
-                    )}
+                    <div className="flex items-center gap-1">
+                      <GripVertical size={14} className="text-vous-gray-light cursor-grab shrink-0" />
+                      {product.images[0] ? (
+                        <button
+                          onClick={() => { setPreview(product); setPreviewImg(product.images[0]); }}
+                          className="w-11 h-11 rounded border border-vous-border overflow-hidden hover:opacity-80 transition-opacity"
+                        >
+                          <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
+                        </button>
+                      ) : (
+                        <div className="w-11 h-11 rounded border border-vous-border bg-vous-bg flex items-center justify-center">
+                          <Package size={16} className="text-vous-gray" />
+                        </div>
+                      )}
+                    </div>
                   </TableCell>
 
                   {/* Producto */}

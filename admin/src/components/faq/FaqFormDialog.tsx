@@ -70,20 +70,9 @@ export function FaqFormDialog({ open, faq, onClose, onSave }: FaqFormDialogProps
             <Label>Respuesta *</Label>
             <RichTextEditor content={answer} onChange={setAnswer} />
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1">
-              <Label>Orden</Label>
-              <Input
-                type="number"
-                value={order}
-                onChange={(e) => setOrder(Number(e.target.value))}
-                min={0}
-              />
-            </div>
-            <div className="flex items-center gap-2 pt-6">
-              <Checkbox checked={isActive} onCheckedChange={(v) => setIsActive(v === true)} />
-              <Label className="mb-0">Activa</Label>
-            </div>
+          <div className="flex items-center gap-2 pt-6">
+            <Checkbox checked={isActive} onCheckedChange={(v) => setIsActive(v === true)} />
+            <Label className="mb-0">Activa</Label>
           </div>
           <div className="flex justify-end gap-3 pt-2">
             <Button type="button" variant="outline" onClick={onClose}>

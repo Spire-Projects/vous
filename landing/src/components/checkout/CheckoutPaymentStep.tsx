@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { Upload, CheckCircle, QrCode, Loader2, AlertCircle } from "lucide-react";
+import { Upload, CheckCircle, QrCode, Loader2, AlertCircle, Building2, User, CreditCard, Info } from "lucide-react";
 import type { PaymentConfig } from "@/domain/entities/payment-config.entity";
 
 interface CheckoutPaymentStepProps {
@@ -61,8 +61,40 @@ export function CheckoutPaymentStep({
           )}
         </div>
 
-        {/* Instructions + upload */}
+        {/* Bank details + instructions + upload */}
         <div className="space-y-4 flex-1">
+          {/* Bank details */}
+          {paymentConfig && (paymentConfig.bankName || paymentConfig.accountHolder || paymentConfig.accountNumber) && (
+            <div className="bg-vous-cream border border-vous-gray-light/40 p-4 space-y-2">
+              {paymentConfig.bankName && (
+                <div className="flex items-center gap-2 font-sans text-sm text-vous-soft-black">
+                  <Building2 size={15} strokeWidth={1.5} className="text-vous-gold shrink-0" />
+                  <span>{paymentConfig.bankName}</span>
+                </div>
+              )}
+              {paymentConfig.accountHolder && (
+                <div className="flex items-center gap-2 font-sans text-sm text-vous-soft-black">
+                  <User size={15} strokeWidth={1.5} className="text-vous-gold shrink-0" />
+                  <span>{paymentConfig.accountHolder}</span>
+                </div>
+              )}
+              {paymentConfig.accountNumber && (
+                <div className="flex items-center gap-2 font-sans text-sm text-vous-soft-black">
+                  <CreditCard size={15} strokeWidth={1.5} className="text-vous-gold shrink-0" />
+                  <span className="font-mono tracking-wide">{paymentConfig.accountNumber}</span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Instructions */}
+          {paymentConfig?.instructions && (
+            <div className="flex items-start gap-2 font-sans text-xs text-vous-gray bg-vous-cream/50 p-3 border border-vous-gray-light/20">
+              <Info size={14} strokeWidth={1.5} className="text-vous-gold shrink-0 mt-0.5" />
+              <span className="leading-relaxed">{paymentConfig.instructions}</span>
+            </div>
+          )}
+
           <p className="font-sans text-sm text-vous-gray leading-relaxed">
             Escanea el código QR desde tu aplicación bancaria y realiza la transferencia por el
             monto total. Una vez completado, adjunta tu comprobante de pago.

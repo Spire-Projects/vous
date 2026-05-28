@@ -290,9 +290,49 @@ export function SettingsPage() {
         <Section title="Configuración de Pagos">
           <div className="space-y-4">
             <p className="font-sans text-sm text-vous-gray">
-              Imagen del código QR que los clientes escanearán para realizar el pago por
-              transferencia bancaria. Se muestra en el checkout de la tienda.
+              Configura el QR y los datos bancarios que los clientes verán al realizar un pedido.
             </p>
+
+            {/* Bank details */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="space-y-1">
+                <Label>Nombre del Banco</Label>
+                <Input
+                  value={paymentConfig.config?.bankName ?? ""}
+                  onChange={(e) => paymentConfig.update({ bankName: e.target.value })}
+                  placeholder="Banco Mercantil Santa Cruz"
+                />
+              </div>
+              <div className="space-y-1">
+                <Label>Titular de la cuenta</Label>
+                <Input
+                  value={paymentConfig.config?.accountHolder ?? ""}
+                  onChange={(e) => paymentConfig.update({ accountHolder: e.target.value })}
+                  placeholder="VOUS S.R.L."
+                />
+              </div>
+              <div className="space-y-1">
+                <Label>Número de cuenta</Label>
+                <Input
+                  value={paymentConfig.config?.accountNumber ?? ""}
+                  onChange={(e) => paymentConfig.update({ accountNumber: e.target.value })}
+                  placeholder="1234567890"
+                />
+              </div>
+            </div>
+
+            {/* Instructions */}
+            <div className="space-y-1">
+              <Label>Instrucciones de pago</Label>
+              <Textarea
+                value={paymentConfig.config?.instructions ?? ""}
+                onChange={(e) => paymentConfig.update({ instructions: e.target.value })}
+                placeholder="Realizar la transferencia por el monto exacto y subir el comprobante. El pedido se confirma al verificar el pago."
+                rows={3}
+              />
+            </div>
+
+            {/* QR Upload */}
             <div className="flex flex-col sm:flex-row gap-6 items-start">
               <div className="space-y-1 w-full sm:w-80">
                 <Label className="flex items-center gap-1.5">
@@ -323,7 +363,7 @@ export function SettingsPage() {
             </div>
             {paymentConfig.saving && (
               <div className="flex items-center gap-2 text-vous-gray font-sans text-xs">
-                <Loader2 size={12} className="animate-spin" /> Guardando QR…
+                <Loader2 size={12} className="animate-spin" /> Guardando configuración de pagos…
               </div>
             )}
           </div>

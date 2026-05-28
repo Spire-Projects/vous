@@ -33,4 +33,6 @@ export interface ProductRepository {
   deleteVariant(productId: string, variantId: string): Promise<void>;
   /** Ajuste manual de stock mayorista */
   updateWholesaleStock(id: string, stock: number): Promise<void>;
+  /** Reordena productos en lote */
+  updateOrder(items: { id: string; sortOrder: number }[]): Promise<void>;
 }

@@ -1,6 +1,6 @@
 import {
   collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc,
-  query, orderBy, where, serverTimestamp,
+  query, orderBy, where, serverTimestamp, writeBatch,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import type { ProductRepository } from "@/domain/repositories/product.repository";
@@ -68,7 +68,7 @@ function mapVariant(id: string, data: Record<string, unknown>): ProductVariant {
 
 export const firestoreProductRepository: ProductRepository = {
   async findAll(): Promise<Product[]> {
-    const q = query(collection(db, "products"), orderBy("createdAt", "desc"));
+    const q = query(collection(db, "products"), orderBy("sortOrder", "asc"));
     const snap = await getDocs(q);
     return snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>));
   },
@@ -80,7 +80,7 @@ export const firestoreProductRepository: ProductRepository = {
   },
 
   async findByCategoryId(categoryId: string): Promise<Product[]> {
-    const q = query(collection(db, "products"), where("categoryId", "==", categoryId), orderBy("createdAt", "desc"));
+    const q = query(collection(db, "products"), where("categoryId", "==", categoryId), orderBy("sortOrder", "asc"));
     const snap = await getDocs(q);
     return snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>));
   },
@@ -184,5 +184,13 @@ export const firestoreProductRepository: ProductRepository = {
       wholesaleStock: Math.max(0, Math.floor(stock)),
       updatedAt: serverTimestamp(),
     });
+  },
+
+  async updateOrder(items: { id: string; sortOrder: number }[]): Promise<void> {
+    const batch = writeBatch(db);
+    for (const item of items) {
+      batch.update(doc(db, "products", item.id), { sortOrder: item.sortOrder });
+    }
+    await batch.commit();
   },
 };

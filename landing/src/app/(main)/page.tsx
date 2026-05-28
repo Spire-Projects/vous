@@ -1,5 +1,4 @@
 import {
-  PromoBanner,
   HeroSection,
   ValuesSection,
   NewInSection,
@@ -27,7 +26,6 @@ export default async function HomePage() {
 
   return (
     <>
-      <PromoBanner />
       <HeroSection />
       <ValuesSection />
       {sections.length > 0 && <FeaturedProductsSection sections={sections} />}

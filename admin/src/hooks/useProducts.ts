@@ -9,6 +9,7 @@ import { setProductFlags } from "@/application/use-cases/product/set-product-fla
 import { applyProductDiscount } from "@/application/use-cases/product/apply-product-discount";
 import { applyCategoryDiscount } from "@/application/use-cases/product/apply-category-discount";
 import { updateWholesaleStock } from "@/application/use-cases/product/update-wholesale-stock";
+import { setProductOrder } from "@/application/use-cases/product/set-product-order";
 import type { Product, CreateProductInput, UpdateProductInput } from "@/domain/entities/product.entity";
 import type { ProductFlags } from "@/domain/repositories/product.repository";
 
@@ -72,5 +73,10 @@ export function useProducts() {
     await fetchProducts();
   }, [fetchProducts]);
 
-  return { products, loading, error, refetch: fetchProducts, create, update, toggleActive, remove, setFlags, applyDiscount, applyCatDiscount, adjustWholesaleStock };
+  const reorder = useCallback(async (items: { id: string; sortOrder: number }[]) => {
+    await setProductOrder(firestoreProductRepository, items);
+    await fetchProducts();
+  }, [fetchProducts]);
+
+  return { products, loading, error, refetch: fetchProducts, create, update, toggleActive, remove, setFlags, applyDiscount, applyCatDiscount, adjustWholesaleStock, reorder };
 }

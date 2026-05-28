@@ -225,16 +225,6 @@ export function ProductFormDialog({
                 />
               </div>
               <div className="space-y-1">
-                <Label>Orden Visual</Label>
-                <Input
-                  type="number"
-                  min={0}
-                  value={sortOrder}
-                  onChange={(e) => setSortOrder(Number(e.target.value))}
-                  placeholder="0"
-                />
-              </div>
-              <div className="space-y-1">
                 <Label>Badge</Label>
                 <Input
                   value={badge}

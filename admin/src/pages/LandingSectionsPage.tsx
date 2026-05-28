@@ -5,10 +5,9 @@ import {
   Trash2,
   Eye,
   EyeOff,
-  ChevronUp,
-  ChevronDown,
   Package,
   LayoutGrid,
+  GripVertical,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { StatCard } from "@/components/ui/StatCard";
@@ -40,6 +39,7 @@ export function LandingSectionsPage() {
   const [editing, setEditing] = useState<LandingSection | null>(null);
   const [pickerSection, setPickerSection] = useState<LandingSection | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [dragIdx, setDragIdx] = useState<number | null>(null);
 
   const activeCount = sections.filter((s) => s.active).length;
   const totalProducts = sections.reduce((acc, s) => acc + s.productIds.length, 0);
@@ -64,18 +64,13 @@ export function LandingSectionsPage() {
     setConfirmDelete(null);
   }
 
-  async function handleMoveUp(index: number) {
-    if (index === 0) return;
+  function handleDrop(targetIdx: number) {
+    if (dragIdx === null || dragIdx === targetIdx) return;
     const reordered = [...sections];
-    [reordered[index - 1], reordered[index]] = [reordered[index], reordered[index - 1]];
-    await reorder(reordered);
-  }
-
-  async function handleMoveDown(index: number) {
-    if (index === sections.length - 1) return;
-    const reordered = [...sections];
-    [reordered[index], reordered[index + 1]] = [reordered[index + 1], reordered[index]];
-    await reorder(reordered);
+    const [moved] = reordered.splice(dragIdx, 1);
+    reordered.splice(targetIdx, 0, moved);
+    reorder(reordered);
+    setDragIdx(null);
   }
 
   const activeProducts = products.filter((p) => p.isActive);
@@ -137,28 +132,18 @@ export function LandingSectionsPage() {
                   TYPE_BADGE_CLASSES[LANDING_SECTION_TYPE_COLORS[section.type]] ??
                   TYPE_BADGE_CLASSES.amber;
                 return (
-                  <TableRow key={section.id}>
+                  <TableRow
+                    key={section.id}
+                    draggable
+                    onDragStart={() => setDragIdx(index)}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={() => handleDrop(index)}
+                    className={dragIdx === index ? "opacity-40" : ""}
+                  >
                     <TableCell>
-                      <div className="flex flex-col items-center gap-0.5">
-                        <button
-                          onClick={() => handleMoveUp(index)}
-                          disabled={index === 0}
-                          aria-label="Mover arriba"
-                          title="Mover arriba"
-                          className="p-0.5 text-vous-gray-light hover:text-vous-black disabled:opacity-25"
-                        >
-                          <ChevronUp size={14} />
-                        </button>
+                      <div className="flex items-center gap-1.5">
+                        <GripVertical size={15} className="text-vous-gray-light cursor-grab shrink-0" />
                         <span className="font-nav text-[11px] text-vous-gray">{index + 1}</span>
-                        <button
-                          onClick={() => handleMoveDown(index)}
-                          disabled={index === sections.length - 1}
-                          aria-label="Mover abajo"
-                          title="Mover abajo"
-                          className="p-0.5 text-vous-gray-light hover:text-vous-black disabled:opacity-25"
-                        >
-                          <ChevronDown size={14} />
-                        </button>
                       </div>
                     </TableCell>
                     <TableCell>

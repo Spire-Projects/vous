@@ -10,10 +10,11 @@ import { useFAQs } from "@/hooks/useFaqs";
 import type { FAQ, CreateFAQInput } from "@/domain/entities/faq.entity";
 
 export function FaqPage() {
-  const { faqs, loading, create, update, remove, toggleActive } = useFAQs();
+  const { faqs, loading, create, update, remove, toggleActive, reorder } = useFAQs();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<FAQ | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [dragIdx, setDragIdx] = useState<number | null>(null);
 
   const activeCount = faqs.filter((f) => f.isActive).length;
 
@@ -28,6 +29,15 @@ export function FaqPage() {
   async function handleDelete(id: string) {
     await remove(id);
     setConfirmDelete(null);
+  }
+
+  function handleDrop(targetIdx: number) {
+    if (dragIdx === null || dragIdx === targetIdx) return;
+    const reordered = [...faqs];
+    const [moved] = reordered.splice(dragIdx, 1);
+    reordered.splice(targetIdx, 0, moved);
+    reorder(reordered.map((f, i) => ({ id: f.id, order: i })));
+    setDragIdx(null);
   }
 
   return (
@@ -55,9 +65,16 @@ export function FaqPage() {
           </div>
         ) : (
           <div className="divide-y divide-vous-border">
-            {faqs.map((faq) => (
-              <div key={faq.id} className="flex items-start gap-3 p-4 hover:bg-vous-cream/30 transition-colors">
-                <GripVertical size={16} className="text-vous-gray-light mt-0.5 shrink-0" />
+            {faqs.map((faq, idx) => (
+              <div
+                key={faq.id}
+                draggable
+                onDragStart={() => setDragIdx(idx)}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={() => handleDrop(idx)}
+                className={`flex items-start gap-3 p-4 hover:bg-vous-cream/30 transition-colors ${dragIdx === idx ? "opacity-40" : ""}`}
+              >
+                <GripVertical size={16} className="text-vous-gray-light mt-0.5 shrink-0 cursor-grab" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <p className="font-nav text-[13px] font-semibold text-vous-black">{faq.question}</p>

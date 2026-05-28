@@ -32,7 +32,7 @@ export function CategoryFormDialog({ open, category, nextOrder, onClose, onSave 
     if (category) {
       setName(category.name); setSlug(category.slug);
       setDescription(category.description ?? ""); setImage(category.image ?? "");
-      setBanner(category.banner ?? ""); setIsActive(category.isActive); setSlugManual(true);
+      setBanner(category.banner ?? ""); setIsActive(category.isActive);
     } else {
       setName(""); setSlug(""); setDescription(""); setImage(""); setBanner(""); setIsActive(true); setSlugManual(false);
     }

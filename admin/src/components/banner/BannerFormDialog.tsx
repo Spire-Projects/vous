@@ -98,15 +98,9 @@ export function BannerFormDialog({ open, banner, onClose, onSave }: BannerFormDi
               <Input value={ctaUrl} onChange={(e) => setCtaUrl(e.target.value)} placeholder="/catalogo" />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1">
-              <Label>Orden</Label>
-              <Input type="number" value={order} onChange={(e) => setOrder(Number(e.target.value))} min={0} />
-            </div>
-            <div className="flex items-center gap-2 pt-6">
-              <Checkbox checked={active} onCheckedChange={(v) => setActive(v === true)} />
-              <Label className="mb-0">Activo</Label>
-            </div>
+          <div className="flex items-center gap-2 pt-6">
+            <Checkbox checked={active} onCheckedChange={(v) => setActive(v === true)} />
+            <Label className="mb-0">Activo</Label>
           </div>
           <div className="flex justify-end gap-3 pt-2">
             <Button type="button" variant="outline" onClick={onClose}>Cancelar</Button>

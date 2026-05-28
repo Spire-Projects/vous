@@ -5,6 +5,7 @@ import { createFAQ } from "@/application/use-cases/faq/create-faq";
 import { updateFAQ } from "@/application/use-cases/faq/update-faq";
 import { deleteFAQ } from "@/application/use-cases/faq/delete-faq";
 import { setFAQActive } from "@/application/use-cases/faq/toggle-faq-active";
+import { setFAQOrder } from "@/application/use-cases/faq/set-faq-order";
 import type { FAQ, CreateFAQInput, UpdateFAQInput } from "@/domain/entities/faq.entity";
 
 export function useFAQs() {
@@ -47,5 +48,10 @@ export function useFAQs() {
     await fetchFAQs();
   }, [fetchFAQs]);
 
-  return { faqs, loading, error, refetch: fetchFAQs, create, update, remove, toggleActive };
+  const reorder = useCallback(async (items: { id: string; order: number }[]) => {
+    await setFAQOrder(firestoreFAQRepository, items);
+    await fetchFAQs();
+  }, [fetchFAQs]);
+
+  return { faqs, loading, error, refetch: fetchFAQs, create, update, remove, toggleActive, reorder };
 }

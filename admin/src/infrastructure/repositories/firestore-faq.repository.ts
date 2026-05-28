@@ -9,6 +9,7 @@ import {
   query,
   orderBy,
   serverTimestamp,
+  writeBatch,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import type { FAQRepository } from "@/domain/repositories/faq.repository";
@@ -59,5 +60,13 @@ export const firestoreFAQRepository: FAQRepository = {
 
   async setActive(id: string, isActive: boolean): Promise<void> {
     await updateDoc(doc(db, "faqs", id), { isActive });
+  },
+
+  async updateOrder(items: { id: string; order: number }[]): Promise<void> {
+    const batch = writeBatch(db);
+    for (const item of items) {
+      batch.update(doc(db, "faqs", item.id), { order: item.order });
+    }
+    await batch.commit();
   },
 };

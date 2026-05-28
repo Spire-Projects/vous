@@ -134,6 +134,7 @@ export function useCheckout() {
         discountCode: discountAmount > 0 ? discountCode : undefined,
       };
       const order = await createOrder(firestoreOrderRepository, input);
+
       // Decrement variant stock atomically for each variant item
       await Promise.all(
         items
@@ -142,11 +143,17 @@ export function useCheckout() {
             decrementVariantStock(firestoreProductRepository, i.productId, i.variantId!, i.quantity)
           )
       );
+
       setCreatedOrderId(order.id);
       setOrderNumber(order.orderNumber);
       setStep("payment");
-    } catch {
-      setFormError("Ocurrió un error al crear el pedido. Intenta nuevamente.");
+    } catch (err) {
+      console.error("[useCheckout] Error al crear el pedido:", err);
+      setFormError(
+        err instanceof Error && err.message
+          ? err.message
+          : "Ocurrió un error al crear el pedido. Intenta nuevamente."
+      );
     } finally {
       setCreatingOrder(false);
     }

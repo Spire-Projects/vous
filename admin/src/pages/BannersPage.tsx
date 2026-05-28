@@ -10,10 +10,11 @@ import { useBanners } from "@/hooks/useBanners";
 import type { Banner, CreateBannerInput } from "@/domain/entities/banner.entity";
 
 export function BannersPage() {
-  const { banners, loading, create, update, remove, toggleActive } = useBanners();
+  const { banners, loading, create, update, remove, toggleActive, reorder } = useBanners();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<Banner | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [dragIdx, setDragIdx] = useState<number | null>(null);
 
   const activeCount = banners.filter((b) => b.active).length;
 
@@ -28,6 +29,15 @@ export function BannersPage() {
   async function handleDelete(id: string) {
     await remove(id);
     setConfirmDelete(null);
+  }
+
+  function handleDrop(targetIdx: number) {
+    if (dragIdx === null || dragIdx === targetIdx) return;
+    const reordered = [...banners];
+    const [moved] = reordered.splice(dragIdx, 1);
+    reordered.splice(targetIdx, 0, moved);
+    reorder(reordered);
+    setDragIdx(null);
   }
 
   return (
@@ -55,9 +65,16 @@ export function BannersPage() {
           </div>
         ) : (
           <div className="divide-y divide-vous-border">
-            {banners.map((banner) => (
-              <div key={banner.id} className="flex items-start gap-3 p-4 hover:bg-vous-cream/30 transition-colors">
-                <GripVertical size={16} className="text-vous-gray-light mt-0.5 shrink-0" />
+            {banners.map((banner, idx) => (
+              <div
+                key={banner.id}
+                draggable
+                onDragStart={() => setDragIdx(idx)}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={() => handleDrop(idx)}
+                className={`flex items-start gap-3 p-4 hover:bg-vous-cream/30 transition-colors ${dragIdx === idx ? "opacity-40" : ""}`}
+              >
+                <GripVertical size={16} className="text-vous-gray-light mt-0.5 shrink-0 cursor-grab" />
                 <div className="shrink-0 w-24 h-16 overflow-hidden border border-vous-border">
                   {banner.imageUrl ? (
                     <img src={banner.imageUrl} alt={banner.title} className="w-full h-full object-cover" />

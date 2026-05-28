@@ -101,36 +101,17 @@ export function LandingSectionFormDialog({
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <div className="flex-1 space-y-1.5">
-              <Label className="font-nav text-[11px] uppercase tracking-wider">
-                Orden de aparición
-              </Label>
-              <Input
-                type="number"
-                min={0}
-                value={order}
-                onChange={(e) =>
-                  setOrder((prev) => {
-                    const parsed = Number(e.target.value);
-                    if (!Number.isFinite(parsed)) return prev;
-                    return Math.max(0, Math.floor(parsed));
-                  })
-                }
-              />
-            </div>
-            <div className="flex items-center gap-2 pt-6">
-              <input
-                type="checkbox"
-                id="active-check"
-                checked={active}
-                onChange={(e) => setActive(e.target.checked)}
-                className="accent-vous-gold"
-              />
-              <Label htmlFor="active-check" className="font-nav text-[11px] uppercase tracking-wider cursor-pointer">
-                Activa
-              </Label>
-            </div>
+          <div className="flex items-center gap-2 pt-4">
+            <input
+              type="checkbox"
+              id="active-check"
+              checked={active}
+              onChange={(e) => setActive(e.target.checked)}
+              className="accent-vous-gold"
+            />
+            <Label htmlFor="active-check" className="font-nav text-[11px] uppercase tracking-wider cursor-pointer">
+              Activa
+            </Label>
           </div>
 
           <div className="flex gap-3 pt-1">

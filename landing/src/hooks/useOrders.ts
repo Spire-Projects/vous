@@ -37,7 +37,7 @@ export function useOrders(userId: string | null) {
       },
       () => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
-        setError("Error al cargar los pedidos");
+        setError("No pudimos cargar tus pedidos en este momento. Por favor, intentá de nuevo más tarde.");
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setLoading(false);
       }
