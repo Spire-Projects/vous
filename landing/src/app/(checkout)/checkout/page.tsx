@@ -1,7 +1,7 @@
 "use client";
 
 import { Shield } from "lucide-react";
-import Link from "next/link";
+import { HeaderLogo } from "@/components/layout/Header/HeaderLogo";
 import { usePaymentConfig } from "@/hooks/usePaymentConfig";
 import { useCheckout } from "@/hooks/useCheckout";
 import {
@@ -44,12 +44,7 @@ export default function CheckoutPage() {
     <div className="bg-vous-warm-white min-h-screen">
       <div className="border-b border-vous-gray-light/40 py-4 px-5 md:px-20">
         <div className="max-w-[1440px] mx-auto flex items-center justify-between">
-          <Link
-            href="/"
-            className="font-serif text-2xl font-bold tracking-[0.08em] text-vous-soft-black"
-          >
-            VOUS
-          </Link>
+          <HeaderLogo />
           <div className="flex items-center gap-2 font-sans text-xs text-vous-gray">
             <Shield size={13} className="text-vous-gold" />
             Pago Seguro

@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useSiteConfig } from "@/hooks/useSiteConfig";
+import { buildWhatsAppHref } from "@/lib/whatsapp";
 import { FAQSection } from "@/components/home/FAQSection";
 
 const VALUES = [
@@ -25,12 +26,6 @@ const VALUES = [
   },
 ] as const;
 
-function buildWhatsAppHref(number: string, message: string): string {
-  const clean = number.replace(/\D/g, "");
-  const encoded = encodeURIComponent(message || "Hola, tengo una consulta");
-  return `https://wa.me/${clean}?text=${encoded}`;
-}
-
 export function NosotrosPage() {
   const { config } = useSiteConfig();
 
@@ -42,7 +37,19 @@ export function NosotrosPage() {
   const whatsappHref = buildWhatsAppHref(whatsappNumber ?? "", whatsappMessage ?? "");
   const addressLine = config?.address;
   const city = config?.city;
+  const googleMapsUrl = config?.googleMapsUrl;
   const schedule = config?.schedule?.length ? config.schedule : [];
+
+  function buildMapsEmbedUrl(url: string): string | null {
+    if (!url) return null;
+    const coordMatch = url.match(/@(-?\d+\.?\d*),(-?\d+\.?\d*)/);
+    if (coordMatch) {
+      return `https://maps.google.com/maps?q=${coordMatch[1]},${coordMatch[2]}&z=17&output=embed`;
+    }
+    return `https://maps.google.com/maps?q=${encodeURIComponent(url)}&output=embed`;
+  }
+
+  const mapsEmbedUrl = googleMapsUrl ? buildMapsEmbedUrl(googleMapsUrl) : null;
 
   return (
     <>
@@ -217,14 +224,28 @@ export function NosotrosPage() {
               )}
             </div>
             <div className="relative aspect-video bg-vous-cream border border-vous-gray-light/40 overflow-hidden">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center p-8">
-                  <MapPin size={40} strokeWidth={1} className="text-vous-gold mx-auto mb-4" />
-                  <p className="font-nav text-[10px] tracking-[0.2em] uppercase text-vous-gray">
-                    Visualizar Mapa
-                  </p>
+              {mapsEmbedUrl ? (
+                <iframe
+                  src={mapsEmbedUrl}
+                  width="100%"
+                  height="100%"
+                  className="absolute inset-0"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Ubicación de VOUS"
+                />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center p-8">
+                    <MapPin size={40} strokeWidth={1} className="text-vous-gold mx-auto mb-4" />
+                    <p className="font-nav text-[10px] tracking-[0.2em] uppercase text-vous-gray">
+                      Visualizar Mapa
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

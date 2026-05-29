@@ -13,37 +13,32 @@ export function useOrders(userId: string | null) {
     if (!userId) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setOrders([]);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+
       setError(null);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+
       setLoading(false);
       return;
     }
 
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setOrders([]);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     setError(null);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+
     setLoading(true);
 
-    const unsubscribe = firestoreOrderRepository.subscribeToUserOrders(
-      userId,
-      (data) => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
+    firestoreOrderRepository
+      .findByUser(userId)
+      .then((data) => {
+        data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         setOrders(data);
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setLoading(false);
-      },
-      () => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setError("No pudimos cargar tus pedidos en este momento. Por favor, intentá de nuevo más tarde.");
-        // eslint-disable-next-line react-hooks/set-state-in-effect
+      })
+      .catch(() => {
+        setError(
+          "No pudimos cargar tus pedidos en este momento. Por favor, intentá de nuevo más tarde."
+        );
         setLoading(false);
-      }
-    );
-
-    return unsubscribe;
+      });
   }, [userId]);
 
   return { orders, loading, error };

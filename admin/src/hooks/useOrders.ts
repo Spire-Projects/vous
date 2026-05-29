@@ -38,8 +38,8 @@ export function useOrders() {
   }, []);
 
   const cancelWithStockRestore = useCallback(
-    async (orderId: string, adminNotes?: string) => {
-      await cancelOrderRestoreStock(firestoreOrderRepository, orderId, adminNotes);
+    async (orderId: string, note: string) => {
+      await cancelOrderRestoreStock(firestoreOrderRepository, orderId, note);
     },
     []
   );

@@ -46,7 +46,7 @@ export function FeaturedProductsSection({ sections }: FeaturedProductsSectionPro
               <div className="flex items-end justify-between mb-10 md:mb-14">
                 <div>
                   <p className="font-nav text-[11px] font-semibold tracking-[0.25em] uppercase mb-2 text-vous-gold">
-                    {SECTION_EYEBROW[section.type]}
+                    {section.customType || SECTION_EYEBROW[section.type]}
                   </p>
                   <h2
                     className={`font-serif text-4xl md:text-5xl font-medium ${

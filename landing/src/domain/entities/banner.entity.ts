@@ -8,6 +8,7 @@ export interface Banner {
   subtitle: string;
   ctaText: string;
   ctaUrl: string;
+  categorySlug?: string;
   active: boolean;
   order: number;
   createdAt: string;

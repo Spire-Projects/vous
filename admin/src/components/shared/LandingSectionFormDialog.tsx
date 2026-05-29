@@ -10,14 +10,6 @@ import type {
 } from "@/domain/entities/landing-section.entity";
 import { LANDING_SECTION_TYPE_LABELS } from "@/domain/entities/landing-section.entity";
 
-interface LandingSectionFormDialogProps {
-  open: boolean;
-  section: LandingSection | null;
-  nextOrder: number;
-  onClose: () => void;
-  onSave: (data: CreateLandingSectionInput) => Promise<void>;
-}
-
 const SECTION_TYPES: LandingSectionType[] = [
   "featured",
   "new_arrivals",
@@ -25,6 +17,14 @@ const SECTION_TYPES: LandingSectionType[] = [
   "special_collection",
   "bestseller",
 ];
+
+interface LandingSectionFormDialogProps {
+  open: boolean;
+  section: LandingSection | null;
+  nextOrder: number;
+  onClose: () => void;
+  onSave: (data: CreateLandingSectionInput) => Promise<void>;
+}
 
 export function LandingSectionFormDialog({
   open,
@@ -35,20 +35,23 @@ export function LandingSectionFormDialog({
 }: LandingSectionFormDialogProps) {
   const [name, setName] = useState(section?.name ?? "");
   const [type, setType] = useState<LandingSectionType>(section?.type ?? "featured");
+  const [customType, setCustomType] = useState(section?.customType ?? "");
+  const [isCustom, setIsCustom] = useState(!!section?.customType);
   const [active, setActive] = useState(section?.active ?? true);
-  const [order, setOrder] = useState(section?.order ?? nextOrder);
   const [saving, setSaving] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!name.trim()) return;
+    if (isCustom && !customType.trim()) return;
     setSaving(true);
     try {
       await onSave({
         name: name.trim(),
         type,
+        customType: isCustom ? customType.trim() : undefined,
         active,
-        order,
+        order: section?.order ?? nextOrder,
         productIds: section?.productIds ?? [],
       });
       onClose();
@@ -85,20 +88,42 @@ export function LandingSectionFormDialog({
                 <button
                   key={t}
                   type="button"
-                  onClick={() => setType(t)}
+                  onClick={() => { setType(t); setIsCustom(false); }}
                   className={`flex items-center gap-2 px-3 py-2 border text-left text-[12px] font-sans transition-colors ${
-                    type === t
+                    type === t && !isCustom
                       ? "border-vous-gold bg-vous-gold/10 text-vous-black"
                       : "border-vous-border text-vous-gray hover:border-vous-gold/50"
                   }`}
                 >
                   <span
-                    className={`w-2 h-2 rounded-full shrink-0 ${type === t ? "bg-vous-gold" : "bg-vous-gray-light"}`}
+                    className={`w-2 h-2 rounded-full shrink-0 ${type === t && !isCustom ? "bg-vous-gold" : "bg-vous-gray-light"}`}
                   />
                   {LANDING_SECTION_TYPE_LABELS[t]}
                 </button>
               ))}
+              <button
+                type="button"
+                onClick={() => setIsCustom(true)}
+                className={`flex items-center gap-2 px-3 py-2 border text-left text-[12px] font-sans transition-colors ${
+                  isCustom
+                    ? "border-vous-gold bg-vous-gold/10 text-vous-black"
+                    : "border-vous-border text-vous-gray hover:border-vous-gold/50"
+                }`}
+              >
+                <span className={`w-2 h-2 rounded-full shrink-0 ${isCustom ? "bg-vous-gold" : "bg-vous-gray-light"}`} />
+                Personalizado
+              </button>
             </div>
+            {isCustom && (
+              <div className="pt-2">
+                <Input
+                  value={customType}
+                  onChange={(e) => setCustomType(e.target.value)}
+                  placeholder="Nombre del tipo personalizado"
+                  required={isCustom}
+                />
+              </div>
+            )}
           </div>
 
           <div className="flex items-center gap-2 pt-4">
@@ -109,7 +134,10 @@ export function LandingSectionFormDialog({
               onChange={(e) => setActive(e.target.checked)}
               className="accent-vous-gold"
             />
-            <Label htmlFor="active-check" className="font-nav text-[11px] uppercase tracking-wider cursor-pointer">
+            <Label
+              htmlFor="active-check"
+              className="font-nav text-[11px] uppercase tracking-wider cursor-pointer"
+            >
               Activa
             </Label>
           </div>

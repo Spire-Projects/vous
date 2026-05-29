@@ -15,6 +15,7 @@ import {
   LayoutGrid,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import { useSiteConfig } from "../../hooks/useSiteConfig";
 
 const NAV_ITEMS = [
   { label: "Dashboard", path: "/", icon: LayoutDashboard },
@@ -34,7 +35,11 @@ const NAV_ITEMS = [
 
 export function AdminSidebar() {
   const { user, logout } = useAuth();
+  const { config } = useSiteConfig();
   const navigate = useNavigate();
+
+  const storeName = config?.storeName ?? "VOUS";
+  const logoUrl = config?.logoUrl;
 
   async function handleLogout() {
     await logout();
@@ -44,10 +49,16 @@ export function AdminSidebar() {
   return (
     <aside className="fixed top-0 left-0 h-full w-64 bg-[#1A1A1A] text-white flex flex-col z-40">
       <div className="px-6 py-6 border-b border-white/10">
-        <p className="font-['Bodoni_Moda'] text-xl tracking-widest text-white">VOUS</p>
-        <p className="text-[11px] font-['Montserrat'] tracking-[0.2em] uppercase text-[#C9A84C] mt-1">
-          Admin Portal
-        </p>
+        <div className="flex flex-col items-center">
+          {logoUrl ? (
+            <img src={logoUrl} alt={storeName} className="h-9 w-auto object-contain" />
+          ) : (
+            <p className="font-['Bodoni_Moda'] text-xl tracking-widest text-white">{storeName}</p>
+          )}
+          <p className="text-[11px] font-['Montserrat'] tracking-[0.2em] uppercase text-[#C9A84C] mt-1">
+            Admin Portal
+          </p>
+        </div>
       </div>
 
       <nav className="flex-1 overflow-y-auto py-4">

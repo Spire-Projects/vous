@@ -6,13 +6,8 @@ import { Heart, ShoppingBag, MessageCircle, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCartContext } from "@/context/CartContext";
 import { useSiteConfig } from "@/hooks/useSiteConfig";
+import { buildWhatsAppHref } from "@/lib/whatsapp";
 import type { Product, ProductVariant } from "@/domain/entities/product.entity";
-
-function buildWhatsAppHref(number: string, message: string): string {
-  const clean = number.replace(/\D/g, "");
-  const encoded = encodeURIComponent(message || "Hola, tengo una consulta");
-  return `https://wa.me/${clean}?text=${encoded}`;
-}
 
 /** Mapea el texto del badge al estilo de color correspondiente */
 function badgeStyle(badge: string): string {

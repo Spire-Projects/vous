@@ -7,4 +7,5 @@ export interface ProductRepository {
   findByCategory(categoryId: string): Promise<Product[]>;
   findVariants(productId: string): Promise<ProductVariant[]>;
   decrementVariantStock(productId: string, variantId: string, quantity: number): Promise<void>;
+  decrementStock(productId: string, quantity: number): Promise<void>;
 }

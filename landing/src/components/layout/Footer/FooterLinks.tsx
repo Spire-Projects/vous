@@ -14,9 +14,8 @@ const FOOTER_SECTIONS = [
   {
     title: "Ayuda",
     links: [
-      { href: "/contacto", label: "Contacto" },
-      { href: "/preguntas-frecuentes", label: "Preguntas Frecuentes" },
       { href: "/politica-de-envios", label: "Política de Envíos" },
+      { href: "/politica-de-devoluciones", label: "Política de Devoluciones" },
       { href: "/terminos", label: "Términos y Condiciones" },
     ],
   },

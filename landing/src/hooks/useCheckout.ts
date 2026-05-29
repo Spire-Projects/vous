@@ -11,6 +11,7 @@ import { firestoreWholesaleRulesRepository } from "@/infrastructure/repositories
 import { createOrder } from "@/application/use-cases/order/create-order";
 import { validateStock, type OutOfStockItem } from "@/application/use-cases/order/validate-stock";
 import { decrementVariantStock } from "@/application/use-cases/product/decrement-variant-stock";
+import { decrementStock } from "@/application/use-cases/product/decrement-stock";
 import { uploadPaymentProof } from "@/application/use-cases/order/upload-payment-proof";
 import { uploadFileToCloudinary } from "@/utils/cloudinary-upload";
 import { validateDiscountCode } from "@/application/use-cases/discount/validate-discount-code";
@@ -135,13 +136,18 @@ export function useCheckout() {
       };
       const order = await createOrder(firestoreOrderRepository, input);
 
-      // Decrement variant stock atomically for each variant item
+      // Decrement stock for variant items and non-variant items
       await Promise.all(
-        items
-          .filter((i) => i.variantId)
-          .map((i) =>
-            decrementVariantStock(firestoreProductRepository, i.productId, i.variantId!, i.quantity)
-          )
+        items.map((i) =>
+          i.variantId
+            ? decrementVariantStock(
+                firestoreProductRepository,
+                i.productId,
+                i.variantId,
+                i.quantity
+              )
+            : decrementStock(firestoreProductRepository, i.productId, i.quantity)
+        )
       );
 
       setCreatedOrderId(order.id);

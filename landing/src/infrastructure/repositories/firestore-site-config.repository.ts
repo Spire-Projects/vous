@@ -17,12 +17,14 @@ function mapDoc(data: Record<string, unknown>): SiteConfig {
     email: (data.email as string) ?? "",
     address: (data.address as string) ?? "",
     city: (data.city as string) ?? "",
+    googleMapsUrl: (data.googleMapsUrl as string) ?? "",
     instagram: (data.instagram as SiteConfig["instagram"]) ?? { url: "", active: false },
     tiktok: (data.tiktok as SiteConfig["tiktok"]) ?? { url: "", active: false },
     facebook: (data.facebook as SiteConfig["facebook"]) ?? { url: "", active: false },
     pinterest: (data.pinterest as SiteConfig["pinterest"]) ?? { url: "", active: false },
     shippingPolicy: (data.shippingPolicy as string) ?? "",
     returnPolicy: (data.returnPolicy as string) ?? "",
+    termsOfService: (data.termsOfService as string) ?? "",
     schedule: (data.schedule as SiteConfig["schedule"]) ?? [],
     updatedAt:
       (data.updatedAt as { toDate?: () => Date })?.toDate?.().toISOString() ??

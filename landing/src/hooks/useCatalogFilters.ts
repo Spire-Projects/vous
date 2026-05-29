@@ -152,14 +152,21 @@ function applyFilters(products: Product[], state: CatalogFilterState): Product[]
   });
 }
 
+function resolveCategoryId(raw: string | null, categories: Category[]): string | null {
+  if (!raw) return null;
+  const match = categories.find((c) => c.slug === raw || c.id === raw);
+  return match ? match.id : raw;
+}
+
 export function useCatalogFilters(products: Product[], categories: Category[]) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [state, setState] = useState<CatalogFilterState>(() =>
-    stateFromParams(new URLSearchParams(searchParams.toString()))
-  );
+  const [state, setState] = useState<CatalogFilterState>(() => {
+    const raw = stateFromParams(new URLSearchParams(searchParams.toString()));
+    return { ...raw, categoryId: resolveCategoryId(raw.categoryId, categories) };
+  });
 
   // Sync state → URL (debounced by React batching)
   useEffect(() => {

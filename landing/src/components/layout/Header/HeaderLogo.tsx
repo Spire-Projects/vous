@@ -15,7 +15,7 @@ export function HeaderLogo() {
       aria-label={`${storeName} — Inicio`}
     >
       {logoUrl ? (
-        <img src={logoUrl} alt={storeName} className="h-8 w-auto object-contain" />
+        <img src={logoUrl} alt={storeName} className="h-10 w-auto object-contain" />
       ) : (
         storeName
       )}

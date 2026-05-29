@@ -71,7 +71,7 @@ export function FAQSection() {
         </div>
 
         {/* Accordion */}
-        <div className="max-w-3xl space-y-3">
+        <div className="max-w-3xl mx-auto space-y-3">
           {faqs.map((faq) => {
             const isOpen = openId === faq.id;
             return (

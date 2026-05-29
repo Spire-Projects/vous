@@ -8,6 +8,7 @@ import {
   DialogOverlay,
   DialogClose,
   DialogContentRaw,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { motion, AnimatePresence } from "framer-motion";
 import { clsx } from "clsx";
@@ -43,6 +44,7 @@ export function MobileDrawer({ open, onClose, pathname = "/" }: MobileDrawerProp
                   className="fixed top-0 left-0 bottom-0 z-50 w-[80vw] max-w-[320px] bg-vous-cream flex flex-col"
                   aria-label="Menú de navegación"
                 >
+                  <DialogTitle className="sr-only">Menú de navegación</DialogTitle>
                   <div className="flex items-center justify-between px-6 py-5 border-b border-vous-gray-light/50">
                     <span className="font-serif text-2xl font-bold tracking-[0.08em] text-vous-soft-black">
                       VOUS

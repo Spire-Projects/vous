@@ -26,9 +26,10 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "VOUS — Moda Urbana Contemporánea",
+  title: "VOUS",
   description:
     "Descubre la nueva colección de VOUS. Moda urbana premium con identidad latinoamericana.",
+  icons: { icon: "/icon.svg", apple: "/icon.svg" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

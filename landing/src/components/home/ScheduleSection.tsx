@@ -1,12 +1,7 @@
 "use client";
 
 import { useSiteConfig } from "@/hooks/useSiteConfig";
-
-function buildWhatsAppHref(number: string, message: string): string {
-  const clean = number.replace(/\D/g, "");
-  const encoded = encodeURIComponent(message || "Hola, tengo una consulta");
-  return `https://wa.me/${clean}?text=${encoded}`;
-}
+import { buildWhatsAppHref } from "@/lib/whatsapp";
 
 export function ScheduleSection() {
   const { config } = useSiteConfig();

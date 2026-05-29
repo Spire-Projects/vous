@@ -3,3 +3,7 @@ export { OrderCard } from "./OrderCard";
 export { OrderStatusBadge } from "./OrderStatusBadge";
 export { OrderStatusTimeline } from "./OrderStatusTimeline";
 export { OrderDetailModal } from "./OrderDetailModal";
+export { TabPerfil } from "./TabPerfil";
+export { TabPedidos } from "./TabPedidos";
+export { TabMayorista } from "./TabMayorista";
+export { TabDirecciones } from "./TabDirecciones";

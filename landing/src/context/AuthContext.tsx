@@ -10,7 +10,13 @@ import {
 } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { getFirebaseAuth, getFirebaseDb } from "@/lib/firebase";
-import type { AuthContextValue, AuthUser, UserProfile, UserRole } from "@/types/auth.types";
+import type {
+  AuthContextValue,
+  AuthUser,
+  UserProfile,
+  UserRole,
+  UserAddress,
+} from "@/types/auth.types";
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
@@ -43,6 +49,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               phone: data["phone"] ?? null,
               departamento: data["departamento"] ?? null,
               birthDate: data["birthDate"] ?? null,
+              address: data["address"] ?? null,
+              city: data["city"] ?? null,
+              addressDetails: data["addressDetails"] ?? null,
+              mapsLink: data["mapsLink"] ?? null,
+              addresses: (data["addresses"] as UserProfile["addresses"]) ?? [],
               role: data["role"] ?? "customer",
               createdAt: data["createdAt"]?.toDate?.()?.toISOString() ?? null,
               updatedAt: data["updatedAt"]?.toDate?.()?.toISOString() ?? null,
@@ -98,7 +109,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const updateProfile = async (
-    data: Partial<Pick<UserProfile, "name" | "phone" | "departamento" | "birthDate">>
+    data: Partial<
+      Pick<
+        UserProfile,
+        | "name"
+        | "phone"
+        | "departamento"
+        | "birthDate"
+        | "address"
+        | "city"
+        | "addressDetails"
+        | "mapsLink"
+      >
+    >
   ) => {
     if (!user) return;
     const ref = doc(getFirebaseDb(), "users", user.uid);
@@ -108,6 +131,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (currentUser) await fbUpdateProfile(currentUser, { displayName: data.name });
     }
     setUserProfile((prev) => (prev ? { ...prev, ...data } : prev));
+  };
+
+  const updateAddresses = async (addresses: UserAddress[]) => {
+    if (!user) return;
+    const ref = doc(getFirebaseDb(), "users", user.uid);
+    await updateDoc(ref, { addresses, updatedAt: serverTimestamp() });
+    setUserProfile((prev) => (prev ? { ...prev, addresses } : prev));
   };
 
   const signOut = async () => {
@@ -128,6 +158,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signIn,
         createAccount,
         updateProfile,
+        updateAddresses,
         signOut,
       }}
     >

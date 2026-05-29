@@ -1,7 +1,17 @@
 "use client";
 
 import { useRef } from "react";
-import { Upload, CheckCircle, QrCode, Loader2, AlertCircle, Building2, User, CreditCard, Info } from "lucide-react";
+import {
+  Upload,
+  CheckCircle,
+  QrCode,
+  Loader2,
+  AlertCircle,
+  Building2,
+  User,
+  CreditCard,
+  Info,
+} from "lucide-react";
 import type { PaymentConfig } from "@/domain/entities/payment-config.entity";
 
 interface CheckoutPaymentStepProps {
@@ -40,52 +50,55 @@ export function CheckoutPaymentStep({
         Pago mediante QR — E-Transfer
       </h2>
 
-      <div className="flex flex-col md:flex-row gap-8 items-start">
-        {/* QR image */}
-        <div className="shrink-0">
+      <div className="flex flex-col gap-8">
+        {/* QR image — centered, enorme */}
+        <div className="flex justify-center">
           {loadingQR ? (
-            <div className="w-44 h-44 bg-vous-cream border border-vous-border flex items-center justify-center">
-              <Loader2 size={20} className="animate-spin text-vous-gray" />
+            <div className="w-80 h-80 md:w-96 md:h-96 bg-vous-cream border border-vous-border flex items-center justify-center">
+              <Loader2 size={32} className="animate-spin text-vous-gray" />
             </div>
           ) : paymentConfig?.qrImageUrl ? (
             <img
               src={paymentConfig.qrImageUrl}
               alt="Código QR para pago"
-              className="w-44 h-44 object-contain border border-vous-border"
+              className="w-80 h-80 md:w-96 md:h-96 object-contain border border-vous-border"
             />
           ) : (
-            <div className="w-44 h-44 bg-vous-cream border border-vous-border flex flex-col items-center justify-center gap-2 text-vous-gray">
-              <QrCode size={32} strokeWidth={1} />
-              <span className="font-sans text-xs text-center px-2">QR no disponible</span>
+            <div className="w-80 h-80 md:w-96 md:h-96 bg-vous-cream border border-vous-border flex flex-col items-center justify-center gap-3 text-vous-gray">
+              <QrCode size={56} strokeWidth={1} />
+              <span className="font-sans text-sm text-center px-2">QR no disponible</span>
             </div>
           )}
         </div>
 
         {/* Bank details + instructions + upload */}
-        <div className="space-y-4 flex-1">
+        <div className="space-y-4">
           {/* Bank details */}
-          {paymentConfig && (paymentConfig.bankName || paymentConfig.accountHolder || paymentConfig.accountNumber) && (
-            <div className="bg-vous-cream border border-vous-gray-light/40 p-4 space-y-2">
-              {paymentConfig.bankName && (
-                <div className="flex items-center gap-2 font-sans text-sm text-vous-soft-black">
-                  <Building2 size={15} strokeWidth={1.5} className="text-vous-gold shrink-0" />
-                  <span>{paymentConfig.bankName}</span>
-                </div>
-              )}
-              {paymentConfig.accountHolder && (
-                <div className="flex items-center gap-2 font-sans text-sm text-vous-soft-black">
-                  <User size={15} strokeWidth={1.5} className="text-vous-gold shrink-0" />
-                  <span>{paymentConfig.accountHolder}</span>
-                </div>
-              )}
-              {paymentConfig.accountNumber && (
-                <div className="flex items-center gap-2 font-sans text-sm text-vous-soft-black">
-                  <CreditCard size={15} strokeWidth={1.5} className="text-vous-gold shrink-0" />
-                  <span className="font-mono tracking-wide">{paymentConfig.accountNumber}</span>
-                </div>
-              )}
-            </div>
-          )}
+          {paymentConfig &&
+            (paymentConfig.bankName ||
+              paymentConfig.accountHolder ||
+              paymentConfig.accountNumber) && (
+              <div className="bg-vous-cream border border-vous-gray-light/40 p-4 space-y-2">
+                {paymentConfig.bankName && (
+                  <div className="flex items-center gap-2 font-sans text-sm text-vous-soft-black">
+                    <Building2 size={15} strokeWidth={1.5} className="text-vous-gold shrink-0" />
+                    <span>{paymentConfig.bankName}</span>
+                  </div>
+                )}
+                {paymentConfig.accountHolder && (
+                  <div className="flex items-center gap-2 font-sans text-sm text-vous-soft-black">
+                    <User size={15} strokeWidth={1.5} className="text-vous-gold shrink-0" />
+                    <span>{paymentConfig.accountHolder}</span>
+                  </div>
+                )}
+                {paymentConfig.accountNumber && (
+                  <div className="flex items-center gap-2 font-sans text-sm text-vous-soft-black">
+                    <CreditCard size={15} strokeWidth={1.5} className="text-vous-gold shrink-0" />
+                    <span className="font-mono tracking-wide">{paymentConfig.accountNumber}</span>
+                  </div>
+                )}
+              </div>
+            )}
 
           {/* Instructions */}
           {paymentConfig?.instructions && (

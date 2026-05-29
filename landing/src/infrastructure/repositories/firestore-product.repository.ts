@@ -8,6 +8,7 @@ import {
   where,
   limit,
   runTransaction,
+  serverTimestamp,
 } from "firebase/firestore";
 import type { ProductRepository } from "@/domain/repositories/product.repository";
 import type { Product, ProductVariant } from "@/domain/entities/product.entity";
@@ -56,7 +57,7 @@ export const firestoreProductRepository: ProductRepository = {
     const snap = await getDocs(collection(getFirebaseDb(), "products"));
     return snap.docs
       .map((d) => mapDoc(d.id, d.data() as Record<string, unknown>))
-      .filter((p) => p.isActive);
+      .filter((p) => p.isActive && p.stock > 0);
   },
 
   async findBySlug(slug: string): Promise<Product | null> {
@@ -80,7 +81,9 @@ export const firestoreProductRepository: ProductRepository = {
       where("isActive", "==", true)
     );
     const snap = await getDocs(q);
-    return snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>));
+    return snap.docs
+      .map((d) => mapDoc(d.id, d.data() as Record<string, unknown>))
+      .filter((p) => p.stock > 0);
   },
 
   async findVariants(productId: string): Promise<ProductVariant[]> {
@@ -114,6 +117,23 @@ export const firestoreProductRepository: ProductRepository = {
       const current = (snap.data().stock as number) ?? 0;
       if (current < quantity) throw new Error(`Stock insuficiente. Disponible: ${current}`);
       tx.update(variantRef, { stock: current - quantity });
+    });
+  },
+
+  async decrementStock(productId: string, quantity: number): Promise<void> {
+    const db = getFirebaseDb();
+    const productRef = doc(db, "products", productId);
+    await runTransaction(db, async (tx) => {
+      const snap = await tx.get(productRef);
+      if (!snap.exists()) throw new Error("Producto no encontrado");
+      const current = (snap.data().stock as number) ?? 0;
+      if (current < quantity) throw new Error(`Stock insuficiente. Disponible: ${current}`);
+      const newStock = current - quantity;
+      tx.update(productRef, {
+        stock: newStock,
+        isActive: newStock > 0,
+        updatedAt: serverTimestamp(),
+      });
     });
   },
 };

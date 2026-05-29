@@ -3,7 +3,7 @@ import type { OrderRepository } from "@/domain/repositories/order.repository";
 export async function cancelOrderRestoreStock(
   repo: OrderRepository,
   orderId: string,
-  adminNotes?: string
+  note: string
 ): Promise<void> {
-  return repo.cancelAndRestoreStock(orderId, adminNotes);
+  return repo.cancelAndRestoreStock(orderId, note);
 }

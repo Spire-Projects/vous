@@ -1,16 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Mail, MapPin, MessageCircle } from "lucide-react";
 import { FooterLinks } from "./FooterLinks";
 import { FooterSocial } from "./FooterSocial";
 import { useSiteConfig } from "@/hooks/useSiteConfig";
-
-function buildWhatsAppHref(number: string, message: string): string {
-  const clean = number.replace(/\D/g, "");
-  const encoded = encodeURIComponent(message || "Hola, tengo una consulta");
-  return `https://wa.me/${clean}?text=${encoded}`;
-}
+import { buildWhatsAppHref } from "@/lib/whatsapp";
 
 export function Footer() {
   const { config } = useSiteConfig();
@@ -37,47 +33,66 @@ export function Footer() {
         <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-12 lg:gap-20 mb-12">
           {/* Brand */}
           <div className="space-y-4 max-w-[240px]">
-            <Link
-              href="/"
-              className="font-serif text-3xl font-bold tracking-[0.08em] text-white hover:text-vous-gold transition-colors"
-            >
-              {storeName}
-            </Link>
+            {config?.logoUrl ? (
+              <Link href="/" className="block">
+                <Image
+                  src={config.logoUrl}
+                  alt={storeName}
+                  width={80}
+                  height={32}
+                  className="h-auto w-auto max-w-[80px]"
+                  priority
+                />
+              </Link>
+            ) : (
+              <Link
+                href="/"
+                className="font-serif text-3xl font-bold tracking-[0.08em] text-white hover:text-vous-gold transition-colors"
+              >
+                {storeName}
+              </Link>
+            )}
             <p className="font-sans text-sm text-vous-gray-light leading-relaxed">{tagline}</p>
 
             {email && (
-              <a
-                href={`mailto:${email}`}
-                className="inline-flex items-center gap-2 font-sans text-sm text-vous-gold hover:text-vous-gold-light transition-colors"
-              >
-                <Mail size={14} />
-                {email}
-              </a>
+              <div>
+                <a
+                  href={`mailto:${email}`}
+                  className="inline-flex items-center gap-2 font-sans text-sm text-vous-gold hover:text-vous-gold-light transition-colors"
+                >
+                  <Mail size={14} />
+                  {email}
+                </a>
+              </div>
             )}
 
             {whatsappNumber && (
-              <a
-                href={whatsappHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 font-sans text-sm text-vous-gray-light hover:text-white transition-colors"
-              >
-                <MessageCircle size={14} />
-                WhatsApp
-              </a>
+              <div>
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 font-sans text-sm text-vous-gray-light hover:text-white transition-colors"
+                >
+                  <MessageCircle size={14} />
+                  WhatsApp
+                </a>
+              </div>
             )}
 
             {address && (
-              <a
-                href={mapsHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 font-sans text-sm text-vous-gray-light hover:text-white transition-colors"
-              >
-                <MapPin size={14} />
-                {address}
-                {city ? `, ${city}` : ""}
-              </a>
+              <div>
+                <a
+                  href={mapsHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 font-sans text-sm text-vous-gray-light hover:text-white transition-colors"
+                >
+                  <MapPin size={14} />
+                  {address}
+                  {city ? `, ${city}` : ""}
+                </a>
+              </div>
             )}
 
             <FooterSocial />

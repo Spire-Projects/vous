@@ -24,6 +24,7 @@ function mapDoc(id: string, data: Record<string, unknown>): LandingSection {
     id,
     name: (data.name as string) ?? "",
     type: (data.type as LandingSectionType) ?? "featured",
+    customType: data["customType"] as string | undefined,
     active: (data.active as boolean) ?? false,
     order: (data.order as number) ?? 0,
     productIds: (data.productIds as string[]) ?? [],
@@ -50,8 +51,12 @@ export const firestoreLandingSectionRepository: LandingSectionRepository = {
   },
 
   async create(input: CreateLandingSectionInput): Promise<LandingSection> {
+    const clean: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(input)) {
+      if (v !== undefined) clean[k] = v;
+    }
     const docRef = await addDoc(collection(db, "landingSections"), {
-      ...input,
+      ...clean,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     });
@@ -60,8 +65,12 @@ export const firestoreLandingSectionRepository: LandingSectionRepository = {
   },
 
   async update(id: string, input: UpdateLandingSectionInput): Promise<void> {
+    const clean: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(input)) {
+      if (v !== undefined) clean[k] = v;
+    }
     await updateDoc(doc(db, "landingSections", id), {
-      ...input,
+      ...clean,
       updatedAt: serverTimestamp(),
     });
   },

@@ -8,6 +8,15 @@ export interface AuthUser {
   role: UserRole | null;
 }
 
+export interface UserAddress {
+  id: string;
+  label: string;
+  address: string;
+  city: string;
+  details?: string;
+  mapsLink?: string;
+}
+
 /** Document stored in Firestore `users/{uid}` */
 export interface UserProfile {
   uid: string;
@@ -16,6 +25,11 @@ export interface UserProfile {
   phone: string | null;
   departamento: string | null;
   birthDate: string | null;
+  address: string | null;
+  city: string | null;
+  addressDetails: string | null;
+  mapsLink: string | null;
+  addresses: UserAddress[];
   role: UserRole;
   createdAt: string | null;
   updatedAt: string | null;
@@ -36,7 +50,20 @@ export interface AuthContextValue {
     departamento?: string
   ) => Promise<void>;
   updateProfile: (
-    data: Partial<Pick<UserProfile, "name" | "phone" | "departamento" | "birthDate">>
+    data: Partial<
+      Pick<
+        UserProfile,
+        | "name"
+        | "phone"
+        | "departamento"
+        | "birthDate"
+        | "address"
+        | "city"
+        | "addressDetails"
+        | "mapsLink"
+      >
+    >
   ) => Promise<void>;
+  updateAddresses: (addresses: UserAddress[]) => Promise<void>;
   signOut: () => Promise<void>;
 }

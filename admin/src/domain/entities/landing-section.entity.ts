@@ -29,6 +29,7 @@ export interface LandingSection {
   id: string;
   name: string;
   type: LandingSectionType;
+  customType?: string;
   active: boolean;
   order: number;
   productIds: string[];
@@ -39,6 +40,7 @@ export interface LandingSection {
 export interface CreateLandingSectionInput {
   name: string;
   type: LandingSectionType;
+  customType?: string;
   active: boolean;
   order: number;
   productIds: string[];

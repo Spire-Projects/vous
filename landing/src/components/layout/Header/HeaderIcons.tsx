@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Search, ShoppingBag, User, LogOut, Package } from "lucide-react";
+import { Search, ShoppingBag, User, LogOut } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -58,14 +58,6 @@ export function HeaderIcons({ onSearchOpen }: HeaderIconsProps) {
                 className="flex items-center gap-2 px-4 py-2.5 text-sm font-sans text-vous-soft-black hover:bg-vous-cream hover:text-vous-gold transition-colors w-full"
               >
                 <User size={15} /> Mi Cuenta
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild className="p-0 focus:bg-transparent">
-              <Link
-                href="/cuenta/pedidos"
-                className="flex items-center gap-2 px-4 py-2.5 text-sm font-sans text-vous-soft-black hover:bg-vous-cream hover:text-vous-gold transition-colors w-full"
-              >
-                <Package size={15} /> Mis Pedidos
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />

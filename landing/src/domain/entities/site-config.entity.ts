@@ -25,8 +25,10 @@ export interface SiteConfig {
   tiktok: SocialNetwork;
   facebook: SocialNetwork;
   pinterest: SocialNetwork;
+  googleMapsUrl: string;
   shippingPolicy: string;
   returnPolicy: string;
+  termsOfService: string;
   schedule: ScheduleItem[];
   updatedAt: string;
 }

@@ -1,11 +1,10 @@
 import {
   collection,
   getDocs,
-  doc,
-  getDoc,
   query,
   where,
   orderBy,
+  limit,
   documentId,
 } from "firebase/firestore";
 import { getFirebaseDb } from "@/lib/firebase";
@@ -52,16 +51,71 @@ function mapProductDoc(id: string, data: Record<string, unknown>): Product {
   };
 }
 
-async function fetchProductsByIds(ids: string[]): Promise<Product[]> {
-  if (!ids.length) return [];
+async function fetchProductsForSection(
+  type: LandingSectionType,
+  productIds: string[]
+): Promise<Product[]> {
   const db = getFirebaseDb();
-  // Fetch up to 8 products; Firestore 'in' operator supports up to 30 items
-  const batch = ids.slice(0, 8);
-  const q = query(collection(db, "products"), where(documentId(), "in", batch));
-  const snap = await getDocs(q);
-  return snap.docs
-    .map((d) => mapProductDoc(d.id, d.data() as Record<string, unknown>))
-    .filter((p) => p.isActive);
+
+  if (productIds.length > 0) {
+    const batch = productIds.slice(0, 8);
+    const q = query(collection(db, "products"), where(documentId(), "in", batch));
+    const snap = await getDocs(q);
+    return snap.docs
+      .map((d) => mapProductDoc(d.id, d.data() as Record<string, unknown>))
+      .filter((p) => p.isActive && p.stock > 0);
+  }
+
+  // Auto-fetch by type with compound index, fall back to client-side filter
+  try {
+    let q;
+    switch (type) {
+      case "featured":
+        q = query(collection(db, "products"), where("isFeatured", "==", true), where("isActive", "==", true), limit(8));
+        break;
+      case "discounted":
+        q = query(collection(db, "products"), where("isDiscounted", "==", true), where("isActive", "==", true), limit(8));
+        break;
+      case "special_collection":
+        q = query(collection(db, "products"), where("isSpecialCollection", "==", true), where("isActive", "==", true), limit(8));
+        break;
+      case "bestseller":
+        q = query(collection(db, "products"), where("isBestseller", "==", true), where("isActive", "==", true), limit(8));
+        break;
+      default:
+        q = query(collection(db, "products"), where("isActive", "==", true), orderBy("createdAt", "desc"), limit(8));
+    }
+    const snap = await getDocs(q);
+    return snap.docs
+      .map((d) => mapProductDoc(d.id, d.data() as Record<string, unknown>))
+      .filter((p) => p.stock > 0);
+  } catch {
+    // Server-side index missing → fall back to client-side filtering
+    const snap = await getDocs(collection(db, "products"));
+    let all = snap.docs
+      .map((d) => mapProductDoc(d.id, d.data() as Record<string, unknown>))
+      .filter((p) => p.isActive && p.stock > 0);
+
+    switch (type) {
+      case "featured":
+        all = all.filter((p) => p.isFeatured);
+        break;
+      case "discounted":
+        all = all.filter((p) => p.isDiscounted);
+        break;
+      case "special_collection":
+        all = all.filter((p) => p.isSpecialCollection);
+        break;
+      case "bestseller":
+        all = all.filter((p) => p.isBestseller);
+        break;
+      case "new_arrivals":
+      default:
+        all.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        break;
+    }
+    return all.slice(0, 8);
+  }
 }
 
 export const firestoreLandingSectionRepository: LandingSectionRepository = {
@@ -80,6 +134,7 @@ export const firestoreLandingSectionRepository: LandingSectionRepository = {
           id: d.id,
           name: (data.name as string) ?? "",
           type: (data.type as LandingSectionType) ?? "featured",
+          customType: data["customType"] as string | undefined,
           active: true,
           order: (data.order as number) ?? 0,
           productIds: (data.productIds as string[]) ?? [],
@@ -95,7 +150,7 @@ export const firestoreLandingSectionRepository: LandingSectionRepository = {
       const sectionsWithProducts = await Promise.all(
         sections.map(async (section) => ({
           ...section,
-          products: await fetchProductsByIds(section.productIds),
+          products: await fetchProductsForSection(section.type, section.productIds),
         }))
       );
 
@@ -117,6 +172,7 @@ export const firestoreLandingSectionRepository: LandingSectionRepository = {
             name: (data.name as string) ?? "",
             type: (data.type as LandingSectionType) ?? "featured",
             active: (data.active as boolean) ?? false,
+            customType: data["customType"] as string | undefined,
             order: (data.order as number) ?? 0,
             productIds: (data.productIds as string[]) ?? [],
             createdAt:
@@ -133,7 +189,7 @@ export const firestoreLandingSectionRepository: LandingSectionRepository = {
       const sectionsWithProducts = await Promise.all(
         sections.map(async (section) => ({
           ...section,
-          products: await fetchProductsByIds(section.productIds),
+          products: await fetchProductsForSection(section.type, section.productIds),
         }))
       );
 

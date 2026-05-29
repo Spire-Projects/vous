@@ -151,13 +151,13 @@ export function LandingSectionsPage() {
                         {section.name}
                       </p>
                     </TableCell>
-                    <TableCell>
-                      <span
-                        className={`inline-flex items-center px-2 py-0.5 text-[10px] font-nav font-semibold tracking-wide border ${color}`}
-                      >
-                        {LANDING_SECTION_TYPE_LABELS[section.type]}
-                      </span>
-                    </TableCell>
+                   <TableCell>
+                     <span
+                       className={`inline-flex items-center px-2 py-0.5 text-[10px] font-nav font-semibold tracking-wide border ${color}`}
+                     >
+                       {section.customType || LANDING_SECTION_TYPE_LABELS[section.type]}
+                     </span>
+                   </TableCell>
                     <TableCell className="text-center">
                       <span className="font-sans text-sm text-vous-gray">
                         {section.productIds.length}

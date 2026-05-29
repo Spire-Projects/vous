@@ -13,6 +13,12 @@ export type OrderStatus =
 
 export type PaymentMethod = "qr" | "libelula";
 
+export interface StatusHistoryEntry {
+  status: OrderStatus;
+  notes?: string;
+  timestamp: string;
+}
+
 export interface ShippingInfo {
   fullName: string;
   phone: string;
@@ -60,6 +66,7 @@ export interface Order {
   discountCode?: string;
   carrierRef?: string;
   adminNotes?: string;
+  statusHistory?: StatusHistoryEntry[];
   createdAt?: string;
   updatedAt?: string;
 }
@@ -67,5 +74,5 @@ export interface Order {
 export interface UpdateOrderStatusInput {
   orderId: string;
   status: OrderStatus;
-  adminNotes?: string;
+  note?: string;
 }
