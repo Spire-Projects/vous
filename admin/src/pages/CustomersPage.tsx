@@ -249,10 +249,6 @@ export function CustomersPage() {
                   <p className="text-[10px] font-nav uppercase tracking-wider text-vous-gray mb-0.5">Registro</p>
                   <p className="font-sans text-vous-black">{formatDate(selected.createdAt)}</p>
                 </div>
-                <div className="col-span-2">
-                  <p className="text-[10px] font-nav uppercase tracking-wider text-vous-gray mb-0.5">UID Firebase</p>
-                  <p className="font-mono text-[11px] text-vous-gray break-all">{selected.uid}</p>
-                </div>
               </div>
 
               <div className="pt-2 border-t border-vous-border flex justify-end gap-2">
