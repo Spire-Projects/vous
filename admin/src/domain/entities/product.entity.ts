@@ -14,7 +14,7 @@ export interface Product {
   wholesalePrice?: number;
   badge?: string;
   sizes: string[];
-  colors: { hex: string; name: string }[];
+  colors: { hex: string; name: string; images?: string[] }[];
   materials: string[];
   hasVariants: boolean;
   isActive: boolean;
@@ -48,7 +48,7 @@ export interface CreateProductInput {
   wholesalePrice?: number;
   badge?: string;
   sizes: string[];
-  colors: { hex: string; name: string }[];
+  colors: { hex: string; name: string; images?: string[] }[];
   materials: string[];
   hasVariants: boolean;
   isActive: boolean;

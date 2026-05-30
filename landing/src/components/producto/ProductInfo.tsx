@@ -48,16 +48,27 @@ interface ProductInfoProps {
   product: Product;
   variants?: ProductVariant[];
   variantsLoading?: boolean;
+  selectedColor?: string | null;
+  onSelectColor?: (color: string | null) => void;
 }
 
-export function ProductInfo({ product, variants = [], variantsLoading = false }: ProductInfoProps) {
+export function ProductInfo({
+  product,
+  variants = [],
+  variantsLoading = false,
+  selectedColor,
+  onSelectColor,
+}: ProductInfoProps) {
   const { addItem } = useCartContext();
   const { config } = useSiteConfig();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [added, setAdded] = useState(false);
   const addedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function handleSelectColor(name: string | null) {
+    if (onSelectColor) onSelectColor(name);
+  }
 
   useEffect(() => {
     return () => {
@@ -97,6 +108,16 @@ export function ProductInfo({ product, variants = [], variantsLoading = false }:
       return !variants.some((v) => v.color === colorName && v.size === selectedSize && v.stock > 0);
     return !variants.some((v) => v.color === colorName && v.stock > 0);
   }
+
+  const visibleColors = useMemo(() => {
+    if (!product.hasVariants || variantsLoading || variants.length === 0) return product.colors;
+    return product.colors.filter((c) => variants.some((v) => v.color === c.name && v.stock > 0));
+  }, [product.colors, product.hasVariants, variants, variantsLoading]);
+
+  const visibleSizes = useMemo(() => {
+    if (!product.hasVariants || variantsLoading || variants.length === 0) return product.sizes;
+    return product.sizes.filter((s) => variants.some((v) => v.size === s && v.stock > 0));
+  }, [product.sizes, product.hasVariants, variants, variantsLoading]);
 
   const effectiveStock = selectedVariant ? selectedVariant.stock : product.stock;
 
@@ -222,14 +243,14 @@ export function ProductInfo({ product, variants = [], variantsLoading = false }:
             )}
           </p>
           <div className="flex gap-2.5">
-            {product.colors.map((c) => {
+            {visibleColors.map((c) => {
               const unavailable = isColorUnavailable(c.name);
               return (
                 <button
                   key={c.hex}
                   onClick={() => {
                     if (!unavailable) {
-                      setSelectedColor(c.name);
+                      handleSelectColor(c.name);
                       setError(null);
                     }
                   }}
@@ -257,7 +278,7 @@ export function ProductInfo({ product, variants = [], variantsLoading = false }:
             Talla
           </p>
           <div className="flex flex-wrap gap-2">
-            {product.sizes.map((s) => {
+            {visibleSizes.map((s) => {
               const unavailable = isSizeUnavailable(s);
               return (
                 <button

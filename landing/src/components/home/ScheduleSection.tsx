@@ -25,7 +25,6 @@ export function ScheduleSection() {
     <section className="bg-vous-warm-white overflow-hidden">
       <div className="max-w-[1440px] mx-auto px-5 md:px-20 py-20 md:py-28">
         <div className="flex flex-col lg:flex-row items-start lg:items-center gap-12 lg:gap-20">
-          {/* Left — large decorative title */}
           <div className="relative shrink-0 select-none">
             <p className="font-serif italic text-vous-gold text-2xl md:text-3xl mb-2 leading-none">
               horario de

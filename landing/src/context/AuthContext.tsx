@@ -7,6 +7,7 @@ import {
   createUserWithEmailAndPassword,
   updateProfile as fbUpdateProfile,
   signOut as firebaseSignOut,
+  signInAnonymously,
 } from "firebase/auth";
 import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { getFirebaseAuth, getFirebaseDb } from "@/lib/firebase";
@@ -62,6 +63,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setUserProfile(null);
           }
         } else {
+          // Sign in anonymously so Firestore reads work for unauthenticated visitors
+          try {
+            await signInAnonymously(getFirebaseAuth());
+          } catch {
+            // Anonymous auth may be disabled in Firebase Console — that's OK
+          }
           setUser(null);
           setUserProfile(null);
         }

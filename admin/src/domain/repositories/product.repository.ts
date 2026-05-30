@@ -29,6 +29,7 @@ export interface ProductRepository {
   applyCategoryDiscount(categoryId: string, isDiscounted: boolean, discountPercentage?: number): Promise<void>;
   findVariants(productId: string): Promise<ProductVariant[]>;
   createVariant(productId: string, input: CreateVariantInput): Promise<ProductVariant>;
+  createVariantsBatch(productId: string, inputs: CreateVariantInput[]): Promise<void>;
   updateVariant(productId: string, variantId: string, input: UpdateVariantInput): Promise<void>;
   deleteVariant(productId: string, variantId: string): Promise<void>;
   /** Ajuste manual de stock mayorista */

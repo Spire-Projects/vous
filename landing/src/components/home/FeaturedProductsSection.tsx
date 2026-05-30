@@ -3,10 +3,9 @@
 import Link from "next/link";
 import { ProductCard } from "@/components/catalogo/ProductCard";
 import { useAuthContext } from "@/context/AuthContext";
-import type { LandingSectionWithProducts } from "@/domain/repositories/landing-section.repository";
+import { useLandingSections } from "@/hooks/useLandingSections";
 import type { LandingSectionType } from "@/domain/entities/landing-section.entity";
 
-// Mapping from section type to "Ver Todo" catalog URL param
 const VIEW_ALL_HREF: Record<LandingSectionType, string> = {
   featured: "/catalogo?destacados=1",
   new_arrivals: "/catalogo?nuevas=1",
@@ -15,7 +14,6 @@ const VIEW_ALL_HREF: Record<LandingSectionType, string> = {
   bestseller: "/catalogo?mas-vendidos=1",
 };
 
-// Accent label shown above the section title
 const SECTION_EYEBROW: Record<LandingSectionType, string> = {
   featured: "Selección Editorial",
   new_arrivals: "Últimas Piezas",
@@ -24,12 +22,18 @@ const SECTION_EYEBROW: Record<LandingSectionType, string> = {
   bestseller: "Los Favoritos",
 };
 
-interface FeaturedProductsSectionProps {
-  sections: LandingSectionWithProducts[];
-}
+export function FeaturedProductsSection() {
+  const { user } = useAuthContext();
+  const { sections, loading } = useLandingSections();
 
-export function FeaturedProductsSection({ sections }: FeaturedProductsSectionProps) {
-  const { user, isWholesaler } = useAuthContext();
+  if (loading) {
+    return (
+      <section className="py-20 md:py-28 bg-vous-warm-white flex items-center justify-center">
+        <span className="inline-block w-6 h-6 border-2 border-vous-gold/30 border-t-vous-gold rounded-full animate-spin" />
+      </section>
+    );
+  }
+
   if (!sections.length) return null;
 
   return (
@@ -42,16 +46,13 @@ export function FeaturedProductsSection({ sections }: FeaturedProductsSectionPro
             className={`py-20 md:py-28 ${isDark ? "bg-vous-soft-black" : "bg-vous-warm-white"}`}
           >
             <div className="max-w-[1440px] mx-auto px-5 md:px-20">
-              {/* Header */}
               <div className="flex items-end justify-between mb-10 md:mb-14">
                 <div>
                   <p className="font-nav text-[11px] font-semibold tracking-[0.25em] uppercase mb-2 text-vous-gold">
                     {section.customType || SECTION_EYEBROW[section.type]}
                   </p>
                   <h2
-                    className={`font-serif text-4xl md:text-5xl font-medium ${
-                      isDark ? "text-white" : "text-vous-soft-black"
-                    }`}
+                    className={`font-serif text-4xl md:text-5xl font-medium ${isDark ? "text-white" : "text-vous-soft-black"}`}
                   >
                     {section.name}
                   </h2>
@@ -68,7 +69,6 @@ export function FeaturedProductsSection({ sections }: FeaturedProductsSectionPro
                 </Link>
               </div>
 
-              {/* Product Grid */}
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-8">
                 {section.products.slice(0, 8).map((product) => (
                   <ProductCard
@@ -80,7 +80,6 @@ export function FeaturedProductsSection({ sections }: FeaturedProductsSectionPro
                 ))}
               </div>
 
-              {/* Mobile Ver Todo */}
               <div className="mt-10 text-center md:hidden">
                 <Link
                   href={VIEW_ALL_HREF[section.type]}

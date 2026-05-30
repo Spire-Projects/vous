@@ -27,7 +27,7 @@ function mapDoc(id: string, data: Record<string, unknown>): Product {
     badge: (data.badge as string) ?? undefined,
     images: (data.images as string[]) ?? [],
     sizes: (data.sizes as string[]) ?? [],
-    colors: (data.colors as { hex: string; name: string }[]) ?? [],
+    colors: (data.colors as { hex: string; name: string; images?: string[] }[]) ?? [],
     materials: (data.materials as string[]) ?? [],
     hasVariants: (data.hasVariants as boolean) ?? false,
     isActive: (data.isActive as boolean) ?? true,
@@ -57,7 +57,7 @@ export const firestoreProductRepository: ProductRepository = {
     const snap = await getDocs(collection(getFirebaseDb(), "products"));
     return snap.docs
       .map((d) => mapDoc(d.id, d.data() as Record<string, unknown>))
-      .filter((p) => p.isActive && p.stock > 0);
+      .filter((p) => p.isActive && (p.stock > 0 || p.hasVariants));
   },
 
   async findBySlug(slug: string): Promise<Product | null> {
@@ -83,7 +83,7 @@ export const firestoreProductRepository: ProductRepository = {
     const snap = await getDocs(q);
     return snap.docs
       .map((d) => mapDoc(d.id, d.data() as Record<string, unknown>))
-      .filter((p) => p.stock > 0);
+      .filter((p) => p.stock > 0 || p.hasVariants);
   },
 
   async findVariants(productId: string): Promise<ProductVariant[]> {

@@ -16,7 +16,10 @@ export function useProducts() {
   useEffect(() => {
     getVisibleProducts(firestoreProductRepository, isWholesaler)
       .then(setProducts)
-      .catch(() => setError("Error al cargar los productos"))
+      .catch((err) => {
+        console.error("[useProducts] Error cargando productos:", err);
+        setError("Error al cargar los productos");
+      })
       .finally(() => setLoading(false));
   }, [isWholesaler]);
 
@@ -40,7 +43,10 @@ export function useProductsByCategory(categoryId: string) {
     setLoading(true);
     getVisibleProductsByCategory(firestoreProductRepository, categoryId, isWholesaler)
       .then(setProducts)
-      .catch(() => setError("Error al cargar los productos"))
+      .catch((err) => {
+        console.error("[useProductsByCategory] Error cargando productos:", err);
+        setError("Error al cargar los productos");
+      })
       .finally(() => setLoading(false));
   }, [categoryId, isWholesaler]);
 

@@ -14,10 +14,10 @@ import { VariantDrawer } from "@/components/product/VariantDrawer";
 import { ConfirmDeleteDialog } from "@/components/shared/ConfirmDeleteDialog";
 import { useProducts } from "@/hooks/useProducts";
 import { useCategories } from "@/hooks/useCategories";
-import type { Product, CreateProductInput } from "@/domain/entities/product.entity";
+import type { Product, CreateProductInput, CreateVariantInput } from "@/domain/entities/product.entity";
 
 export function InventoryPage() {
-  const { products, loading, create, update, toggleActive, remove, setFlags, applyDiscount, applyCatDiscount, adjustWholesaleStock, reorder } = useProducts();
+  const { products, loading, createWithVariants, update, toggleActive, remove, setFlags, applyDiscount, applyCatDiscount, adjustWholesaleStock, reorder } = useProducts();
   const { categories } = useCategories();
   const [search, setSearch] = useState("");
   const [filterLowStock, setFilterLowStock] = useState(false);
@@ -43,9 +43,9 @@ export function InventoryPage() {
   function handleNew() { setEditing(null); setDialogOpen(true); }
   function handleEdit(product: Product) { setEditing(product); setDialogOpen(true); }
 
-  async function handleSave(data: CreateProductInput) {
+  async function handleSave(data: CreateProductInput, variants: CreateVariantInput[]) {
     if (editing) await update(editing.id, data);
-    else await create(data);
+    else await createWithVariants(data, variants);
   }
 
   async function handleDelete(id: string) {

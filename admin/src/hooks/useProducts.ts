@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import { firestoreProductRepository } from "@/infrastructure";
 import { getProducts } from "@/application/use-cases/product/get-products";
 import { createProduct } from "@/application/use-cases/product/create-product";
+import { createVariantsBatch } from "@/application/use-cases/product/create-variants-batch";
 import { updateProduct } from "@/application/use-cases/product/update-product";
 import { setProductActive } from "@/application/use-cases/product/set-product-active";
 import { deleteProduct } from "@/application/use-cases/product/delete-product";
@@ -10,7 +11,7 @@ import { applyProductDiscount } from "@/application/use-cases/product/apply-prod
 import { applyCategoryDiscount } from "@/application/use-cases/product/apply-category-discount";
 import { updateWholesaleStock } from "@/application/use-cases/product/update-wholesale-stock";
 import { setProductOrder } from "@/application/use-cases/product/set-product-order";
-import type { Product, CreateProductInput, UpdateProductInput } from "@/domain/entities/product.entity";
+import type { Product, CreateProductInput, UpdateProductInput, CreateVariantInput } from "@/domain/entities/product.entity";
 import type { ProductFlags } from "@/domain/repositories/product.repository";
 
 export function useProducts() {
@@ -35,6 +36,14 @@ export function useProducts() {
 
   const create = useCallback(async (input: CreateProductInput) => {
     await createProduct(firestoreProductRepository, input);
+    await fetchProducts();
+  }, [fetchProducts]);
+
+  const createWithVariants = useCallback(async (input: CreateProductInput, variants: CreateVariantInput[]) => {
+    const product = await createProduct(firestoreProductRepository, input);
+    if (variants.length > 0) {
+      await createVariantsBatch(firestoreProductRepository, product.id, variants);
+    }
     await fetchProducts();
   }, [fetchProducts]);
 
@@ -78,5 +87,5 @@ export function useProducts() {
     await fetchProducts();
   }, [fetchProducts]);
 
-  return { products, loading, error, refetch: fetchProducts, create, update, toggleActive, remove, setFlags, applyDiscount, applyCatDiscount, adjustWholesaleStock, reorder };
+  return { products, loading, error, refetch: fetchProducts, create, createWithVariants, update, toggleActive, remove, setFlags, applyDiscount, applyCatDiscount, adjustWholesaleStock, reorder };
 }

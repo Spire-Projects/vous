@@ -1,12 +1,4 @@
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-  orderBy,
-  limit,
-  documentId,
-} from "firebase/firestore";
+import { collection, getDocs, query, where, orderBy, limit, documentId } from "firebase/firestore";
 import { getFirebaseDb } from "@/lib/firebase";
 import type {
   LandingSectionRepository,
@@ -28,7 +20,7 @@ function mapProductDoc(id: string, data: Record<string, unknown>): Product {
     badge: (data.badge as string) ?? undefined,
     images: (data.images as string[]) ?? [],
     sizes: (data.sizes as string[]) ?? [],
-    colors: (data.colors as { hex: string; name: string }[]) ?? [],
+    colors: (data.colors as { hex: string; name: string; images?: string[] }[]) ?? [],
     materials: (data.materials as string[]) ?? [],
     hasVariants: (data.hasVariants as boolean) ?? false,
     isActive: (data.isActive as boolean) ?? true,
@@ -38,6 +30,9 @@ function mapProductDoc(id: string, data: Record<string, unknown>): Product {
     isBestseller: (data.isBestseller as boolean) ?? false,
     isDiscounted: (data.isDiscounted as boolean) ?? false,
     discountPercentage: (data.discountPercentage as number) ?? undefined,
+    wholesalePrice: (data.wholesalePrice as number) ?? undefined,
+    wholesaleOnly: (data.wholesaleOnly as boolean) ?? undefined,
+    wholesaleStock: (data.wholesaleStock as number) ?? undefined,
     stock: (data.stock as number) ?? 0,
     sortOrder: (data.sortOrder as number) ?? 0,
     attributes: (data.attributes as Record<string, string>) ?? {},
@@ -63,7 +58,7 @@ async function fetchProductsForSection(
     const snap = await getDocs(q);
     return snap.docs
       .map((d) => mapProductDoc(d.id, d.data() as Record<string, unknown>))
-      .filter((p) => p.isActive && p.stock > 0);
+      .filter((p) => p.isActive && (p.stock > 0 || p.hasVariants));
   }
 
   // Auto-fetch by type with compound index, fall back to client-side filter
@@ -71,30 +66,55 @@ async function fetchProductsForSection(
     let q;
     switch (type) {
       case "featured":
-        q = query(collection(db, "products"), where("isFeatured", "==", true), where("isActive", "==", true), limit(8));
+        q = query(
+          collection(db, "products"),
+          where("isFeatured", "==", true),
+          where("isActive", "==", true),
+          limit(8)
+        );
         break;
       case "discounted":
-        q = query(collection(db, "products"), where("isDiscounted", "==", true), where("isActive", "==", true), limit(8));
+        q = query(
+          collection(db, "products"),
+          where("isDiscounted", "==", true),
+          where("isActive", "==", true),
+          limit(8)
+        );
         break;
       case "special_collection":
-        q = query(collection(db, "products"), where("isSpecialCollection", "==", true), where("isActive", "==", true), limit(8));
+        q = query(
+          collection(db, "products"),
+          where("isSpecialCollection", "==", true),
+          where("isActive", "==", true),
+          limit(8)
+        );
         break;
       case "bestseller":
-        q = query(collection(db, "products"), where("isBestseller", "==", true), where("isActive", "==", true), limit(8));
+        q = query(
+          collection(db, "products"),
+          where("isBestseller", "==", true),
+          where("isActive", "==", true),
+          limit(8)
+        );
         break;
       default:
-        q = query(collection(db, "products"), where("isActive", "==", true), orderBy("createdAt", "desc"), limit(8));
+        q = query(
+          collection(db, "products"),
+          where("isActive", "==", true),
+          orderBy("createdAt", "desc"),
+          limit(8)
+        );
     }
     const snap = await getDocs(q);
     return snap.docs
       .map((d) => mapProductDoc(d.id, d.data() as Record<string, unknown>))
-      .filter((p) => p.stock > 0);
+      .filter((p) => p.stock > 0 || p.hasVariants);
   } catch {
     // Server-side index missing → fall back to client-side filtering
     const snap = await getDocs(collection(db, "products"));
     let all = snap.docs
       .map((d) => mapProductDoc(d.id, d.data() as Record<string, unknown>))
-      .filter((p) => p.isActive && p.stock > 0);
+      .filter((p) => p.isActive && (p.stock > 0 || p.hasVariants));
 
     switch (type) {
       case "featured":

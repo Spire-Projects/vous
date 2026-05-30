@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { X, Plus } from "lucide-react";
 
-export interface ColorItem { hex: string; name: string; }
+export interface ColorItem { hex: string; name: string; images?: string[]; }
 
 interface Props {
   value: ColorItem[];

@@ -167,6 +167,21 @@ export const firestoreProductRepository: ProductRepository = {
     return mapVariant(snap.id, snap.data() as Record<string, unknown>);
   },
 
+  async createVariantsBatch(productId: string, inputs: CreateVariantInput[]): Promise<void> {
+    const batch = writeBatch(db);
+    const col = collection(db, "products", productId, "variants");
+    for (const input of inputs) {
+      const payload = Object.fromEntries(Object.entries({ ...input }).filter(([, v]) => v !== undefined));
+      const docRef = doc(col);
+      batch.set(docRef, {
+        ...payload,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
+    }
+    await batch.commit();
+  },
+
   async updateVariant(productId: string, variantId: string, input: UpdateVariantInput): Promise<void> {
     const payload = Object.fromEntries(Object.entries({ ...input }).filter(([, v]) => v !== undefined));
     await updateDoc(doc(db, "products", productId, "variants", variantId), {

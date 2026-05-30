@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { firestoreProductRepository } from "@/infrastructure/repositories/firestore-product.repository";
@@ -20,19 +20,17 @@ export function ProductoPageClient() {
   const [related, setRelated] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!slug) {
-      setLoading(false);
-      setNotFound(true);
-      return;
-    }
-
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (!slug) { setLoading(false); setNotFound(true); return; }
     setLoading(true);
     setNotFound(false);
     setProduct(null);
     setVariants([]);
     setRelated([]);
+    setSelectedColor(null);
 
     firestoreProductRepository
       .findBySlug(slug)
@@ -43,7 +41,6 @@ export function ProductoPageClient() {
         }
         setProduct(p);
 
-        // Load related products and variants in parallel, but don't block rendering
         const relPromise = firestoreProductRepository
           .findByCategory(p.categoryId)
           .then((all) => all.filter((r) => r.id !== p.id).slice(0, 4))
@@ -65,6 +62,10 @@ export function ProductoPageClient() {
       .catch(() => setNotFound(true))
       .finally(() => setLoading(false));
   }, [slug]);
+
+  const handleSelectColor = useCallback((color: string | null) => {
+    setSelectedColor(color);
+  }, []);
 
   if (loading) {
     return (
@@ -92,8 +93,19 @@ export function ProductoPageClient() {
     <div className="bg-vous-warm-white min-h-screen">
       <div className="max-w-[1440px] mx-auto px-5 md:px-20 py-12 md:py-16">
         <div className="flex flex-col md:flex-row gap-10 lg:gap-20 mb-16">
-          <ProductGallery images={product.images} name={product.name} />
-          <ProductInfo product={product} variants={variants} variantsLoading={variantsLoading} />
+          <ProductGallery
+            images={product.images}
+            name={product.name}
+            colors={product.colors}
+            selectedColor={selectedColor}
+          />
+          <ProductInfo
+            product={product}
+            variants={variants}
+            variantsLoading={variantsLoading}
+            selectedColor={selectedColor}
+            onSelectColor={handleSelectColor}
+          />
         </div>
         <RelatedProducts products={related} />
       </div>
