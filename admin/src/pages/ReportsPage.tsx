@@ -17,7 +17,7 @@ export function ReportsPage() {
   }
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
       <PageHeader
         title="Reportes y Estadísticas"
         subtitle="Monitorea el rendimiento comercial de VOUS con métricas actualizadas."
@@ -31,7 +31,7 @@ export function ReportsPage() {
 
       {loading && (
         <div className="flex justify-center py-20">
-          <span className="inline-block w-5 h-5 border-2 border-vous-gold/30 border-t-vous-gold rounded-full animate-spin" />
+          <span className="inline-block w-5 h-5 border-2 border-vous-border border-t-vous-gold rounded-full animate-spin" />
         </div>
       )}
 
@@ -43,8 +43,7 @@ export function ReportsPage() {
 
       {!loading && !error && report && (
         <>
-          {/* Summary stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <StatCard
               label="Ingresos totales"
               value={formatCurrency(report.summary.totalRevenue)}
@@ -74,24 +73,22 @@ export function ReportsPage() {
             />
           </div>
 
-          {/* Chart */}
-          <div className="bg-vous-white border border-vous-border p-6">
-            <h3 className="font-nav text-[13px] uppercase tracking-wider text-vous-black mb-4">
+          <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden p-6">
+            <h3 className="font-nav text-[13px] uppercase tracking-wider text-vous-text mb-5">
               Ventas por período
             </h3>
             <SalesChart data={report.salesChart} />
           </div>
 
-          {/* Tables row */}
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-            <div className="bg-vous-white border border-vous-border p-6">
-              <h3 className="font-nav text-[13px] uppercase tracking-wider text-vous-black mb-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden p-6">
+              <h3 className="font-nav text-[13px] uppercase tracking-wider text-vous-text mb-5">
                 Productos más vendidos
               </h3>
               <TopProductsTable products={report.topProducts} />
             </div>
-            <div className="bg-vous-white border border-vous-border p-6">
-              <h3 className="font-nav text-[13px] uppercase tracking-wider text-vous-black mb-4">
+            <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden p-6">
+              <h3 className="font-nav text-[13px] uppercase tracking-wider text-vous-text mb-5">
                 Pedidos recientes
               </h3>
               <RecentOrdersTable orders={report.recentOrders} />

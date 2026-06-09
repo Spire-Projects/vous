@@ -4,14 +4,14 @@ import { Textarea } from "@/components/ui/textarea";
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <p className="font-nav text-[10px] uppercase tracking-widest text-vous-gray border-b border-vous-border pb-1 mb-1">
+    <p className="font-nav text-[10px] uppercase tracking-widest text-vous-text-secondary border-b border-white/40 pb-1 mb-1">
       {children}
     </p>
   );
 }
 
 function HelpText({ children }: { children: React.ReactNode }) {
-  return <p className="text-[11px] text-vous-gray leading-relaxed mb-2">{children}</p>;
+  return <p className="text-[11px] text-vous-text-secondary leading-relaxed mb-2">{children}</p>;
 }
 
 interface Props {
@@ -40,7 +40,7 @@ export function StepBasicInfo({ name, slug, description, detail, categoryId, cat
       <div className="space-y-1">
         <Label>Categoría *</Label>
         <select required value={categoryId} onChange={(e) => onCategoryChange(e.target.value)}
-          className="w-full h-9 rounded border border-vous-border bg-white px-3 text-sm font-sans">
+          className="w-full h-9 rounded border border-vous-border bg-vous-surface px-3 text-sm font-sans">
           <option value="" disabled>Seleccionar categoría…</option>
           {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>

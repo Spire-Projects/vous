@@ -18,16 +18,16 @@ export function getOrderStatusLabel(status: OrderStatus): string {
 
 export function getOrderStatusClass(status: OrderStatus): string {
   const map: Record<OrderStatus, string> = {
-    pending: "bg-amber-100 text-amber-800",
+    pending: "bg-amber-50 text-amber-700",
     payment_sent: "bg-blue-100 text-blue-800",
     verifying_payment: "bg-purple-100 text-purple-800",
     confirmed: "bg-sky-100 text-sky-800",
     preparing: "bg-indigo-100 text-indigo-800",
     shipped: "bg-teal-100 text-teal-800",
-    delivered: "bg-green-100 text-green-800",
-    cancelled: "bg-red-100 text-red-800",
+    delivered: "bg-emerald-50 text-emerald-700",
+    cancelled: "bg-red-50 text-red-800",
   };
-  return map[status] ?? "bg-gray-100 text-gray-800";
+  return map[status] ?? "bg-white/90 text-vous-text";
 }
 
 // ── Clases de color para stock ──────────────────────────────────────────────
@@ -45,11 +45,11 @@ export function getStockStatusLabel(status: StockStatus): string {
 
 export function getStockStatusClass(status: StockStatus): string {
   const map: Record<StockStatus, string> = {
-    active: "bg-green-100 text-green-800",
-    inactive: "bg-gray-100 text-gray-500",
-    out_of_stock: "bg-red-100 text-red-700",
+    active: "bg-emerald-50 text-emerald-700",
+    inactive: "bg-white/90 text-vous-text-muted",
+    out_of_stock: "bg-red-50 text-red-700",
   };
-  return map[status] ?? "bg-gray-100 text-gray-800";
+  return map[status] ?? "bg-white/90 text-vous-text";
 }
 
 // ── Clases de color para solicitudes mayoristas ─────────────────────────────
@@ -65,11 +65,11 @@ export function getWholesaleStatusLabel(status: WholesaleRequestStatus): string 
 
 export function getWholesaleStatusClass(status: WholesaleRequestStatus): string {
   const map: Record<WholesaleRequestStatus, string> = {
-    pending: "bg-amber-100 text-amber-800",
-    approved: "bg-green-100 text-green-800",
-    rejected: "bg-red-100 text-red-700",
+    pending: "bg-amber-50 text-amber-700",
+    approved: "bg-emerald-50 text-emerald-700",
+    rejected: "bg-red-50 text-red-700",
   };
-  return map[status] ?? "bg-gray-100 text-gray-800";
+  return map[status] ?? "bg-white/90 text-vous-text";
 }
 
 // ── Formateo de moneda ──────────────────────────────────────────────────────

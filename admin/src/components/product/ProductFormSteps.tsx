@@ -9,14 +9,14 @@ import type { CreateVariantInput } from "@/domain/entities/product.entity";
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <p className="font-nav text-[10px] uppercase tracking-widest text-vous-gray border-b border-vous-border pb-1 mb-1">
+    <p className="font-nav text-[10px] uppercase tracking-widest text-vous-text-secondary border-b border-white/40 pb-1 mb-1">
       {children}
     </p>
   );
 }
 
 function HelpText({ children }: { children: React.ReactNode }) {
-  return <p className="text-[11px] text-vous-gray leading-relaxed mb-2">{children}</p>;
+  return <p className="text-[11px] text-vous-text-secondary leading-relaxed mb-2">{children}</p>;
 }
 
 interface StepColorsProps {
@@ -113,7 +113,7 @@ export function StepDetails({ materials, attributes, badge, onMaterialsChange, o
       <div className="space-y-1">
         <Label>Etiqueta especial (Badge)</Label>
         <Input value={badge} onChange={(e) => onBadgeChange(e.target.value)} placeholder="Nuevo, Sale, Exclusivo…" />
-        <p className="text-[10px] text-vous-gray mt-1">Aparece como una etiqueta sobre la foto del producto.</p>
+        <p className="text-[10px] text-vous-text-secondary mt-1">Aparece como una etiqueta sobre la foto del producto.</p>
       </div>
     </section>
   );

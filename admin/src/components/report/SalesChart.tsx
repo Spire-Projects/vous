@@ -20,7 +20,7 @@ interface SalesChartProps {
 export function SalesChart({ data }: SalesChartProps) {
   if (data.length === 0) {
     return (
-      <div className="h-64 flex items-center justify-center text-vous-gray font-sans text-sm">
+      <div className="h-64 flex items-center justify-center text-vous-text-secondary font-sans text-sm">
         No hay datos para el período seleccionado
       </div>
     );
@@ -33,12 +33,12 @@ export function SalesChart({ data }: SalesChartProps) {
           <CartesianGrid strokeDasharray="3 3" stroke="#E8E5E1" />
           <XAxis
             dataKey="label"
-            tick={{ fontSize: 11, fill: "#9E9E9E" }}
+            tick={{ fontSize: 11, fill: "#6B6B65" }}
             axisLine={{ stroke: "#E8E5E1" }}
             tickLine={false}
           />
           <YAxis
-            tick={{ fontSize: 11, fill: "#9E9E9E" }}
+            tick={{ fontSize: 11, fill: "#6B6B65" }}
             axisLine={false}
             tickLine={false}
             tickFormatter={(v: number) => `Bs. ${(v / 1000).toFixed(0)}k`}
@@ -52,6 +52,7 @@ export function SalesChart({ data }: SalesChartProps) {
               fontSize: 12,
               border: "1px solid #E8E5E1",
               borderRadius: 0,
+              backgroundColor: "#FFFFFF",
             }}
           />
           <Legend
@@ -68,7 +69,7 @@ export function SalesChart({ data }: SalesChartProps) {
           />
           <Bar
             dataKey="orders"
-            fill="#1A1A1A"
+            fill="#0D0D0C"
             radius={[2, 2, 0, 0]}
             name="orders"
           />

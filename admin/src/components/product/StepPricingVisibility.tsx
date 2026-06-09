@@ -5,14 +5,14 @@ import { ChipInput } from "@/components/shared/ChipInput";
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <p className="font-nav text-[10px] uppercase tracking-widest text-vous-gray border-b border-vous-border pb-1 mb-1">
+    <p className="font-nav text-[10px] uppercase tracking-widest text-vous-text-secondary border-b border-white/40 pb-1 mb-1">
       {children}
     </p>
   );
 }
 
 function HelpText({ children }: { children: React.ReactNode }) {
-  return <p className="text-[11px] text-vous-gray leading-relaxed mb-2">{children}</p>;
+  return <p className="text-[11px] text-vous-text-secondary leading-relaxed mb-2">{children}</p>;
 }
 
 interface StepPricingVisibilityProps {
@@ -36,7 +36,7 @@ export function StepPricingVisibility({
   return (
     <section className="space-y-3">
       <SectionTitle>Precios</SectionTitle>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="space-y-1">
           <Label>Precio de venta (Bs) *</Label>
           <Input type="number" min={0} value={price} onChange={(e) => onPriceChange(Number(e.target.value))} />
@@ -50,7 +50,7 @@ export function StepPricingVisibility({
       <div className="space-y-1">
         <Label>{hasVariants ? "Stock general (solo si no usas variantes)" : "Stock total *"}</Label>
         <Input type="number" min={0} value={stock} onChange={(e) => onStockChange(Number(e.target.value))} disabled={hasVariants} />
-        {hasVariants && <p className="text-[10px] text-vous-gray">El stock se gestiona por variante en el paso anterior.</p>}
+        {hasVariants && <p className="text-[10px] text-vous-text-secondary">El stock se gestiona por variante en el paso anterior.</p>}
       </div>
 
       <div className="flex items-center gap-3 pt-1">
@@ -59,7 +59,7 @@ export function StepPricingVisibility({
           <Label htmlFor="isDiscounted" className="mb-0">Aplicar descuento</Label>
         </div>
         {isDiscounted && (
-          <Input type="number" min={0} max={100} value={discountPercentage} onChange={(e) => onDiscountPctChange(Number(e.target.value))} className="w-24" placeholder="%" />
+          <Input type="number" min={0} max={100} value={discountPercentage} onChange={(e) => onDiscountPctChange(Number(e.target.value))} className="w-28" placeholder="%" />
         )}
       </div>
 
@@ -71,7 +71,7 @@ export function StepPricingVisibility({
         {wholesaleOnly && (
           <div className="space-y-1">
             <Label className="text-[11px]">Stock mayorista</Label>
-            <Input type="number" min={0} value={wholesaleStock} onChange={(e) => onWholesaleStockChange(Math.max(0, Math.floor(Number(e.target.value)) || 0))} className="w-24" />
+            <Input type="number" min={0} value={wholesaleStock} onChange={(e) => onWholesaleStockChange(Math.max(0, Math.floor(Number(e.target.value)) || 0))} className="w-28" />
           </div>
         )}
       </div>
@@ -90,7 +90,7 @@ export function StepPricingVisibility({
       <div className="space-y-1 pt-1">
         <Label>Etiquetas (Tags)</Label>
         <ChipInput value={tags} onChange={onTagsChange} placeholder="verano, casual, formal…" />
-        <p className="text-[10px] text-vous-gray">Ayudan a los clientes a encontrar productos por estilo u ocasión.</p>
+        <p className="text-[10px] text-vous-text-secondary">Ayudan a los clientes a encontrar productos por estilo u ocasión.</p>
       </div>
     </section>
   );

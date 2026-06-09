@@ -115,7 +115,7 @@ export function ImagePicker({ value, onChange, folder = "vous/uploads", label = 
         className="hidden"
       />
       {value ? (
-        <div className={`relative w-full max-w-sm overflow-hidden border border-vous-border ${ASPECT_CLASSES[aspect] ?? "aspect-video"} ${aspect === "logo" ? "bg-white flex items-center justify-center" : ""}`}>
+        <div className={`relative w-full max-w-sm overflow-hidden border border-vous-border rounded-2xl ${ASPECT_CLASSES[aspect] ?? "aspect-video"} ${aspect === "logo" ? "bg-vous-surface flex items-center justify-center p-2" : ""}`}>
           <img src={value} alt="Preview" className={`${aspect === "logo" ? "max-w-full max-h-full object-contain" : "w-full h-full object-cover"}`} />
           <Button
             type="button"
@@ -134,26 +134,26 @@ export function ImagePicker({ value, onChange, folder = "vous/uploads", label = 
           onDragOver={handleDragOver}
           onDrop={handleDrop}
           onClick={() => inputRef.current?.click()}
-          className={`relative w-full max-w-sm border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center gap-3 cursor-pointer transition-colors text-center font-nav text-[11px] uppercase tracking-wide ${
+          className={`relative w-full max-w-sm border-2 border-dashed rounded-2xl p-4 sm:p-6 flex flex-col items-center justify-center gap-3 cursor-pointer transition-colors text-center font-nav text-[11px] uppercase tracking-wide ${
             isDragging
-              ? "border-vous-black bg-vous-cream text-vous-black"
-              : "border-vous-border text-vous-gray-500 hover:border-vous-black/40 hover:bg-vous-cream/50"
+              ? "border-vous-black bg-white/90 text-vous-text"
+              : "border-vous-border text-vous-text-muted hover:border-vous-black/40 hover:bg-amber-50/50"
           } ${uploading ? "pointer-events-none opacity-60" : ""}`}
         >
           {uploading ? (
             <>
-              <Loader2 size={22} className="animate-spin text-vous-black" />
+              <Loader2 size={22} className="animate-spin text-vous-text" />
               <span>Subiendo imagen...</span>
             </>
           ) : (
             <>
               {isDragging ? (
-                <UploadCloud size={24} className="text-vous-black" />
+                <UploadCloud size={24} className="text-vous-text" />
               ) : (
                 <ImageIcon size={20} />
               )}
               <span>{isDragging ? "Soltá la imagen aquí" : label}</span>
-              <span className="normal-case text-[10px] tracking-normal text-vous-gray-400 max-w-[220px] leading-tight">
+              <span className="normal-case text-[10px] tracking-normal text-vous-text-muted max-w-full leading-tight">
                 Formatos: {ACCEPTED_LABEL}. Tamaño máximo: {MAX_FILE_SIZE_MB} MB.
               </span>
             </>

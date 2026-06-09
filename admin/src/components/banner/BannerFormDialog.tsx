@@ -132,7 +132,7 @@ export function BannerFormDialog({ open, banner, onClose, onSave }: BannerFormDi
                 {ctaUrl}
               </p>
             )}
-            <p className="text-[11px] text-vous-gray font-sans">
+            <p className="text-[11px] text-vous-text-secondary font-sans">
               El banner redirige a esta categoría del catálogo al hacer click.
             </p>
           </div>

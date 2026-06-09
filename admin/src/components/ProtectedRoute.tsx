@@ -12,8 +12,8 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F2F1F0]">
-        <p className="text-[11px] font-['Montserrat'] uppercase tracking-[0.2em] text-[#9E9E9E]">Cargando...</p>
+      <div className="min-h-screen flex items-center justify-center bg-vous-bg">
+        <p className="text-[11px] font-nav uppercase tracking-[0.2em] text-vous-text-secondary">Cargando...</p>
       </div>
     );
   }
@@ -24,10 +24,10 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
 
   if (requiredRole && user.role !== requiredRole) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F2F1F0]">
+      <div className="min-h-screen flex items-center justify-center bg-vous-bg">
         <div className="text-center">
-          <p className="font-['Bodoni_Moda'] text-2xl text-[#1A1A1A] mb-2">Acceso Denegado</p>
-          <p className="text-sm text-[#9E9E9E] font-['Inter']">No tienes permisos para acceder a esta sección.</p>
+          <p className="font-serif text-2xl text-vous-text mb-2">Acceso Denegado</p>
+          <p className="text-sm text-vous-text-secondary font-sans">No tienes permisos para acceder a esta sección.</p>
         </div>
       </div>
     );

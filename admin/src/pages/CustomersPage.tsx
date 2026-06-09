@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Users, UserCheck, ToggleLeft, ToggleRight, Eye } from "lucide-react";
+import { Search, Users, UserCheck, ToggleLeft, ToggleRight, Eye, Filter } from "lucide-react";
 import { PageHeader } from "../components/ui/PageHeader";
 import { StatCard } from "../components/ui/StatCard";
 import { Badge, type BadgeProps } from "@/components/ui/badge";
@@ -13,8 +13,6 @@ import {
 } from "@/components/ui/dialog";
 import { useCustomers } from "@/hooks";
 import type { Customer, CustomerRole } from "@/domain/entities/user.entity";
-
-// ── Tipos y mapas ─────────────────────────────────────────────────────────
 
 type FilterTab = "all" | "active" | "inactive" | "wholesaler";
 
@@ -45,8 +43,6 @@ function formatDate(value: unknown): string {
   return "—";
 }
 
-// ── Componente ─────────────────────────────────────────────────────────────
-
 export function CustomersPage() {
   const { customers, loading, error, toggleActive } = useCustomers();
   const [search, setSearch] = useState("");
@@ -72,14 +68,13 @@ export function CustomersPage() {
   const totalWholesale = customers.filter((c) => c.role === "wholesaler").length;
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
       <PageHeader
         title="Gestión de Clientes"
         subtitle="Base de clientes registrados en la plataforma."
       />
 
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <StatCard
           label="Total Clientes"
           value={loading ? "—" : String(customers.length)}
@@ -97,12 +92,10 @@ export function CustomersPage() {
         />
       </div>
 
-      {/* Table card */}
-      <div className="bg-vous-white border border-vous-border">
-        {/* Toolbar */}
-        <div className="p-4 border-b border-vous-border flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+      <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden">
+        <div className="p-4 border-b border-white/40 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
           <div className="relative flex-1 max-w-xs">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-vous-gray" />
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-vous-text-secondary" />
             <Input
               placeholder="Buscar por nombre, correo o teléfono…"
               value={search}
@@ -118,109 +111,165 @@ export function CustomersPage() {
                 variant={activeTab === tab.value ? "default" : "outline"}
                 onClick={() => setActiveTab(tab.value)}
               >
+                <Filter size={12} />
                 {tab.label}
               </Button>
             ))}
           </div>
         </div>
 
-        {/* Content */}
         {loading ? (
           <div className="flex justify-center py-20">
-            <span className="inline-block w-5 h-5 border-2 border-vous-gold/30 border-t-vous-gold rounded-full animate-spin" />
+            <span className="inline-block w-5 h-5 border-2 border-vous-border border-t-vous-gold rounded-full animate-spin" />
           </div>
         ) : error ? (
           <div className="py-16 text-center">
             <p className="text-sm text-red-600 font-nav">{error}</p>
           </div>
         ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                {["Cliente", "Teléfono", "Tipo", "Estado", "Registro", "Acciones"].map((h) => (
-                  <TableHead key={h}>{h}</TableHead>
-                ))}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
+          <>
+            <div className="block md:hidden divide-y divide-white/30">
               {filtered.map((customer) => (
-                <TableRow key={customer.id}>
-                  {/* Cliente */}
-                  <TableCell>
-                    <p className="text-[13px] font-sans text-vous-black font-medium">{customer.name}</p>
-                    <p className="text-[11px] text-vous-gray">{customer.email}</p>
-                  </TableCell>
+                <div key={customer.id} className="p-4 space-y-3">
+                  <div>
+                    <p className="text-[13px] font-sans text-vous-text font-medium">{customer.name}</p>
+                    <p className="text-[11px] text-vous-text-secondary">{customer.email}</p>
+                  </div>
 
-                  {/* Teléfono */}
-                  <TableCell className="text-[12px] font-sans text-vous-gray">
-                    {customer.phone ?? "—"}
-                  </TableCell>
+                  <div>
+                    <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Teléfono</p>
+                    <p className="text-[12px] font-sans text-vous-text-secondary">{customer.phone ?? "—"}</p>
+                  </div>
 
-                  {/* Tipo */}
-                  <TableCell>
+                  <div className="flex items-center gap-2">
+                    <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Tipo</p>
                     <Badge variant={roleVariantMap[customer.role]}>
                       {roleLabelMap[customer.role]}
                     </Badge>
-                  </TableCell>
+                  </div>
 
-                  {/* Estado */}
-                  <TableCell>
+                  <div className="flex items-center gap-2">
+                    <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Estado</p>
                     <Badge variant={customer.isActive ? "active" : "inactive"}>
                       {customer.isActive ? "Activo" : "Inactivo"}
                     </Badge>
-                  </TableCell>
+                  </div>
 
-                  {/* Fecha registro */}
-                  <TableCell className="text-[12px] font-sans text-vous-gray">
-                    {formatDate(customer.createdAt)}
-                  </TableCell>
+                  <div>
+                    <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Registro</p>
+                    <p className="text-[12px] font-sans text-vous-text-secondary">{formatDate(customer.createdAt)}</p>
+                  </div>
 
-                  {/* Acciones */}
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <button
-                        title="Ver detalle"
-                        onClick={() => setSelected(customer)}
-                        className="text-vous-gray hover:text-vous-black transition-colors"
-                      >
-                        <Eye size={16} strokeWidth={1.5} />
-                      </button>
-                      <button
-                        title={customer.isActive ? "Desactivar cuenta" : "Activar cuenta"}
-                        onClick={() => void toggleActive(customer.uid, customer.isActive)}
-                        className={`transition-colors ${customer.isActive ? "text-green-600 hover:text-red-500" : "text-vous-gray hover:text-green-600"}`}
-                      >
-                        {customer.isActive
-                          ? <ToggleRight size={18} strokeWidth={1.5} />
-                          : <ToggleLeft size={18} strokeWidth={1.5} />}
-                      </button>
-                    </div>
-                  </TableCell>
-                </TableRow>
+                  <div className="flex items-center gap-3 pt-1">
+                    <button
+                      title="Ver detalle"
+                      onClick={() => setSelected(customer)}
+                      className="text-vous-text-secondary hover:text-vous-text transition-colors"
+                    >
+                      <Eye size={16} strokeWidth={1.5} />
+                    </button>
+                    <button
+                      title={customer.isActive ? "Desactivar cuenta" : "Activar cuenta"}
+                      onClick={() => void toggleActive(customer.uid, customer.isActive)}
+                      className={`transition-colors ${customer.isActive ? "text-green-600 hover:text-red-700" : "text-vous-text-secondary hover:text-green-700"}`}
+                    >
+                      {customer.isActive
+                        ? <ToggleRight size={18} strokeWidth={1.5} />
+                        : <ToggleLeft size={18} strokeWidth={1.5} />}
+                    </button>
+                  </div>
+                </div>
               ))}
 
               {filtered.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={6} className="py-12 text-center text-vous-gray text-sm font-nav">
-                    {search ? "No se encontraron clientes con ese filtro." : "No hay clientes registrados."}
-                  </TableCell>
-                </TableRow>
+                <div className="py-12 text-center text-vous-text-secondary text-sm font-nav">
+                  {search ? "No se encontraron clientes con ese filtro." : "No hay clientes registrados."}
+                </div>
               )}
-            </TableBody>
-          </Table>
+            </div>
+
+            <div className="hidden md:block">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    {["Cliente", "Teléfono", "Tipo", "Estado", "Registro", "Acciones"].map((h) => (
+                      <TableHead key={h}>{h}</TableHead>
+                    ))}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filtered.map((customer) => (
+                    <TableRow key={customer.id}>
+                      <TableCell>
+                        <p className="text-[13px] font-sans text-vous-text font-medium">{customer.name}</p>
+                        <p className="text-[11px] text-vous-text-secondary">{customer.email}</p>
+                      </TableCell>
+
+                      <TableCell className="text-[12px] font-sans text-vous-text-secondary">
+                        {customer.phone ?? "—"}
+                      </TableCell>
+
+                      <TableCell>
+                        <Badge variant={roleVariantMap[customer.role]}>
+                          {roleLabelMap[customer.role]}
+                        </Badge>
+                      </TableCell>
+
+                      <TableCell>
+                        <Badge variant={customer.isActive ? "active" : "inactive"}>
+                          {customer.isActive ? "Activo" : "Inactivo"}
+                        </Badge>
+                      </TableCell>
+
+                      <TableCell className="text-[12px] font-sans text-vous-text-secondary">
+                        {formatDate(customer.createdAt)}
+                      </TableCell>
+
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <button
+                            title="Ver detalle"
+                            onClick={() => setSelected(customer)}
+                            className="text-vous-text-secondary hover:text-vous-text transition-colors"
+                          >
+                            <Eye size={16} strokeWidth={1.5} />
+                          </button>
+                          <button
+                            title={customer.isActive ? "Desactivar cuenta" : "Activar cuenta"}
+                            onClick={() => void toggleActive(customer.uid, customer.isActive)}
+                            className={`transition-colors ${customer.isActive ? "text-green-600 hover:text-red-700" : "text-vous-text-secondary hover:text-green-700"}`}
+                          >
+                            {customer.isActive
+                              ? <ToggleRight size={18} strokeWidth={1.5} />
+                              : <ToggleLeft size={18} strokeWidth={1.5} />}
+                          </button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+
+                  {filtered.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={6} className="py-12 text-center text-vous-text-secondary text-sm font-nav">
+                        {search ? "No se encontraron clientes con ese filtro." : "No hay clientes registrados."}
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          </>
         )}
 
-        {/* Footer count */}
         {!loading && !error && (
-          <div className="px-4 py-3 border-t border-vous-border">
-            <p className="text-[11px] text-vous-gray font-nav">
+          <div className="px-4 py-3 border-t border-white/40">
+            <p className="text-[11px] text-vous-text-secondary font-nav">
               Mostrando {filtered.length} de {customers.length} clientes
             </p>
           </div>
         )}
       </div>
 
-      {/* Detail dialog */}
       <Dialog open={!!selected} onOpenChange={(open: boolean) => { if (!open) setSelected(null); }}>
         <DialogContent className="max-w-md">
           <DialogHeader>
@@ -230,28 +279,28 @@ export function CustomersPage() {
 
           {selected && (
             <div className="space-y-4 pt-2">
-              <div className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
                 <div>
-                  <p className="text-[10px] font-nav uppercase tracking-wider text-vous-gray mb-0.5">Teléfono</p>
-                  <p className="font-sans text-vous-black">{selected.phone ?? "—"}</p>
+                  <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">Teléfono</p>
+                  <p className="font-sans text-vous-text">{selected.phone ?? "—"}</p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-nav uppercase tracking-wider text-vous-gray mb-0.5">Tipo de Cuenta</p>
+                  <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">Tipo de Cuenta</p>
                   <Badge variant={roleVariantMap[selected.role]}>{roleLabelMap[selected.role]}</Badge>
                 </div>
                 <div>
-                  <p className="text-[10px] font-nav uppercase tracking-wider text-vous-gray mb-0.5">Estado</p>
+                  <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">Estado</p>
                   <Badge variant={selected.isActive ? "active" : "inactive"}>
                     {selected.isActive ? "Activo" : "Inactivo"}
                   </Badge>
                 </div>
                 <div>
-                  <p className="text-[10px] font-nav uppercase tracking-wider text-vous-gray mb-0.5">Registro</p>
-                  <p className="font-sans text-vous-black">{formatDate(selected.createdAt)}</p>
+                  <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">Registro</p>
+                  <p className="font-sans text-vous-text">{formatDate(selected.createdAt)}</p>
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-vous-border flex justify-end gap-2">
+              <div className="pt-2 border-t border-white/40 flex justify-end gap-2">
                 <Button
                   size="sm"
                   variant={selected.isActive ? "outline" : "gold"}

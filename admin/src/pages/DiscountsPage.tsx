@@ -128,17 +128,17 @@ export function DiscountsPage() {
   }
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
       <PageHeader
         title="Descuentos y Cupones"
         subtitle="Configura promociones y códigos de descuento."
         action={<Button onClick={openNew}><Plus size={14} strokeWidth={2} />Nuevo Cupón</Button>}
       />
 
-      <div className="bg-vous-white border border-vous-border">
-        <div className="p-4 border-b border-vous-border flex items-center gap-3">
+      <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden">
+        <div className="p-4 border-b border-white/40 flex items-center gap-3">
           <div className="relative flex-1 max-w-xs">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-vous-gray" />
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-vous-text-secondary" />
             <Input
               placeholder="Buscar código..."
               value={search}
@@ -150,95 +150,174 @@ export function DiscountsPage() {
 
         {loading ? (
           <div className="flex justify-center py-20">
-            <span className="inline-block w-5 h-5 border-2 border-vous-gold/30 border-t-vous-gold rounded-full animate-spin" />
+            <span className="inline-block w-5 h-5 border-2 border-vous-border border-t-vous-gold rounded-full animate-spin" />
           </div>
         ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                {["Código", "Tipo", "Valor", "Aplica a", "Usos", "Vigencia", "Estado", ""].map((h) => (
-                  <TableHead key={h}>{h}</TableHead>
-                ))}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
+          <>
+            <div className="block md:hidden divide-y divide-white/30">
               {filtered.map((d) => (
-                <TableRow key={d.id}>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <Tag size={14} className="text-vous-gold" />
-                      <span className="font-nav text-[13px] font-semibold text-vous-black">{d.code}</span>
+                <div key={d.id} className="p-4 hover:bg-amber-50/30 transition-colors space-y-3">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Código</p>
+                      <div className="flex items-center gap-1.5">
+                        <Tag size={14} className="text-vous-gold" />
+                        <span className="font-nav text-[13px] font-semibold text-vous-text">{d.code}</span>
+                      </div>
+                      {d.description && (
+                        <p className="text-[11px] text-vous-text-secondary font-sans mt-0.5">{d.description}</p>
+                      )}
                     </div>
-                    {d.description && (
-                      <p className="text-[11px] text-vous-gray font-sans mt-0.5">{d.description}</p>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant="outline">{TYPE_LABELS[d.type]}</Badge>
-                  </TableCell>
-                  <TableCell className="font-nav text-[13px] font-semibold text-vous-black">
-                    {d.type === "percentage" ? `${d.value}%` : `Bs. ${d.value}`}
-                  </TableCell>
-                  <TableCell className="text-[12px] font-sans text-vous-gray">
-                    {SCOPE_LABELS[d.applicableTo]}
-                  </TableCell>
-                  <TableCell className="text-[12px] font-sans text-vous-gray">
-                    {d.usedCount}{d.maxUses ? ` / ${d.maxUses}` : ""}
-                  </TableCell>
-                  <TableCell className="text-[11px] font-sans text-vous-gray">
-                    {formatValidity(d)}
-                  </TableCell>
-                  <TableCell>
                     <Badge variant={d.isActive ? "active" : "inactive"}>
                       {d.isActive ? "Activo" : "Inactivo"}
                     </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1">
-                      <Button
-                        variant="ghost"
-                        size="icon-sm"
-                        onClick={() => toggleActive(d.id, d.isActive)}
-                        title={d.isActive ? "Desactivar" : "Activar"}
-                      >
-                        {d.isActive ? <PowerOff size={14} /> : <Power size={14} />}
-                      </Button>
-                      <Button variant="ghost" size="icon-sm" onClick={() => openEdit(d)}>
-                        <Pencil size={14} />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon-sm"
-                        className="text-red-400 hover:text-red-600"
-                        onClick={() => setConfirmDelete(d.id)}
-                      >
-                        <Trash2 size={14} />
-                      </Button>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Tipo</p>
+                      <Badge variant="outline">{TYPE_LABELS[d.type]}</Badge>
                     </div>
-                  </TableCell>
-                </TableRow>
+                    <div>
+                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Valor</p>
+                      <p className="font-nav text-[13px] font-semibold text-vous-text">
+                        {d.type === "percentage" ? `${d.value}%` : `Bs. ${d.value}`}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Aplica a</p>
+                      <p className="text-[12px] font-sans text-vous-text-secondary">{SCOPE_LABELS[d.applicableTo]}</p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Usos</p>
+                      <p className="text-[12px] font-sans text-vous-text-secondary">
+                        {d.usedCount}{d.maxUses ? ` / ${d.maxUses}` : ""}
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Vigencia</p>
+                    <p className="text-[11px] font-sans text-vous-text-secondary">{formatValidity(d)}</p>
+                  </div>
+                  <div className="flex items-center gap-1 pt-1 border-t border-white/30">
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={() => toggleActive(d.id, d.isActive)}
+                      title={d.isActive ? "Desactivar" : "Activar"}
+                    >
+                      {d.isActive ? <PowerOff size={14} /> : <Power size={14} />}
+                    </Button>
+                    <Button variant="ghost" size="icon-sm" onClick={() => openEdit(d)}>
+                      <Pencil size={14} />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      className="text-red-600 hover:text-red-700"
+                      onClick={() => setConfirmDelete(d.id)}
+                    >
+                      <Trash2 size={14} />
+                    </Button>
+                  </div>
+                </div>
               ))}
               {filtered.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={8} className="py-12 text-center text-vous-gray text-sm font-nav">
-                    {search ? "No se encontraron cupones con ese filtro." : "No hay cupones configurados."}
-                  </TableCell>
-                </TableRow>
+                <div className="p-6 text-center text-vous-text-secondary text-sm font-nav">
+                  {search ? "No se encontraron cupones con ese filtro." : "No hay cupones configurados."}
+                </div>
               )}
-            </TableBody>
-          </Table>
+            </div>
+
+            <div className="hidden md:block">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    {["Código", "Tipo", "Valor", "Aplica a", "Usos", "Vigencia", "Estado", ""].map((h) => (
+                      <TableHead key={h}>{h}</TableHead>
+                    ))}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filtered.map((d) => (
+                    <TableRow key={d.id}>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Tag size={14} className="text-vous-gold" />
+                          <span className="font-nav text-[13px] font-semibold text-vous-text">{d.code}</span>
+                        </div>
+                        {d.description && (
+                          <p className="text-[11px] text-vous-text-secondary font-sans mt-0.5">{d.description}</p>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{TYPE_LABELS[d.type]}</Badge>
+                      </TableCell>
+                      <TableCell className="font-nav text-[13px] font-semibold text-vous-text">
+                        {d.type === "percentage" ? `${d.value}%` : `Bs. ${d.value}`}
+                      </TableCell>
+                      <TableCell className="text-[12px] font-sans text-vous-text-secondary">
+                        {SCOPE_LABELS[d.applicableTo]}
+                      </TableCell>
+                      <TableCell className="text-[12px] font-sans text-vous-text-secondary">
+                        {d.usedCount}{d.maxUses ? ` / ${d.maxUses}` : ""}
+                      </TableCell>
+                      <TableCell className="text-[11px] font-sans text-vous-text-secondary">
+                        {formatValidity(d)}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={d.isActive ? "active" : "inactive"}>
+                          {d.isActive ? "Activo" : "Inactivo"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            onClick={() => toggleActive(d.id, d.isActive)}
+                            title={d.isActive ? "Desactivar" : "Activar"}
+                          >
+                            {d.isActive ? <PowerOff size={14} /> : <Power size={14} />}
+                          </Button>
+                          <Button variant="ghost" size="icon-sm" onClick={() => openEdit(d)}>
+                            <Pencil size={14} />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            className="text-red-600 hover:text-red-700"
+                            onClick={() => setConfirmDelete(d.id)}
+                          >
+                            <Trash2 size={14} />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {filtered.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={8} className="py-12 text-center text-vous-text-secondary text-sm font-nav">
+                        {search ? "No se encontraron cupones con ese filtro." : "No hay cupones configurados."}
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          </>
         )}
 
         {!loading && (
-          <div className="px-4 py-3 border-t border-vous-border">
-            <p className="text-[11px] text-vous-gray font-nav">
+          <div className="px-4 py-3 border-t border-white/40">
+            <p className="text-[11px] text-vous-text-secondary font-nav">
               Mostrando {filtered.length} de {discounts.length} cupones
             </p>
           </div>
         )}
       </div>
 
-      {/* Form Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
@@ -265,7 +344,7 @@ export function DiscountsPage() {
                 placeholder="Ej: 10% de descuento en primera compra"
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label>Tipo de descuento</Label>
                 <Select
@@ -308,7 +387,7 @@ export function DiscountsPage() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label>Compra mínima (Bs.)</Label>
                 <Input

@@ -48,29 +48,29 @@ export function ColorVariantPicker({ value, onChange }: Props) {
             const isExpanded = expandedIdx === i;
             const imgCount = c.images?.length ?? 0;
             return (
-              <div key={i} className="border border-vous-border bg-white">
+              <div key={i} className="border border-vous-border bg-vous-surface">
                 <div className="flex items-center gap-2 px-2 py-1.5">
                   <span className="w-5 h-5 rounded-full border border-vous-border shrink-0" style={{ background: c.hex }} />
                   <button
                     type="button"
                     onClick={() => setExpandedIdx(isExpanded ? null : i)}
-                    className="flex-1 flex items-center gap-1 text-[12px] font-nav uppercase tracking-wide hover:text-vous-black text-left"
+                    className="flex-1 flex items-center gap-1 text-[12px] font-nav uppercase tracking-wide hover:text-vous-text text-left"
                   >
                     {c.name}
                     {imgCount > 0 && (
-                      <span className="text-[10px] font-sans text-vous-gray normal-case font-normal">
+                      <span className="text-[10px] font-sans text-vous-text-secondary normal-case font-normal">
                         ({imgCount} foto{imgCount !== 1 ? "s" : ""})
                       </span>
                     )}
-                    {isExpanded ? <ChevronDown size={12} className="ml-auto text-vous-gray" /> : <ChevronRight size={12} className="ml-auto text-vous-gray" />}
+                    {isExpanded ? <ChevronDown size={12} className="ml-auto text-vous-text-secondary" /> : <ChevronRight size={12} className="ml-auto text-vous-text-secondary" />}
                   </button>
-                  <button type="button" onClick={() => remove(i)} className="text-vous-gray hover:text-red-500 shrink-0">
+                  <button type="button" onClick={() => remove(i)} className="text-vous-text-secondary hover:text-red-700 shrink-0">
                     <X size={13} />
                   </button>
                 </div>
                 {isExpanded && (
-                  <div className="px-3 py-2 border-t border-vous-border bg-vous-bg/30 space-y-2">
-                    <p className="text-[10px] font-nav uppercase tracking-wider text-vous-gray">
+                  <div className="px-3 py-2 border-t border-white/40 bg-white/90/30 space-y-2">
+                    <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary">
                       Fotos para color {c.name}
                     </p>
                     <div className="flex flex-wrap gap-1.5">
@@ -105,7 +105,7 @@ export function ColorVariantPicker({ value, onChange }: Props) {
           type="color"
           value={hex}
           onChange={(e) => setHex(e.target.value)}
-          className="w-9 h-9 rounded border border-vous-border cursor-pointer p-0.5 bg-white shrink-0"
+          className="w-9 h-9 rounded border border-vous-border cursor-pointer p-0.5 bg-vous-surface shrink-0"
           title="Elegir color"
         />
         <Input
@@ -119,7 +119,7 @@ export function ColorVariantPicker({ value, onChange }: Props) {
           <Plus size={13} /> Agregar
         </Button>
       </div>
-      <p className="text-[10px] text-vous-gray">Cada color puede tener sus propias fotos. Las fotos se mostrarán cuando el cliente seleccione ese color.</p>
+      <p className="text-[10px] text-vous-text-secondary">Cada color puede tener sus propias fotos. Las fotos se mostrarán cuando el cliente seleccione ese color.</p>
     </div>
   );
 }

@@ -12,3 +12,4 @@ export { useLandingSections } from "./useLandingSections";
 export { useDiscounts } from "./useDiscounts";
 export { useWholesaleRules } from "./useWholesaleRules";
 export { useReports } from "./useReports";
+export { useDashboard } from "./useDashboard";

@@ -52,9 +52,9 @@ export function VariantDrawer({ product, onClose }: VariantDrawerProps) {
           </div>
 
           {loading ? (
-            <p className="text-center text-sm text-vous-gray py-8">Cargando…</p>
+            <p className="text-center text-sm text-vous-text-secondary py-8">Cargando…</p>
           ) : variants.length === 0 ? (
-            <p className="text-center text-sm text-vous-gray py-8">Sin variantes. Crea la primera.</p>
+            <p className="text-center text-sm text-vous-text-secondary py-8">Sin variantes. Crea la primera.</p>
           ) : (
             <Table>
               <TableHeader>
@@ -87,7 +87,7 @@ export function VariantDrawer({ product, onClose }: VariantDrawerProps) {
                         {v.stock}
                       </span>
                     </TableCell>
-                    <TableCell className="text-vous-gray text-xs">{v.sku ?? "—"}</TableCell>
+                    <TableCell className="text-vous-text-secondary text-xs">{v.sku ?? "—"}</TableCell>
                     <TableCell>
                       <Badge variant={v.isActive ? "active" : "inactive"}>{v.isActive ? "Activa" : "Inactiva"}</Badge>
                     </TableCell>
@@ -96,7 +96,7 @@ export function VariantDrawer({ product, onClose }: VariantDrawerProps) {
                         <Button variant="ghost" size="icon" className="w-8 h-8" onClick={() => { setEditingId(v.id); setFormOpen(true); }}>
                           <Pencil size={13} />
                         </Button>
-                        <Button variant="ghost" size="icon" className="w-8 h-8 text-red-500 hover:text-red-600" onClick={() => setDeletingId(v.id)}>
+                        <Button variant="ghost" size="icon" className="w-8 h-8 text-red-600 hover:text-red-700" onClick={() => setDeletingId(v.id)}>
                           <Trash2 size={13} />
                         </Button>
                       </div>

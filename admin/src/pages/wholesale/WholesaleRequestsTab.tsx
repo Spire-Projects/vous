@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Search, Check, X, Eye } from "lucide-react";
+import { Search, Check, X, Eye, Filter } from "lucide-react";
 import { StatCard } from "@/components/ui/StatCard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -65,7 +65,7 @@ export function WholesaleRequestsTab({
 
   return (
     <>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <StatCard label="Pendientes" value={loading ? "—" : String(pending)} />
         <StatCard
           label="Aprobados"
@@ -79,10 +79,10 @@ export function WholesaleRequestsTab({
         />
       </div>
 
-      <div className="bg-vous-white border border-vous-border">
-        <div className="p-4 border-b border-vous-border flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+      <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden">
+        <div className="p-4 border-b border-white/40 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
           <div className="relative flex-1 max-w-xs">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-vous-gray" />
+            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-vous-text-secondary" />
             <Input
               placeholder="Buscar nombre, depto, teléfono..."
               value={search}
@@ -98,6 +98,7 @@ export function WholesaleRequestsTab({
                 variant={filter === tab.value ? "default" : "outline"}
                 onClick={() => setFilter(tab.value)}
               >
+                <Filter size={12} />
                 {tab.label}
               </Button>
             ))}
@@ -113,100 +114,183 @@ export function WholesaleRequestsTab({
             <p className="text-sm text-red-600 font-nav">{error}</p>
           </div>
         ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                {["Solicitante", "Teléfono", "Departamento", "Cómo nos conoció", "Fecha", "Estado", "Acciones"].map(
-                  (h) => (
-                    <TableHead key={h}>{h}</TableHead>
-                  )
-                )}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
+          <>
+            <div className="block md:hidden divide-y divide-white/30">
               {filtered.map((req) => (
-                <TableRow key={req.id}>
-                  <TableCell>
-                    <p className="text-[13px] font-sans text-vous-black font-medium">
-                      {req.contactName}
-                    </p>
-                    <p className="text-[11px] text-vous-gray font-sans">
-                      CI: {req.carnetIdentidad ?? "—"}
-                    </p>
-                  </TableCell>
-                  <TableCell className="text-[12px] font-sans text-vous-gray">
-                    {req.phone}
-                  </TableCell>
-                  <TableCell className="text-[12px] font-sans text-vous-gray">
-                    {req.department}
-                  </TableCell>
-                  <TableCell className="text-[12px] font-sans text-vous-gray">
-                    {HOW_FOUND_LABELS[req.howFound ?? ""] ?? req.howFound ?? "—"}
-                  </TableCell>
-                  <TableCell className="text-[12px] font-sans text-vous-gray">
-                    {formatDate(req.createdAt)}
-                  </TableCell>
-                  <TableCell>
+                <div key={req.id} className="p-4 hover:bg-amber-50/30 transition-colors space-y-3">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Negocio</p>
+                      <p className="font-nav text-[13px] font-semibold text-vous-text">
+                        {req.businessName || req.contactName}
+                      </p>
+                    </div>
                     <Badge variant={STATUS_VARIANT[req.status]}>
                       {STATUS_LABEL[req.status]}
                     </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-2">
-                      <button
-                        title="Ver detalle"
-                        onClick={() => {
-                          setSelected(req);
-                          onReviewNoteChange("");
-                        }}
-                        className="text-vous-gray hover:text-vous-black transition-colors"
-                      >
-                        <Eye size={16} strokeWidth={1.5} />
-                      </button>
-                      {req.status === "pending" && (
-                        <>
-                          <button
-                            title="Aprobar"
-                            disabled={reviewLoading === req.id}
-                            onClick={() => onReview(req, "approved")}
-                            className="p-1 border border-green-300 text-green-600 hover:bg-green-50 transition-colors disabled:opacity-40"
-                          >
-                            <Check size={13} strokeWidth={2} />
-                          </button>
-                          <button
-                            title="Rechazar"
-                            disabled={reviewLoading === req.id}
-                            onClick={() => onReview(req, "rejected")}
-                            className="p-1 border border-red-300 text-red-500 hover:bg-red-50 transition-colors disabled:opacity-40"
-                          >
-                            <X size={13} strokeWidth={2} />
-                          </button>
-                        </>
-                      )}
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Solicitante</p>
+                      <p className="text-[13px] font-sans text-vous-text font-medium">{req.contactName}</p>
+                      <p className="text-[11px] text-vous-text-secondary font-sans">CI: {req.carnetIdentidad ?? "—"}</p>
                     </div>
-                  </TableCell>
-                </TableRow>
+                    <div>
+                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Teléfono</p>
+                      <p className="text-[12px] font-sans text-vous-text-secondary">{req.phone}</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Fecha</p>
+                      <p className="text-[12px] font-sans text-vous-text-secondary">{formatDate(req.createdAt)}</p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Departamento</p>
+                      <p className="text-[12px] font-sans text-vous-text-secondary">{req.department}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 pt-1 border-t border-white/30">
+                    <button
+                      title="Ver detalle"
+                      onClick={() => {
+                        setSelected(req);
+                        onReviewNoteChange("");
+                      }}
+                      className="text-vous-text-secondary hover:text-vous-text transition-colors"
+                    >
+                      <Eye size={16} strokeWidth={1.5} />
+                    </button>
+                    {req.status === "pending" && (
+                      <>
+                        <button
+                          title="Aprobar"
+                          disabled={reviewLoading === req.id}
+                          onClick={() => onReview(req, "approved")}
+                          className="p-1 border border-green-300 text-green-600 hover:bg-green-50 transition-colors disabled:opacity-40"
+                        >
+                          <Check size={13} strokeWidth={2} />
+                        </button>
+                        <button
+                          title="Rechazar"
+                          disabled={reviewLoading === req.id}
+                          onClick={() => onReview(req, "rejected")}
+                          className="p-1 border border-red-300 text-red-600 hover:bg-red-50 transition-colors disabled:opacity-40"
+                        >
+                          <X size={13} strokeWidth={2} />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
               ))}
 
               {filtered.length === 0 && (
-                <TableRow>
-                  <TableCell
-                    colSpan={7}
-                    className="py-12 text-center text-vous-gray text-sm font-nav"
-                  >
-                    {search
-                      ? "No se encontraron solicitudes con ese filtro."
-                      : "No hay solicitudes registradas."}
-                  </TableCell>
-                </TableRow>
+                <div className="p-6 text-center text-vous-text-secondary text-sm font-nav">
+                  {search
+                    ? "No se encontraron solicitudes con ese filtro."
+                    : "No hay solicitudes registradas."}
+                </div>
               )}
-            </TableBody>
-          </Table>
+            </div>
+
+            <div className="hidden md:block">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    {["Solicitante", "Teléfono", "Departamento", "Cómo nos conoció", "Fecha", "Estado", "Acciones"].map(
+                      (h) => (
+                        <TableHead key={h}>{h}</TableHead>
+                      )
+                    )}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filtered.map((req) => (
+                    <TableRow key={req.id}>
+                      <TableCell>
+                        <p className="text-[13px] font-sans text-vous-text font-medium">
+                          {req.contactName}
+                        </p>
+                        <p className="text-[11px] text-vous-text-secondary font-sans">
+                          CI: {req.carnetIdentidad ?? "—"}
+                        </p>
+                      </TableCell>
+                      <TableCell className="text-[12px] font-sans text-vous-text-secondary">
+                        {req.phone}
+                      </TableCell>
+                      <TableCell className="text-[12px] font-sans text-vous-text-secondary">
+                        {req.department}
+                      </TableCell>
+                      <TableCell className="text-[12px] font-sans text-vous-text-secondary">
+                        {HOW_FOUND_LABELS[req.howFound ?? ""] ?? req.howFound ?? "—"}
+                      </TableCell>
+                      <TableCell className="text-[12px] font-sans text-vous-text-secondary">
+                        {formatDate(req.createdAt)}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={STATUS_VARIANT[req.status]}>
+                          {STATUS_LABEL[req.status]}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <button
+                            title="Ver detalle"
+                            onClick={() => {
+                              setSelected(req);
+                              onReviewNoteChange("");
+                            }}
+                            className="text-vous-text-secondary hover:text-vous-text transition-colors"
+                          >
+                            <Eye size={16} strokeWidth={1.5} />
+                          </button>
+                          {req.status === "pending" && (
+                            <>
+                              <button
+                                title="Aprobar"
+                                disabled={reviewLoading === req.id}
+                                onClick={() => onReview(req, "approved")}
+                                className="p-1 border border-green-300 text-green-600 hover:bg-green-50 transition-colors disabled:opacity-40"
+                              >
+                                <Check size={13} strokeWidth={2} />
+                              </button>
+                              <button
+                                title="Rechazar"
+                                disabled={reviewLoading === req.id}
+                                onClick={() => onReview(req, "rejected")}
+                                className="p-1 border border-red-300 text-red-600 hover:bg-red-50 transition-colors disabled:opacity-40"
+                              >
+                                <X size={13} strokeWidth={2} />
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+
+                  {filtered.length === 0 && (
+                    <TableRow>
+                      <TableCell
+                        colSpan={7}
+                        className="py-12 text-center text-vous-text-secondary text-sm font-nav"
+                      >
+                        {search
+                          ? "No se encontraron solicitudes con ese filtro."
+                          : "No hay solicitudes registradas."}
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          </>
         )}
 
         {!loading && !error && (
-          <div className="px-4 py-3 border-t border-vous-border">
-            <p className="text-[11px] text-vous-gray font-nav">
+          <div className="px-4 py-3 border-t border-white/40">
+            <p className="text-[11px] text-vous-text-secondary font-nav">
               Mostrando {filtered.length} de {requests.length} solicitudes
             </p>
           </div>

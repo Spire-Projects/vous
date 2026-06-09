@@ -94,7 +94,7 @@ export function ProductFormDialog({ open, product, categories, onClose, onSave }
           <DialogTitle className="font-nav text-[13px] uppercase tracking-wider">
             {product ? "Editar Producto" : "Nuevo Producto"} — Paso {step + 1} de {STEPS.length}
           </DialogTitle>
-          <p className="text-[11px] text-vous-gray font-sans">{STEPS[step].desc}</p>
+          <p className="text-[11px] text-vous-text-secondary font-sans">{STEPS[step].desc}</p>
         </DialogHeader>
 
         <StepIndicator steps={STEPS} current={step} onChange={setStep} />
@@ -122,7 +122,7 @@ export function ProductFormDialog({ open, product, categories, onClose, onSave }
             onDiscountPctChange={setDiscountPercentage} onWholesaleOnlyChange={setWholesaleOnly}
             onWholesaleStockChange={setWholesaleStock} onTagsChange={setTags} />}
 
-          <div className="flex justify-between gap-3 pt-2 border-t border-vous-border">
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-white/40">
             <div className="flex gap-2">
               {step > 0 && <Button type="button" variant="outline" onClick={() => setStep(step - 1)}>
                 <ChevronLeft size={14} /> Anterior</Button>}

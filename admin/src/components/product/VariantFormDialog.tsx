@@ -48,7 +48,7 @@ export function VariantFormDialog({ open, variant, onClose, onSave }: VariantFor
           <DialogTitle>{variant ? "Editar variante" : "Nueva variante"}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 pt-2">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1">
               <Label htmlFor="vf-size">Talla</Label>
               <Input id="vf-size" value={size} onChange={(e) => setSize(e.target.value)} placeholder="S, M, L…" />
@@ -73,7 +73,7 @@ export function VariantFormDialog({ open, variant, onClose, onSave }: VariantFor
               </div>
             </div>
           )}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1">
               <Label htmlFor="vf-stock">Stock</Label>
               <Input id="vf-stock" type="number" min={0} value={stock} onChange={(e) => setStock(Number(e.target.value))} />

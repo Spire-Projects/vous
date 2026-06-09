@@ -91,8 +91,8 @@ export function LandingSectionFormDialog({
                   onClick={() => { setType(t); setIsCustom(false); }}
                   className={`flex items-center gap-2 px-3 py-2 border text-left text-[12px] font-sans transition-colors ${
                     type === t && !isCustom
-                      ? "border-vous-gold bg-vous-gold/10 text-vous-black"
-                      : "border-vous-border text-vous-gray hover:border-vous-gold/50"
+                      ? "border-vous-gold bg-vous-gold/10 text-vous-text"
+                      : "border-vous-border text-vous-text-secondary hover:border-vous-gold/50"
                   }`}
                 >
                   <span
@@ -106,8 +106,8 @@ export function LandingSectionFormDialog({
                 onClick={() => setIsCustom(true)}
                 className={`flex items-center gap-2 px-3 py-2 border text-left text-[12px] font-sans transition-colors ${
                   isCustom
-                    ? "border-vous-gold bg-vous-gold/10 text-vous-black"
-                    : "border-vous-border text-vous-gray hover:border-vous-gold/50"
+                    ? "border-vous-gold bg-vous-gold/10 text-vous-text"
+                    : "border-vous-border text-vous-text-secondary hover:border-vous-gold/50"
                 }`}
               >
                 <span className={`w-2 h-2 rounded-full shrink-0 ${isCustom ? "bg-vous-gold" : "bg-vous-gray-light"}`} />

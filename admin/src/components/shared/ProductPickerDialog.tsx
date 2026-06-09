@@ -57,20 +57,20 @@ export function ProductPickerDialog({
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
-      <DialogContent className="max-w-2xl max-h-[80vh] flex flex-col">
+      <DialogContent className="max-w-2xl max-h-[80vh] flex flex-col overflow-hidden">
         <DialogHeader>
           <DialogTitle className="font-nav text-[13px] uppercase tracking-widest">
             Productos — {sectionName}
           </DialogTitle>
         </DialogHeader>
 
-        <div className="flex items-center justify-between text-[11px] font-nav text-vous-gray px-0 pb-1">
+        <div className="flex items-center justify-between text-[11px] font-nav text-vous-text-secondary px-0 pb-1">
           <span>{selected.length} seleccionados (máx. {MAX_PRODUCTS})</span>
           {selected.length > 0 && (
             <button
               type="button"
               onClick={() => setSelected([])}
-              className="text-red-400 hover:text-red-600 flex items-center gap-1"
+              className="text-red-600 hover:text-red-700 flex items-center gap-1"
             >
               <X size={10} />
               Limpiar selección
@@ -81,7 +81,7 @@ export function ProductPickerDialog({
         <div className="relative mb-3">
           <Search
             size={14}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-vous-gray-light"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-vous-text-muted"
           />
           <Input
             value={search}
@@ -91,9 +91,9 @@ export function ProductPickerDialog({
           />
         </div>
 
-        <div className="flex-1 overflow-y-auto divide-y divide-vous-border min-h-0">
+        <div className="flex-1 overflow-y-auto divide-y divide-white/30 min-h-0">
           {filtered.length === 0 ? (
-            <p className="py-8 text-center text-vous-gray font-sans text-sm">
+            <p className="py-8 text-center text-vous-text-secondary font-sans text-sm">
               No hay productos activos.
             </p>
           ) : (
@@ -111,7 +111,7 @@ export function ProductPickerDialog({
                       ? "bg-vous-gold/10"
                       : isDisabled
                         ? "opacity-40 cursor-not-allowed"
-                        : "hover:bg-vous-cream/40"
+                        : "hover:bg-amber-50/40"
                   }`}
                 >
                   <div
@@ -121,9 +121,9 @@ export function ProductPickerDialog({
                         : "border-vous-border"
                     }`}
                   >
-                    {isSelected && <Check size={12} strokeWidth={3} className="text-vous-black" />}
+                    {isSelected && <Check size={12} strokeWidth={3} className="text-vous-text" />}
                   </div>
-                  <div className="w-10 h-10 shrink-0 bg-vous-cream overflow-hidden">
+                  <div className="w-10 h-10 shrink-0 bg-white/90 overflow-hidden">
                     {product.images?.[0] ? (
                       <img
                         src={product.images[0]}
@@ -131,14 +131,14 @@ export function ProductPickerDialog({
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full bg-vous-cream" />
+                      <div className="w-full h-full bg-white/90" />
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-nav text-[12px] font-semibold text-vous-black truncate">
+                    <p className="font-nav text-[12px] font-semibold text-vous-text truncate">
                       {product.name}
                     </p>
-                    <p className="font-sans text-[11px] text-vous-gray">
+                    <p className="font-sans text-[11px] text-vous-text-secondary">
                       {product.categoryName} · Bs.{" "}
                       {product.price.toLocaleString("es-BO")}
                     </p>
@@ -149,7 +149,7 @@ export function ProductPickerDialog({
           )}
         </div>
 
-        <div className="flex gap-3 pt-3 border-t border-vous-border">
+        <div className="flex gap-3 pt-3 border-t border-white/40">
           <Button type="button" variant="outline" onClick={onClose} className="flex-1">
             Cancelar
           </Button>

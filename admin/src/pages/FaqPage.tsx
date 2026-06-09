@@ -41,30 +41,30 @@ export function FaqPage() {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 lg:p-8">
       <PageHeader
         title="Preguntas Frecuentes"
         subtitle="Gestión de FAQs para la landing de VOUS."
         action={<Button onClick={handleNew}><Plus size={14} strokeWidth={2} />Nueva pregunta</Button>}
       />
 
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
         <StatCard label="Total" value={String(faqs.length)} />
         <StatCard label="Activas" value={String(activeCount)} />
         <StatCard label="Inactivas" value={String(faqs.length - activeCount)} />
       </div>
 
-      <div className="bg-vous-white border border-vous-border">
+      <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden">
         {loading ? (
-          <div className="p-12 text-center text-vous-gray font-nav text-[11px] uppercase tracking-wider">
+          <div className="p-12 text-center text-vous-text-secondary font-nav text-[11px] uppercase tracking-wider">
             Cargando preguntas...
           </div>
         ) : faqs.length === 0 ? (
-          <div className="p-12 text-center text-vous-gray font-sans text-sm">
+          <div className="p-12 text-center text-vous-text-secondary font-sans text-sm">
             No hay preguntas. Crea la primera.
           </div>
         ) : (
-          <div className="divide-y divide-vous-border">
+          <div className="divide-y divide-white/30">
             {faqs.map((faq, idx) => (
               <div
                 key={faq.id}
@@ -72,18 +72,21 @@ export function FaqPage() {
                 onDragStart={() => setDragIdx(idx)}
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={() => handleDrop(idx)}
-                className={`flex items-start gap-3 p-4 hover:bg-vous-cream/30 transition-colors ${dragIdx === idx ? "opacity-40" : ""}`}
+                className={`flex items-start gap-3 p-4 hover:bg-amber-50/30 transition-colors ${dragIdx === idx ? "opacity-40" : ""}`}
               >
-                <GripVertical size={16} className="text-vous-gray-light mt-0.5 shrink-0 cursor-grab" />
+                <GripVertical size={16} className="text-vous-text-muted mt-0.5 shrink-0 cursor-grab" />
                 <div className="flex-1 min-w-0">
+                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary block md:hidden">Pregunta</span>
                   <div className="flex items-center gap-2 mb-1">
-                    <p className="font-nav text-[13px] font-semibold text-vous-black">{faq.question}</p>
+                    <p className="font-nav text-[13px] font-semibold text-vous-text">{faq.question}</p>
                     <Badge variant={faq.isActive ? "active" : "inactive"} className="font-nav text-[10px] uppercase tracking-wide">
                       {faq.isActive ? "Activa" : "Inactiva"}
                     </Badge>
                   </div>
-                  <p className="text-[12px] text-vous-gray font-sans line-clamp-2">{faq.answer}</p>
-                  <p className="text-[10px] text-vous-gray-light font-nav mt-1">Orden: {faq.order}</p>
+                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary block md:hidden">Respuesta</span>
+                  <p className="text-[12px] text-vous-text-secondary font-sans line-clamp-2">{faq.answer}</p>
+                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary block md:hidden mt-1">Orden</span>
+                  <p className="text-[10px] text-vous-text-muted font-nav mt-1">Orden: {faq.order}</p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   <Button variant="ghost" size="icon-sm" onClick={() => toggleActive(faq.id, faq.isActive)} title={faq.isActive ? "Desactivar" : "Activar"}>
@@ -92,7 +95,7 @@ export function FaqPage() {
                   <Button variant="ghost" size="icon-sm" onClick={() => handleEdit(faq)}>
                     <Pencil size={14} />
                   </Button>
-                  <Button variant="ghost" size="icon-sm" onClick={() => setConfirmDelete(faq.id)} className="hover:text-red-500">
+                  <Button variant="ghost" size="icon-sm" onClick={() => setConfirmDelete(faq.id)} className="text-red-600 hover:text-red-700">
                     <Trash2 size={14} />
                   </Button>
                 </div>

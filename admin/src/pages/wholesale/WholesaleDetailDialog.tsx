@@ -53,23 +53,23 @@ export function WholesaleDetailDialog({
           </DialogHeader>
 
           <div className="space-y-5 pt-2">
-            <div className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
               <div>
-                <p className="text-[10px] font-nav uppercase tracking-wider text-vous-gray mb-0.5">
+                <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">
                   Departamento
                 </p>
-                <p className="font-sans text-vous-black">{selected.department}</p>
+                <p className="font-sans text-vous-text">{selected.department}</p>
               </div>
               <div>
-                <p className="text-[10px] font-nav uppercase tracking-wider text-vous-gray mb-0.5">
+                <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">
                   ¿Cómo nos conoció?
                 </p>
-                <p className="font-sans text-vous-black">
+                <p className="font-sans text-vous-text">
                   {HOW_FOUND_LABELS[selected.howFound ?? ""] ?? selected.howFound ?? "—"}
                 </p>
               </div>
               <div>
-                <p className="text-[10px] font-nav uppercase tracking-wider text-vous-gray mb-0.5">
+                <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">
                   Estado
                 </p>
                 <Badge variant={STATUS_VARIANT[selected.status]}>
@@ -77,41 +77,41 @@ export function WholesaleDetailDialog({
                 </Badge>
               </div>
               <div>
-                <p className="text-[10px] font-nav uppercase tracking-wider text-vous-gray mb-0.5">
+                <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">
                   Fecha
                 </p>
-                <p className="font-sans text-vous-black">{formatDate(selected.createdAt)}</p>
+                <p className="font-sans text-vous-text">{formatDate(selected.createdAt)}</p>
               </div>
               <div className="col-span-2">
-                <p className="text-[10px] font-nav uppercase tracking-wider text-vous-gray mb-0.5">
+                <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">
                   Dirección de Distribución
                 </p>
-                <p className="font-sans text-vous-black leading-relaxed">
+                <p className="font-sans text-vous-text leading-relaxed">
                   {selected.distributionAddress ?? "—"}
                 </p>
               </div>
               {selected.reviewNote && (
                 <div className="col-span-2">
-                  <p className="text-[10px] font-nav uppercase tracking-wider text-vous-gray mb-0.5">
+                  <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">
                     Nota de Revisión
                   </p>
-                  <p className="font-sans text-vous-gray text-sm italic">{selected.reviewNote}</p>
+                  <p className="font-sans text-vous-text-secondary text-sm italic">{selected.reviewNote}</p>
                 </div>
               )}
             </div>
 
             {files.length > 0 && (
               <div>
-                <p className="text-[10px] font-nav uppercase tracking-wider text-vous-gray mb-2">
+                <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-2">
                   Capturas de Tienda Online
                 </p>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {files.map((url, i) =>
                     isImageUrl(url) ? (
                       <button
                         key={i}
                         onClick={() => setPreviewUrl(url)}
-                        className="relative group aspect-square border border-vous-border overflow-hidden bg-vous-cream cursor-zoom-in"
+                        className="relative group aspect-square border border-vous-border overflow-hidden bg-white/90 cursor-zoom-in"
                       >
                         <img
                           src={url}
@@ -144,8 +144,8 @@ export function WholesaleDetailDialog({
             )}
 
             {selected.status === "pending" && (
-              <div className="space-y-1.5 pt-1 border-t border-vous-border">
-                <p className="text-[10px] font-nav uppercase tracking-wider text-vous-gray">
+              <div className="space-y-1.5 pt-1 border-t border-white/40">
+                <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary">
                   Nota de revisión (opcional)
                 </p>
                 <textarea
@@ -153,13 +153,13 @@ export function WholesaleDetailDialog({
                   placeholder="Ej: Aprobado, distribuye en Santa Cruz zona norte…"
                   value={reviewNote}
                   onChange={(e) => onReviewNoteChange(e.target.value)}
-                  className="flex w-full border border-vous-border bg-vous-surface px-3 py-2 font-sans text-sm text-vous-black placeholder:text-vous-gray outline-none focus:border-vous-gold transition-colors resize-none"
+                  className="flex w-full border border-vous-border bg-vous-surface px-3 py-2 font-sans text-sm text-vous-text placeholder:text-vous-text-secondary outline-none focus:border-vous-gold transition-colors resize-none"
                 />
               </div>
             )}
 
             {selected.status === "pending" && (
-              <div className="flex gap-2 pt-1 border-t border-vous-border">
+              <div className="flex gap-2 pt-1 border-t border-white/40">
                 <Button
                   size="sm"
                   className="flex-1 bg-green-700 hover:bg-green-800 text-white"

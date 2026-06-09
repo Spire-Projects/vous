@@ -18,8 +18,8 @@ export function StepIndicator({ steps, current, onChange }: StepIndicatorProps) 
               i === current
                 ? "bg-vous-black text-vous-white border-vous-black"
                 : i < current
-                  ? "bg-vous-cream text-vous-black border-vous-border"
-                  : "bg-white text-vous-gray border-vous-border"
+                  ? "bg-white/90 text-vous-text border-vous-border"
+                  : "bg-vous-surface text-vous-text-secondary border-vous-border"
             }`}
           >
             {i < current ? (

@@ -28,29 +28,29 @@ export function WholesalePage() {
   }
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
       <PageHeader
         title="Solicitudes Mayoristas"
         subtitle="Gestión de distribuidores VOUS — formulario oficial de clientes por mayor."
       />
 
-      <div className="flex gap-1 border-b border-vous-border">
+      <div className="flex gap-1 border-b border-white/40">
         <button
           onClick={() => setActiveTab("requests")}
-          className={`px-4 py-2.5 font-nav text-[11px] uppercase tracking-wider transition-colors ${
+          className={`px-5 py-3 font-nav text-[11px] uppercase tracking-wider transition-colors ${
             activeTab === "requests"
-              ? "border-b-2 border-vous-black text-vous-black"
-              : "text-vous-gray hover:text-vous-black"
+              ? "border-b-2 border-vous-gold text-vous-gold"
+              : "text-vous-text-secondary hover:text-vous-text"
           }`}
         >
           Solicitudes
         </button>
         <button
           onClick={() => setActiveTab("rules")}
-          className={`px-4 py-2.5 font-nav text-[11px] uppercase tracking-wider transition-colors ${
+          className={`px-5 py-3 font-nav text-[11px] uppercase tracking-wider transition-colors ${
             activeTab === "rules"
-              ? "border-b-2 border-vous-black text-vous-black"
-              : "text-vous-gray hover:text-vous-black"
+              ? "border-b-2 border-vous-gold text-vous-gold"
+              : "text-vous-text-secondary hover:text-vous-text"
           }`}
         >
           Reglas Comerciales
@@ -58,7 +58,7 @@ export function WholesalePage() {
       </div>
 
       {activeTab === "rules" ? (
-        <div className="bg-vous-white border border-vous-border p-6">
+        <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden p-6">
           <WholesaleRulesPanel />
         </div>
       ) : (

@@ -71,8 +71,8 @@ export function CategoryDiscountDialog({
 
           <label className="flex items-center gap-2 cursor-pointer">
             <Checkbox checked={discounted} onCheckedChange={(c) => setDiscounted(Boolean(c))} id="cd-disc" />
-            <Percent size={14} className="text-red-500" />
-            <span className="font-sans text-[13px] text-vous-black">Aplicar descuento</span>
+            <Percent size={14} className="text-red-600" />
+            <span className="font-sans text-[13px] text-vous-text">Aplicar descuento</span>
           </label>
 
           {discounted && (
@@ -87,7 +87,7 @@ export function CategoryDiscountDialog({
                   onChange={(e) => setDiscountPct(Math.max(0, Math.min(90, Number(e.target.value))))}
                   className="w-20"
                 />
-                <span className="text-[11px] text-vous-gray font-sans">
+                <span className="text-[11px] text-vous-text-secondary font-sans">
                   Se aplicará a todos los productos de la categoría
                 </span>
               </div>

@@ -2,20 +2,53 @@
 
 import { useSiteConfig } from "@/hooks/useSiteConfig";
 import { buildWhatsAppHref } from "@/lib/whatsapp";
+import type { ExtendedSchedule } from "@/domain/entities/site-config.entity";
+
+const DEFAULT_SCHEDULES: ExtendedSchedule[] = [
+  {
+    title: "Compras por Menor",
+    days: [
+      { day: "Lunes", hours: "Cerrado" },
+      { day: "Martes", hours: "8 am a 7 pm" },
+      { day: "Miércoles", hours: "8 am a 7 pm" },
+      { day: "Jueves", hours: "8 am a 7 pm" },
+      { day: "Viernes", hours: "8 am a 7 pm" },
+      { day: "Sábado", hours: "8 am a 7 pm" },
+      { day: "Domingo", hours: "8 am a 7 pm" },
+    ],
+  },
+  {
+    title: "Compras por Mayor",
+    days: [
+      { day: "Lunes", hours: "Cerrado" },
+      { day: "Martes", hours: "8 am a 7 pm" },
+      { day: "Miércoles", hours: "5 am a 7 pm" },
+      { day: "Jueves", hours: "8 am a 7 pm" },
+      { day: "Viernes", hours: "8 am a 7 pm" },
+      { day: "Sábado", hours: "5 am a 7 pm" },
+      { day: "Domingo", hours: "8 am a 7 pm" },
+    ],
+  },
+  {
+    title: "Envíos Compras por Mayor",
+    days: [
+      { day: "Lunes", hours: "Cerrado" },
+      { day: "Martes", hours: "10 am a 12 pm y 6 pm a 8 pm" },
+      { day: "Miércoles", hours: "6 pm a 8 pm" },
+      { day: "Jueves", hours: "10 am a 12 pm y 6 pm a 8 pm" },
+      { day: "Viernes", hours: "10 am a 12 pm y 6 pm a 8 pm" },
+      { day: "Sábado", hours: "6 pm a 8 pm" },
+      { day: "Domingo", hours: "10 am a 12 pm y 6 pm a 8 pm" },
+    ],
+  },
+];
 
 export function ScheduleSection() {
   const { config } = useSiteConfig();
 
-  const schedule = config?.schedule?.length
-    ? config.schedule
-    : [
-        { day: "Martes", hours: "9 am a 7 pm" },
-        { day: "Miércoles", hours: "5 pm a 7 pm" },
-        { day: "Jueves", hours: "9 am a 7 pm" },
-        { day: "Viernes", hours: "9 am a 7 pm" },
-        { day: "Sábado", hours: "5 pm a 7 pm" },
-        { day: "Domingo", hours: "9 am a 7 pm" },
-      ];
+  const schedules = config?.extendedSchedules?.length
+    ? config.extendedSchedules
+    : DEFAULT_SCHEDULES;
 
   const whatsappNumber = config?.whatsappNumber ?? "59165359595";
   const whatsappMessage = config?.whatsappMessage ?? "";
@@ -35,27 +68,33 @@ export function ScheduleSection() {
             >
               ATENCIÓN
             </h2>
+            <p className="font-sans text-[11px] tracking-[0.15em] uppercase text-vous-gray mt-3">
+              Atención en horario continuo
+            </p>
           </div>
 
-          {/* Right — schedule table */}
-          <div className="flex-1 min-w-0 space-y-1">
-            <p className="font-serif italic text-vous-gold text-lg mb-6">Continuo</p>
-
-            <div className="divide-y divide-vous-gray-light/30">
-              {schedule.map(({ day, hours }) => (
-                <div key={day} className="flex items-center justify-between py-4 gap-4">
-                  <span className="font-nav text-[13px] font-semibold tracking-[0.2em] uppercase text-vous-soft-black">
-                    {day}
-                  </span>
-                  <span className="font-nav text-[13px] tracking-[0.1em] text-vous-gold font-medium">
-                    {hours || "Cerrado"}
-                  </span>
+          <div className="flex-1 min-w-0 space-y-8">
+            {schedules.map((ext) => (
+              <div key={ext.title}>
+                <h4 className="font-nav text-[11px] tracking-[0.2em] uppercase text-vous-soft-black mb-4 border-b border-vous-gray-light/40 pb-2">
+                  {ext.title}
+                </h4>
+                <div className="divide-y divide-vous-gray-light/30">
+                  {ext.days.map(({ day, hours }) => (
+                    <div key={day} className="flex items-center justify-between py-3 gap-4">
+                      <span className="font-nav text-[12px] font-semibold tracking-[0.2em] uppercase text-vous-soft-black">
+                        {day}
+                      </span>
+                      <span className="font-nav text-[12px] tracking-[0.1em] text-vous-gold font-medium">
+                        {hours || "Cerrado"}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
 
-            {/* CTA */}
-            <div className="pt-6">
+            <div className="pt-2">
               <a
                 href={whatsappHref}
                 target="_blank"

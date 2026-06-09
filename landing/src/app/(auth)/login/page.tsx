@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, LogIn } from "lucide-react";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { getFirebaseAuth } from "@/lib/firebase";
 import { useAuthContext } from "@/context/AuthContext";
@@ -65,14 +65,14 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex-1 flex items-center justify-center px-6 py-16">
-      <div className="w-full max-w-[400px]">
+    <div className="flex-1 flex items-center justify-center px-4 py-12 sm:py-16">
+      <div className="w-full max-w-[420px]">
         {/* Heading */}
-        <div className="mb-10">
+        <div className="mb-10 text-center">
           <p className="font-nav text-[11px] font-semibold uppercase tracking-[0.22em] text-vous-gold mb-3">
             Bienvenido
           </p>
-          <h1 className="font-serif text-[38px] font-medium leading-[1.15] text-vous-soft-black">
+          <h1 className="font-serif text-[36px] sm:text-[40px] font-medium leading-[1.1] text-vous-soft-black">
             Iniciar Sesión
           </h1>
           <p className="mt-3 font-sans text-[14px] leading-relaxed text-vous-gray">
@@ -80,87 +80,100 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Email */}
-          <div>
-            <label className="block font-nav text-[10px] font-semibold uppercase tracking-[0.2em] text-vous-gray mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              required
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="tu@correo.com"
-              className="w-full bg-transparent border-b border-vous-gray-light focus:border-vous-gold outline-none py-2.5 font-sans text-[14px] text-vous-soft-black placeholder:text-vous-gray-light transition-colors duration-200"
-            />
-          </div>
+        {/* Card */}
+        <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 p-6 sm:p-8 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-36 h-36 bg-amber-400/5 blur-[80px] rounded-full pointer-events-none" />
 
-          {/* Password */}
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <label className="font-nav text-[10px] font-semibold uppercase tracking-[0.2em] text-vous-gray">
-                Contraseña
-              </label>
+          <div className="relative z-10">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Email */}
+              <div>
+                <label className="block font-nav text-[10px] font-semibold uppercase tracking-[0.15em] text-vous-gray mb-1.5">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  required
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="tu@correo.com"
+                  className="w-full border border-vous-border bg-white/90 px-4 py-2.5 text-sm font-sans text-vous-soft-black placeholder:text-vous-text-muted rounded-2xl shadow-inner focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all"
+                />
+              </div>
+
+              {/* Password */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="font-nav text-[10px] font-semibold uppercase tracking-[0.15em] text-vous-gray">
+                    Contraseña
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => void handleReset()}
+                    disabled={resetLoading}
+                    className="font-nav text-[10px] font-semibold uppercase tracking-[0.12em] text-vous-gray hover:text-vous-gold transition-colors disabled:opacity-50"
+                  >
+                    {resetSent
+                      ? "Correo enviado ✓"
+                      : resetLoading
+                        ? "Enviando…"
+                        : "¿Olvidó su contraseña?"}
+                  </button>
+                </div>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    required
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full border border-vous-border bg-white/90 px-4 py-2.5 pr-10 text-sm font-sans text-vous-soft-black placeholder:text-vous-text-muted rounded-2xl shadow-inner focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((v) => !v)}
+                    aria-label={showPassword ? "Ocultar contraseña" : "Ver contraseña"}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-vous-gray hover:text-vous-soft-black transition-colors"
+                  >
+                    {showPassword ? (
+                      <EyeOff size={16} strokeWidth={1.5} />
+                    ) : (
+                      <Eye size={16} strokeWidth={1.5} />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Error */}
+              {error && (
+                <div className="border border-red-200 bg-red-50 px-3 py-2 rounded-xl">
+                  <p className="text-xs text-red-600 font-sans">{error}</p>
+                </div>
+              )}
+
+              {/* Submit */}
               <button
-                type="button"
-                onClick={() => void handleReset()}
-                disabled={resetLoading}
-                className="font-nav text-[10px] font-semibold uppercase tracking-[0.12em] text-vous-gray hover:text-vous-gold transition-colors disabled:opacity-50"
+                type="submit"
+                disabled={loading}
+                className="w-full flex items-center justify-center gap-2 bg-vous-soft-black text-white font-nav text-[11px] font-semibold uppercase tracking-[0.15em] py-3.5 rounded-xl hover:bg-vous-gold hover:text-vous-soft-black shadow-lg shadow-black/10 hover:shadow-amber-500/15 hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0 transition-all duration-200 mt-1"
               >
-                {resetSent
-                  ? "Correo enviado ✓"
-                  : resetLoading
-                    ? "Enviando…"
-                    : "¿Olvidó su contraseña?"}
-              </button>
-            </div>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                required
-                autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full bg-transparent border-b border-vous-gray-light focus:border-vous-gold outline-none py-2.5 pr-8 font-sans text-[14px] text-vous-soft-black placeholder:text-vous-gray-light transition-colors duration-200"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword((v) => !v)}
-                aria-label={showPassword ? "Ocultar contraseña" : "Ver contraseña"}
-                className="absolute right-0 top-1/2 -translate-y-1/2 text-vous-gray hover:text-vous-soft-black transition-colors"
-              >
-                {showPassword ? (
-                  <EyeOff size={15} strokeWidth={1.5} />
+                {loading ? (
+                  <>
+                    <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Autenticando...
+                  </>
                 ) : (
-                  <Eye size={15} strokeWidth={1.5} />
+                  <>
+                    <LogIn size={14} strokeWidth={2} />
+                    Iniciar Sesión
+                  </>
                 )}
               </button>
-            </div>
+            </form>
           </div>
-
-          {/* Error */}
-          {error && <p className="font-sans text-[13px] text-red-600">{error}</p>}
-
-          {/* Submit */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-vous-soft-black text-vous-warm-white font-nav text-[11px] font-semibold uppercase tracking-[0.22em] py-4 hover:bg-vous-gold-dark disabled:opacity-50 transition-colors duration-300 mt-2"
-          >
-            {loading ? (
-              <span className="inline-flex items-center gap-2">
-                <span className="inline-block w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                Autenticando...
-              </span>
-            ) : (
-              "Iniciar Sesión"
-            )}
-          </button>
-        </form>
+        </div>
 
         {/* Register link */}
         <p className="mt-8 font-sans text-[13px] text-vous-gray text-center">

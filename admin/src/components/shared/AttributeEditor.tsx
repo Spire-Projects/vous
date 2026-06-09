@@ -52,7 +52,7 @@ export function AttributeEditor({ value, onChange }: Props) {
           <Input
             value={key}
             readOnly
-            className="w-32 bg-vous-bg text-[12px] shrink-0"
+            className="w-32 bg-white/90 text-[12px] shrink-0"
           />
           <Input
             value={val}

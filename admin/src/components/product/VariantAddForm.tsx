@@ -44,8 +44,8 @@ export function VariantAddForm({ colors, sizes, onAdd, onCancel }: VariantAddFor
   }
 
   return (
-    <div className="border border-vous-border p-3 space-y-3 bg-vous-bg/20">
-      <p className="font-nav text-[10px] uppercase tracking-wider text-vous-gray">Nueva variante</p>
+    <div className="border border-vous-border p-3 space-y-3 bg-white/90/20">
+      <p className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">Nueva variante</p>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {colors.length > 0 && (
           <div className="space-y-1">

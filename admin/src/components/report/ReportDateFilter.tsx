@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { Calendar } from "lucide-react";
+import { Calendar, CalendarDays, CalendarRange, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { ReportPeriod, DateRange } from "@/domain/entities/report.entity";
 
-const PERIOD_TABS: { label: string; value: ReportPeriod }[] = [
-  { label: "Hoy", value: "today" },
-  { label: "Últimos 7 días", value: "last_7_days" },
-  { label: "Últimos 30 días", value: "last_30_days" },
-  { label: "Este mes", value: "this_month" },
+const PERIOD_TABS: { label: string; value: ReportPeriod; icon: typeof Clock }[] = [
+  { label: "Hoy", value: "today", icon: Clock },
+  { label: "Últimos 7 días", value: "last_7_days", icon: Calendar },
+  { label: "Últimos 30 días", value: "last_30_days", icon: CalendarDays },
+  { label: "Este mes", value: "this_month", icon: CalendarRange },
 ];
 
 interface ReportDateFilterProps {
@@ -48,6 +48,7 @@ export function ReportDateFilter({
               onChange(tab.value);
             }}
           >
+            <tab.icon size={13} />
             {tab.label}
           </Button>
         ))}
@@ -62,14 +63,14 @@ export function ReportDateFilter({
       </div>
 
       {showCustom && (
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Input
             type="date"
             value={from}
             onChange={(e) => setFrom(e.target.value)}
             className="w-auto text-xs"
           />
-          <span className="text-vous-gray text-xs">hasta</span>
+          <span className="text-vous-text-secondary text-xs">hasta</span>
           <Input
             type="date"
             value={to}

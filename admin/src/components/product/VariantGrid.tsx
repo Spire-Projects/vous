@@ -46,20 +46,20 @@ export function VariantGrid({ colors, sizes, variants, onChange }: VariantGridPr
   const hasSizes = sizes.length > 0;
 
   return (
-    <div className="space-y-2 border border-vous-border bg-white overflow-hidden">
-      <div className="bg-vous-cream px-3 py-2 border-b border-vous-border">
-        <p className="font-nav text-[10px] uppercase tracking-wider text-vous-gray">
+    <div className="space-y-2 border border-vous-border bg-vous-surface overflow-hidden">
+      <div className="bg-white/90 px-3 py-2 border-b border-white/40">
+        <p className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">
           Variantes ({rows.length} combinaciones)
         </p>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-[12px]">
           <thead>
-            <tr className="border-b border-vous-border bg-vous-bg/50">
-              {hasColors && <th className="text-left px-3 py-1.5 font-nav text-[10px] uppercase tracking-wider text-vous-gray">Color</th>}
-              {hasSizes && <th className="text-left px-3 py-1.5 font-nav text-[10px] uppercase tracking-wider text-vous-gray">Talla</th>}
-              <th className="text-left px-3 py-1.5 font-nav text-[10px] uppercase tracking-wider text-vous-gray w-24">Stock</th>
-              <th className="text-left px-3 py-1.5 font-nav text-[10px] uppercase tracking-wider text-vous-gray w-36">SKU</th>
+            <tr className="border-b border-white/40 bg-white/90/50">
+              {hasColors && <th className="text-left px-3 py-1.5 font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">Color</th>}
+              {hasSizes && <th className="text-left px-3 py-1.5 font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">Talla</th>}
+              <th className="text-left px-3 py-1.5 font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary w-24">Stock</th>
+              <th className="text-left px-3 py-1.5 font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary w-36">SKU</th>
             </tr>
           </thead>
           <tbody>
@@ -67,7 +67,7 @@ export function VariantGrid({ colors, sizes, variants, onChange }: VariantGridPr
               const key = `${row.color}::${row.size}`;
               const v = variants[key] ?? { color: row.color || null, colorHex: row.colorHex || null, size: row.size || null, stock: 0, sku: "" };
               return (
-                <tr key={i} className="border-b border-vous-border/50 hover:bg-vous-bg/30">
+                <tr key={i} className="border-b border-white/40 hover:bg-amber-50/30">
                   {hasColors && (
                     <td className="px-3 py-1">
                       <span className="inline-flex items-center gap-1.5">
@@ -104,8 +104,8 @@ export function VariantGrid({ colors, sizes, variants, onChange }: VariantGridPr
           </tbody>
         </table>
       </div>
-      <div className="px-3 py-2 border-t border-vous-border bg-vous-bg/30 flex items-center gap-2">
-        <Label className="text-[10px] font-nav uppercase tracking-wider text-vous-gray shrink-0">Stock global:</Label>
+      <div className="px-3 py-2 border-t border-white/40 bg-white/90/30 flex items-center gap-2">
+        <Label className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary shrink-0">Stock global:</Label>
         <Input
           type="number"
           min={0}

@@ -11,6 +11,17 @@ export interface ScheduleItem {
   hours: string;
 }
 
+export interface ExtendedSchedule {
+  title: string;
+  days: ScheduleItem[];
+}
+
+export interface DepartmentLink {
+  name: string;
+  googleMapsUrl: string;
+  tiktokUrl?: string;
+}
+
 export interface SiteConfig {
   id: string;
   logoUrl: string;
@@ -23,12 +34,14 @@ export interface SiteConfig {
   city: string;
   instagram: SocialNetwork;
   tiktok: SocialNetwork;
-  facebook: SocialNetwork;
-  pinterest: SocialNetwork;
+  ubicacion: SocialNetwork;
   googleMapsUrl: string;
   shippingPolicy: string;
   returnPolicy: string;
   termsOfService: string;
   schedule: ScheduleItem[];
+  extendedSchedules: ExtendedSchedule[];
+  departmentLinks: DepartmentLink[];
+  otherCountryLinks: DepartmentLink[];
   updatedAt: string;
 }

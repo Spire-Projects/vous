@@ -33,10 +33,10 @@ export function ChipInput({ value, onChange, placeholder = "Escribir y presionar
           {value.map((item, i) => (
             <span
               key={item + i}
-              className="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-nav uppercase tracking-wide bg-vous-cream border border-vous-border"
+              className="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-nav uppercase tracking-wide bg-white/90 border border-vous-border"
             >
               {item}
-              <button type="button" onClick={() => remove(i)} className="text-vous-gray hover:text-vous-black ml-0.5">
+              <button type="button" onClick={() => remove(i)} className="text-vous-text-secondary hover:text-vous-text ml-0.5">
                 <X size={11} />
               </button>
             </span>

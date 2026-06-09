@@ -67,7 +67,7 @@ export function WholesaleRulesPanel() {
     <div className="space-y-6">
       <div className="flex items-center gap-2 mb-4">
         <Settings size={16} className="text-vous-gold" />
-        <h3 className="font-nav text-[13px] uppercase tracking-wider text-vous-black">Configuración Comercial Mayorista</h3>
+        <h3 className="font-nav text-[13px] uppercase tracking-wider text-vous-text">Configuración Comercial Mayorista</h3>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -132,7 +132,7 @@ export function WholesaleRulesPanel() {
         </div>
       </div>
 
-      <div className="flex justify-end pt-4 border-t border-vous-border">
+      <div className="flex justify-end pt-4 border-t border-white/40">
         <Button onClick={() => void handleSave()} disabled={saving}>
           <Save size={14} /> {saving ? "Guardando..." : "Guardar Reglas"}
         </Button>

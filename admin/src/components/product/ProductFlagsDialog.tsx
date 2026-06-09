@@ -75,36 +75,36 @@ export function ProductFlagsDialog({
         <div className="space-y-4 pt-2">
           {/* Flags */}
           <div className="space-y-2.5">
-            <p className="font-nav text-[10px] uppercase tracking-wider text-vous-gray">Marcadores</p>
+            <p className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">Marcadores</p>
             <label className="flex items-center gap-2 cursor-pointer">
               <Checkbox checked={featured} onCheckedChange={(c) => setFeatured(Boolean(c))} id="pf-feat" />
-              <Star size={14} className="text-amber-500" />
-              <span className="font-sans text-[13px] text-vous-black">Destacado</span>
+              <Star size={14} className="text-amber-600" />
+              <span className="font-sans text-[13px] text-vous-text">Destacado</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
               <Checkbox checked={preorder} onCheckedChange={(c) => setPreorder(Boolean(c))} id="pf-pre" />
               <Package size={14} className="text-blue-600" />
-              <span className="font-sans text-[13px] text-vous-black">Preventa</span>
+              <span className="font-sans text-[13px] text-vous-text">Preventa</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
               <Checkbox checked={specialCollection} onCheckedChange={(c) => setSpecialCollection(Boolean(c))} id="pf-spec" />
               <Sparkles size={14} className="text-purple-600" />
-              <span className="font-sans text-[13px] text-vous-black">Colección Especial</span>
+              <span className="font-sans text-[13px] text-vous-text">Colección Especial</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
               <Checkbox checked={bestseller} onCheckedChange={(c) => setBestseller(Boolean(c))} id="pf-best" />
-              <Flame size={14} className="text-emerald-600" />
-              <span className="font-sans text-[13px] text-vous-black">Más Vendido</span>
+              <Flame size={14} className="text-green-600" />
+              <span className="font-sans text-[13px] text-vous-text">Más Vendido</span>
             </label>
           </div>
 
           {/* Discount */}
-          <div className="border-t border-vous-border pt-4 space-y-2.5">
-            <p className="font-nav text-[10px] uppercase tracking-wider text-vous-gray">Descuento</p>
+          <div className="border-t border-white/40 pt-4 space-y-2.5">
+            <p className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">Descuento</p>
             <label className="flex items-center gap-2 cursor-pointer">
               <Checkbox checked={discounted} onCheckedChange={(c) => setDiscounted(Boolean(c))} id="pf-disc" />
-              <Percent size={14} className="text-red-500" />
-              <span className="font-sans text-[13px] text-vous-black">Aplicar descuento</span>
+              <Percent size={14} className="text-red-600" />
+              <span className="font-sans text-[13px] text-vous-text">Aplicar descuento</span>
             </label>
             {discounted && (
               <div className="pl-7">
@@ -118,7 +118,7 @@ export function ProductFlagsDialog({
                     onChange={(e) => setDiscountPct(Math.max(0, Math.min(90, Number(e.target.value))))}
                     className="w-20"
                   />
-                  <span className="text-[11px] text-vous-gray font-sans">
+                  <span className="text-[11px] text-vous-text-secondary font-sans">
                     Precio: Bs. {Math.max(Math.round(product.price * (1 - discountPct / 100)), 1).toLocaleString("es-BO")}
                   </span>
                 </div>

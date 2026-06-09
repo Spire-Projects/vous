@@ -20,12 +20,14 @@ function mapDoc(data: Record<string, unknown>): SiteConfig {
     googleMapsUrl: (data.googleMapsUrl as string) ?? "",
     instagram: (data.instagram as SiteConfig["instagram"]) ?? { url: "", active: false },
     tiktok: (data.tiktok as SiteConfig["tiktok"]) ?? { url: "", active: false },
-    facebook: (data.facebook as SiteConfig["facebook"]) ?? { url: "", active: false },
-    pinterest: (data.pinterest as SiteConfig["pinterest"]) ?? { url: "", active: false },
+    ubicacion: (data.ubicacion as SiteConfig["ubicacion"]) ?? { url: "", active: false },
     shippingPolicy: (data.shippingPolicy as string) ?? "",
     returnPolicy: (data.returnPolicy as string) ?? "",
     termsOfService: (data.termsOfService as string) ?? "",
     schedule: (data.schedule as SiteConfig["schedule"]) ?? [],
+    extendedSchedules: (data.extendedSchedules as SiteConfig["extendedSchedules"]) ?? [],
+    departmentLinks: (data.departmentLinks as SiteConfig["departmentLinks"]) ?? [],
+    otherCountryLinks: (data.otherCountryLinks as SiteConfig["otherCountryLinks"]) ?? [],
     updatedAt:
       (data.updatedAt as { toDate?: () => Date })?.toDate?.().toISOString() ??
       new Date().toISOString(),

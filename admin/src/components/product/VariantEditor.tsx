@@ -28,7 +28,7 @@ export function VariantEditor({ colors, sizes, variants, onChange }: VariantEdit
 
   if (!hasAny) {
     return (
-      <p className="text-[11px] text-vous-gray">
+      <p className="text-[11px] text-vous-text-secondary">
         Aún no has agregado colores ni tallas. Regresa a los pasos Colores y Tallas para definir las opciones.
       </p>
     );
@@ -57,18 +57,18 @@ export function VariantEditor({ colors, sizes, variants, onChange }: VariantEdit
                       {v.color}
                     </span>
                   ) : (
-                    <span className="text-vous-gray text-[11px]">—</span>
+                    <span className="text-vous-text-secondary text-[11px]">—</span>
                   )}
                 </TableCell>
                 <TableCell>
-                  <span className="text-[11px] font-nav uppercase">{v.size ?? <span className="text-vous-gray">—</span>}</span>
+                  <span className="text-[11px] font-nav uppercase">{v.size ?? <span className="text-vous-text-secondary">—</span>}</span>
                 </TableCell>
                 <TableCell>
-                  <span className={`text-[12px] font-nav font-semibold ${v.stock <= 0 ? "text-red-500" : ""}`}>{v.stock}</span>
+                  <span className={`text-[12px] font-nav font-semibold ${v.stock <= 0 ? "text-red-600" : ""}`}>{v.stock}</span>
                 </TableCell>
-                <TableCell className="text-[10px] text-vous-gray font-mono">{v.sku ?? "—"}</TableCell>
+                <TableCell className="text-[10px] text-vous-text-secondary font-mono">{v.sku ?? "—"}</TableCell>
                 <TableCell>
-                  <Button variant="ghost" size="icon-sm" className="text-vous-gray hover:text-red-500" onClick={() => removeVariant(i)}>
+                  <Button variant="ghost" size="icon-sm" className="text-vous-text-secondary hover:text-red-700" onClick={() => removeVariant(i)}>
                     <Trash2 size={13} />
                   </Button>
                 </TableCell>
@@ -87,7 +87,7 @@ export function VariantEditor({ colors, sizes, variants, onChange }: VariantEdit
       )}
 
       {variants.length === 0 && !showForm && (
-        <p className="text-[11px] text-vous-gray">No hay variantes aún. Agrega las combinaciones de color y talla que existen.</p>
+        <p className="text-[11px] text-vous-text-secondary">No hay variantes aún. Agrega las combinaciones de color y talla que existen.</p>
       )}
     </div>
   );
