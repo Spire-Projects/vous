@@ -24,9 +24,9 @@ export function NosotrosLocations({ departmentLinks, otherCountryLinks }: Nosotr
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {departmentLinks.map((dept) => (
+              {departmentLinks.map((dept, idx) => (
                 <a
-                  key={dept.name}
+                  key={`${dept.name}-${idx}`}
                   href={dept.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -61,9 +61,9 @@ export function NosotrosLocations({ departmentLinks, otherCountryLinks }: Nosotr
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
-              {otherCountryLinks.map((link) => (
+              {otherCountryLinks.map((link, idx) => (
                 <a
-                  key={link.name}
+                  key={`${link.name}-${idx}`}
                   href={link.tiktokUrl || link.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"

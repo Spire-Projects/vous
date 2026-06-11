@@ -18,6 +18,8 @@ import { SettingsPage } from "./pages/SettingsPage";
 import { BannersPage } from "./pages/BannersPage";
 import { AdminUsersPage } from "./pages/AdminUsersPage";
 import { LandingSectionsPage } from "./pages/LandingSectionsPage";
+import { MapaPage } from "./pages/MapaPage";
+import { IconPage } from "./pages/IconPage";
 
 function AdminRoutes() {
   return (
@@ -37,6 +39,8 @@ function AdminRoutes() {
           <Route path="descuentos" element={<DiscountsPage />} />
           <Route path="reportes" element={<ReportsPage />} />
           <Route path="configuracion" element={<SettingsPage />} />
+          <Route path="mapa" element={<MapaPage />} />
+          <Route path="icon" element={<IconPage />} />
           <Route
             path="usuarios"
             element={

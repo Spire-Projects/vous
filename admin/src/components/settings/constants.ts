@@ -1,4 +1,4 @@
-import { Store, Phone, Share2, FileText, Clock, CreditCard, MapPin } from "lucide-react";
+import { Store, Phone, Share2, FileText, Clock, CreditCard } from "lucide-react";
 import type { ScheduleItem, ExtendedSchedule, DepartmentLink } from "@/domain/entities/site-config.entity";
 
 export const DEFAULT_SCHEDULE: ScheduleItem[] = [
@@ -21,13 +21,12 @@ export const DEFAULT_EXTENDED = [
   "Envíos Compras por Mayor",
 ];
 
-export const EMPTY_DEPT_LINK: DepartmentLink = { name: "", googleMapsUrl: "", tiktokUrl: "" };
+export const EMPTY_DEPT_LINK: DepartmentLink = { name: "", googleMapsUrl: "", tiktokUrl: "", lat: undefined, lng: undefined };
 
 export const TABS = [
   { id: "brand", label: "Identidad", icon: Store },
   { id: "contact", label: "Contacto", icon: Phone },
   { id: "social", label: "Redes", icon: Share2 },
-  { id: "locations", label: "Ubicaciones", icon: MapPin },
   { id: "policies", label: "Políticas", icon: FileText },
   { id: "schedule", label: "Horarios", icon: Clock },
   { id: "payment", label: "Pagos", icon: CreditCard },

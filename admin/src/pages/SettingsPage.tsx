@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useSiteConfig } from "@/hooks/useSiteConfig";
 import { usePaymentConfig } from "@/hooks/usePaymentConfig";
 import {
-  BrandTab, ContactTab, SocialTab, LocationsTab, PoliciesTab, ScheduleTab, PaymentTab,
+  BrandTab, ContactTab, SocialTab, PoliciesTab, ScheduleTab, PaymentTab,
   useSettingsForm, TABS,
 } from "@/components/settings";
 import type { TabId } from "@/components/settings";
@@ -109,14 +109,6 @@ export function SettingsPage() {
             setUbicacionUrl={form.setUbicacionUrl}
             ubicacionActive={form.ubicacionActive}
             setUbicacionActive={form.setUbicacionActive}
-          />
-        )}
-        {activeTab === "locations" && visited.has("locations") && (
-          <LocationsTab
-            departmentLinks={form.departmentLinks}
-            setDepartmentLinks={form.setDepartmentLinks}
-            otherCountryLinks={form.otherCountryLinks}
-            setOtherCountryLinks={form.setOtherCountryLinks}
           />
         )}
         {activeTab === "policies" && visited.has("policies") && (

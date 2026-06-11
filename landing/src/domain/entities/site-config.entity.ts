@@ -20,6 +20,8 @@ export interface DepartmentLink {
   name: string;
   googleMapsUrl: string;
   tiktokUrl?: string;
+  lat?: number;
+  lng?: number;
 }
 
 export interface SiteConfig {

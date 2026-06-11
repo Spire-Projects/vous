@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, ShoppingCart, Package, Users, Settings, Tag,
-  FileText, BarChart2, UserCog, Layers, LogOut, Image, LayoutGrid, X,
+  FileText, BarChart2, UserCog, Layers, LogOut, Image, LayoutGrid, X, Map, Star,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { useSiteConfig } from "../../hooks/useSiteConfig";
@@ -20,6 +20,8 @@ const NAV_ITEMS = [
   { label: "Descuentos", path: "/descuentos", icon: Tag },
   { label: "Reportes", path: "/reportes", icon: BarChart2 },
   { label: "Configuración", path: "/configuracion", icon: Settings },
+  { label: "Mapa", path: "/mapa", icon: Map },
+  { label: "ICON", path: "/icon", icon: Star },
 ];
 
 const NAV_BASE =

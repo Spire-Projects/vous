@@ -1,6 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Syne:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap');
 @import "tailwindcss";
 
+/* ── Leaflet overrides ─────────────────────────────────────────────────── */
+.leaflet-container {
+  background: #f5f2eb;
+  font-family: "DM Sans", sans-serif;
+}
+
+.vous-map-pin {
+  background: transparent !important;
+  border: none !important;
+}
+
+.vous-red-dot {
+  background: transparent !important;
+  border: none !important;
+}
+
 /* ── VOUS Admin — Luminous Atelier Design Tokens ──────────────────────────── */
 @theme {
   --color-vous-bg:           #FAFAF8;

@@ -15,3 +15,4 @@ export { firestorePaymentConfigRepository } from "./repositories/firestore-payme
 export { firestoreLandingSectionRepository } from "./repositories/firestore-landing-section.repository";
 export { firestoreDiscountRepository } from "./repositories/firestore-discount.repository";
 export { firestoreWholesaleRulesRepository } from "./repositories/firestore-wholesale-rules.repository";
+export { firestoreInfluencerRepository } from "./repositories/firestore-influencer.repository";

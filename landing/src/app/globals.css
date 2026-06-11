@@ -64,3 +64,19 @@ body {
   background-color: rgba(201, 168, 76, 0.25);
   color: #1a1a18;
 }
+
+/* ── Leaflet overrides ─────────────────────────────────────────────────────── */
+.leaflet-container {
+  background: #f5f0e8;
+  font-family: "DM Sans", "Inter", sans-serif;
+}
+
+.vous-map-pin {
+  background: transparent !important;
+  border: none !important;
+}
+
+.vous-red-dot {
+  background: transparent !important;
+  border: none !important;
+}
