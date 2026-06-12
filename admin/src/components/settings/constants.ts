@@ -1,4 +1,4 @@
-import { Store, Phone, Share2, FileText, Clock, CreditCard } from "lucide-react";
+import { Store, Phone, Share2, FileText, Clock, CreditCard, Newspaper } from "lucide-react";
 import type { ScheduleItem, ExtendedSchedule, DepartmentLink } from "@/domain/entities/site-config.entity";
 
 export const DEFAULT_SCHEDULE: ScheduleItem[] = [
@@ -28,6 +28,7 @@ export const TABS = [
   { id: "contact", label: "Contacto", icon: Phone },
   { id: "social", label: "Redes", icon: Share2 },
   { id: "policies", label: "Políticas", icon: FileText },
+  { id: "content", label: "Contenido", icon: Newspaper },
   { id: "schedule", label: "Horarios", icon: Clock },
   { id: "payment", label: "Pagos", icon: CreditCard },
 ] as const;

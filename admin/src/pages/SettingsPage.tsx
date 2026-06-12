@@ -6,7 +6,7 @@ import { useSiteConfig } from "@/hooks/useSiteConfig";
 import { usePaymentConfig } from "@/hooks/usePaymentConfig";
 import {
   BrandTab, ContactTab, SocialTab, PoliciesTab, ScheduleTab, PaymentTab,
-  useSettingsForm, TABS,
+  ContentSectionsTab, useSettingsForm, TABS,
 } from "@/components/settings";
 import type { TabId } from "@/components/settings";
 
@@ -119,6 +119,18 @@ export function SettingsPage() {
             setReturnPolicy={form.setReturnPolicy}
             termsOfService={form.termsOfService}
             setTermsOfService={form.setTermsOfService}
+          />
+        )}
+        {activeTab === "content" && visited.has("content") && (
+          <ContentSectionsTab
+            fashionTrends={form.fashionTrends}
+            setFashionTrends={form.setFashionTrends}
+            vousNews={form.vousNews}
+            setVousNews={form.setVousNews}
+            newPosts={form.newPosts}
+            setNewPosts={form.setNewPosts}
+            feedback={form.feedback}
+            setFeedback={form.setFeedback}
           />
         )}
         {activeTab === "schedule" && visited.has("schedule") && (

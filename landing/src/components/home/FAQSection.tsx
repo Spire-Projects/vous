@@ -108,7 +108,7 @@ export function FAQSection() {
                       <div className="px-5 md:px-6 pb-5 md:pb-6 pt-0">
                         <div className="border-t border-vous-gray-light/30 pt-4">
                           <div
-                            className="prose prose-sm max-w-none font-sans text-sm text-vous-gray leading-relaxed prose-headings:font-serif prose-headings:text-vous-soft-black prose-a:text-vous-gold prose-strong:text-vous-soft-black"
+                            className="faq-answer max-w-none font-sans text-sm text-vous-gray leading-relaxed [&_strong]:font-semibold [&_strong]:text-vous-soft-black [&_em]:italic [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-3 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-3 [&_h2]:font-serif [&_h2]:text-lg [&_h2]:text-vous-soft-black [&_h2]:mt-4 [&_h2]:mb-2 [&_blockquote]:border-l-[3px] [&_blockquote]:border-vous-gold [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-vous-gray [&_a]:text-vous-gold [&_a]:underline"
                             dangerouslySetInnerHTML={{ __html: faq.answer }}
                           />
                         </div>

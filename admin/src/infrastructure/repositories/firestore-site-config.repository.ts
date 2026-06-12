@@ -6,6 +6,23 @@ import type { SiteConfig, UpdateSiteConfigInput } from "@/domain/entities/site-c
 const DOC_ID = "general";
 const COLLECTION = "settings";
 
+const DEFAULT_CONTENT_SECTION: SiteConfig["fashionTrends"] = {
+  isActive: false,
+  title: "",
+  subtitle: "",
+  content: "",
+  imageUrl: "",
+  linkUrl: "",
+};
+
+const DEFAULT_FEEDBACK_SECTION: SiteConfig["feedback"] = {
+  isActive: false,
+  title: "",
+  subtitle: "",
+  successMessage: "Gracias por tu mensaje. Lo hemos recibido correctamente.",
+  emailRecipient: "",
+};
+
 function mapDoc(data: Record<string, unknown>): SiteConfig {
   return {
     id: DOC_ID,
@@ -28,6 +45,10 @@ function mapDoc(data: Record<string, unknown>): SiteConfig {
     extendedSchedules: (data.extendedSchedules as SiteConfig["extendedSchedules"]) ?? [],
     departmentLinks: (data.departmentLinks as SiteConfig["departmentLinks"]) ?? [],
     otherCountryLinks: (data.otherCountryLinks as SiteConfig["otherCountryLinks"]) ?? [],
+    fashionTrends: (data.fashionTrends as SiteConfig["fashionTrends"]) ?? { ...DEFAULT_CONTENT_SECTION },
+    vousNews: (data.vousNews as SiteConfig["vousNews"]) ?? { ...DEFAULT_CONTENT_SECTION },
+    newPosts: (data.newPosts as SiteConfig["newPosts"]) ?? { ...DEFAULT_CONTENT_SECTION },
+    feedback: (data.feedback as SiteConfig["feedback"]) ?? { ...DEFAULT_FEEDBACK_SECTION },
     updatedAt:
       (data.updatedAt as { toDate?: () => Date })?.toDate?.().toISOString() ??
       new Date().toISOString(),

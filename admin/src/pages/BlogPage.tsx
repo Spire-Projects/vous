@@ -278,7 +278,7 @@ export function BlogPage() {
                 <div className="col-span-2">
                   <p className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary mb-2">Contenido (preview)</p>
                   <div
-                    className="prose prose-sm max-w-none text-vous-text-secondary border border-vous-border p-3 max-h-48 overflow-y-auto bg-vous-surface text-[12px] leading-relaxed"
+                    className="blog-preview-content max-w-none text-vous-text-secondary border border-vous-border p-3 max-h-48 overflow-y-auto bg-vous-surface text-[12px] leading-relaxed [&_strong]:font-semibold [&_strong]:text-vous-text [&_em]:italic [&_p]:mb-2 [&_ul]:list-disc [&_ul]:pl-4 [&_ul]:mb-2 [&_ol]:list-decimal [&_ol]:pl-4 [&_ol]:mb-2 [&_h2]:font-serif [&_h2]:text-base [&_h2]:text-vous-text [&_h2]:mt-3 [&_h2]:mb-1 [&_blockquote]:border-l-[3px] [&_blockquote]:border-vous-gold [&_blockquote]:pl-3 [&_blockquote]:italic [&_a]:text-vous-gold [&_a]:underline"
                     dangerouslySetInnerHTML={{ __html: preview.content }}
                   />
                 </div>

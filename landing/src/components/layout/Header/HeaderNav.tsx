@@ -6,8 +6,12 @@ const NAV_LINKS = [
   { href: "/catalogo", label: "CATÁLOGO" },
   { href: "/categorias", label: "CATEGORÍAS" },
   { href: "/icon", label: "ICON" },
+  { href: "/tendencias", label: "TENDENCIAS" },
+  { href: "/vous-news", label: "VOUS NEWS" },
+  { href: "/nuevos-posts", label: "NEW POST" },
   { href: "/nosotros", label: "NOSOTROS" },
   { href: "/revista", label: "BLOG DE MODA" },
+  { href: "/feedback", label: "FEEDBACK" },
 ] as const;
 
 interface HeaderNavProps {

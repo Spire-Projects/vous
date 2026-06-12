@@ -21,10 +21,7 @@ export function PoliticaDevolucionesPage() {
         </div>
       ) : (
         <div
-          className="prose prose-lg max-w-3xl mx-auto font-sans text-vous-gray leading-relaxed
-            prose-headings:font-serif prose-headings:text-vous-soft-black
-            prose-a:text-vous-gold prose-a:no-underline hover:prose-a:text-vous-gold-light
-            prose-strong:text-vous-soft-black prose-li:text-vous-gray"
+          className="policy-content max-w-3xl mx-auto font-sans text-vous-gray leading-relaxed [&_strong]:font-semibold [&_strong]:text-vous-soft-black [&_em]:italic [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-4 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:mb-4 [&_h2]:font-serif [&_h2]:text-xl [&_h2]:text-vous-soft-black [&_h2]:mt-6 [&_h2]:mb-3 [&_h3]:font-serif [&_h3]:text-lg [&_h3]:text-vous-soft-black [&_h3]:mt-5 [&_h3]:mb-2 [&_blockquote]:border-l-[3px] [&_blockquote]:border-vous-gold [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-vous-gray [&_a]:text-vous-gold [&_a]:underline [&_li]:text-vous-gray [&_li]:mb-1"
           dangerouslySetInnerHTML={{
             __html: config?.returnPolicy ?? "<p>No hay información disponible.</p>",
           }}

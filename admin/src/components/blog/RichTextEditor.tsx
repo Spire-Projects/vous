@@ -13,7 +13,7 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
     content,
     onUpdate: ({ editor: e }) => onChange(e.getHTML()),
     editorProps: {
-      attributes: { class: "prose prose-sm max-w-none min-h-[200px] p-3 focus:outline-none" },
+      attributes: { class: "richtext-editor-content max-w-none min-h-[200px] p-3 focus:outline-none" },
     },
   });
 
@@ -36,6 +36,53 @@ export function RichTextEditor({ content, onChange }: RichTextEditorProps) {
       <div className="overflow-x-auto">
         <EditorContent editor={editor} />
       </div>
+      <style>{`
+        .richtext-editor-content h2 {
+          font-family: 'Bodoni Moda', serif;
+          font-size: 1.25rem;
+          font-weight: 600;
+          margin-top: 1rem;
+          margin-bottom: 0.5rem;
+          color: #0D0D0C;
+        }
+        .richtext-editor-content p {
+          margin-bottom: 0.75rem;
+          line-height: 1.6;
+        }
+        .richtext-editor-content ul {
+          list-style-type: disc;
+          padding-left: 1.25rem;
+          margin-bottom: 0.75rem;
+        }
+        .richtext-editor-content ol {
+          list-style-type: decimal;
+          padding-left: 1.25rem;
+          margin-bottom: 0.75rem;
+        }
+        .richtext-editor-content li {
+          margin-bottom: 0.25rem;
+        }
+        .richtext-editor-content li > p {
+          margin-bottom: 0.25rem;
+        }
+        .richtext-editor-content blockquote {
+          border-left: 3px solid #C9A84C;
+          padding-left: 1rem;
+          font-style: italic;
+          color: #6B6B65;
+          margin-bottom: 0.75rem;
+        }
+        .richtext-editor-content strong {
+          font-weight: 600;
+          color: #0D0D0C;
+        }
+        .richtext-editor-content em {
+          font-style: italic;
+        }
+        .richtext-editor-content > :last-child {
+          margin-bottom: 0;
+        }
+      `}</style>
     </div>
   );
 }

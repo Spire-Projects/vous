@@ -84,7 +84,10 @@ export function FaqPage() {
                     </Badge>
                   </div>
                   <span className="text-[10px] font-nav uppercase text-vous-text-secondary block md:hidden">Respuesta</span>
-                  <p className="text-[12px] text-vous-text-secondary font-sans line-clamp-2">{faq.answer}</p>
+                  <div
+                    className="text-[12px] text-vous-text-secondary font-sans line-clamp-2 faq-answer-preview [&_strong]:font-semibold [&_em]:italic [&_p]:inline [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_li]:my-0"
+                    dangerouslySetInnerHTML={{ __html: faq.answer }}
+                  />
                   <span className="text-[10px] font-nav uppercase text-vous-text-secondary block md:hidden mt-1">Orden</span>
                   <p className="text-[10px] text-vous-text-muted font-nav mt-1">Orden: {faq.order}</p>
                 </div>

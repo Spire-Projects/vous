@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { SiteConfig, UpdateSiteConfigInput, ScheduleItem, ExtendedSchedule, DepartmentLink } from "@/domain/entities/site-config.entity";
+import type { SiteConfig, UpdateSiteConfigInput, ScheduleItem, ExtendedSchedule, DepartmentLink, ContentSection, FeedbackSection } from "@/domain/entities/site-config.entity";
 import { DEFAULT_SCHEDULE, DEFAULT_EXTENDED, emptySchedule } from "./constants";
 
 export function useSettingsForm(config: SiteConfig | null) {
@@ -27,6 +27,19 @@ export function useSettingsForm(config: SiteConfig | null) {
   );
   const [departmentLinks, setDepartmentLinks] = useState<DepartmentLink[]>([]);
   const [otherCountryLinks, setOtherCountryLinks] = useState<DepartmentLink[]>([]);
+
+  const [fashionTrends, setFashionTrends] = useState<ContentSection>({
+    isActive: false, title: "", subtitle: "", content: "", imageUrl: "", linkUrl: "",
+  });
+  const [vousNews, setVousNews] = useState<ContentSection>({
+    isActive: false, title: "", subtitle: "", content: "", imageUrl: "", linkUrl: "",
+  });
+  const [newPosts, setNewPosts] = useState<ContentSection>({
+    isActive: false, title: "", subtitle: "", content: "", imageUrl: "", linkUrl: "",
+  });
+  const [feedback, setFeedback] = useState<FeedbackSection>({
+    isActive: false, title: "", subtitle: "", successMessage: "Gracias por tu mensaje. Lo hemos recibido correctamente.", emailRecipient: "",
+  });
 
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
@@ -57,6 +70,10 @@ export function useSettingsForm(config: SiteConfig | null) {
     );
     setDepartmentLinks(config.departmentLinks?.length ? config.departmentLinks : []);
     setOtherCountryLinks(config.otherCountryLinks?.length ? config.otherCountryLinks : []);
+    setFashionTrends(config.fashionTrends ?? { isActive: false, title: "", subtitle: "", content: "", imageUrl: "", linkUrl: "" });
+    setVousNews(config.vousNews ?? { isActive: false, title: "", subtitle: "", content: "", imageUrl: "", linkUrl: "" });
+    setNewPosts(config.newPosts ?? { isActive: false, title: "", subtitle: "", content: "", imageUrl: "", linkUrl: "" });
+    setFeedback(config.feedback ?? { isActive: false, title: "", subtitle: "", successMessage: "Gracias por tu mensaje. Lo hemos recibido correctamente.", emailRecipient: "" });
   }, [config]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
@@ -84,6 +101,10 @@ export function useSettingsForm(config: SiteConfig | null) {
       })),
       departmentLinks: departmentLinks.filter((d) => d.name.trim() !== ""),
       otherCountryLinks: otherCountryLinks.filter((d) => d.name.trim() !== ""),
+      fashionTrends,
+      vousNews,
+      newPosts,
+      feedback,
     };
   }
 
@@ -107,6 +128,10 @@ export function useSettingsForm(config: SiteConfig | null) {
     extendedSchedules, setExtendedSchedules,
     departmentLinks, setDepartmentLinks,
     otherCountryLinks, setOtherCountryLinks,
+    fashionTrends, setFashionTrends,
+    vousNews, setVousNews,
+    newPosts, setNewPosts,
+    feedback, setFeedback,
     toInput,
   };
 }

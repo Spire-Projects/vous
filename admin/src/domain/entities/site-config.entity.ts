@@ -24,6 +24,23 @@ export interface DepartmentLink {
   lng?: number;
 }
 
+export interface ContentSection {
+  isActive: boolean;
+  title: string;
+  subtitle: string;
+  content: string;
+  imageUrl?: string;
+  linkUrl?: string;
+}
+
+export interface FeedbackSection {
+  isActive: boolean;
+  title: string;
+  subtitle: string;
+  successMessage: string;
+  emailRecipient: string;
+}
+
 export interface SiteConfig {
   id: string;
   logoUrl: string;
@@ -45,6 +62,10 @@ export interface SiteConfig {
   extendedSchedules: ExtendedSchedule[];
   departmentLinks: DepartmentLink[];
   otherCountryLinks: DepartmentLink[];
+  fashionTrends: ContentSection;
+  vousNews: ContentSection;
+  newPosts: ContentSection;
+  feedback: FeedbackSection;
   updatedAt: string;
 }
 
@@ -68,4 +89,8 @@ export interface UpdateSiteConfigInput {
   extendedSchedules?: ExtendedSchedule[];
   departmentLinks?: DepartmentLink[];
   otherCountryLinks?: DepartmentLink[];
+  fashionTrends?: ContentSection;
+  vousNews?: ContentSection;
+  newPosts?: ContentSection;
+  feedback?: FeedbackSection;
 }
