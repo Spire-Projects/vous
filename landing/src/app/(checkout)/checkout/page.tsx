@@ -41,19 +41,19 @@ export default function CheckoutPage() {
   if (step === "success") return <CheckoutSuccessStep orderNumber={orderNumber} />;
 
   return (
-    <div className="bg-vous-warm-white min-h-screen">
-      <div className="border-b border-vous-gray-light/40 py-4 px-5 md:px-20">
+    <div className="bg-white min-h-screen">
+      <div className="border-b border-black/10 py-4 px-5 md:px-20">
         <div className="max-w-[1440px] mx-auto flex items-center justify-between">
           <HeaderLogo />
-          <div className="flex items-center gap-2 font-sans text-xs text-vous-gray">
-            <Shield size={13} className="text-vous-gold" />
+          <div className="flex items-center gap-2 font-sans text-xs text-black/50">
+            <Shield size={13} className="text-black" />
             Pago Seguro
           </div>
         </div>
       </div>
 
       <div className="max-w-[1440px] mx-auto px-5 md:px-20 py-12 md:py-16">
-        <h1 className="font-serif text-3xl md:text-4xl text-vous-soft-black mb-12">Checkout</h1>
+        <h1 className="font-serif text-3xl md:text-4xl text-black mb-12">Checkout</h1>
 
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-20">
           <div className="flex-1 min-w-0 space-y-10">

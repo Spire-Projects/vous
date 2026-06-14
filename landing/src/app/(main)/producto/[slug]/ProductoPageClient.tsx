@@ -69,19 +69,19 @@ export function ProductoPageClient() {
 
   if (loading) {
     return (
-      <div className="bg-vous-warm-white min-h-screen flex items-center justify-center">
-        <span className="inline-block w-6 h-6 border-2 border-vous-gold/30 border-t-vous-gold rounded-full animate-spin" />
+      <div className="bg-white min-h-screen flex items-center justify-center">
+        <span className="inline-block w-6 h-6 border-2 border-black/30 border-t-black rounded-full animate-spin" />
       </div>
     );
   }
 
   if (notFound || !product) {
     return (
-      <div className="bg-vous-warm-white min-h-screen flex flex-col items-center justify-center gap-4">
-        <p className="font-sans text-sm text-vous-gray">Producto no encontrado.</p>
+      <div className="bg-white min-h-screen flex flex-col items-center justify-center gap-4">
+        <p className="font-sans text-sm text-black/50">Producto no encontrado.</p>
         <Link
           href="/catalogo"
-          className="font-nav text-[11px] uppercase tracking-wider text-vous-gold hover:underline"
+          className="font-nav text-[11px] uppercase tracking-wider text-black hover:underline"
         >
           Volver al catálogo
         </Link>
@@ -90,7 +90,7 @@ export function ProductoPageClient() {
   }
 
   return (
-    <div className="bg-vous-warm-white min-h-screen">
+    <div className="bg-white min-h-screen">
       <div className="max-w-[1440px] mx-auto px-5 md:px-20 py-12 md:py-16">
         <div className="flex flex-col md:flex-row gap-10 lg:gap-20 mb-16">
           <ProductGallery

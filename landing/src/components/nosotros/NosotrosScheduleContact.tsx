@@ -29,21 +29,21 @@ export function NosotrosScheduleContact({ config, whatsappHref }: NosotrosSchedu
     <section className="max-w-[1440px] mx-auto px-5 md:px-20 py-12 md:py-24">
       <div className="grid grid-cols-12 gap-8 md:gap-12">
         <div className="col-span-12 md:col-span-5">
-          <h2 className="font-serif text-[28px] md:text-4xl text-vous-soft-black mb-10">
+          <h2 className="font-serif text-[28px] md:text-4xl text-black mb-10">
             Horarios de Atención
           </h2>
           <div className="space-y-10">
             {extendedSchedules.length > 0 ? (
               extendedSchedules.map((ext) => (
                 <div key={ext.title}>
-                  <h4 className="font-nav text-[10px] tracking-[0.2em] uppercase text-vous-soft-black mb-4 border-b border-vous-gray-light/40 pb-2">
+                  <h4 className="font-nav text-[10px] tracking-[0.2em] uppercase text-black mb-4 border-b border-black/10 pb-2">
                     {ext.title}
                   </h4>
-                  <ul className="space-y-2 font-sans text-sm text-vous-gray">
+                  <ul className="space-y-2 font-sans text-sm text-black/50">
                     {ext.days.map(({ day, hours }) => (
                       <li key={day} className="flex justify-between">
                         <span>{day}</span>
-                        <span className="text-vous-soft-black">{hours || "Cerrado"}</span>
+                        <span className="text-black">{hours || "Cerrado"}</span>
                       </li>
                     ))}
                   </ul>
@@ -51,28 +51,28 @@ export function NosotrosScheduleContact({ config, whatsappHref }: NosotrosSchedu
               ))
             ) : schedule.length > 0 ? (
               <div>
-                <h4 className="font-nav text-[10px] tracking-[0.2em] uppercase text-vous-soft-black mb-4 border-b border-vous-gray-light/40 pb-2">
+                <h4 className="font-nav text-[10px] tracking-[0.2em] uppercase text-black mb-4 border-b border-black/10 pb-2">
                   Atención al Cliente
                 </h4>
-                <ul className="space-y-2 font-sans text-sm text-vous-gray">
+                <ul className="space-y-2 font-sans text-sm text-black/50">
                   {schedule.map(({ day, hours }) => (
                     <li key={day} className="flex justify-between">
                       <span>{day}</span>
-                      <span className="text-vous-soft-black">{hours || "Cerrado"}</span>
+                      <span className="text-black">{hours || "Cerrado"}</span>
                     </li>
                   ))}
                 </ul>
               </div>
             ) : (
-              <p className="font-sans text-sm text-vous-gray">
+              <p className="font-sans text-sm text-black/50">
                 Consultá nuestros horarios por WhatsApp.
               </p>
             )}
             <div>
-              <h4 className="font-nav text-[10px] tracking-[0.2em] uppercase text-vous-soft-black mb-4 border-b border-vous-gray-light/40 pb-2">
+              <h4 className="font-nav text-[10px] tracking-[0.2em] uppercase text-black mb-4 border-b border-black/10 pb-2">
                 Atención en Horario Continuo para Ambos
               </h4>
-              <p className="font-sans text-sm text-vous-gray">
+              <p className="font-sans text-sm text-black/50">
                 Atención en horario continuo para compras por menor y por mayor.
               </p>
             </div>
@@ -80,25 +80,25 @@ export function NosotrosScheduleContact({ config, whatsappHref }: NosotrosSchedu
         </div>
 
         <div className="col-span-12 md:col-span-6 md:col-start-7 mt-12 md:mt-0">
-          <h2 className="font-serif text-[28px] md:text-4xl text-vous-soft-black mb-10">
+          <h2 className="font-serif text-[28px] md:text-4xl text-black mb-10">
             Ubicación &amp; Contacto
           </h2>
           {addressLine && (
             <div className="flex items-start gap-3 mb-6">
-              <MapPin size={20} strokeWidth={1.2} className="text-vous-gold shrink-0 mt-0.5" />
+              <MapPin size={20} strokeWidth={1.2} className="text-black shrink-0 mt-0.5" />
               <div>
-                <p className="font-sans text-sm text-vous-soft-black">{addressLine}</p>
-                {city && <p className="font-sans text-xs text-vous-gray">{city}</p>}
+                <p className="font-sans text-sm text-black">{addressLine}</p>
+                {city && <p className="font-sans text-xs text-black/50">{city}</p>}
               </div>
             </div>
           )}
           <div className="space-y-4 mb-8">
             {email && (
               <div className="flex items-center gap-3">
-                <Mail size={18} strokeWidth={1.2} className="text-vous-gold" />
+                <Mail size={18} strokeWidth={1.2} className="text-black" />
                 <a
                   href={`mailto:${email}`}
-                  className="font-sans text-sm text-vous-gray hover:text-vous-gold transition-colors"
+                  className="font-sans text-sm text-black/50 hover:text-black transition-colors"
                 >
                   {email}
                 </a>
@@ -106,19 +106,19 @@ export function NosotrosScheduleContact({ config, whatsappHref }: NosotrosSchedu
             )}
             {whatsappNumber && (
               <div className="flex items-center gap-3">
-                <Phone size={18} strokeWidth={1.2} className="text-vous-gold" />
+                <Phone size={18} strokeWidth={1.2} className="text-black" />
                 <a
                   href={whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-sans text-sm text-vous-gray hover:text-vous-gold transition-colors"
+                  className="font-sans text-sm text-black/50 hover:text-black transition-colors"
                 >
                   +{whatsappNumber}
                 </a>
               </div>
             )}
           </div>
-          <div className="relative aspect-video bg-vous-cream border border-vous-gray-light/40 overflow-hidden">
+          <div className="relative aspect-video bg-white border border-black/10 overflow-hidden">
             {mapsEmbedUrl ? (
               <iframe
                 src={mapsEmbedUrl}
@@ -134,8 +134,8 @@ export function NosotrosScheduleContact({ config, whatsappHref }: NosotrosSchedu
             ) : (
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center p-8">
-                  <MapPin size={40} strokeWidth={1} className="text-vous-gold mx-auto mb-4" />
-                  <p className="font-nav text-[10px] tracking-[0.2em] uppercase text-vous-gray">
+                  <MapPin size={40} strokeWidth={1} className="text-black mx-auto mb-4" />
+                  <p className="font-nav text-[10px] tracking-[0.2em] uppercase text-black/50">
                     Visualizar Mapa
                   </p>
                 </div>

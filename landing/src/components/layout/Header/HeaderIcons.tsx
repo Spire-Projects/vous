@@ -21,11 +21,11 @@ export function HeaderIcons({ onSearchOpen }: HeaderIconsProps) {
   const { totalItems } = useCartContext();
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-3 md:gap-4">
       <button
         onClick={onSearchOpen}
         aria-label="Buscar"
-        className="text-vous-soft-black hover:text-vous-gold transition-colors duration-200"
+        className="text-black/60 hover:text-black transition-colors duration-200 p-1"
       >
         <Search size={20} strokeWidth={1.5} />
       </button>
@@ -33,11 +33,11 @@ export function HeaderIcons({ onSearchOpen }: HeaderIconsProps) {
       <Link
         href="/carrito"
         aria-label={`Carrito — ${totalItems} artículos`}
-        className="relative text-vous-soft-black hover:text-vous-gold transition-colors duration-200"
+        className="relative text-black/60 hover:text-black transition-colors duration-200 p-1"
       >
         <ShoppingBag size={20} strokeWidth={1.5} />
         {totalItems > 0 && (
-          <span className="absolute -top-1.5 -right-1.5 bg-vous-gold text-white text-[10px] font-sans font-semibold w-4 h-4 rounded-full flex items-center justify-center">
+          <span className="absolute -top-0.5 -right-0.5 bg-black text-white text-[10px] font-sans font-semibold w-4 h-4 rounded-full flex items-center justify-center">
             {totalItems > 9 ? "9+" : totalItems}
           </span>
         )}
@@ -47,7 +47,7 @@ export function HeaderIcons({ onSearchOpen }: HeaderIconsProps) {
         <DropdownMenu>
           <DropdownMenuTrigger
             aria-label="Mi cuenta"
-            className="text-vous-soft-black hover:text-vous-gold transition-colors duration-200"
+            className="text-black/60 hover:text-black transition-colors duration-200 p-1"
           >
             <User size={20} strokeWidth={1.5} />
           </DropdownMenuTrigger>
@@ -55,7 +55,7 @@ export function HeaderIcons({ onSearchOpen }: HeaderIconsProps) {
             <DropdownMenuItem asChild className="p-0 focus:bg-transparent">
               <Link
                 href="/cuenta"
-                className="flex items-center gap-2 px-4 py-2.5 text-sm font-sans text-vous-soft-black hover:bg-vous-cream hover:text-vous-gold transition-colors w-full"
+                className="flex items-center gap-2 px-4 py-2.5 text-sm font-sans text-black hover:bg-gray-50 hover:text-black transition-colors w-full"
               >
                 <User size={15} /> Mi Cuenta
               </Link>
@@ -63,7 +63,7 @@ export function HeaderIcons({ onSearchOpen }: HeaderIconsProps) {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onSelect={() => void signOut()}
-              className="flex items-center gap-2 px-4 py-2.5 text-sm font-sans text-vous-soft-black hover:bg-vous-cream hover:text-vous-gold transition-colors cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2.5 text-sm font-sans text-black hover:bg-gray-50 hover:text-black transition-colors cursor-pointer"
             >
               <LogOut size={15} /> Cerrar Sesión
             </DropdownMenuItem>
@@ -72,7 +72,7 @@ export function HeaderIcons({ onSearchOpen }: HeaderIconsProps) {
       ) : (
         <Link
           href="/auth/login"
-          className="hidden md:inline-flex font-sans text-[12px] font-semibold tracking-[0.12em] text-vous-soft-black hover:text-vous-gold transition-colors duration-200"
+          className="hidden md:inline-flex font-sans text-[11px] font-medium tracking-widest uppercase text-black/60 hover:text-black transition-colors duration-200"
         >
           INICIAR SESIÓN
         </Link>

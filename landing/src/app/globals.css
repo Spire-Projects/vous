@@ -24,10 +24,10 @@
   --color-vous-gold-bright: #B8960F;
 
   /* Semánticos */
-  --color-background: var(--color-vous-warm-white);
-  --color-foreground: var(--color-vous-soft-black);
-  --color-primary: var(--color-vous-gold);
-  --color-primary-hover: var(--color-vous-gold-dark);
+  --color-background: #ffffff;
+  --color-foreground: #000000;
+  --color-primary: #000000;
+  --color-primary-hover: #333333;
 
   /* Tipografías */
   --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
@@ -36,38 +36,33 @@
 }
 
 :root {
-  --background: var(--color-vous-warm-white);
-  --foreground: var(--color-vous-soft-black);
+  --background: #ffffff;
+  --foreground: #000000;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: #ffffff;
+  color: #0a0a0a;
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image:
-    radial-gradient(circle at 15% 10%, rgba(201, 168, 76, 0.04) 0%, transparent 40%),
-    radial-gradient(circle at 85% 90%, rgba(180, 160, 140, 0.03) 0%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(253, 250, 245, 1) 0%, rgba(248, 244, 235, 1) 100%);
-  background-attachment: fixed;
 }
 
 /* ── Scrollbar ──────────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #d4cfc6; border-radius: 9999px; }
-::-webkit-scrollbar-thumb:hover { background: #bbb6ac; }
+::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #cccccc; }
 
 /* ── Selection ──────────────────────────────────────────────────────────────── */
 ::selection {
-  background-color: rgba(201, 168, 76, 0.25);
-  color: #1a1a18;
+  background-color: rgba(0, 0, 0, 0.15);
+  color: #000000;
 }
 
 /* ── Leaflet overrides ─────────────────────────────────────────────────────── */
 .leaflet-container {
-  background: #f5f0e8;
+  background: #ffffff;
   font-family: "DM Sans", "Inter", sans-serif;
 }
 

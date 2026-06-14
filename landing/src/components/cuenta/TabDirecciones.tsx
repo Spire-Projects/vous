@@ -80,14 +80,14 @@ export function TabDirecciones() {
   }
 
   const inputClass =
-    "w-full bg-transparent border-b border-vous-gray-light focus:border-vous-gold outline-none py-1.5 font-sans text-sm text-vous-soft-black transition-colors duration-200";
+    "w-full bg-transparent border-b border-black/10 focus:border-black outline-none py-1.5 font-sans text-sm text-black transition-colors duration-200";
 
   return (
     <div className="space-y-8">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="font-serif text-2xl text-vous-soft-black mb-1">Direcciones</h2>
-          <p className="font-sans text-sm text-vous-gray">
+          <h2 className="font-serif text-2xl text-black mb-1">Direcciones</h2>
+          <p className="font-sans text-sm text-black/50">
             {addresses.length > 0
               ? `${addresses.length} dirección${addresses.length > 1 ? "es" : ""} guardada${addresses.length > 1 ? "s" : ""}.`
               : "Agrega tus direcciones de envío para agilizar tus pedidos."}
@@ -96,7 +96,7 @@ export function TabDirecciones() {
         {!editingId && (
           <button
             onClick={startNew}
-            className="shrink-0 flex items-center gap-1.5 font-nav text-[10px] font-semibold tracking-[0.15em] uppercase text-vous-gray hover:text-vous-gold transition-colors"
+            className="shrink-0 flex items-center gap-1.5 font-nav text-[10px] font-semibold tracking-[0.15em] uppercase text-black/50 hover:text-black transition-colors"
           >
             <Plus size={14} /> Nueva
           </button>
@@ -108,21 +108,21 @@ export function TabDirecciones() {
           {addresses.map((a) => (
             <div
               key={a.id}
-              className="border border-vous-gray-light/40 p-5 flex items-start justify-between gap-4"
+              className="border border-black/10 p-5 flex items-start justify-between gap-4"
             >
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-2">
                   {a.label.toLowerCase().includes("oficina") ? (
-                    <Building2 size={14} className="text-vous-gold shrink-0" />
+                    <Building2 size={14} className="text-black shrink-0" />
                   ) : (
-                    <Home size={14} className="text-vous-gold shrink-0" />
+                    <Home size={14} className="text-black shrink-0" />
                   )}
-                  <span className="font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gold">
+                  <span className="font-nav text-[10px] tracking-[0.15em] uppercase text-black">
                     {a.label}
                   </span>
                 </div>
-                <p className="font-sans text-sm text-vous-soft-black">{a.address}</p>
-                <p className="font-sans text-xs text-vous-gray">
+                <p className="font-sans text-sm text-black">{a.address}</p>
+                <p className="font-sans text-xs text-black/50">
                   {a.city}
                   {a.details ? ` · ${a.details}` : ""}
                 </p>
@@ -131,7 +131,7 @@ export function TabDirecciones() {
                     href={a.mapsLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block mt-1 font-sans text-[11px] text-vous-gold hover:underline"
+                    className="inline-block mt-1 font-sans text-[11px] text-black hover:underline"
                   >
                     Ver en Maps ↗
                   </a>
@@ -140,13 +140,13 @@ export function TabDirecciones() {
               <div className="flex items-center gap-2 shrink-0">
                 <button
                   onClick={() => startEdit(a)}
-                  className="p-1.5 text-vous-gray hover:text-vous-black transition-colors"
+                  className="p-1.5 text-black/50 hover:text-black transition-colors"
                 >
                   <Pencil size={13} />
                 </button>
                 <button
                   onClick={() => handleDelete(a.id)}
-                  className="p-1.5 text-vous-gray hover:text-red-500 transition-colors"
+                  className="p-1.5 text-black/50 hover:text-red-500 transition-colors"
                 >
                   <Trash2 size={13} />
                 </button>
@@ -157,9 +157,9 @@ export function TabDirecciones() {
       )}
 
       {editingId && (
-        <div className="space-y-6 border border-vous-gray-light/40 p-6">
+        <div className="space-y-6 border border-black/10 p-6">
           <div>
-            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mb-1.5">
+            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-black/50 mb-1.5">
               Etiqueta
             </label>
             <div className="flex gap-2 flex-wrap mb-2">
@@ -167,7 +167,7 @@ export function TabDirecciones() {
                 <button
                   key={l}
                   onClick={() => setLabel(l)}
-                  className={`px-3 py-1 text-xs font-sans border transition-colors ${label === l ? "bg-vous-soft-black text-white border-vous-soft-black" : "border-vous-gray-light text-vous-gray hover:border-vous-black"}`}
+                  className={`px-3 py-1 text-xs font-sans border transition-colors ${label === l ? "bg-black text-white border-black" : "border-black/10 text-black/50 hover:border-black"}`}
                 >
                   {l}
                 </button>
@@ -182,7 +182,7 @@ export function TabDirecciones() {
             />
           </div>
           <div>
-            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mb-1.5">
+            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-black/50 mb-1.5">
               Dirección *
             </label>
             <input
@@ -194,7 +194,7 @@ export function TabDirecciones() {
             />
           </div>
           <div>
-            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mb-1.5">
+            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-black/50 mb-1.5">
               Ciudad *
             </label>
             <input
@@ -206,7 +206,7 @@ export function TabDirecciones() {
             />
           </div>
           <div>
-            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mb-1.5">
+            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-black/50 mb-1.5">
               Referencia
             </label>
             <input
@@ -218,7 +218,7 @@ export function TabDirecciones() {
             />
           </div>
           <div>
-            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mb-1.5">
+            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-black/50 mb-1.5">
               Link de Google Maps
             </label>
             <input
@@ -233,7 +233,7 @@ export function TabDirecciones() {
             <button
               onClick={handleSave}
               disabled={saving || !addrField.trim() || !city.trim()}
-              className="flex items-center gap-2 font-nav text-[11px] font-semibold tracking-[0.15em] uppercase bg-vous-soft-black text-white px-6 py-2.5 hover:bg-vous-gold-dark disabled:opacity-50 transition-colors"
+              className="flex items-center gap-2 font-nav text-[11px] font-semibold tracking-[0.15em] uppercase bg-black text-white px-6 py-2.5 hover:bg-black/80 disabled:opacity-50 transition-colors"
             >
               {saving ? <Loader2 size={13} className="animate-spin" /> : <Check size={13} />}
               {saving ? "Guardando…" : "Guardar"}
@@ -241,7 +241,7 @@ export function TabDirecciones() {
             <button
               onClick={cancelEdit}
               disabled={saving}
-              className="flex items-center gap-2 font-nav text-[11px] font-semibold tracking-[0.15em] uppercase border border-vous-gray-light text-vous-gray px-6 py-2.5 hover:border-vous-soft-black hover:text-vous-soft-black transition-colors"
+              className="flex items-center gap-2 font-nav text-[11px] font-semibold tracking-[0.15em] uppercase border border-black/10 text-black/50 px-6 py-2.5 hover:border-black hover:text-black transition-colors"
             >
               <X size={13} /> Cancelar
             </button>
@@ -250,12 +250,12 @@ export function TabDirecciones() {
       )}
 
       {!editingId && addresses.length === 0 && (
-        <div className="border border-vous-gray-light/40 p-8 text-center">
-          <MapPin size={32} strokeWidth={1} className="text-vous-gold mx-auto mb-3" />
-          <p className="font-sans text-sm text-vous-gray">No tienes direcciones guardadas.</p>
+        <div className="border border-black/10 p-8 text-center">
+          <MapPin size={32} strokeWidth={1} className="text-black mx-auto mb-3" />
+          <p className="font-sans text-sm text-black/50">No tienes direcciones guardadas.</p>
           <button
             onClick={startNew}
-            className="mt-3 font-nav text-[11px] font-semibold tracking-[0.15em] uppercase border border-vous-soft-black text-vous-soft-black px-6 py-2.5 hover:bg-vous-soft-black hover:text-white transition-colors"
+            className="mt-3 font-nav text-[11px] font-semibold tracking-[0.15em] uppercase border border-black text-black px-6 py-2.5 hover:bg-black hover:text-white transition-colors"
           >
             Agregar Dirección
           </button>

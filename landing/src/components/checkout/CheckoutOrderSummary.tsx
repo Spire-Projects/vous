@@ -32,11 +32,11 @@ export function CheckoutOrderSummary({
 }: CheckoutOrderSummaryProps) {
   return (
     <div className="lg:w-80 shrink-0">
-      <div className="bg-vous-cream p-6 sticky top-24 space-y-4">
-        <h2 className="font-serif text-xl text-vous-soft-black">Resumen del Pedido</h2>
+      <div className="bg-white p-6 sticky top-24 space-y-4">
+        <h2 className="font-serif text-xl text-black">Resumen del Pedido</h2>
 
         {items.length === 0 ? (
-          <p className="font-sans text-sm text-vous-gray">
+          <p className="font-sans text-sm text-black/50">
             Tu carrito está vacío.{" "}
             <Link href="/catalogo" className="underline">
               Ver catálogo
@@ -64,23 +64,23 @@ export function CheckoutOrderSummary({
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="w-12 h-16 object-cover shrink-0 border border-vous-gray-light/30"
+                      className="w-12 h-16 object-cover shrink-0 border border-black/10"
                     />
                   ) : (
-                    <div className="w-12 h-16 shrink-0 bg-vous-soft-black/10" />
+                    <div className="w-12 h-16 shrink-0 bg-black/10" />
                   )}
                   <div className="flex-1 min-w-0">
-                    <p className="font-serif text-sm text-vous-soft-black leading-snug truncate">
+                    <p className="font-serif text-sm text-black leading-snug truncate">
                       {item.name}
                     </p>
                     {(item.size ?? item.color) && (
-                      <p className="font-sans text-xs text-vous-gray">
+                      <p className="font-sans text-xs text-black/50">
                         {[item.size, item.color].filter(Boolean).join(" / ")}
                       </p>
                     )}
-                    <p className="font-sans text-xs text-vous-gray">×{item.quantity}</p>
+                    <p className="font-sans text-xs text-black/50">×{item.quantity}</p>
                   </div>
-                  <p className="font-serif text-sm text-vous-soft-black shrink-0 pt-0.5">
+                  <p className="font-serif text-sm text-black shrink-0 pt-0.5">
                     {fmt(item.price * item.quantity)}
                   </p>
                 </div>
@@ -88,8 +88,8 @@ export function CheckoutOrderSummary({
             </div>
 
             {/* Discount code */}
-            <div className="border-t border-vous-gray-light/40 pt-4 space-y-2">
-              <p className="font-nav text-[10px] tracking-[0.1em] uppercase text-vous-gray">
+            <div className="border-t border-black/10 pt-4 space-y-2">
+              <p className="font-nav text-[10px] tracking-[0.1em] uppercase text-black/50">
                 Código de descuento
               </p>
               <div className="flex gap-2">
@@ -104,7 +104,7 @@ export function CheckoutOrderSummary({
                 />
                 <button
                   onClick={() => void onApplyDiscount()}
-                  className="shrink-0 bg-vous-soft-black text-vous-white px-3 py-1.5 text-[10px] font-nav uppercase tracking-wider hover:bg-vous-gold transition-colors"
+                  className="shrink-0 bg-black text-white px-3 py-1.5 text-[10px] font-nav uppercase tracking-wider hover:bg-black/80 transition-colors"
                 >
                   Aplicar
                 </button>
@@ -124,9 +124,9 @@ export function CheckoutOrderSummary({
             </div>
 
             {/* Totals */}
-            <div className="border-t border-vous-gray-light/40 pt-4 space-y-1">
-              <div className="flex justify-between text-vous-soft-black">
-                <span className="font-nav tracking-[0.1em] uppercase text-[11px] text-vous-gray">
+            <div className="border-t border-black/10 pt-4 space-y-1">
+              <div className="flex justify-between text-black">
+                <span className="font-nav tracking-[0.1em] uppercase text-[11px] text-black/50">
                   Subtotal
                 </span>
                 <span className="font-serif text-sm">{fmt(subtotal)}</span>
@@ -137,7 +137,7 @@ export function CheckoutOrderSummary({
                   <span className="font-serif text-sm">-{fmt(discountAmount)}</span>
                 </div>
               )}
-              <div className="flex justify-between text-vous-soft-black font-medium pt-1">
+              <div className="flex justify-between text-black font-medium pt-1">
                 <span className="font-nav tracking-[0.1em] uppercase text-sm">Total</span>
                 <span className="font-serif text-lg">{fmt(finalTotal)}</span>
               </div>

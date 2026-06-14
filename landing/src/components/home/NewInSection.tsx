@@ -20,35 +20,35 @@ export function NewInSection() {
   const sideProducts = products.slice(1, 3);
 
   return (
-    <section className="bg-vous-warm-white py-20 md:py-28">
-      <div className="max-w-[1440px] mx-auto px-5 md:px-20">
-        <div className="flex items-end justify-between mb-10 md:mb-14">
+    <section className="bg-white py-12 md:py-20">
+      <div className="max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8">
+        <div className="flex items-end justify-between mb-6 md:mb-10">
           <div>
-            <p className="font-nav text-[11px] font-semibold tracking-[0.25em] text-vous-gold uppercase mb-2">
+            <p className="font-nav text-[11px] font-semibold tracking-[0.25em] text-black/40 uppercase mb-2">
               Últimas Piezas
             </p>
-            <h2 className="font-serif text-4xl md:text-5xl font-medium text-vous-soft-black">
+            <h2 className="font-serif text-2xl md:text-3xl font-medium text-black">
               Nuevas Llegadas
             </h2>
-            <p className="font-sans text-sm text-vous-gray mt-2">
+            <p className="font-sans text-sm text-black/50 mt-2">
               Nuestra última expresión de lujo urbano.
             </p>
           </div>
-          <Button variant="ghost" size="sm" asChild className="hidden md:inline-flex">
+          <Button variant="ghost" size="sm" asChild className="hidden md:inline-flex text-black/60 hover:text-black">
             <Link href="/catalogo?nuevas=1">Ver Todo</Link>
           </Button>
         </div>
 
         {loading && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
             {Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="aspect-[3/4] animate-pulse bg-vous-gray-light/40" />
+              <div key={i} className="aspect-[3/4] animate-pulse bg-black/5" />
             ))}
           </div>
         )}
 
         {!loading && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
             {sideProducts.map((product) => (
               <ProductStandardCard key={product.id} product={product} />
             ))}
@@ -58,7 +58,7 @@ export function NewInSection() {
           </div>
         )}
 
-        <div className="mt-10 text-center md:hidden">
+        <div className="mt-8 text-center md:hidden">
           <Button variant="ghost" size="sm" asChild>
             <Link href="/catalogo?nuevas=1">Ver Todo</Link>
           </Button>
@@ -74,13 +74,13 @@ function ProductStandardCard({ product }: { product: Product }) {
   return (
     <Link href={`/producto/${product.slug}`} className="group block">
       <div
-        className={`relative aspect-[3/4] overflow-hidden mb-4 ${!imageUrl ? `bg-gradient-to-b ${PLACEHOLDER_BG}` : ""}`}
+        className={`relative aspect-[3/4] overflow-hidden mb-3 bg-black/5 ${!imageUrl ? `bg-gradient-to-b ${PLACEHOLDER_BG}` : ""}`}
       >
         {imageUrl ? (
           <img
             src={imageUrl}
             alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
           />
         ) : (
           <div className="absolute inset-0" />
@@ -91,18 +91,18 @@ function ProductStandardCard({ product }: { product: Product }) {
           </Badge>
         )}
         {product.isDiscounted && product.discountPercentage && (
-          <Badge className="absolute top-3 right-3 bg-red-600 text-white border-0">
+          <Badge className="absolute top-3 right-3 bg-black text-white border-0">
             -{product.discountPercentage}%
           </Badge>
         )}
       </div>
-      <p className="font-nav text-[11px] tracking-[0.15em] uppercase text-vous-gray mb-1">
+      <p className="font-nav text-[11px] tracking-[0.15em] uppercase text-black/40 mb-1">
         {product.categoryName}
       </p>
-      <h3 className="font-serif text-xl text-vous-soft-black group-hover:text-vous-gold transition-colors">
+      <h3 className="font-serif text-base text-black group-hover:text-black/70 transition-colors duration-300">
         {product.name}
       </h3>
-      <p className="font-sans text-sm text-vous-gray mt-1">{formatPrice(product.price)}</p>
+      <p className="font-sans text-sm text-black font-medium mt-1">{formatPrice(product.price)}</p>
     </Link>
   );
 }
@@ -110,17 +110,17 @@ function ProductStandardCard({ product }: { product: Product }) {
 function ProductFeaturedCard({ product }: { product: Product | null }) {
   if (!product) {
     return (
-      <div className="group relative aspect-[3/4] overflow-hidden">
+      <div className="group relative aspect-[3/4] overflow-hidden bg-neutral-900">
         <div
-          className={`absolute inset-0 bg-gradient-to-b ${PLACEHOLDER_BG} group-hover:scale-105 transition-transform duration-500`}
+          className={`absolute inset-0 bg-gradient-to-b ${PLACEHOLDER_BG} group-hover:scale-105 transition-transform duration-700`}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-vous-soft-black/80 via-transparent to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 p-6">
-          <p className="font-nav text-[11px] tracking-[0.2em] uppercase text-vous-gold mb-1">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
+          <p className="font-nav text-[11px] tracking-[0.2em] uppercase text-white/40 mb-1">
             COLECCIÓN 01
           </p>
-          <h3 className="font-serif text-2xl text-white mb-4">Siluetas Urbanas</h3>
-          <span className="inline-flex items-center font-nav text-[11px] font-semibold tracking-[0.15em] uppercase bg-vous-gold text-vous-soft-black px-5 py-2.5">
+          <h3 className="font-serif text-xl md:text-2xl text-white mb-4">Siluetas Urbanas</h3>
+          <span className="inline-flex items-center font-nav text-[11px] font-semibold tracking-[0.15em] uppercase bg-white text-black px-5 py-2.5 hover:bg-white/80 transition-colors duration-300">
             Comprar Ahora
           </span>
         </div>
@@ -133,26 +133,26 @@ function ProductFeaturedCard({ product }: { product: Product | null }) {
   return (
     <Link
       href={`/producto/${product.slug}`}
-      className="group relative aspect-[3/4] overflow-hidden block"
+      className="group relative aspect-[3/4] overflow-hidden block bg-neutral-900"
     >
       {imageUrl ? (
         <img
           src={imageUrl}
           alt={product.name}
-          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
       ) : (
         <div
-          className={`absolute inset-0 bg-gradient-to-b ${PLACEHOLDER_BG} group-hover:scale-105 transition-transform duration-500`}
+          className={`absolute inset-0 bg-gradient-to-b ${PLACEHOLDER_BG} group-hover:scale-105 transition-transform duration-700`}
         />
       )}
-      <div className="absolute inset-0 bg-gradient-to-t from-vous-soft-black/80 via-transparent to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 p-6">
-        <p className="font-nav text-[11px] tracking-[0.2em] uppercase text-vous-gold mb-1">
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
+        <p className="font-nav text-[11px] tracking-[0.2em] uppercase text-white/40 mb-1">
           COLECCIÓN 01
         </p>
-        <h3 className="font-serif text-2xl text-white mb-4">{product.name}</h3>
-        <span className="inline-flex items-center font-nav text-[11px] font-semibold tracking-[0.15em] uppercase bg-vous-gold text-vous-soft-black px-5 py-2.5">
+        <h3 className="font-serif text-xl md:text-2xl text-white mb-4">{product.name}</h3>
+        <span className="inline-flex items-center font-nav text-[11px] font-semibold tracking-[0.15em] uppercase bg-white text-black px-5 py-2.5 hover:bg-white/80 transition-colors duration-300">
           Comprar Ahora
         </span>
       </div>

@@ -37,18 +37,18 @@ export function CatalogGrid({ products, loading, error }: CatalogGridProps) {
 
   return (
     <div className="flex-1 min-w-0">
-      <div className="flex items-center justify-between mb-8">
-        <p className="font-sans text-sm text-vous-gray">
+      <div className="flex items-center justify-between mb-6">
+        <p className="font-sans text-sm text-black/50">
           {loading ? (
             "Cargando productos…"
           ) : (
             <>
-              <span className="text-vous-soft-black font-medium">{sorted.length}</span> productos
+              <span className="text-black font-medium">{sorted.length}</span> productos
             </>
           )}
         </p>
         <Select value={sort} onValueChange={(v) => setSort(v as SortKey)}>
-          <SelectTrigger className="w-48">
+          <SelectTrigger className="w-48 border-black/10 text-black">
             <SelectValue placeholder="Ordenar por" />
           </SelectTrigger>
           <SelectContent>
@@ -61,13 +61,13 @@ export function CatalogGrid({ products, loading, error }: CatalogGridProps) {
       </div>
 
       {loading && (
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
           {Array.from({ length: 6 }).map((_, i) => (
             <div key={i} className="animate-pulse">
-              <div className="aspect-[3/4] bg-vous-gray-light/30 mb-4" />
-              <div className="h-3 bg-vous-gray-light/30 w-1/3 mb-2" />
-              <div className="h-5 bg-vous-gray-light/30 w-3/4 mb-2" />
-              <div className="h-3 bg-vous-gray-light/30 w-1/4" />
+              <div className="aspect-[3/4] bg-black/5 mb-3" />
+              <div className="h-3 bg-black/5 w-1/3 mb-2" />
+              <div className="h-5 bg-black/5 w-3/4 mb-2" />
+              <div className="h-3 bg-black/5 w-1/4" />
             </div>
           ))}
         </div>
@@ -75,21 +75,21 @@ export function CatalogGrid({ products, loading, error }: CatalogGridProps) {
 
       {error && (
         <div className="text-center py-20">
-          <p className="font-sans text-vous-gray">{error}</p>
+          <p className="font-sans text-black/50">{error}</p>
         </div>
       )}
 
       {!loading && !error && sorted.length === 0 && (
         <div className="text-center py-20">
-          <p className="font-serif text-2xl text-vous-soft-black">Sin productos disponibles</p>
-          <p className="font-sans text-vous-gray mt-2">
+          <p className="font-serif text-2xl text-black">Sin productos disponibles</p>
+          <p className="font-sans text-black/50 mt-2">
             Prueba ajustando los filtros o vuelve pronto.
           </p>
         </div>
       )}
 
       {!loading && !error && sorted.length > 0 && (
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-5 md:gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
           {sorted.map((p) => (
             <ProductCard key={p.id} {...p} userRole={user?.role} userUid={user?.uid} />
           ))}

@@ -27,11 +27,11 @@ function MayoristasCatalogoContent() {
   } = useCatalogFilters(products, categories);
 
   return (
-    <div className="bg-vous-warm-white min-h-screen">
+    <div className="bg-white min-h-screen">
       {/* Header */}
-      <div className="bg-vous-soft-black py-14 md:py-20 px-5 md:px-20">
+      <div className="bg-black py-14 md:py-20 px-5 md:px-20">
         <div className="max-w-[1440px] mx-auto">
-          <p className="font-nav text-[11px] font-semibold tracking-[0.25em] text-vous-gold uppercase mb-3">
+          <p className="font-nav text-[11px] font-semibold tracking-[0.25em] text-black uppercase mb-3">
             Portal Mayorista
           </p>
           <h1 className="font-serif text-4xl md:text-5xl font-medium text-white mb-4">
@@ -71,8 +71,8 @@ export default function MayoristasCatalogoPage() {
   return (
     <Suspense
       fallback={
-        <div className="bg-vous-warm-white min-h-screen flex items-center justify-center">
-          <span className="inline-block w-5 h-5 border-2 border-vous-gold/30 border-t-vous-gold rounded-full animate-spin" />
+        <div className="bg-white min-h-screen flex items-center justify-center">
+          <span className="inline-block w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
         </div>
       }
     >

@@ -11,7 +11,7 @@ export function HeaderLogo() {
   return (
     <Link
       href="/"
-      className="flex items-center font-serif text-2xl font-bold tracking-[0.08em] text-vous-soft-black hover:text-vous-gold transition-colors duration-200"
+      className="flex items-center font-serif text-xl md:text-2xl font-bold tracking-tight text-black hover:text-black/70 transition-colors duration-200"
       aria-label={`${storeName} — Inicio`}
     >
       {logoUrl ? (

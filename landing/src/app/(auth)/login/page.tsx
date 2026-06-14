@@ -69,13 +69,13 @@ export default function LoginPage() {
       <div className="w-full max-w-[420px]">
         {/* Heading */}
         <div className="mb-10 text-center">
-          <p className="font-nav text-[11px] font-semibold uppercase tracking-[0.22em] text-vous-gold mb-3">
+          <p className="font-nav text-[11px] font-semibold uppercase tracking-[0.22em] text-black mb-3">
             Bienvenido
           </p>
-          <h1 className="font-serif text-[36px] sm:text-[40px] font-medium leading-[1.1] text-vous-soft-black">
+          <h1 className="font-serif text-[36px] sm:text-[40px] font-medium leading-[1.1] text-black">
             Iniciar Sesión
           </h1>
-          <p className="mt-3 font-sans text-[14px] leading-relaxed text-vous-gray">
+          <p className="mt-3 font-sans text-[14px] leading-relaxed text-black/50">
             Inicie sesión para acceder a su archivo personal y colecciones exclusivas.
           </p>
         </div>
@@ -88,7 +88,7 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Email */}
               <div>
-                <label className="block font-nav text-[10px] font-semibold uppercase tracking-[0.15em] text-vous-gray mb-1.5">
+                <label className="block font-nav text-[10px] font-semibold uppercase tracking-[0.15em] text-black/50 mb-1.5">
                   Email
                 </label>
                 <input
@@ -98,21 +98,21 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="tu@correo.com"
-                  className="w-full border border-vous-border bg-white/90 px-4 py-2.5 text-sm font-sans text-vous-soft-black placeholder:text-vous-text-muted rounded-2xl shadow-inner focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all"
+                  className="w-full border border-black/10 bg-white/90 px-4 py-2.5 text-sm font-sans text-black placeholder:text-black/50 rounded-2xl shadow-inner focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-black transition-all"
                 />
               </div>
 
               {/* Password */}
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="font-nav text-[10px] font-semibold uppercase tracking-[0.15em] text-vous-gray">
+                  <label className="font-nav text-[10px] font-semibold uppercase tracking-[0.15em] text-black/50">
                     Contraseña
                   </label>
                   <button
                     type="button"
                     onClick={() => void handleReset()}
                     disabled={resetLoading}
-                    className="font-nav text-[10px] font-semibold uppercase tracking-[0.12em] text-vous-gray hover:text-vous-gold transition-colors disabled:opacity-50"
+                    className="font-nav text-[10px] font-semibold uppercase tracking-[0.12em] text-black/50 hover:text-black transition-colors disabled:opacity-50"
                   >
                     {resetSent
                       ? "Correo enviado ✓"
@@ -129,13 +129,13 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full border border-vous-border bg-white/90 px-4 py-2.5 pr-10 text-sm font-sans text-vous-soft-black placeholder:text-vous-text-muted rounded-2xl shadow-inner focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all"
+                    className="w-full border border-black/10 bg-white/90 px-4 py-2.5 pr-10 text-sm font-sans text-black placeholder:text-black/50 rounded-2xl shadow-inner focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-black transition-all"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((v) => !v)}
                     aria-label={showPassword ? "Ocultar contraseña" : "Ver contraseña"}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-vous-gray hover:text-vous-soft-black transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-black/50 hover:text-black transition-colors"
                   >
                     {showPassword ? (
                       <EyeOff size={16} strokeWidth={1.5} />
@@ -157,7 +157,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-2 bg-vous-soft-black text-white font-nav text-[11px] font-semibold uppercase tracking-[0.15em] py-3.5 rounded-xl hover:bg-vous-gold hover:text-vous-soft-black shadow-lg shadow-black/10 hover:shadow-amber-500/15 hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0 transition-all duration-200 mt-1"
+                className="w-full flex items-center justify-center gap-2 bg-black text-white font-nav text-[11px] font-semibold uppercase tracking-[0.15em] py-3.5 rounded-xl hover:bg-black/80 shadow-lg shadow-black/10 hover:shadow-black/15 hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0 transition-all duration-200 mt-1"
               >
                 {loading ? (
                   <>
@@ -176,11 +176,11 @@ export default function LoginPage() {
         </div>
 
         {/* Register link */}
-        <p className="mt-8 font-sans text-[13px] text-vous-gray text-center">
+        <p className="mt-8 font-sans text-[13px] text-black/50 text-center">
           ¿Aún no tiene una cuenta?{" "}
           <Link
             href="/auth/registro"
-            className="font-semibold text-vous-soft-black hover:text-vous-gold transition-colors"
+            className="font-semibold text-black hover:text-black transition-colors"
           >
             Crear cuenta
           </Link>

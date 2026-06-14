@@ -42,21 +42,21 @@ export function CheckoutFormStep({
 }: CheckoutFormStepProps) {
   return (
     <section>
-      <h2 className="font-nav text-[11px] font-semibold tracking-[0.25em] uppercase text-vous-gold mb-6">
+      <h2 className="font-nav text-[11px] font-semibold tracking-[0.25em] uppercase text-black mb-6">
         Información de Envío
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {FIELDS.map(({ key, label, type, span }) => (
           <div key={key} className={span ? "md:col-span-2" : ""}>
-            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mb-1.5">
+            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-black/50 mb-1.5">
               {label}
             </label>
             <input
               type={type}
               value={form[key]}
               onChange={(e) => onFieldChange(key, e.target.value)}
-              className="w-full border border-vous-gray-light bg-transparent font-sans text-sm text-vous-soft-black px-3 py-2.5 outline-none focus:border-vous-gold transition-colors"
+              className="w-full border border-black/10 bg-transparent font-sans text-sm text-black px-3 py-2.5 outline-none focus:border-black transition-colors"
             />
           </div>
         ))}
@@ -104,7 +104,7 @@ export function CheckoutFormStep({
       <button
         onClick={onSubmit}
         disabled={submitting}
-        className="mt-6 w-full font-nav text-[12px] font-semibold tracking-[0.15em] uppercase bg-vous-soft-black text-white py-4 hover:bg-vous-gray-dark transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className="mt-6 w-full font-nav text-[12px] font-semibold tracking-[0.15em] uppercase bg-black text-white py-4 hover:bg-black/80 transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
         {submitting ? (
           <>

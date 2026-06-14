@@ -12,13 +12,13 @@ import type { Product, ProductVariant } from "@/domain/entities/product.entity";
 /** Mapea el texto del badge al estilo de color correspondiente */
 function badgeStyle(badge: string): string {
   const lower = badge.toLowerCase();
-  if (lower.includes("nuevo") || lower.includes("new")) return "bg-vous-gold text-vous-soft-black";
+  if (lower.includes("nuevo") || lower.includes("new")) return "bg-black text-white";
   if (lower.includes("descuento") || lower.includes("sale") || lower.includes("oferta"))
     return "bg-red-600 text-white";
   if (lower.includes("preventa") || lower.includes("pre-venta")) return "bg-blue-700 text-white";
   if (lower.includes("exclusivo") || lower.includes("exclusive"))
-    return "bg-vous-soft-black text-white";
-  return "bg-vous-gold text-vous-soft-black";
+    return "bg-black text-white";
+  return "bg-black text-white";
 }
 
 /** Indica el estado de stock con un chip visual */
@@ -170,24 +170,24 @@ export function ProductInfo({
     <div className="flex flex-col gap-6 max-w-md w-full">
       {/* Breadcrumb */}
       <nav aria-label="Ruta de navegación">
-        <ol className="flex items-center flex-wrap gap-1 font-nav text-[10px] tracking-[0.12em] uppercase text-vous-gray">
+        <ol className="flex items-center flex-wrap gap-1 font-nav text-[10px] tracking-[0.12em] uppercase text-black/50">
           <li>
-            <Link href="/" className="hover:text-vous-gold transition-colors">
+            <Link href="/" className="hover:text-black transition-colors">
               Inicio
             </Link>
           </li>
           <li>
-            <ChevronRight size={10} className="text-vous-gray-light" />
+            <ChevronRight size={10} className="text-black/20" />
           </li>
           <li>
-            <Link href="/categorias" className="hover:text-vous-gold transition-colors">
+            <Link href="/categorias" className="hover:text-black transition-colors">
               {product.categoryName}
             </Link>
           </li>
           <li>
-            <ChevronRight size={10} className="text-vous-gray-light" />
+            <ChevronRight size={10} className="text-black/20" />
           </li>
-          <li className="text-vous-soft-black truncate max-w-[160px]" title={product.name}>
+          <li className="text-black truncate max-w-[160px]" title={product.name}>
             {product.name}
           </li>
         </ol>
@@ -213,15 +213,15 @@ export function ProductInfo({
 
       {/* Nombre y precio */}
       <div>
-        <h1 className="font-serif text-3xl md:text-4xl font-medium text-vous-soft-black leading-tight">
+        <h1 className="font-serif text-3xl md:text-4xl font-medium text-black leading-tight">
           {product.name}
         </h1>
         <div className="flex items-baseline gap-3 mt-3">
-          <p className="font-serif text-2xl text-vous-soft-black">
+          <p className="font-serif text-2xl text-black">
             Bs. {(discountPrice ?? product.price).toLocaleString("es-BO")}
           </p>
           {discountPrice && (
-            <p className="font-serif text-lg text-vous-gray line-through">
+            <p className="font-serif text-lg text-black/50 line-through">
               Bs. {product.price.toLocaleString("es-BO")}
             </p>
           )}
@@ -234,10 +234,10 @@ export function ProductInfo({
       {/* Selector de color */}
       {product.colors.length > 0 && (
         <div>
-          <p className="font-nav text-[11px] tracking-[0.15em] uppercase text-vous-gray mb-2">
+          <p className="font-nav text-[11px] tracking-[0.15em] uppercase text-black/50 mb-2">
             Color
             {selectedColor && (
-              <span className="ml-2 text-vous-soft-black normal-case tracking-normal font-sans text-xs">
+              <span className="ml-2 text-black normal-case tracking-normal font-sans text-xs">
                 — {selectedColor}
               </span>
             )}
@@ -260,8 +260,8 @@ export function ProductInfo({
                   disabled={unavailable}
                   className={`w-7 h-7 rounded-full border-2 transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
                     selectedColor === c.name
-                      ? "border-vous-gold scale-110"
-                      : "border-transparent hover:border-vous-gray-light"
+                      ? "border-black scale-110"
+                      : "border-transparent hover:border-black/10"
                   }`}
                   title={unavailable ? `${c.name} — Agotado` : c.name}
                 />
@@ -274,7 +274,7 @@ export function ProductInfo({
       {/* Selector de talla */}
       {product.sizes.length > 0 && (
         <div>
-          <p className="font-nav text-[11px] tracking-[0.15em] uppercase text-vous-gray mb-2">
+          <p className="font-nav text-[11px] tracking-[0.15em] uppercase text-black/50 mb-2">
             Talla
           </p>
           <div className="flex flex-wrap gap-2">
@@ -293,8 +293,8 @@ export function ProductInfo({
                   aria-pressed={selectedSize === s}
                   className={`min-w-[44px] h-11 px-3 font-sans text-sm border transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
                     selectedSize === s
-                      ? "bg-vous-soft-black text-white border-vous-soft-black"
-                      : "border-vous-gray-light text-vous-gray hover:border-vous-soft-black hover:text-vous-soft-black"
+                      ? "bg-black text-white border-black"
+                      : "border-black/10 text-black/50 hover:border-black hover:text-black"
                   }`}
                   title={unavailable ? `${s} — Agotado` : s}
                 >
@@ -342,22 +342,22 @@ export function ProductInfo({
         href={whatsappHref}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 font-nav text-[11px] tracking-[0.2em] uppercase text-vous-gold hover:text-vous-gold/80 transition-colors"
+        className="inline-flex items-center gap-2 font-nav text-[11px] tracking-[0.2em] uppercase text-black hover:text-black/80 transition-colors"
       >
         <MessageCircle size={14} /> Consultar por WhatsApp
       </a>
 
       {/* Materiales / Atributos */}
       {product.materials.length > 0 && (
-        <div className="border-t border-vous-gray-light/40 pt-5">
-          <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mb-3">
+        <div className="border-t border-black/10 pt-5">
+          <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-black/50 mb-3">
             Composición
           </p>
           <div className="flex flex-wrap gap-2">
             {product.materials.map((m) => (
               <span
                 key={m}
-                className="font-sans text-xs text-vous-soft-black border border-vous-gray-light/60 px-3 py-1.5"
+                className="font-sans text-xs text-black border border-black/10 px-3 py-1.5"
               >
                 {m}
               </span>
@@ -368,8 +368,8 @@ export function ProductInfo({
 
       {/* Características (atributos configurables: tela, corte, pretina, largo, etc.) */}
       {product.attributes && Object.keys(product.attributes).length > 0 && (
-        <div className="border-t border-vous-gray-light/40 pt-5">
-          <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mb-3">
+        <div className="border-t border-black/10 pt-5">
+          <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-black/50 mb-3">
             Características
           </p>
           <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
@@ -377,8 +377,8 @@ export function ProductInfo({
               .filter(([, v]) => v)
               .map(([key, val]) => (
                 <div key={key} className="flex gap-1.5 text-xs font-sans">
-                  <span className="text-vous-gray capitalize">{key}:</span>
-                  <span className="text-vous-soft-black">{val}</span>
+                  <span className="text-black/50 capitalize">{key}:</span>
+                  <span className="text-black">{val}</span>
                 </div>
               ))}
           </div>
@@ -387,18 +387,18 @@ export function ProductInfo({
 
       {/* Descripción */}
       {product.description && (
-        <div className="border-t border-vous-gray-light/40 pt-5">
-          <p className="font-sans text-sm text-vous-gray leading-relaxed">{product.description}</p>
+        <div className="border-t border-black/10 pt-5">
+          <p className="font-sans text-sm text-black/50 leading-relaxed">{product.description}</p>
         </div>
       )}
 
       {/* Detalle adicional */}
       {product.detail && product.detail !== product.description && (
-        <div className="border-t border-vous-gray-light/40 pt-5">
-          <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mb-2">
+        <div className="border-t border-black/10 pt-5">
+          <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-black/50 mb-2">
             Detalle
           </p>
-          <p className="font-sans text-sm text-vous-gray leading-relaxed">{product.detail}</p>
+          <p className="font-sans text-sm text-black/50 leading-relaxed">{product.detail}</p>
         </div>
       )}
 
@@ -408,7 +408,7 @@ export function ProductInfo({
           {product.tags.map((tag) => (
             <span
               key={tag}
-              className="font-nav text-[9px] tracking-[0.1em] uppercase text-vous-gray border border-vous-gray-light/40 px-2 py-0.5"
+              className="font-nav text-[9px] tracking-[0.1em] uppercase text-black/50 border border-black/10 px-2 py-0.5"
             >
               {tag}
             </span>

@@ -62,21 +62,21 @@ export function TabPerfil() {
   }
 
   const inputClass =
-    "w-full bg-transparent border-b border-vous-gray-light focus:border-vous-gold outline-none py-1.5 font-sans text-sm text-vous-soft-black transition-colors duration-200";
+    "w-full bg-transparent border-b border-black/10 focus:border-black outline-none py-1.5 font-sans text-sm text-black transition-colors duration-200";
 
   return (
     <div className="space-y-8">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="font-serif text-2xl text-vous-soft-black mb-1">Datos Personales</h2>
-          <p className="font-sans text-sm text-vous-gray">
+          <h2 className="font-serif text-2xl text-black mb-1">Datos Personales</h2>
+          <p className="font-sans text-sm text-black/50">
             Bienvenido de nuevo, {firstName}. Gestiona tus pedidos y preferencias.
           </p>
         </div>
         {!editing && (
           <button
             onClick={startEditing}
-            className="shrink-0 flex items-center gap-1.5 font-nav text-[10px] font-semibold tracking-[0.15em] uppercase text-vous-gray hover:text-vous-gold transition-colors"
+            className="shrink-0 flex items-center gap-1.5 font-nav text-[10px] font-semibold tracking-[0.15em] uppercase text-black/50 hover:text-black transition-colors"
           >
             <Pencil size={13} /> Editar
           </button>
@@ -86,7 +86,7 @@ export function TabPerfil() {
       {editing ? (
         <div className="space-y-6">
           <div>
-            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mb-1.5">
+            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-black/50 mb-1.5">
               Nombre Completo
             </label>
             <input
@@ -98,15 +98,15 @@ export function TabPerfil() {
             />
           </div>
           <div>
-            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mb-1.5">
+            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-black/50 mb-1.5">
               Email
             </label>
-            <p className="font-sans text-sm text-vous-gray py-1.5 border-b border-vous-gray-light/40">
+            <p className="font-sans text-sm text-black/50 py-1.5 border-b border-black/10">
               {userProfile?.email ?? user?.email ?? "—"}
             </p>
           </div>
           <div>
-            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mb-1.5">
+            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-black/50 mb-1.5">
               Teléfono
             </label>
             <input
@@ -118,7 +118,7 @@ export function TabPerfil() {
             />
           </div>
           <div>
-            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mb-1.5">
+            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-black/50 mb-1.5">
               Departamento
             </label>
             <div className="relative">
@@ -134,7 +134,7 @@ export function TabPerfil() {
                   </option>
                 ))}
               </select>
-              <span className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 text-vous-gray">
+              <span className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 text-black/50">
                 <svg width="11" height="6" viewBox="0 0 12 7" fill="none">
                   <path
                     d="M1 1l5 5 5-5"
@@ -148,7 +148,7 @@ export function TabPerfil() {
             </div>
           </div>
           <div>
-            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mb-1.5">
+            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-black/50 mb-1.5">
               Fecha de Nacimiento
             </label>
             <input
@@ -163,7 +163,7 @@ export function TabPerfil() {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="flex items-center gap-2 font-nav text-[11px] font-semibold tracking-[0.15em] uppercase bg-vous-soft-black text-white px-6 py-2.5 hover:bg-vous-gold-dark disabled:opacity-50 transition-colors"
+              className="flex items-center gap-2 font-nav text-[11px] font-semibold tracking-[0.15em] uppercase bg-black text-white px-6 py-2.5 hover:bg-black/80 disabled:opacity-50 transition-colors"
             >
               {saving ? <Loader2 size={13} className="animate-spin" /> : <Check size={13} />}
               {saving ? "Guardando…" : "Guardar"}
@@ -171,7 +171,7 @@ export function TabPerfil() {
             <button
               onClick={cancelEditing}
               disabled={saving}
-              className="flex items-center gap-2 font-nav text-[11px] font-semibold tracking-[0.15em] uppercase border border-vous-gray-light text-vous-gray px-6 py-2.5 hover:border-vous-soft-black hover:text-vous-soft-black transition-colors"
+              className="flex items-center gap-2 font-nav text-[11px] font-semibold tracking-[0.15em] uppercase border border-black/10 text-black/50 px-6 py-2.5 hover:border-black hover:text-black transition-colors"
             >
               <X size={13} /> Cancelar
             </button>
@@ -190,17 +190,17 @@ export function TabPerfil() {
                 : []),
             ].map(({ label, value }) => (
               <div key={label}>
-                <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mb-1">
+                <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-black/50 mb-1">
                   {label}
                 </p>
-                <p className="font-sans text-sm text-vous-soft-black">{value}</p>
+                <p className="font-sans text-sm text-black">{value}</p>
               </div>
             ))}
           </div>
           <div className="flex items-center gap-3 flex-wrap">
             <button
               onClick={startEditing}
-              className="font-nav text-[11px] font-semibold tracking-[0.15em] uppercase border border-vous-soft-black text-vous-soft-black px-6 py-2.5 hover:bg-vous-soft-black hover:text-white transition-colors"
+              className="font-nav text-[11px] font-semibold tracking-[0.15em] uppercase border border-black text-black px-6 py-2.5 hover:bg-black hover:text-white transition-colors"
             >
               Editar Perfil
             </button>

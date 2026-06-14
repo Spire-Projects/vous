@@ -28,11 +28,11 @@ export function Footer() {
     : "#";
 
   return (
-    <footer className="bg-vous-soft-black text-white">
-      <div className="max-w-[1440px] mx-auto px-5 md:px-20 py-16 md:py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-12 lg:gap-20 mb-12">
+    <footer className="bg-black text-white">
+      <div className="max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-14">
+        <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-10 lg:gap-16 mb-10">
           {/* Brand */}
-          <div className="space-y-4 max-w-[240px]">
+          <div className="space-y-4 max-w-[260px]">
             {config?.logoUrl ? (
               <Link href="/" className="block">
                 <Image
@@ -47,53 +47,49 @@ export function Footer() {
             ) : (
               <Link
                 href="/"
-                className="font-serif text-3xl font-bold tracking-[0.08em] text-white hover:text-vous-gold transition-colors"
+                className="font-serif text-2xl font-bold tracking-tight text-white hover:text-white/70 transition-colors duration-300"
               >
                 {storeName}
               </Link>
             )}
-            <p className="font-sans text-sm text-vous-gray-light leading-relaxed">{tagline}</p>
+            <p className="font-sans text-sm text-white/50 leading-relaxed">{tagline}</p>
 
-            {email && (
-              <div>
+            <div className="space-y-2 pt-1">
+              {email && (
                 <a
                   href={`mailto:${email}`}
-                  className="inline-flex items-center gap-2 font-sans text-sm text-vous-gold hover:text-vous-gold-light transition-colors"
+                  className="flex items-center gap-2 font-sans text-sm text-white/70 hover:text-white transition-colors duration-300"
                 >
                   <Mail size={14} />
                   {email}
                 </a>
-              </div>
-            )}
+              )}
 
-            {whatsappNumber && (
-              <div>
+              {whatsappNumber && (
                 <a
                   href={whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 font-sans text-sm text-vous-gray-light hover:text-white transition-colors"
+                  className="flex items-center gap-2 font-sans text-sm text-white/50 hover:text-white transition-colors duration-300"
                 >
                   <MessageCircle size={14} />
                   WhatsApp
                 </a>
-              </div>
-            )}
+              )}
 
-            {address && (
-              <div>
+              {address && (
                 <a
                   href={mapsHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 font-sans text-sm text-vous-gray-light hover:text-white transition-colors"
+                  className="flex items-center gap-2 font-sans text-sm text-white/50 hover:text-white transition-colors duration-300"
                 >
                   <MapPin size={14} />
                   {address}
                   {city ? `, ${city}` : ""}
                 </a>
-              </div>
-            )}
+              )}
+            </div>
 
             <FooterSocial />
           </div>
@@ -104,10 +100,10 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
-          <p className="font-sans text-[12px] text-vous-gray tracking-wide">
+          <p className="font-sans text-[12px] text-white/40 tracking-wide">
             © {year} {storeName}. Todos los derechos reservados.
           </p>
-          <p className="font-sans text-[11px] text-vous-gray tracking-[0.1em]">
+          <p className="font-sans text-[11px] text-white/40 tracking-[0.1em]">
             BOLIVIA · LATINOAMÉRICA
           </p>
         </div>

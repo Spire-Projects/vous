@@ -148,18 +148,18 @@ export function WholesaleForm() {
 
   if (submitted) {
     return (
-      <div className="bg-vous-cream p-10 text-center space-y-5">
-        <CheckCircle size={36} className="mx-auto text-vous-gold" strokeWidth={1.5} />
+      <div className="bg-white p-10 text-center space-y-5">
+        <CheckCircle size={36} className="mx-auto text-black" strokeWidth={1.5} />
         <div className="space-y-2">
-          <h3 className="font-serif text-2xl text-vous-soft-black">Formulario Enviado</h3>
-          <p className="font-sans text-sm text-vous-gray leading-relaxed max-w-xs mx-auto">
+          <h3 className="font-serif text-2xl text-black">Formulario Enviado</h3>
+          <p className="font-sans text-sm text-black/50 leading-relaxed max-w-xs mx-auto">
             Gracias por registrarte. Recuerda sacar captura a tu pantalla y enviarla a tu asesora de
             ventas.
           </p>
         </div>
         <a
           href="mailto:gabriela.garcia.villalobos.dev@gmail.com"
-          className="inline-block font-nav text-[10px] tracking-[0.2em] uppercase text-vous-gold border border-vous-gold/50 px-6 py-3 hover:bg-vous-gold hover:text-white transition-colors"
+          className="inline-block font-nav text-[10px] tracking-[0.2em] uppercase text-black border border-black/50 px-6 py-3 hover:bg-black hover:text-white transition-colors"
         >
           gabriela.garcia.villalobos.dev@gmail.com
         </a>
@@ -170,31 +170,31 @@ export function WholesaleForm() {
   // ── Form ─────────────────────────────────────────────────────────────────
 
   return (
-    <div className="bg-vous-cream p-6 md:p-10">
+    <div className="bg-white p-6 md:p-10">
       {/* Header */}
-      <p className="font-nav text-[10px] tracking-[0.2em] uppercase text-vous-gold mb-1">
+      <p className="font-nav text-[10px] tracking-[0.2em] uppercase text-black mb-1">
         Registro Oficial
       </p>
-      <h3 className="font-serif text-xl text-vous-soft-black mb-4">
+      <h3 className="font-serif text-xl text-black mb-4">
         Formulario Clientes Por Mayor VOUS
       </h3>
-      <div className="space-y-2 mb-7 pb-7 border-b border-vous-gray-light/40">
-        <p className="font-sans text-xs text-vous-gray leading-relaxed">
+      <div className="space-y-2 mb-7 pb-7 border-b border-black/10">
+        <p className="font-sans text-xs text-black/50 leading-relaxed">
           Somos una empresa de industria boliviana registrada en el{" "}
-          <strong className="text-vous-soft-black font-medium">SENAPI</strong>. Para proteger
+          <strong className="text-black font-medium">SENAPI</strong>. Para proteger
           nuestra marca y garantizar una correcta distribución, recopilamos los datos de todos
           nuestros distribuidores VOUS.
         </p>
-        <p className="font-sans text-xs text-vous-gray leading-relaxed">
+        <p className="font-sans text-xs text-black/50 leading-relaxed">
           Como parte de nuestro compromiso, compartimos la ubicación y nombre de tu tienda con
           clientes de otros departamentos, para ayudarte a generar mayor visibilidad y ventas.
         </p>
         <p className="font-sans text-xs leading-relaxed">
-          <span className="text-vous-soft-black font-medium">
+          <span className="text-black font-medium">
             Al enviar este formulario aceptas todas nuestras reglas y condiciones. No aceptamos
             reclamos en contra de nuestras reglas una vez enviado.
           </span>{" "}
-          <span className="text-vous-gray">
+          <span className="text-black/50">
             Recuerda tomar captura a tu pantalla y enviarla a la asesora de ventas.
           </span>
         </p>
@@ -234,7 +234,7 @@ export function WholesaleForm() {
           <Label htmlFor="telefono">
             Número de Celular <span className="text-red-500">*</span>
           </Label>
-          <p className="font-sans text-[11px] text-vous-gray -mt-0.5 mb-1">
+          <p className="font-sans text-[11px] text-black/50 -mt-0.5 mb-1">
             Corporativo o número de contacto directo con la asesora por mayor
           </p>
           <Input
@@ -278,8 +278,8 @@ export function WholesaleForm() {
                 onClick={() => set("comoNosConocio", value)}
                 className={`py-3 px-4 text-left font-nav text-[10px] tracking-[0.1em] uppercase border transition-colors ${
                   form.comoNosConocio === value
-                    ? "bg-vous-soft-black text-white border-vous-soft-black"
-                    : "border-vous-gray-light text-vous-gray hover:border-vous-soft-black hover:text-vous-soft-black bg-transparent"
+                    ? "bg-black text-white border-black"
+                    : "border-black/10 text-black/50 hover:border-black hover:text-black bg-transparent"
                 }`}
               >
                 {label}
@@ -293,7 +293,7 @@ export function WholesaleForm() {
           <Label htmlFor="direccion">
             Dirección donde Distribuirá la Marca <span className="text-red-500">*</span>
           </Label>
-          <p className="font-sans text-[11px] text-vous-gray -mt-0.5 mb-1">
+          <p className="font-sans text-[11px] text-black/50 -mt-0.5 mb-1">
             Descripción detallada del lugar donde distribuirá los productos
           </p>
           <textarea
@@ -302,7 +302,7 @@ export function WholesaleForm() {
             placeholder="Ej: Av. Blanco Galindo Km 5, Galería XYZ, Local 23, Cochabamba"
             value={form.direccion}
             onChange={(e) => set("direccion", e.target.value)}
-            className="flex w-full border border-vous-gray-light bg-transparent px-4 py-3 font-sans text-sm text-vous-soft-black placeholder:text-vous-gray outline-none focus:border-vous-gold transition-colors resize-none"
+            className="flex w-full border border-black/10 bg-transparent px-4 py-3 font-sans text-sm text-black placeholder:text-black/50 outline-none focus:border-black transition-colors resize-none"
           />
         </div>
 
@@ -310,11 +310,11 @@ export function WholesaleForm() {
         <div className="space-y-2">
           <Label>
             Capturas de Tienda Online{" "}
-            <span className="font-sans normal-case text-[11px] text-vous-gray tracking-normal">
+            <span className="font-sans normal-case text-[11px] text-black/50 tracking-normal">
               (opcional — máx. {MAX_FILES} archivos, {MAX_FILE_SIZE_MB} MB c/u)
             </span>
           </Label>
-          <p className="font-sans text-[11px] text-vous-gray leading-relaxed">
+          <p className="font-sans text-[11px] text-black/50 leading-relaxed">
             Si vendes por Facebook Marketplace, TikTok Shop u otra plataforma, adjunta capturas de
             tu perfil como respaldo.
           </p>
@@ -322,13 +322,13 @@ export function WholesaleForm() {
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="w-full border border-dashed border-vous-gray-light hover:border-vous-gold bg-transparent cursor-pointer px-4 py-8 text-center transition-colors"
+            className="w-full border border-dashed border-black/10 hover:border-black bg-transparent cursor-pointer px-4 py-8 text-center transition-colors"
           >
-            <Upload size={20} className="mx-auto text-vous-gray mb-2" strokeWidth={1.5} />
-            <p className="font-nav text-[10px] tracking-[0.1em] uppercase text-vous-gray">
+            <Upload size={20} className="mx-auto text-black/50 mb-2" strokeWidth={1.5} />
+            <p className="font-nav text-[10px] tracking-[0.1em] uppercase text-black/50">
               Haz clic para seleccionar archivos
             </p>
-            <p className="font-sans text-[11px] text-vous-gray mt-1">JPG, PNG, WEBP, PDF</p>
+            <p className="font-sans text-[11px] text-black/50 mt-1">JPG, PNG, WEBP, PDF</p>
           </button>
 
           <input
@@ -350,13 +350,13 @@ export function WholesaleForm() {
             <ul className="space-y-1.5">
               {files.map((file, i) => (
                 <li key={i} className="flex items-center justify-between bg-white/60 px-3 py-2">
-                  <span className="font-sans text-[12px] text-vous-soft-black truncate max-w-[80%]">
+                  <span className="font-sans text-[12px] text-black truncate max-w-[80%]">
                     {file.name}
                   </span>
                   <button
                     type="button"
                     onClick={() => setFiles((prev) => prev.filter((_, idx) => idx !== i))}
-                    className="text-vous-gray hover:text-red-500 transition-colors ml-2 shrink-0"
+                    className="text-black/50 hover:text-red-500 transition-colors ml-2 shrink-0"
                   >
                     <X size={14} />
                   </button>

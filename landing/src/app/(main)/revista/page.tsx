@@ -9,10 +9,10 @@ export default function RevistaPage() {
 
   if (loading) {
     return (
-      <div className="bg-vous-warm-white min-h-screen">
-        <div className="bg-vous-soft-black py-14 md:py-20 px-5 md:px-20">
+      <div className="bg-white min-h-screen">
+        <div className="bg-black py-14 md:py-20 px-5 md:px-20">
           <div className="max-w-[1440px] mx-auto">
-            <p className="font-nav text-[11px] font-semibold tracking-[0.25em] text-vous-gold uppercase mb-3">
+            <p className="font-nav text-[11px] font-semibold tracking-[0.25em] text-black uppercase mb-3">
               Editorial
             </p>
             <h1 className="font-serif text-4xl md:text-5xl font-medium text-white mb-4">
@@ -21,7 +21,7 @@ export default function RevistaPage() {
           </div>
         </div>
         <div className="flex justify-center py-24">
-          <span className="inline-block w-6 h-6 border-2 border-vous-gold/30 border-t-vous-gold rounded-full animate-spin" />
+          <span className="inline-block w-6 h-6 border-2 border-black/30 border-t-black rounded-full animate-spin" />
         </div>
       </div>
     );
@@ -29,10 +29,10 @@ export default function RevistaPage() {
 
   if (error) {
     return (
-      <div className="bg-vous-warm-white min-h-screen">
-        <div className="bg-vous-soft-black py-14 md:py-20 px-5 md:px-20">
+      <div className="bg-white min-h-screen">
+        <div className="bg-black py-14 md:py-20 px-5 md:px-20">
           <div className="max-w-[1440px] mx-auto">
-            <p className="font-nav text-[11px] font-semibold tracking-[0.25em] text-vous-gold uppercase mb-3">
+            <p className="font-nav text-[11px] font-semibold tracking-[0.25em] text-black uppercase mb-3">
               Editorial
             </p>
             <h1 className="font-serif text-4xl md:text-5xl font-medium text-white mb-4">
@@ -41,7 +41,7 @@ export default function RevistaPage() {
           </div>
         </div>
         <div className="max-w-[1440px] mx-auto px-5 md:px-20 py-24 text-center">
-          <p className="font-sans text-sm text-vous-gray">
+          <p className="font-sans text-sm text-black/50">
             No se pudieron cargar los artículos. Intenta de nuevo más tarde.
           </p>
         </div>
@@ -53,11 +53,11 @@ export default function RevistaPage() {
   const otherPosts = featuredPost ? posts.filter((p) => p.id !== featuredPost.id) : posts;
 
   return (
-    <div className="bg-vous-warm-white min-h-screen">
+    <div className="bg-white min-h-screen">
       {/* Header */}
-      <div className="bg-vous-soft-black py-14 md:py-20 px-5 md:px-20">
+      <div className="bg-black py-14 md:py-20 px-5 md:px-20">
         <div className="max-w-[1440px] mx-auto">
-          <p className="font-nav text-[11px] font-semibold tracking-[0.25em] text-vous-gold uppercase mb-3">
+          <p className="font-nav text-[11px] font-semibold tracking-[0.25em] text-black uppercase mb-3">
             Editorial
           </p>
           <h1 className="font-serif text-4xl md:text-5xl font-medium text-white mb-4">
@@ -74,7 +74,7 @@ export default function RevistaPage() {
         {featuredPost && <FeaturedPost post={featuredPost} />}
 
         {otherPosts.length > 0 && (
-          <div className="border-t border-vous-gray-light/40 pt-14">
+          <div className="border-t border-black/10 pt-14">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {otherPosts.map((post) => (
                 <PostCard key={post.id} post={post} />
@@ -85,7 +85,7 @@ export default function RevistaPage() {
 
         {posts.length === 0 && (
           <div className="text-center py-24">
-            <p className="font-sans text-sm text-vous-gray">
+            <p className="font-sans text-sm text-black/50">
               Próximamente publicaciones editoriales.
             </p>
           </div>

@@ -20,16 +20,16 @@ interface HeaderNavProps {
 
 export function HeaderNav({ pathname = "/" }: HeaderNavProps) {
   return (
-    <nav aria-label="Navegación principal" className="hidden md:flex items-center gap-8">
+    <nav aria-label="Navegación principal" className="hidden md:flex items-center gap-6">
       {NAV_LINKS.map(({ href, label }) => (
         <Link
           key={href}
           href={href}
           className={clsx(
-            "font-sans text-[13px] font-medium tracking-[0.15em] transition-colors duration-200",
+            "font-sans text-[11px] font-medium tracking-widest uppercase transition-colors duration-200 py-1",
             pathname === href
-              ? "text-vous-gold border-b border-vous-gold pb-0.5"
-              : "text-vous-soft-black hover:text-vous-gold"
+              ? "text-black border-b border-black pb-0.5"
+              : "text-black/60 hover:text-black"
           )}
         >
           {label}

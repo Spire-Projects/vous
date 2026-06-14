@@ -47,7 +47,7 @@ export function CatalogFilters({
       {/* Mobile toggle + search */}
       <div className="flex flex-col gap-3 lg:hidden mb-6">
         <div className="relative">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-vous-gray" />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-black/50" />
           <Input
             placeholder="Buscar producto…"
             value={state.query}
@@ -57,10 +57,10 @@ export function CatalogFilters({
         </div>
         <button
           onClick={() => setMobileOpen(true)}
-          className="flex items-center justify-center gap-2 font-nav text-[11px] uppercase tracking-wider border border-vous-border py-2.5 text-vous-soft-black"
+          className="flex items-center justify-center gap-2 font-nav text-[11px] uppercase tracking-wider border border-black/10 py-2.5 text-black"
         >
           <SlidersHorizontal size={14} />
-          Filtros {activeCount > 0 && <span className="text-vous-gold">({activeCount})</span>}
+          Filtros {activeCount > 0 &&           <span className="text-black/60">({activeCount})</span>}
         </button>
       </div>
 
@@ -98,7 +98,7 @@ export function CatalogFilters({
         {activeCount > 0 && (
           <button
             onClick={onClear}
-            className="font-nav text-[11px] uppercase tracking-wider text-vous-gray hover:text-vous-black underline underline-offset-4"
+            className="font-nav text-[11px] uppercase tracking-wider text-black/50 hover:text-black underline underline-offset-4"
           >
             Limpiar filtros ({activeCount})
           </button>
@@ -109,12 +109,12 @@ export function CatalogFilters({
       {mobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div
-            className="absolute inset-0 bg-vous-soft-black/40"
+            className="absolute inset-0 bg-black/40"
             onClick={() => setMobileOpen(false)}
           />
-          <div className="absolute right-0 top-0 bottom-0 w-80 max-w-full bg-vous-warm-white p-6 overflow-y-auto">
+          <div className="absolute right-0 top-0 bottom-0 w-80 max-w-full bg-white p-6 overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-nav text-[13px] uppercase tracking-wider text-vous-black">
+              <h3 className="font-nav text-[13px] uppercase tracking-wider text-black">
                 Filtros
               </h3>
               <button onClick={() => setMobileOpen(false)}>
@@ -161,7 +161,7 @@ export function CatalogFilters({
                     onClear();
                     setMobileOpen(false);
                   }}
-                  className="w-full font-nav text-[11px] uppercase tracking-wider border border-vous-border py-2.5 text-vous-soft-black hover:bg-vous-white transition-colors"
+                  className="w-full font-nav text-[11px] uppercase tracking-wider border border-black/10 py-2.5 text-black hover:bg-black/5 transition-colors"
                 >
                   Limpiar filtros ({activeCount})
                 </button>
@@ -179,7 +179,7 @@ export function CatalogFilters({
 function SearchField({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   return (
     <div className="relative">
-      <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-vous-gray" />
+      <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-black/50" />
       <Input
         placeholder="Buscar producto…"
         value={value}
@@ -201,7 +201,7 @@ function CategoryFilter({
 }) {
   return (
     <div>
-      <h3 className="font-nav text-[10px] font-semibold tracking-[0.2em] text-vous-gold uppercase mb-3">
+      <h3 className="font-nav text-[10px] font-semibold tracking-[0.2em] text-black/40 uppercase mb-3">
         Categoría
       </h3>
       <ul className="space-y-2">
@@ -211,15 +211,15 @@ function CategoryFilter({
               onClick={() => onChange(active === value ? null : value)}
               className={`w-full text-left font-sans text-sm transition-colors flex items-center justify-between ${
                 active === value
-                  ? "text-vous-soft-black font-medium"
-                  : "text-vous-gray hover:text-vous-soft-black"
+                  ? "text-black font-medium"
+                  : "text-black/50 hover:text-black"
               }`}
             >
               <span>
                 {label}
-                <span className="ml-1 text-vous-gray-light">({count})</span>
+                <span className="ml-1 text-black/30">({count})</span>
               </span>
-              {active === value && <span className="text-vous-gold">●</span>}
+              {active === value && <span className="text-black">●</span>}
             </button>
           </li>
         ))}
@@ -239,7 +239,7 @@ function SizeFilter({
 }) {
   return (
     <div>
-      <h3 className="font-nav text-[10px] font-semibold tracking-[0.2em] text-vous-gold uppercase mb-3">
+      <h3 className="font-nav text-[10px] font-semibold tracking-[0.2em] text-black/40 uppercase mb-3">
         Talla
       </h3>
       <div className="flex gap-2 flex-wrap">
@@ -250,8 +250,8 @@ function SizeFilter({
             title={`${value} (${count})`}
             className={`w-10 h-10 font-sans text-xs border transition-colors ${
               active.includes(value)
-                ? "bg-vous-soft-black text-white border-vous-soft-black"
-                : "border-vous-gray-light text-vous-gray hover:border-vous-soft-black"
+                ? "bg-black text-white border-black"
+                : "border-black/10 text-black/50 hover:border-black"
             }`}
           >
             {value}
@@ -273,7 +273,7 @@ function ColorFilter({
 }) {
   return (
     <div>
-      <h3 className="font-nav text-[10px] font-semibold tracking-[0.2em] text-vous-gold uppercase mb-3">
+      <h3 className="font-nav text-[10px] font-semibold tracking-[0.2em] text-black/40 uppercase mb-3">
         Color
       </h3>
       <div className="flex flex-wrap gap-2">
@@ -284,8 +284,8 @@ function ColorFilter({
             title={`${value} (${count})`}
             className={`px-2.5 py-1 font-sans text-xs border transition-colors ${
               active.includes(value)
-                ? "bg-vous-soft-black text-white border-vous-soft-black"
-                : "border-vous-gray-light text-vous-gray hover:border-vous-soft-black"
+                ? "bg-black text-white border-black"
+                : "border-black/10 text-black/50 hover:border-black"
             }`}
           >
             {value}
@@ -307,7 +307,7 @@ function MaterialFilter({
 }) {
   return (
     <div>
-      <h3 className="font-nav text-[10px] font-semibold tracking-[0.2em] text-vous-gold uppercase mb-3">
+      <h3 className="font-nav text-[10px] font-semibold tracking-[0.2em] text-black/40 uppercase mb-3">
         Material
       </h3>
       <ul className="space-y-2.5">
@@ -320,9 +320,9 @@ function MaterialFilter({
             />
             <Label
               htmlFor={`mat-${value}`}
-              className="font-sans text-sm normal-case tracking-normal text-vous-gray cursor-pointer"
+              className="font-sans text-sm normal-case tracking-normal text-black/50 cursor-pointer"
             >
-              {label} <span className="text-vous-gray-light">({count})</span>
+              {label} <span className="text-black/30">({count})</span>
             </Label>
           </li>
         ))}
@@ -349,10 +349,10 @@ function PriceFilter({
 
   return (
     <div>
-      <h3 className="font-nav text-[10px] font-semibold tracking-[0.2em] text-vous-gold uppercase mb-3">
+      <h3 className="font-nav text-[10px] font-semibold tracking-[0.2em] text-black/40 uppercase mb-3">
         Rango de Precios
       </h3>
-      <div className="flex items-center justify-between font-sans text-xs text-vous-gray mb-2">
+      <div className="flex items-center justify-between font-sans text-xs text-black/50 mb-2">
         <span>Bs. {localMin.toLocaleString("es-BO")}</span>
         <span>Bs. {localMax.toLocaleString("es-BO")}</span>
       </div>
@@ -366,7 +366,7 @@ function PriceFilter({
           setLocalMax(v);
           onChange(localMin, v);
         }}
-        className="w-full accent-vous-gold mb-3"
+        className="w-full accent-black mb-3"
       />
       <div className="flex gap-2">
         <Input
@@ -378,7 +378,7 @@ function PriceFilter({
             const v = e.target.value ? Number(e.target.value) : null;
             onChange(v, activeMax);
           }}
-          className="text-xs"
+          className="text-xs border-black/10"
         />
         <Input
           type="number"
@@ -389,7 +389,7 @@ function PriceFilter({
             const v = e.target.value ? Number(e.target.value) : null;
             onChange(activeMin, v);
           }}
-          className="text-xs"
+          className="text-xs border-black/10"
         />
       </div>
     </div>
@@ -416,7 +416,7 @@ function TagFilter({
 
   return (
     <div>
-      <h3 className="font-nav text-[10px] font-semibold tracking-[0.2em] text-vous-gold uppercase mb-3">
+      <h3 className="font-nav text-[10px] font-semibold tracking-[0.2em] text-black/40 uppercase mb-3">
         Etiquetas
       </h3>
       <div className="flex flex-wrap gap-2">
@@ -426,8 +426,8 @@ function TagFilter({
             onClick={() => onToggle(value)}
             className={`px-2.5 py-1 font-nav text-[10px] tracking-wide border transition-colors ${
               active.includes(value)
-                ? "bg-vous-soft-black text-white border-vous-soft-black"
-                : "border-vous-gray-light text-vous-gray hover:border-vous-soft-black"
+                ? "bg-black text-white border-black"
+                : "border-black/10 text-black/50 hover:border-black"
             }`}
           >
             {tagLabelMap[value] ?? value} ({count})

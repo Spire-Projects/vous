@@ -17,7 +17,7 @@ export function TabPedidos({ userId }: { userId: string }) {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 gap-3 text-vous-gray">
+      <div className="flex flex-col items-center justify-center py-20 gap-3 text-black/50">
         <Loader2 size={22} className="animate-spin" />
         <p className="font-sans text-sm">Cargando pedidos…</p>
       </div>
@@ -34,16 +34,16 @@ export function TabPedidos({ userId }: { userId: string }) {
   return (
     <div className="space-y-6">
       <div className="flex items-end justify-between gap-4">
-        <h2 className="font-serif text-2xl text-vous-soft-black">Mis Pedidos</h2>
+        <h2 className="font-serif text-2xl text-black">Mis Pedidos</h2>
         {orders.length > 0 && (
-          <p className="font-sans text-xs text-vous-gray">
+          <p className="font-sans text-xs text-black/50">
             {orders.length} pedido{orders.length > 1 ? "s" : ""}
           </p>
         )}
       </div>
 
       {orders.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-16 gap-4 text-vous-gray border border-vous-gray-light/40">
+        <div className="flex flex-col items-center justify-center py-16 gap-4 text-black/50 border border-black/10">
           <PackageSearch size={36} strokeWidth={1} />
           <div className="text-center">
             <p className="font-sans text-sm">Todavía no tienes pedidos.</p>
@@ -53,7 +53,7 @@ export function TabPedidos({ userId }: { userId: string }) {
           </div>
           <Link
             href="/catalogo"
-            className="font-nav text-[11px] font-semibold tracking-[0.15em] uppercase border border-vous-soft-black text-vous-soft-black px-6 py-2.5 hover:bg-vous-soft-black hover:text-white transition-colors"
+            className="font-nav text-[11px] font-semibold tracking-[0.15em] uppercase border border-black text-black px-6 py-2.5 hover:bg-black hover:text-white transition-colors"
           >
             Ver Catálogo
           </Link>
@@ -69,7 +69,7 @@ export function TabPedidos({ userId }: { userId: string }) {
             <div className="text-center pt-2">
               <button
                 onClick={() => setDisplayCount((c) => c + PAGE_SIZE)}
-                className="font-nav text-[11px] font-semibold tracking-[0.15em] uppercase border border-vous-soft-black text-vous-soft-black px-6 py-2.5 hover:bg-vous-soft-black hover:text-white transition-colors"
+                className="font-nav text-[11px] font-semibold tracking-[0.15em] uppercase border border-black text-black px-6 py-2.5 hover:bg-black hover:text-white transition-colors"
               >
                 Cargar más ({orders.length - visible.length} restantes)
               </button>

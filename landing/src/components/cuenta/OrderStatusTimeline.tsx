@@ -42,7 +42,7 @@ export function OrderStatusTimeline({ status }: { status: OrderStatus }) {
             {idx < STEPS.length - 1 && (
               <div
                 className={`absolute left-1/2 top-[14px] h-px w-full z-0 ${
-                  done ? "bg-vous-gold" : "bg-vous-gray-light"
+                  done ? "bg-black" : "bg-black/10"
                 }`}
               />
             )}
@@ -50,11 +50,11 @@ export function OrderStatusTimeline({ status }: { status: OrderStatus }) {
             <div
               className={`relative z-10 w-7 h-7 rounded-full flex items-center justify-center shrink-0 border text-[10px] font-bold transition-colors ${
                 done
-                  ? "bg-vous-gold border-vous-gold text-white"
+                  ? "bg-black border-black text-white"
                   : active
-                    ? "bg-vous-soft-black border-vous-soft-black text-white"
+                    ? "bg-black border-black text-white"
                     : pending
-                      ? "bg-vous-warm-white border-vous-gray-light text-vous-gray-light"
+                      ? "bg-white border-black/10 text-black/20"
                       : ""
               }`}
             >
@@ -64,10 +64,10 @@ export function OrderStatusTimeline({ status }: { status: OrderStatus }) {
             <span
               className={`font-sans text-[10px] text-center leading-tight ${
                 active
-                  ? "text-vous-soft-black font-semibold"
+                  ? "text-black font-semibold"
                   : done
-                    ? "text-vous-gold"
-                    : "text-vous-gray-light"
+                    ? "text-black"
+                    : "text-black/20"
               }`}
             >
               {step.label}

@@ -12,15 +12,15 @@ export default function CarritoPage() {
 
   if (items.length === 0) {
     return (
-      <div className="bg-vous-warm-white min-h-screen flex flex-col items-center justify-center gap-6 px-5 text-center">
-        <ShoppingBag size={48} className="text-vous-gray-light" strokeWidth={1} />
-        <p className="font-serif text-2xl text-vous-soft-black">Tu carrito está vacío</p>
-        <p className="font-sans text-sm text-vous-gray">
+      <div className="bg-white min-h-screen flex flex-col items-center justify-center gap-6 px-5 text-center">
+        <ShoppingBag size={48} className="text-black/20" strokeWidth={1} />
+        <p className="font-serif text-2xl text-black">Tu carrito está vacío</p>
+        <p className="font-sans text-sm text-black/50">
           Explora nuestra colección y agrega lo que más te guste.
         </p>
         <Link
           href="/catalogo"
-          className="font-nav text-[12px] font-semibold tracking-[0.15em] uppercase bg-vous-soft-black text-white px-8 py-3 hover:bg-vous-gray-dark transition-colors"
+          className="font-nav text-[12px] font-semibold tracking-[0.15em] uppercase bg-black text-white px-8 py-3 hover:bg-black/80 transition-colors"
         >
           Explorar Catálogo
         </Link>
@@ -29,9 +29,9 @@ export default function CarritoPage() {
   }
 
   return (
-    <div className="bg-vous-warm-white min-h-screen">
+    <div className="bg-white min-h-screen">
       <div className="max-w-[1440px] mx-auto px-5 md:px-20 py-12 md:py-16">
-        <h1 className="font-serif text-3xl md:text-4xl text-vous-soft-black mb-10">
+        <h1 className="font-serif text-3xl md:text-4xl text-black mb-10">
           Carrito de Compras
         </h1>
 

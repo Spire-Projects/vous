@@ -51,7 +51,7 @@ export function ProductGallery({ images, name, colors, selectedColor }: ProductG
   if (displayImages.length === 0) {
     return (
       <div className="flex-1">
-        <div className="aspect-[3/4] bg-gradient-to-b from-[#b8b0a4] to-[#8a8278]" />
+        <div className="aspect-[3/4] bg-black/5" />
       </div>
     );
   }
@@ -66,7 +66,7 @@ export function ProductGallery({ images, name, colors, selectedColor }: ProductG
             aria-label={`Ver imagen ${i + 1}`}
             aria-current={active === i ? true : undefined}
             className={`w-16 h-20 md:w-20 md:h-24 shrink-0 border-2 transition-colors overflow-hidden ${
-              active === i ? "border-vous-gold" : "border-transparent hover:border-vous-gray-light"
+              active === i ? "border-black" : "border-transparent hover:border-black/20"
             }`}
           >
             <img
@@ -79,7 +79,7 @@ export function ProductGallery({ images, name, colors, selectedColor }: ProductG
       </div>
 
       <div
-        className="flex-1 aspect-[3/4] relative overflow-hidden bg-vous-cream cursor-zoom-in select-none"
+        className="flex-1 aspect-[3/4] relative overflow-hidden bg-white cursor-zoom-in select-none"
         onMouseEnter={() => setZoomed(true)}
         onMouseLeave={() => setZoomed(false)}
         onMouseMove={handleMouseMove}
@@ -101,7 +101,7 @@ export function ProductGallery({ images, name, colors, selectedColor }: ProductG
               <span
                 key={i}
                 className={`block w-1.5 h-1.5 rounded-full transition-colors ${
-                  i === active ? "bg-vous-gold" : "bg-white/60"
+                  i === active ? "bg-black" : "bg-black/20"
                 }`}
               />
             ))}

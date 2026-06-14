@@ -52,13 +52,13 @@ export default function RegistroPage() {
       <div className="w-full max-w-[460px]">
         {/* Heading */}
         <div className="mb-10 text-center">
-          <p className="font-nav text-[11px] font-semibold uppercase tracking-[0.22em] text-vous-gold mb-3">
+          <p className="font-nav text-[11px] font-semibold uppercase tracking-[0.22em] text-black mb-3">
             Nueva Cuenta
           </p>
-          <h1 className="font-serif text-[36px] sm:text-[40px] font-medium leading-[1.1] text-vous-soft-black">
+          <h1 className="font-serif text-[36px] sm:text-[40px] font-medium leading-[1.1] text-black">
             Crear Cuenta
           </h1>
-          <p className="mt-3 font-sans text-[14px] leading-relaxed text-vous-gray">
+          <p className="mt-3 font-sans text-[14px] leading-relaxed text-black/50">
             Únete a la comunidad VOUS y accede a lanzamientos exclusivos.
           </p>
         </div>
@@ -71,7 +71,7 @@ export default function RegistroPage() {
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Nombre */}
               <div>
-                <label className="block font-nav text-[10px] font-semibold uppercase tracking-[0.15em] text-vous-gray mb-1.5">
+                <label className="block font-nav text-[10px] font-semibold uppercase tracking-[0.15em] text-black/50 mb-1.5">
                   Nombre Completo
                 </label>
                 <input
@@ -81,13 +81,13 @@ export default function RegistroPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Tu nombre completo"
-                  className="w-full border border-vous-border bg-white/90 px-4 py-2.5 text-sm font-sans text-vous-soft-black placeholder:text-vous-text-muted rounded-2xl shadow-inner focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all"
+                  className="w-full border border-black/10 bg-white/90 px-4 py-2.5 text-sm font-sans text-black placeholder:text-black/50 rounded-2xl shadow-inner focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-black transition-all"
                 />
               </div>
 
               {/* Email */}
               <div>
-                <label className="block font-nav text-[10px] font-semibold uppercase tracking-[0.15em] text-vous-gray mb-1.5">
+                <label className="block font-nav text-[10px] font-semibold uppercase tracking-[0.15em] text-black/50 mb-1.5">
                   Correo Electrónico
                 </label>
                 <input
@@ -97,13 +97,13 @@ export default function RegistroPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="tu@correo.com"
-                  className="w-full border border-vous-border bg-white/90 px-4 py-2.5 text-sm font-sans text-vous-soft-black placeholder:text-vous-text-muted rounded-2xl shadow-inner focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all"
+                  className="w-full border border-black/10 bg-white/90 px-4 py-2.5 text-sm font-sans text-black placeholder:text-black/50 rounded-2xl shadow-inner focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-black transition-all"
                 />
               </div>
 
               {/* Teléfono */}
               <div>
-                <label className="block font-nav text-[10px] font-semibold uppercase tracking-[0.15em] text-vous-gray mb-1.5">
+                <label className="block font-nav text-[10px] font-semibold uppercase tracking-[0.15em] text-black/50 mb-1.5">
                   Número Celular
                 </label>
                 <input
@@ -112,20 +112,20 @@ export default function RegistroPage() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+591 7xxxxxxx"
-                  className="w-full border border-vous-border bg-white/90 px-4 py-2.5 text-sm font-sans text-vous-soft-black placeholder:text-vous-text-muted rounded-2xl shadow-inner focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all"
+                  className="w-full border border-black/10 bg-white/90 px-4 py-2.5 text-sm font-sans text-black placeholder:text-black/50 rounded-2xl shadow-inner focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-black transition-all"
                 />
               </div>
 
               {/* Departamento */}
               <div>
-                <label className="block font-nav text-[10px] font-semibold uppercase tracking-[0.15em] text-vous-gray mb-1.5">
+                <label className="block font-nav text-[10px] font-semibold uppercase tracking-[0.15em] text-black/50 mb-1.5">
                   Departamento
                 </label>
                 <div className="relative">
                   <select
                     value={departamento}
                     onChange={(e) => setDepartamento(e.target.value)}
-                    className="w-full appearance-none border border-vous-border bg-white/90 px-4 py-2.5 pr-10 text-sm font-sans text-vous-soft-black rounded-2xl shadow-inner focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all"
+                    className="w-full appearance-none border border-black/10 bg-white/90 px-4 py-2.5 pr-10 text-sm font-sans text-black rounded-2xl shadow-inner focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-black transition-all"
                   >
                     <option value="" disabled>
                       Selecciona tu departamento
@@ -136,7 +136,7 @@ export default function RegistroPage() {
                       </option>
                     ))}
                   </select>
-                  <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-vous-gray">
+                  <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-black/50">
                     <svg width="12" height="7" viewBox="0 0 12 7" fill="none">
                       <path
                         d="M1 1l5 5 5-5"
@@ -152,7 +152,7 @@ export default function RegistroPage() {
 
               {/* Contraseña */}
               <div>
-                <label className="block font-nav text-[10px] font-semibold uppercase tracking-[0.15em] text-vous-gray mb-1.5">
+                <label className="block font-nav text-[10px] font-semibold uppercase tracking-[0.15em] text-black/50 mb-1.5">
                   Contraseña
                 </label>
                 <div className="relative">
@@ -164,13 +164,13 @@ export default function RegistroPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Mínimo 6 caracteres"
-                    className="w-full border border-vous-border bg-white/90 px-4 py-2.5 pr-10 text-sm font-sans text-vous-soft-black placeholder:text-vous-text-muted rounded-2xl shadow-inner focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400 transition-all"
+                    className="w-full border border-black/10 bg-white/90 px-4 py-2.5 pr-10 text-sm font-sans text-black placeholder:text-black/50 rounded-2xl shadow-inner focus:outline-none focus:ring-2 focus:ring-black/50 focus:border-black transition-all"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((v) => !v)}
                     aria-label={showPassword ? "Ocultar contraseña" : "Ver contraseña"}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-vous-gray hover:text-vous-soft-black transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-black/50 hover:text-black transition-colors"
                   >
                     {showPassword ? (
                       <EyeOff size={16} strokeWidth={1.5} />
@@ -192,7 +192,7 @@ export default function RegistroPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-2 bg-vous-soft-black text-white font-nav text-[11px] font-semibold uppercase tracking-[0.15em] py-3.5 rounded-xl hover:bg-vous-gold hover:text-vous-soft-black shadow-lg shadow-black/10 hover:shadow-amber-500/15 hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0 transition-all duration-200 mt-1"
+                className="w-full flex items-center justify-center gap-2 bg-black text-white font-nav text-[11px] font-semibold uppercase tracking-[0.15em] py-3.5 rounded-xl hover:bg-black/80 shadow-lg shadow-black/10 hover:shadow-black/15 hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0 transition-all duration-200 mt-1"
               >
                 {loading ? (
                   <>
@@ -211,11 +211,11 @@ export default function RegistroPage() {
         </div>
 
         {/* Login link */}
-        <p className="mt-8 font-sans text-[13px] text-vous-gray text-center">
+        <p className="mt-8 font-sans text-[13px] text-black/50 text-center">
           ¿Ya tienes una cuenta?{" "}
           <Link
             href="/auth/login"
-            className="font-semibold text-vous-soft-black hover:text-vous-gold transition-colors"
+            className="font-semibold text-black hover:text-black transition-colors"
           >
             Inicia sesión
           </Link>

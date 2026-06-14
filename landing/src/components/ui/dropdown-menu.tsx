@@ -107,7 +107,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
   <_SubTrigger
     ref={ref}
     className={cn(
-      "flex cursor-default select-none items-center px-4 py-2.5 font-sans text-sm text-vous-soft-black outline-none focus:bg-vous-cream data-[state=open]:bg-vous-cream",
+      "flex cursor-default select-none items-center px-4 py-2.5 font-sans text-sm text-black outline-none focus:bg-white data-[state=open]:bg-white",
       inset && "pl-8",
       className
     )}
@@ -126,7 +126,7 @@ const DropdownMenuSubContent = React.forwardRef<
   <_SubContent
     ref={ref}
     className={cn(
-      "z-50 min-w-[8rem] overflow-hidden border border-vous-gray-light bg-white p-1 shadow-md",
+      "z-50 min-w-[8rem] overflow-hidden border border-black/10 bg-white p-1 shadow-md",
       className
     )}
     {...props}
@@ -147,7 +147,7 @@ const DropdownMenuContent = React.forwardRef<
       ref={ref}
       sideOffset={sideOffset}
       className={cn(
-        "z-50 min-w-[10rem] overflow-hidden border border-vous-gray-light bg-white py-1 shadow-sm",
+        "z-50 min-w-[10rem] overflow-hidden border border-black/10 bg-white py-1 shadow-sm",
         className
       )}
       {...props}
@@ -163,7 +163,7 @@ const DropdownMenuItem = React.forwardRef<
   <_Item
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center gap-2 px-4 py-2.5 font-sans text-sm text-vous-soft-black outline-none transition-colors focus:bg-vous-cream focus:text-vous-gold data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex cursor-default select-none items-center gap-2 px-4 py-2.5 font-sans text-sm text-black outline-none transition-colors focus:bg-white focus:text-black data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       inset && "pl-8",
       className
     )}
@@ -182,7 +182,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   <_CheckboxItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center py-2.5 pl-8 pr-4 font-sans text-sm text-vous-soft-black outline-none focus:bg-vous-cream data-[disabled]:opacity-50",
+      "relative flex cursor-default select-none items-center py-2.5 pl-8 pr-4 font-sans text-sm text-black outline-none focus:bg-white data-[disabled]:opacity-50",
       className
     )}
     checked={checked}
@@ -205,7 +205,7 @@ const DropdownMenuRadioItem = React.forwardRef<
   <_RadioItem
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center py-2.5 pl-8 pr-4 font-sans text-sm text-vous-soft-black outline-none focus:bg-vous-cream data-[disabled]:opacity-50",
+      "relative flex cursor-default select-none items-center py-2.5 pl-8 pr-4 font-sans text-sm text-black outline-none focus:bg-white data-[disabled]:opacity-50",
       className
     )}
     {...props}
@@ -227,7 +227,7 @@ const DropdownMenuLabel = React.forwardRef<
   <_Label
     ref={ref}
     className={cn(
-      "px-4 py-1.5 font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray",
+      "px-4 py-1.5 font-nav text-[10px] tracking-[0.15em] uppercase text-black/50",
       inset && "pl-8",
       className
     )}
@@ -242,7 +242,7 @@ const DropdownMenuSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <_Separator
     ref={ref}
-    className={cn("-mx-1 my-1 h-px bg-vous-gray-light/40", className)}
+      className={cn("-mx-1 my-1 h-px bg-black/10", className)}
     {...props}
   />
 ));

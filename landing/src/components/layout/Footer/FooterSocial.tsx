@@ -68,7 +68,7 @@ export function FooterSocial() {
   if (activeNetworks.length === 0) return null;
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-3">
       {activeNetworks.map(({ key, label, data }) => {
         const Icon = ICON_MAP[key];
         return (
@@ -78,7 +78,7 @@ export function FooterSocial() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={label}
-            className="w-8 h-8 rounded-full border border-vous-gold/30 flex items-center justify-center text-vous-gold hover:bg-vous-gold hover:text-vous-soft-black transition-all duration-200"
+            className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-white/60 hover:bg-white hover:text-black transition-all duration-300"
           >
             <Icon />
           </Link>

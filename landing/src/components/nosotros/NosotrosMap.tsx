@@ -15,9 +15,9 @@ import "leaflet/dist/leaflet.css";
 const DEFAULT_CENTER: [number, number] = [-16.5, -64.5];
 const DEFAULT_ZOOM = 6;
 
-const redDotIcon = L.divIcon({
-  className: "vous-red-dot",
-  html: `<div style="width:14px;height:14px;background:#EA4335;border-radius:50%;border:2px solid white;box-shadow:0 2px 5px rgba(0,0,0,0.35);"></div>`,
+const blackDotIcon = L.divIcon({
+  className: "black-dot",
+  html: `<div style="width:14px;height:14px;background:#000000;border-radius:50%;border:2px solid white;box-shadow:0 2px 5px rgba(0,0,0,0.35);"></div>`,
   iconSize: [14, 14],
   iconAnchor: [7, 7],
   popupAnchor: [0, -7],
@@ -61,9 +61,9 @@ function geoJSONStyle(
   const deptId = resolveDeptId(feature.properties.name);
   const isSelected = deptId === selectedDept;
   return {
-    fillColor: isSelected ? "#C9A84C" : "#C9A84C",
+    fillColor: isSelected ? "#000000" : "#000000",
     fillOpacity: isSelected ? 0.30 : 0.08,
-    color: isSelected ? "#8B6914" : "#C9A84C",
+    color: isSelected ? "#000000" : "#000000",
     weight: isSelected ? 2.5 : 1,
     dashArray: isSelected ? "" : "3 3",
   };
@@ -122,7 +122,7 @@ export function NosotrosMap({ departmentLinks, otherCountryLinks }: NosotrosMapP
   return (
     <div className="flex flex-col lg:flex-row gap-3" style={{ minHeight: 500 }}>
       {/* Mapa */}
-      <div className="flex-1 rounded-2xl overflow-hidden border border-vous-gray-light/40" style={{ minHeight: 500 }}>
+      <div className="flex-1 rounded-2xl overflow-hidden border border-black/10" style={{ minHeight: 500 }}>
         <MapContainer
           center={DEFAULT_CENTER}
           zoom={DEFAULT_ZOOM}
@@ -145,7 +145,7 @@ export function NosotrosMap({ departmentLinks, otherCountryLinks }: NosotrosMapP
             const pos = markerPosition(link);
             if (!pos) return null;
             return (
-              <Marker key={`marker-${idx}`} position={pos} icon={redDotIcon}>
+              <Marker key={`marker-${idx}`} position={pos} icon={blackDotIcon}>
                 <Popup>
                   <div className="font-sans text-xs space-y-1 min-w-[150px]">
                     <p className="font-nav text-[11px] uppercase tracking-wide text-black font-semibold">
@@ -156,7 +156,7 @@ export function NosotrosMap({ departmentLinks, otherCountryLinks }: NosotrosMapP
                         href={link.googleMapsUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-vous-gold underline text-[11px] block"
+                        className="text-black underline text-[11px] block"
                       >
                         Abrir en Google Maps
                       </a>
@@ -166,7 +166,7 @@ export function NosotrosMap({ departmentLinks, otherCountryLinks }: NosotrosMapP
                         href={link.tiktokUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-vous-accent-purple underline text-[11px] block"
+                        className="text-black underline text-[11px] block"
                       >
                         Abrir en TikTok
                       </a>
@@ -181,7 +181,7 @@ export function NosotrosMap({ departmentLinks, otherCountryLinks }: NosotrosMapP
       </div>
 
       {/* Panel de tiendas */}
-      <div className="w-full lg:w-80 bg-white border border-vous-gray-light/50 rounded-2xl shadow-lg overflow-hidden flex flex-col" style={{ minHeight: 200 }}>
+      <div className="w-full lg:w-80 bg-white border border-black/10 rounded-2xl shadow-lg overflow-hidden flex flex-col" style={{ minHeight: 200 }}>
         <MapSidePanel deptName={selectedDeptName} links={selectedLinks} />
       </div>
     </div>

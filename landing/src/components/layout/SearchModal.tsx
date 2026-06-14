@@ -49,7 +49,7 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
           {open && (
             <>
               <DialogOverlay
-                className="fixed inset-0 z-50 bg-vous-soft-black/50 backdrop-blur-sm"
+                className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
                 onClick={handleClose}
               />
 
@@ -59,25 +59,25 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: "-100%", opacity: 0 }}
                   transition={{ type: "tween", duration: 0.25 }}
-                  className="fixed top-0 left-0 right-0 z-50 bg-vous-warm-white border-b border-vous-gold/20 px-5 md:px-20 py-5"
+                  className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-black/5 px-4 md:px-6 lg:px-8 py-4 shadow-sm"
                 >
                   <form
                     onSubmit={handleSubmit}
-                    className="max-w-[1440px] mx-auto flex items-center gap-4"
+                    className="max-w-[1440px] mx-auto flex items-center gap-3"
                   >
-                    <Search size={20} strokeWidth={1.5} className="text-vous-gray shrink-0" />
+                    <Search size={20} strokeWidth={1.5} className="text-black/40 shrink-0" />
                     <input
                       ref={inputRef}
                       type="search"
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
                       placeholder="Buscar productos, categorías, tendencias..."
-                      className="flex-1 bg-transparent font-sans text-lg text-vous-soft-black placeholder:text-vous-gray outline-none"
+                      className="flex-1 bg-transparent font-sans text-base text-black placeholder:text-black/40 outline-none"
                       aria-label="Buscar en VOUS"
                     />
                     <DialogClose
                       aria-label="Cerrar búsqueda"
-                      className="text-vous-gray hover:text-vous-soft-black transition-colors"
+                      className="text-black/40 hover:text-black transition-colors duration-300 p-1"
                     >
                       <X size={20} strokeWidth={1.5} />
                     </DialogClose>

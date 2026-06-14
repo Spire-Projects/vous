@@ -28,7 +28,7 @@ export default function CuentaPage() {
   };
 
   return (
-    <div className="bg-vous-warm-white min-h-screen">
+    <div className="bg-white min-h-screen">
       <div className="max-w-[1440px] mx-auto px-5 md:px-20 py-12 md:py-16">
         <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
           <AccountSidebar

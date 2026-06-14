@@ -28,8 +28,8 @@ export function FeaturedProductsSection() {
 
   if (loading) {
     return (
-      <section className="py-20 md:py-28 bg-vous-warm-white flex items-center justify-center">
-        <span className="inline-block w-6 h-6 border-2 border-vous-gold/30 border-t-vous-gold rounded-full animate-spin" />
+      <section className="py-20 md:py-28 bg-white flex items-center justify-center">
+        <span className="inline-block w-6 h-6 border-2 border-black/30 border-t-black rounded-full animate-spin" />
       </section>
     );
   }
@@ -43,16 +43,16 @@ export function FeaturedProductsSection() {
         return (
           <section
             key={section.id}
-            className={`py-20 md:py-28 ${isDark ? "bg-vous-soft-black" : "bg-vous-warm-white"}`}
+            className={`py-12 md:py-20 ${isDark ? "bg-black" : "bg-white"}`}
           >
-            <div className="max-w-[1440px] mx-auto px-5 md:px-20">
-              <div className="flex items-end justify-between mb-10 md:mb-14">
+            <div className="max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8">
+              <div className="flex items-end justify-between mb-6 md:mb-10">
                 <div>
-                  <p className="font-nav text-[11px] font-semibold tracking-[0.25em] uppercase mb-2 text-vous-gold">
+                  <p className={`font-nav text-[11px] font-semibold tracking-[0.2em] uppercase mb-2 ${isDark ? "text-white/40" : "text-black/40"}`}>
                     {section.customType || SECTION_EYEBROW[section.type]}
                   </p>
                   <h2
-                    className={`font-serif text-4xl md:text-5xl font-medium ${isDark ? "text-white" : "text-vous-soft-black"}`}
+                    className={`font-serif text-2xl md:text-3xl font-medium ${isDark ? "text-white" : "text-black"}`}
                   >
                     {section.name}
                   </h2>
@@ -61,15 +61,15 @@ export function FeaturedProductsSection() {
                   href={VIEW_ALL_HREF[section.type]}
                   className={`hidden md:inline-flex font-nav text-[11px] font-semibold tracking-[0.15em] uppercase border-b pb-0.5 transition-colors ${
                     isDark
-                      ? "text-vous-gold border-vous-gold/50 hover:border-vous-gold"
-                      : "text-vous-soft-black border-vous-black/30 hover:border-vous-soft-black"
+                      ? "text-white border-white/30 hover:border-white"
+                      : "text-black border-black/30 hover:border-black"
                   }`}
                 >
                   Ver Todo
                 </Link>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-8">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                 {section.products.slice(0, 8).map((product) => (
                   <ProductCard
                     key={product.id}
@@ -80,13 +80,13 @@ export function FeaturedProductsSection() {
                 ))}
               </div>
 
-              <div className="mt-10 text-center md:hidden">
+              <div className="mt-8 text-center md:hidden">
                 <Link
                   href={VIEW_ALL_HREF[section.type]}
                   className={`font-nav text-[11px] font-semibold tracking-[0.15em] uppercase border-b pb-0.5 transition-colors ${
                     isDark
-                      ? "text-vous-gold border-vous-gold/50 hover:border-vous-gold"
-                      : "text-vous-soft-black border-vous-black/30 hover:border-vous-soft-black"
+                      ? "text-white border-white/30 hover:border-white"
+                      : "text-black border-black/30 hover:border-black"
                   }`}
                 >
                   Ver Todo

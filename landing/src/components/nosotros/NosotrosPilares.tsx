@@ -20,13 +20,13 @@ const VALUES = [
 
 export function NosotrosPilares() {
   return (
-    <section className="bg-vous-cream border-y border-vous-gray-light/40 py-12 md:py-24">
+    <section className="bg-white border-y border-black/10 py-12 md:py-24">
       <div className="max-w-[1440px] mx-auto px-5 md:px-20">
         <div className="mb-14 text-center">
-          <span className="font-nav text-[10px] tracking-[0.25em] uppercase text-vous-gold mb-3 block">
+          <span className="font-nav text-[10px] tracking-[0.25em] uppercase text-black mb-3 block">
             Filosofía
           </span>
-          <h2 className="font-serif text-[28px] md:text-[42px] text-vous-soft-black">
+          <h2 className="font-serif text-[28px] md:text-[42px] text-black">
             Pilares de Marca
           </h2>
         </div>
@@ -34,11 +34,11 @@ export function NosotrosPilares() {
           {VALUES.map(({ icon: Icon, title, desc }) => (
             <div
               key={title}
-              className="bg-white border border-vous-gray-light/50 p-8 md:p-10 flex flex-col items-center text-center"
+              className="bg-white border border-black/10 p-8 md:p-10 flex flex-col items-center text-center"
             >
-              <Icon size={32} strokeWidth={1.2} className="text-vous-gold mb-6" />
-              <h3 className="font-serif text-2xl text-vous-soft-black mb-4">{title}</h3>
-              <p className="font-sans text-sm text-vous-gray leading-relaxed">{desc}</p>
+              <Icon size={32} strokeWidth={1.2} className="text-black mb-6" />
+              <h3 className="font-serif text-2xl text-black mb-4">{title}</h3>
+              <p className="font-sans text-sm text-black/50 leading-relaxed">{desc}</p>
             </div>
           ))}
         </div>

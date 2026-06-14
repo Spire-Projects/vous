@@ -30,10 +30,10 @@ const FOOTER_SECTIONS = [
 
 export function FooterLinks() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-8 lg:gap-16">
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-8 lg:gap-12">
       {FOOTER_SECTIONS.map(({ title, links }) => (
         <div key={title}>
-          <h3 className="font-sans text-[11px] font-semibold tracking-[0.2em] text-vous-gold uppercase mb-4">
+          <h3 className="font-sans text-[11px] font-semibold tracking-[0.2em] text-white/40 uppercase mb-4">
             {title}
           </h3>
           <ul className="space-y-2.5">
@@ -41,7 +41,7 @@ export function FooterLinks() {
               <li key={href}>
                 <Link
                   href={href}
-                  className="font-sans text-sm text-vous-gray-light hover:text-white transition-colors duration-200"
+                  className="font-sans text-sm text-white/50 hover:text-white transition-colors duration-300"
                 >
                   {label}
                 </Link>
