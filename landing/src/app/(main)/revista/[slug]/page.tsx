@@ -8,8 +8,8 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const { slug } = await Promise.resolve(props.params);
   return {
-    title: `${slug.replace(/-/g, " ")} | Revista VOUS`,
-    description: "Revista VOUS — moda, tendencias y el proceso detrás de cada colección.",
+    title: `${slug.replace(/-/g, " ")} | Blog de Moda VOUS`,
+    description: "Blog de Moda VOUS — moda, tendencias y el proceso detrás de cada colección.",
   };
 }
 

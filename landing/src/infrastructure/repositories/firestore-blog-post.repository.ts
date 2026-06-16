@@ -31,8 +31,6 @@ function mapDoc(id: string, data: Record<string, unknown>): BlogPost {
 
 export const firestoreBlogPostRepository: BlogPostRepository = {
   async findPublished(): Promise<BlogPost[]> {
-    // Sin where + orderBy combinados para evitar índices compuestos.
-    // Traemos todos ordenados por createdAt y filtramos en memoria.
     const q = query(collection(getFirebaseDb(), "posts"), orderBy("createdAt", "desc"));
     const snap = await getDocs(q);
     return snap.docs
@@ -50,7 +48,6 @@ export const firestoreBlogPostRepository: BlogPostRepository = {
   },
 
   async findBySlug(slug: string): Promise<BlogPost | null> {
-    // Solo where("slug") — no requiere índice compuesto.
     const q = query(collection(getFirebaseDb(), "posts"), where("slug", "==", slug));
     const snap = await getDocs(q);
     if (snap.empty) {

@@ -55,7 +55,7 @@ export function HeroSection() {
   }
 
   return (
-    <section className="relative w-full min-h-[70vh] md:min-h-[92vh] bg-black overflow-hidden">
+    <section className="relative w-full min-h-[60vh] md:min-h-[80vh] bg-black overflow-hidden">
       <AnimatePresence mode="wait">
         <motion.div
           key={banner.id + "-img"}

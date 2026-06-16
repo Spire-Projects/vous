@@ -75,6 +75,24 @@ function paramsFromState(state: CatalogFilterState): URLSearchParams {
   return p;
 }
 
+function normalizeSize(size: string): string {
+  return size.toUpperCase().trim();
+}
+
+function normalizeColor(color: string): string {
+  return color
+    .toLowerCase()
+    .trim()
+    .replace(/^\w/, (c) => c.toUpperCase());
+}
+
+function normalizeMaterial(material: string): string {
+  return material
+    .toLowerCase()
+    .trim()
+    .replace(/^\w/, (c) => c.toUpperCase());
+}
+
 /**
  * Generates dynamic filter options from a product list.
  * Only includes values that exist in the current (unfiltered) product set.
@@ -89,13 +107,16 @@ function buildDynamicFilters(products: Product[], categories: Category[]): Dynam
 
   for (const p of products) {
     for (const s of p.sizes) {
-      sizeSet.set(s, (sizeSet.get(s) ?? 0) + 1);
+      const ns = normalizeSize(s);
+      sizeSet.set(ns, (sizeSet.get(ns) ?? 0) + 1);
     }
     for (const c of p.colors) {
-      colorSet.set(c.name, (colorSet.get(c.name) ?? 0) + 1);
+      const nc = normalizeColor(c.name);
+      colorSet.set(nc, (colorSet.get(nc) ?? 0) + 1);
     }
     for (const m of p.materials) {
-      materialSet.set(m, (materialSet.get(m) ?? 0) + 1);
+      const nm = normalizeMaterial(m);
+      materialSet.set(nm, (materialSet.get(nm) ?? 0) + 1);
     }
     for (const t of p.tags ?? []) {
       tagSet.set(t, (tagSet.get(t) ?? 0) + 1);
@@ -107,14 +128,24 @@ function buildDynamicFilters(products: Product[], categories: Category[]): Dynam
   const categoryMap = new Map(categories.map((c) => [c.id, c.name]));
   const categorySet = new Map<string, number>();
   for (const p of products) {
-    const name = categoryMap.get(p.categoryId) ?? p.categoryName ?? "Sin categoría";
     categorySet.set(p.categoryId, (categorySet.get(p.categoryId) ?? 0) + 1);
   }
 
-  const toOptions = (map: Map<string, number>): FilterOption[] =>
-    Array.from(map.entries())
-      .map(([value, count]) => ({ value, label: value, count }))
-      .sort((a, b) => a.label.localeCompare(b.label));
+  const sizeOrder = ["XS", "S", "M", "L", "XL", "XXL", "2XL", "3XL", "4XL", "UNICO", "U"];
+  const toOptions = (map: Map<string, number>, sorter?: (a: FilterOption, b: FilterOption) => number): FilterOption[] => {
+    const opts = Array.from(map.entries()).map(([value, count]) => ({ value, label: value, count }));
+    if (sorter) return opts.sort(sorter);
+    return opts.sort((a, b) => a.label.localeCompare(b.label));
+  };
+
+  const sizeSorter = (a: FilterOption, b: FilterOption) => {
+    const ia = sizeOrder.indexOf(a.value);
+    const ib = sizeOrder.indexOf(b.value);
+    if (ia !== -1 && ib !== -1) return ia - ib;
+    if (ia !== -1) return -1;
+    if (ib !== -1) return 1;
+    return a.label.localeCompare(b.label);
+  };
 
   return {
     categories: Array.from(categorySet.entries()).map(([value, count]) => ({
@@ -122,7 +153,7 @@ function buildDynamicFilters(products: Product[], categories: Category[]): Dynam
       label: categoryMap.get(value) ?? value,
       count,
     })),
-    sizes: toOptions(sizeSet),
+    sizes: toOptions(sizeSet, sizeSorter),
     colors: toOptions(colorSet),
     materials: toOptions(materialSet),
     priceMin: priceMin === Infinity ? 0 : Math.floor(priceMin / 10) * 10,

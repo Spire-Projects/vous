@@ -2,7 +2,7 @@
  * Unsigned upload to Cloudinary via the REST API.
  * Only uses VITE_CLOUDINARY_* env vars — safe for the client.
  */
-export async function uploadImageToCloudinary(file: File, folder = "vous/blog"): Promise<string> {
+export async function uploadImageToCloudinary(file: File, folder = "vous/content"): Promise<string> {
   const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME as string;
   const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET as string;
 

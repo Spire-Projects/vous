@@ -27,7 +27,7 @@ export function BlogPostClient() {
           href="/revista"
           className="font-nav text-[11px] uppercase tracking-wider text-black hover:underline"
         >
-          Volver a la revista
+          Volver al blog
         </Link>
       </div>
     );
@@ -78,7 +78,7 @@ export function BlogPostClient() {
           href="/revista"
           className="inline-flex items-center gap-2 font-nav text-[10px] uppercase tracking-wider text-black/50 hover:text-black transition-colors mb-10"
         >
-          <ArrowLeft size={12} /> Volver a la revista
+          <ArrowLeft size={12} /> Volver al blog
         </Link>
 
         {post.excerpt && (

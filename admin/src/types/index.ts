@@ -54,13 +54,6 @@ export type {
 } from "./wholesale.types";
 
 export type {
-  BlogPostStatus,
-  BlogPost,
-  CreateBlogPostPayload,
-  UpdateBlogPostPayload,
-} from "./blog.types";
-
-export type {
   Banner,
   CreateBannerPayload,
   UpdateBannerPayload,

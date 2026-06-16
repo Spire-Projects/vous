@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Search, SlidersHorizontal, X } from "lucide-react";
+import { Search, SlidersHorizontal, X, Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import type { DynamicFilters, CatalogFilterState } from "@/hooks/useCatalogFilters";
 
 interface CatalogFiltersProps {
@@ -20,6 +18,27 @@ interface CatalogFiltersProps {
   onToggleTag: (tag: string) => void;
   onClear: () => void;
 }
+
+/* ── Color map for known colors ── */
+const COLOR_SWATCHES: Record<string, string> = {
+  "Negro": "#1a1a1a",
+  "Blanco": "#f5f5f5",
+  "Rojo": "#dc2626",
+  "Azul": "#2563eb",
+  "Verde": "#16a34a",
+  "Amarillo": "#eab308",
+  "Rosa": "#ec4899",
+  "Gris": "#9ca3af",
+  "Beige": "#d4c4a8",
+  "Crema": "#fffdd0",
+  "Marron": "#92400e",
+  "Cafe": "#78350f",
+  "Naranja": "#f97316",
+  "Morado": "#9333ea",
+  "Violeta": "#8b5cf6",
+  "Dorado": "#c9a84c",
+  "Plateado": "#c0c0c0",
+};
 
 export function CatalogFilters({
   filters,
@@ -47,44 +66,50 @@ export function CatalogFilters({
       {/* Mobile toggle + search */}
       <div className="flex flex-col gap-3 lg:hidden mb-6">
         <div className="relative">
-          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-black/50" />
+          <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-black/40" />
           <Input
             placeholder="Buscar producto…"
             value={state.query}
             onChange={(e) => onQueryChange(e.target.value)}
-            className="pl-9"
+            className="pl-9 h-10 text-sm border-black/10 focus-visible:ring-black"
           />
         </div>
         <button
           onClick={() => setMobileOpen(true)}
-          className="flex items-center justify-center gap-2 font-nav text-[11px] uppercase tracking-wider border border-black/10 py-2.5 text-black"
+          className="flex items-center justify-center gap-2 font-nav text-[11px] uppercase tracking-wider border border-black/10 py-2.5 text-black bg-white hover:bg-black hover:text-white transition-colors"
         >
           <SlidersHorizontal size={14} />
-          Filtros {activeCount > 0 &&           <span className="text-black/60">({activeCount})</span>}
+          Filtros
+          {activeCount > 0 && (
+            <span className="inline-flex items-center justify-center w-5 h-5 bg-black text-white text-[10px] rounded-full">
+              {activeCount}
+            </span>
+          )}
         </button>
       </div>
 
       {/* Desktop sidebar */}
-      <aside className="hidden lg:block w-56 shrink-0 space-y-8">
+      <aside className="hidden lg:block w-60 shrink-0 space-y-8">
         <SearchField value={state.query} onChange={onQueryChange} />
+
         <CategoryFilter
           options={filters.categories}
           active={state.categoryId}
           onChange={onCategoryChange}
         />
+
         {filters.sizes.length > 0 && (
           <SizeFilter options={filters.sizes} active={state.sizes} onToggle={onToggleSize} />
         )}
+
         {filters.colors.length > 0 && (
           <ColorFilter options={filters.colors} active={state.colors} onToggle={onToggleColor} />
         )}
+
         {filters.materials.length > 0 && (
-          <MaterialFilter
-            options={filters.materials}
-            active={state.materials}
-            onToggle={onToggleMaterial}
-          />
+          <MaterialFilter options={filters.materials} active={state.materials} onToggle={onToggleMaterial} />
         )}
+
         <PriceFilter
           min={filters.priceMin}
           max={filters.priceMax}
@@ -92,13 +117,15 @@ export function CatalogFilters({
           activeMax={state.priceMax}
           onChange={onPriceChange}
         />
+
         {filters.tags.length > 0 && (
           <TagFilter options={filters.tags} active={state.tags} onToggle={onToggleTag} />
         )}
+
         {activeCount > 0 && (
           <button
             onClick={onClear}
-            className="font-nav text-[11px] uppercase tracking-wider text-black/50 hover:text-black underline underline-offset-4"
+            className="w-full font-nav text-[11px] uppercase tracking-wider border border-black/10 py-2.5 text-black/60 hover:text-black hover:border-black transition-colors"
           >
             Limpiar filtros ({activeCount})
           </button>
@@ -108,50 +135,27 @@ export function CatalogFilters({
       {/* Mobile drawer */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div
-            className="absolute inset-0 bg-black/40"
-            onClick={() => setMobileOpen(false)}
-          />
+          <div className="absolute inset-0 bg-black/40" onClick={() => setMobileOpen(false)} />
           <div className="absolute right-0 top-0 bottom-0 w-80 max-w-full bg-white p-6 overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-nav text-[13px] uppercase tracking-wider text-black">
-                Filtros
-              </h3>
+              <h3 className="font-nav text-[13px] uppercase tracking-wider text-black">Filtros</h3>
               <button onClick={() => setMobileOpen(false)}>
                 <X size={18} />
               </button>
             </div>
             <div className="space-y-8">
               <SearchField value={state.query} onChange={onQueryChange} />
-              <CategoryFilter
-                options={filters.categories}
-                active={state.categoryId}
-                onChange={onCategoryChange}
-              />
+              <CategoryFilter options={filters.categories} active={state.categoryId} onChange={onCategoryChange} />
               {filters.sizes.length > 0 && (
                 <SizeFilter options={filters.sizes} active={state.sizes} onToggle={onToggleSize} />
               )}
               {filters.colors.length > 0 && (
-                <ColorFilter
-                  options={filters.colors}
-                  active={state.colors}
-                  onToggle={onToggleColor}
-                />
+                <ColorFilter options={filters.colors} active={state.colors} onToggle={onToggleColor} />
               )}
               {filters.materials.length > 0 && (
-                <MaterialFilter
-                  options={filters.materials}
-                  active={state.materials}
-                  onToggle={onToggleMaterial}
-                />
+                <MaterialFilter options={filters.materials} active={state.materials} onToggle={onToggleMaterial} />
               )}
-              <PriceFilter
-                min={filters.priceMin}
-                max={filters.priceMax}
-                activeMin={state.priceMin}
-                activeMax={state.priceMax}
-                onChange={onPriceChange}
-              />
+              <PriceFilter min={filters.priceMin} max={filters.priceMax} activeMin={state.priceMin} activeMax={state.priceMax} onChange={onPriceChange} />
               {filters.tags.length > 0 && (
                 <TagFilter options={filters.tags} active={state.tags} onToggle={onToggleTag} />
               )}
@@ -161,7 +165,7 @@ export function CatalogFilters({
                     onClear();
                     setMobileOpen(false);
                   }}
-                  className="w-full font-nav text-[11px] uppercase tracking-wider border border-black/10 py-2.5 text-black hover:bg-black/5 transition-colors"
+                  className="w-full font-nav text-[11px] uppercase tracking-wider border border-black/10 py-2.5 text-black hover:bg-black hover:text-white transition-colors"
                 >
                   Limpiar filtros ({activeCount})
                 </button>
@@ -176,15 +180,23 @@ export function CatalogFilters({
 
 // ── Sub-components ─────────────────────────────────────────────────────────
 
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h3 className="font-nav text-[10px] font-semibold tracking-[0.2em] text-black/40 uppercase mb-3">
+      {children}
+    </h3>
+  );
+}
+
 function SearchField({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   return (
     <div className="relative">
-      <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-black/50" />
+      <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-black/40" />
       <Input
         placeholder="Buscar producto…"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="pl-9"
+        className="pl-9 h-10 text-sm border-black/10 focus-visible:ring-black"
       />
     </div>
   );
@@ -201,29 +213,28 @@ function CategoryFilter({
 }) {
   return (
     <div>
-      <h3 className="font-nav text-[10px] font-semibold tracking-[0.2em] text-black/40 uppercase mb-3">
-        Categoría
-      </h3>
-      <ul className="space-y-2">
-        {options.map(({ value, label, count }) => (
-          <li key={value}>
+      <SectionTitle>Categoría</SectionTitle>
+      <div className="space-y-1">
+        {options.map(({ value, label, count }) => {
+          const isActive = active === value;
+          return (
             <button
-              onClick={() => onChange(active === value ? null : value)}
-              className={`w-full text-left font-sans text-sm transition-colors flex items-center justify-between ${
-                active === value
-                  ? "text-black font-medium"
-                  : "text-black/50 hover:text-black"
+              key={value}
+              onClick={() => onChange(isActive ? null : value)}
+              className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-left font-sans text-sm transition-colors ${
+                isActive
+                  ? "bg-black text-white"
+                  : "text-black/60 hover:text-black hover:bg-black/5"
               }`}
             >
-              <span>
-                {label}
-                <span className="ml-1 text-black/30">({count})</span>
+              <span>{label}</span>
+              <span className={`text-[11px] ${isActive ? "text-white/70" : "text-black/30"}`}>
+                {count}
               </span>
-              {active === value && <span className="text-black">●</span>}
             </button>
-          </li>
-        ))}
-      </ul>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -239,24 +250,24 @@ function SizeFilter({
 }) {
   return (
     <div>
-      <h3 className="font-nav text-[10px] font-semibold tracking-[0.2em] text-black/40 uppercase mb-3">
-        Talla
-      </h3>
+      <SectionTitle>Talla</SectionTitle>
       <div className="flex gap-2 flex-wrap">
-        {options.map(({ value, count }) => (
-          <button
-            key={value}
-            onClick={() => onToggle(value)}
-            title={`${value} (${count})`}
-            className={`w-10 h-10 font-sans text-xs border transition-colors ${
-              active.includes(value)
-                ? "bg-black text-white border-black"
-                : "border-black/10 text-black/50 hover:border-black"
-            }`}
-          >
-            {value}
-          </button>
-        ))}
+        {options.map(({ value }) => {
+          const isActive = active.includes(value);
+          return (
+            <button
+              key={value}
+              onClick={() => onToggle(value)}
+              className={`min-w-[40px] h-10 px-3 font-nav text-[11px] tracking-wider border rounded-lg transition-colors ${
+                isActive
+                  ? "bg-black text-white border-black"
+                  : "border-black/10 text-black/50 hover:border-black/30 hover:text-black"
+              }`}
+            >
+              {value}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
@@ -273,23 +284,43 @@ function ColorFilter({
 }) {
   return (
     <div>
-      <h3 className="font-nav text-[10px] font-semibold tracking-[0.2em] text-black/40 uppercase mb-3">
-        Color
-      </h3>
-      <div className="flex flex-wrap gap-2">
-        {options.map(({ value, count }) => (
-          <button
-            key={value}
-            onClick={() => onToggle(value)}
-            title={`${value} (${count})`}
-            className={`px-2.5 py-1 font-sans text-xs border transition-colors ${
-              active.includes(value)
-                ? "bg-black text-white border-black"
-                : "border-black/10 text-black/50 hover:border-black"
-            }`}
+      <SectionTitle>Color</SectionTitle>
+      <div className="flex flex-wrap gap-2.5">
+        {options.map(({ value }) => {
+          const isActive = active.includes(value);
+          const swatch = COLOR_SWATCHES[value];
+          return (
+            <button
+              key={value}
+              onClick={() => onToggle(value)}
+              title={value}
+              className={`group relative flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all ${
+                isActive
+                  ? "border-black scale-110"
+                  : "border-transparent hover:border-black/20"
+              }`}
+            >
+              <span
+                className="w-6 h-6 rounded-full border border-black/10"
+                style={{ backgroundColor: swatch ?? "#e5e5e5" }}
+              />
+              {isActive && (
+                <span className="absolute inset-0 flex items-center justify-center">
+                  <Check size={12} className={swatch === "#f5f5f5" ? "text-black" : "text-white"} strokeWidth={3} />
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+      <div className="flex flex-wrap gap-x-3 gap-y-1 mt-2">
+        {options.map(({ value }) => (
+          <span
+            key={`label-${value}`}
+            className={`text-[10px] font-sans ${active.includes(value) ? "text-black font-medium" : "text-black/40"}`}
           >
             {value}
-          </button>
+          </span>
         ))}
       </div>
     </div>
@@ -307,26 +338,25 @@ function MaterialFilter({
 }) {
   return (
     <div>
-      <h3 className="font-nav text-[10px] font-semibold tracking-[0.2em] text-black/40 uppercase mb-3">
-        Material
-      </h3>
-      <ul className="space-y-2.5">
-        {options.map(({ value, label, count }) => (
-          <li key={value} className="flex items-center gap-2">
-            <Checkbox
-              id={`mat-${value}`}
-              checked={active.includes(value)}
-              onCheckedChange={() => onToggle(value)}
-            />
-            <Label
-              htmlFor={`mat-${value}`}
-              className="font-sans text-sm normal-case tracking-normal text-black/50 cursor-pointer"
+      <SectionTitle>Material</SectionTitle>
+      <div className="flex flex-wrap gap-2">
+        {options.map(({ value, count }) => {
+          const isActive = active.includes(value);
+          return (
+            <button
+              key={value}
+              onClick={() => onToggle(value)}
+              className={`px-3 py-1.5 font-sans text-xs border rounded-lg transition-colors ${
+                isActive
+                  ? "bg-black text-white border-black"
+                  : "border-black/10 text-black/60 hover:border-black/30 hover:text-black"
+              }`}
             >
-              {label} <span className="text-black/30">({count})</span>
-            </Label>
-          </li>
-        ))}
-      </ul>
+              {value} <span className={isActive ? "text-white/60" : "text-black/30"}>({count})</span>
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -347,28 +377,18 @@ function PriceFilter({
   const [localMin, setLocalMin] = useState(activeMin ?? min);
   const [localMax, setLocalMax] = useState(activeMax ?? max);
 
+  const applyRange = () => {
+    onChange(localMin, localMax);
+  };
+
   return (
     <div>
-      <h3 className="font-nav text-[10px] font-semibold tracking-[0.2em] text-black/40 uppercase mb-3">
-        Rango de Precios
-      </h3>
-      <div className="flex items-center justify-between font-sans text-xs text-black/50 mb-2">
+      <SectionTitle>Rango de Precios</SectionTitle>
+      <div className="flex items-center justify-between font-sans text-[11px] text-black/40 mb-3">
         <span>Bs. {localMin.toLocaleString("es-BO")}</span>
         <span>Bs. {localMax.toLocaleString("es-BO")}</span>
       </div>
-      <input
-        type="range"
-        min={min}
-        max={max}
-        value={localMax}
-        onChange={(e) => {
-          const v = Number(e.target.value);
-          setLocalMax(v);
-          onChange(localMin, v);
-        }}
-        className="w-full accent-black mb-3"
-      />
-      <div className="flex gap-2">
+      <div className="flex gap-2 mb-3">
         <Input
           type="number"
           min={0}
@@ -378,7 +398,7 @@ function PriceFilter({
             const v = e.target.value ? Number(e.target.value) : null;
             onChange(v, activeMax);
           }}
-          className="text-xs border-black/10"
+          className="text-xs h-9 border-black/10 focus-visible:ring-black"
         />
         <Input
           type="number"
@@ -389,9 +409,22 @@ function PriceFilter({
             const v = e.target.value ? Number(e.target.value) : null;
             onChange(activeMin, v);
           }}
-          className="text-xs border-black/10"
+          className="text-xs h-9 border-black/10 focus-visible:ring-black"
         />
       </div>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        value={localMax}
+        onChange={(e) => {
+          const v = Number(e.target.value);
+          setLocalMax(v);
+        }}
+        onMouseUp={applyRange}
+        onTouchEnd={applyRange}
+        className="w-full accent-black h-1.5 bg-black/10 rounded-full appearance-none cursor-pointer"
+      />
     </div>
   );
 }
@@ -416,23 +449,24 @@ function TagFilter({
 
   return (
     <div>
-      <h3 className="font-nav text-[10px] font-semibold tracking-[0.2em] text-black/40 uppercase mb-3">
-        Etiquetas
-      </h3>
+      <SectionTitle>Etiquetas</SectionTitle>
       <div className="flex flex-wrap gap-2">
-        {options.map(({ value, count }) => (
-          <button
-            key={value}
-            onClick={() => onToggle(value)}
-            className={`px-2.5 py-1 font-nav text-[10px] tracking-wide border transition-colors ${
-              active.includes(value)
-                ? "bg-black text-white border-black"
-                : "border-black/10 text-black/50 hover:border-black"
-            }`}
-          >
-            {tagLabelMap[value] ?? value} ({count})
-          </button>
-        ))}
+        {options.map(({ value, count }) => {
+          const isActive = active.includes(value);
+          return (
+            <button
+              key={value}
+              onClick={() => onToggle(value)}
+              className={`px-3 py-1.5 font-nav text-[10px] tracking-wide border rounded-lg transition-colors ${
+                isActive
+                  ? "bg-black text-white border-black"
+                  : "border-black/10 text-black/50 hover:border-black/30 hover:text-black"
+              }`}
+            >
+              {tagLabelMap[value] ?? value} <span className={isActive ? "text-white/60" : "text-black/30"}>({count})</span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );

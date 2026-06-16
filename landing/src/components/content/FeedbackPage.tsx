@@ -2,25 +2,22 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useAuthContext } from "@/context/AuthContext";
+import { useCreateFeedback } from "@/hooks/useCreateFeedback";
 import { useSiteConfig } from "@/hooks/useSiteConfig";
-import { ArrowLeft, Send, CheckCircle } from "lucide-react";
+import { ArrowLeft, Send, CheckCircle, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export function FeedbackPage() {
-  const { config, loading } = useSiteConfig();
+  const { user, userProfile } = useAuthContext();
+  const { submit, loading: submitting, success } = useCreateFeedback();
+  const { config, loading: configLoading } = useSiteConfig();
   const feedback = config?.feedback;
-  const [submitted, setSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    type: "recomendacion",
-    message: "",
-  });
+  const [type, setType] = useState<"recomendacion" | "queja">("recomendacion");
+  const [message, setMessage] = useState("");
 
-  if (loading) {
+  if (configLoading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center bg-white">
         <span className="inline-block w-6 h-6 border-2 border-black/30 border-t-black rounded-full animate-spin" />
@@ -44,16 +41,15 @@ export function FeedbackPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setSubmitting(true);
-    try {
-      // Simulate submission (no backend endpoint available)
-      await new Promise((resolve) => setTimeout(resolve, 1200));
-      setSubmitted(true);
-    } catch {
-      // ignore
-    } finally {
-      setSubmitting(false);
-    }
+    if (!user || !userProfile) return;
+    await submit(
+      user.uid,
+      userProfile.name || user.displayName || "Usuario",
+      user.email || userProfile.email || "",
+      type,
+      message
+    );
+    setMessage("");
   }
 
   return (
@@ -73,7 +69,18 @@ export function FeedbackPage() {
           {feedback.title || "Quejas o Recomendaciones"}
         </h1>
 
-        {submitted ? (
+        {!user ? (
+          <div className="flex flex-col items-center gap-4 py-12 text-center bg-[#FAF8F5] rounded-2xl border border-black/5">
+            <MessageSquare size={48} className="text-black/30" strokeWidth={1.5} />
+            <p className="font-sans text-lg text-black">Inicia sesión para enviar tu mensaje</p>
+            <p className="font-sans text-sm text-black/50 max-w-sm">
+              Debes tener una cuenta para enviar quejas o recomendaciones. Así podemos darte seguimiento.
+            </p>
+            <Button asChild>
+              <Link href="/auth/login">Iniciar sesión</Link>
+            </Button>
+          </div>
+        ) : success ? (
           <div className="flex flex-col items-center gap-4 py-12 text-center">
             <CheckCircle size={48} className="text-black" strokeWidth={1.5} />
             <p className="font-sans text-lg text-black">
@@ -82,8 +89,7 @@ export function FeedbackPage() {
             <Button
               variant="outline"
               onClick={() => {
-                setSubmitted(false);
-                setFormData({ name: "", email: "", type: "recomendacion", message: "" });
+                window.location.reload();
               }}
             >
               Enviar otro mensaje
@@ -91,40 +97,16 @@ export function FeedbackPage() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="space-y-1.5">
-                <Label htmlFor="feedback-name">Nombre</Label>
-                <Input
-                  id="feedback-name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Tu nombre"
-                  required
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="feedback-email">Email</Label>
-                <Input
-                  id="feedback-email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="tu@email.com"
-                  required
-                />
-              </div>
-            </div>
-
             <div className="space-y-1.5">
-              <Label>Tipo de mensaje</Label>
+              <Label className="font-sans text-sm text-black">Tipo de mensaje</Label>
               <div className="flex gap-4">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="radio"
                     name="feedback-type"
                     value="recomendacion"
-                    checked={formData.type === "recomendacion"}
-                    onChange={() => setFormData({ ...formData, type: "recomendacion" })}
+                    checked={type === "recomendacion"}
+                    onChange={() => setType("recomendacion")}
                     className="accent-black"
                   />
                   <span className="font-sans text-sm text-black">Recomendación</span>
@@ -134,8 +116,8 @@ export function FeedbackPage() {
                     type="radio"
                     name="feedback-type"
                     value="queja"
-                    checked={formData.type === "queja"}
-                    onChange={() => setFormData({ ...formData, type: "queja" })}
+                    checked={type === "queja"}
+                    onChange={() => setType("queja")}
                     className="accent-black"
                   />
                   <span className="font-sans text-sm text-black">Queja</span>
@@ -144,11 +126,11 @@ export function FeedbackPage() {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="feedback-message">Mensaje</Label>
+              <Label htmlFor="feedback-message" className="font-sans text-sm text-black">Mensaje</Label>
               <textarea
                 id="feedback-message"
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
                 placeholder="Cuéntanos tu experiencia..."
                 rows={5}
                 required
@@ -159,7 +141,7 @@ export function FeedbackPage() {
             <div className="flex justify-end">
               <Button
                 type="submit"
-                disabled={submitting}
+                disabled={submitting || !message.trim()}
                 className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white font-nav text-[11px] uppercase tracking-wider hover:bg-black transition-colors"
               >
                 {submitting ? (

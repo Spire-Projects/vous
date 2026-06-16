@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, ShoppingCart, Package, Users, Settings, Tag,
   FileText, BarChart2, UserCog, Layers, LogOut, Image, LayoutGrid, X, Map, Star,
+  Video, MessageSquare, Sparkles,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { useSiteConfig } from "../../hooks/useSiteConfig";
@@ -13,8 +14,10 @@ const NAV_ITEMS = [
   { label: "Categorías", path: "/categorias", icon: Layers },
   { label: "Clientes", path: "/clientes", icon: Users },
   { label: "Mayoristas", path: "/mayoristas", icon: UserCog },
-  { label: "Blog / Revista", path: "/blog", icon: FileText },
   { label: "FAQ", path: "/faq", icon: FileText },
+  { label: "Blog / Revista", path: "/blog", icon: FileText },
+  { label: "New Post", path: "/new-posts", icon: Video },
+  { label: "Quejas o Recomendaciones", path: "/feedback", icon: MessageSquare },
   { label: "Banners", path: "/banners", icon: Image },
   { label: "Secciones Landing", path: "/landing-secciones", icon: LayoutGrid },
   { label: "Descuentos", path: "/descuentos", icon: Tag },
@@ -22,6 +25,7 @@ const NAV_ITEMS = [
   { label: "Configuración", path: "/configuracion", icon: Settings },
   { label: "Mapa", path: "/mapa", icon: Map },
   { label: "ICON", path: "/icon", icon: Star },
+  { label: "Guías de Estilo", path: "/guias", icon: Sparkles },
 ];
 
 const NAV_BASE =

@@ -26,12 +26,6 @@ export type {
   ReviewWholesaleInput,
 } from "./entities/wholesale.entity";
 export type {
-  BlogPost,
-  BlogPostStatus,
-  CreateBlogPostInput,
-  UpdateBlogPostInput,
-} from "./entities/blog-post.entity";
-export type {
   FAQ,
   CreateFAQInput,
   UpdateFAQInput,
@@ -66,8 +60,14 @@ export type {
   AdminUserRepository,
 } from "./repositories/user.repository";
 export type { WholesaleRepository } from "./repositories/wholesale.repository";
-export type { BlogPostRepository } from "./repositories/blog-post.repository";
 export type { FAQRepository } from "./repositories/faq.repository";
+export type {
+  BlogPost,
+  BlogPostStatus,
+  CreateBlogPostInput,
+  UpdateBlogPostInput,
+} from "./entities/blog-post.entity";
+export type { BlogPostRepository } from "./repositories/blog-post.repository";
 export type { BannerRepository } from "./repositories/banner.repository";
 export type { SiteConfigRepository } from "./repositories/site-config.repository";
 export type { CategoryRepository } from "./repositories/category.repository";
@@ -95,3 +95,26 @@ export type {
   RecentOrderRow,
 } from "./entities/report.entity";
 export type { ReportRepository } from "./repositories/report.repository";
+export type {
+  SocialPost,
+  SocialPostPlatform,
+  CreateSocialPostInput,
+  UpdateSocialPostInput,
+} from "./entities/social-post.entity";
+export type { SocialPostRepository } from "./repositories/social-post.repository";
+export type {
+  Feedback,
+  FeedbackType,
+  FeedbackStatus,
+  CreateFeedbackInput,
+  UpdateFeedbackInput,
+} from "./entities/feedback.entity";
+export type { FeedbackRepository } from "./repositories/feedback.repository";
+export type {
+  StyleGuide,
+  StyleGuideType,
+  StyleGuideGender,
+  CreateStyleGuideInput,
+  UpdateStyleGuideInput,
+} from "./entities/style-guide.entity";
+export type { StyleGuideRepository } from "./repositories/style-guide.repository";

@@ -3,3 +3,6 @@ export { ValuesSection } from "./ValuesSection";
 export { NewInSection } from "./NewInSection";
 export { CollectionsSection } from "./CollectionsSection";
 export { FeaturedProductsSection } from "./FeaturedProductsSection";
+export { SocialPostsSection } from "./SocialPostsSection";
+export { FeedbackSection } from "./FeedbackSection";
+export { RevistaSection } from "./RevistaSection";

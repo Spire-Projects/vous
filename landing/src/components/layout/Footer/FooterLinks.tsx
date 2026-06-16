@@ -8,6 +8,7 @@ const FOOTER_SECTIONS = [
       { href: "/catalogo", label: "Catálogo" },
       { href: "/categorias", label: "Categorías" },
       { href: "/nosotros", label: "Nosotros" },
+      { href: "/recomendaciones", label: "Recomendaciones" },
       { href: "/revista", label: "Blog de Moda" },
     ],
   },

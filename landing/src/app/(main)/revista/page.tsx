@@ -16,7 +16,7 @@ export default function RevistaPage() {
               Editorial
             </p>
             <h1 className="font-serif text-4xl md:text-5xl font-medium text-white mb-4">
-              Revista VOUS
+              Blog de Moda
             </h1>
           </div>
         </div>
@@ -36,7 +36,7 @@ export default function RevistaPage() {
               Editorial
             </p>
             <h1 className="font-serif text-4xl md:text-5xl font-medium text-white mb-4">
-              Revista VOUS
+              Blog de Moda
             </h1>
           </div>
         </div>
@@ -61,7 +61,7 @@ export default function RevistaPage() {
             Editorial
           </p>
           <h1 className="font-serif text-4xl md:text-5xl font-medium text-white mb-4">
-            Revista VOUS
+            Blog de Moda
           </h1>
           <p className="font-sans text-sm text-white/60 max-w-md leading-relaxed">
             Historias, tendencias y el proceso detrás de cada colección.
