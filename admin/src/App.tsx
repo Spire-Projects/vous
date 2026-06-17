@@ -8,21 +8,16 @@ import { DashboardPage } from "./pages/DashboardPage";
 import { OrdersPage } from "./pages/OrdersPage";
 import { InventoryPage } from "./pages/InventoryPage";
 import { CategoriesPage } from "./pages/CategoriesPage";
-import { CustomersPage } from "./pages/CustomersPage";
 import { WholesalePage } from "./pages/WholesalePage";
-import { FaqPage } from "./pages/FaqPage";
-import { BlogPage } from "./pages/BlogPage";
-import { SocialPostsPage } from "./pages/SocialPostsPage";
-import { FeedbacksPage } from "./pages/FeedbacksPage";
+import { ContentPage } from "./pages/ContentPage";
+import { SupportPage } from "./pages/SupportPage";
 import { DiscountsPage } from "./pages/DiscountsPage";
 import { ReportsPage } from "./pages/ReportsPage";
 import { SettingsPage } from "./pages/SettingsPage";
-import { BannersPage } from "./pages/BannersPage";
-import { AdminUsersPage } from "./pages/AdminUsersPage";
-import { LandingSectionsPage } from "./pages/LandingSectionsPage";
+import { LandingPage } from "./pages/LandingPage";
 import { MapaPage } from "./pages/MapaPage";
-import { IconPage } from "./pages/IconPage";
-import { GuidesPage } from "./pages/GuidesPage";
+import { AsesoriaPage } from "./pages/AsesoriaPage";
+import { UsersPage } from "./pages/UsersPage";
 
 function AdminRoutes() {
   return (
@@ -33,28 +28,16 @@ function AdminRoutes() {
           <Route path="pedidos" element={<OrdersPage />} />
           <Route path="inventario" element={<InventoryPage />} />
           <Route path="categorias" element={<CategoriesPage />} />
-          <Route path="clientes" element={<CustomersPage />} />
+          <Route path="usuarios" element={<UsersPage />} />
           <Route path="mayoristas" element={<WholesalePage />} />
-          <Route path="faq" element={<FaqPage />} />
-          <Route path="blog" element={<BlogPage />} />
-          <Route path="new-posts" element={<SocialPostsPage />} />
-          <Route path="feedback" element={<FeedbacksPage />} />
-          <Route path="banners" element={<BannersPage />} />
-          <Route path="landing-secciones" element={<LandingSectionsPage />} />
+          <Route path="soporte" element={<SupportPage />} />
+          <Route path="contenido" element={<ContentPage />} />
+          <Route path="asesoria" element={<AsesoriaPage />} />
+          <Route path="landing" element={<LandingPage />} />
           <Route path="descuentos" element={<DiscountsPage />} />
           <Route path="reportes" element={<ReportsPage />} />
           <Route path="configuracion" element={<SettingsPage />} />
           <Route path="mapa" element={<MapaPage />} />
-          <Route path="icon" element={<IconPage />} />
-          <Route path="guias" element={<GuidesPage />} />
-          <Route
-            path="usuarios"
-            element={
-              <ProtectedRoute requiredRole="superadmin">
-                <AdminUsersPage />
-              </ProtectedRoute>
-            }
-          />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AdminLayout>

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Plus, Pencil, Trash2, Eye, EyeOff, Palette, Shirt } from "lucide-react";
-import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { StatCard } from "@/components/ui/StatCard";
@@ -21,7 +20,7 @@ const GENDER_LABELS: Record<StyleGuideGender, string> = {
   women: "Mujer",
 };
 
-export function GuidesPage() {
+export function GuiasTab() {
   const { guides, loading, create, update, remove, toggleActive } = useStyleGuides();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<StyleGuide | null>(null);
@@ -46,18 +45,17 @@ export function GuidesPage() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
-      <PageHeader
-        title="Guías de Estilo"
-        subtitle="Configura guías de colorimetría y tipos de cuerpo para recomendaciones."
-        action={<Button onClick={handleNew}><Plus size={14} strokeWidth={2} />Nueva guía</Button>}
-      />
-
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-        <StatCard label="Total" value={String(guides.length)} />
-        <StatCard label="Tono de Piel" value={String(skinCount)} icon={<Palette size={16} />} />
-        <StatCard label="Tipo de Cuerpo" value={String(bodyCount)} icon={<Shirt size={16} />} />
-        <StatCard label="Activas" value={String(activeCount)} />
+    <>
+      <div className="flex items-center justify-between mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 flex-1">
+          <StatCard label="Total" value={String(guides.length)} />
+          <StatCard label="Tono de Piel" value={String(skinCount)} icon={<Palette size={16} />} />
+          <StatCard label="Tipo de Cuerpo" value={String(bodyCount)} icon={<Shirt size={16} />} />
+          <StatCard label="Activas" value={String(activeCount)} />
+        </div>
+        <Button onClick={handleNew} className="ml-4 shrink-0">
+          <Plus size={14} strokeWidth={2} />Nueva guía
+        </Button>
       </div>
 
       <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden">
@@ -125,7 +123,7 @@ export function GuidesPage() {
         onCancel={() => setConfirmDelete(null)}
         onConfirm={() => confirmDelete && handleDelete(confirmDelete)}
       />
-    </div>
+    </>
   );
 }
 

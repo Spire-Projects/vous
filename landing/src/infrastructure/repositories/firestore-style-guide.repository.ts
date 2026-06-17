@@ -16,6 +16,7 @@ function mapDoc(id: string, data: Record<string, unknown>): StyleGuide {
     name: (data.name as string) ?? "",
     description: (data.description as string) ?? "",
     imageUrl: (data.imageUrl as string) ?? "",
+    galleryImages: (data.galleryImages as string[]) ?? [],
     colorHex: (data.colorHex as string) ?? undefined,
     recommendedColors: (data.recommendedColors as string[]) ?? [],
     recommendedAttributes: (data.recommendedAttributes as string[]) ?? [],

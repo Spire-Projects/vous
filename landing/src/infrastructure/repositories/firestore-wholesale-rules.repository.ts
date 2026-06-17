@@ -13,6 +13,8 @@ const DEFAULT_RULES: WholesaleRules = {
   restrictions: [],
   notes: "",
   isActive: true,
+  termsContent: "<p>Al registrarte como distribuidor mayorista de VOUS, aceptas las siguientes reglas y condiciones de la marca.</p>",
+  termsUrl: "",
 };
 
 function mapData(data: Record<string, unknown>): WholesaleRules {
@@ -26,6 +28,8 @@ function mapData(data: Record<string, unknown>): WholesaleRules {
     restrictions: (data.restrictions as string[]) ?? [],
     notes: (data.notes as string) ?? undefined,
     isActive: (data.isActive as boolean) ?? DEFAULT_RULES.isActive,
+    termsContent: (data.termsContent as string) ?? DEFAULT_RULES.termsContent,
+    termsUrl: (data.termsUrl as string) ?? undefined,
   };
 }
 

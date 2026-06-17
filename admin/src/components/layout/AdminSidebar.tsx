@@ -1,8 +1,8 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, ShoppingCart, Package, Users, Settings, Tag,
-  FileText, BarChart2, UserCog, Layers, LogOut, Image, LayoutGrid, X, Map, Star,
-  Video, MessageSquare, Sparkles,
+  FileText, BarChart2, UserCog, Layers, LogOut, Image, X, Map,
+  Lightbulb, HelpCircle,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { useSiteConfig } from "../../hooks/useSiteConfig";
@@ -12,20 +12,16 @@ const NAV_ITEMS = [
   { label: "Pedidos", path: "/pedidos", icon: ShoppingCart },
   { label: "Inventario", path: "/inventario", icon: Package },
   { label: "Categorías", path: "/categorias", icon: Layers },
-  { label: "Clientes", path: "/clientes", icon: Users },
+  { label: "Usuarios", path: "/usuarios", icon: Users },
   { label: "Mayoristas", path: "/mayoristas", icon: UserCog },
-  { label: "FAQ", path: "/faq", icon: FileText },
-  { label: "Blog / Revista", path: "/blog", icon: FileText },
-  { label: "New Post", path: "/new-posts", icon: Video },
-  { label: "Quejas o Recomendaciones", path: "/feedback", icon: MessageSquare },
-  { label: "Banners", path: "/banners", icon: Image },
-  { label: "Secciones Landing", path: "/landing-secciones", icon: LayoutGrid },
+  { label: "Soporte", path: "/soporte", icon: HelpCircle },
+  { label: "Contenido", path: "/contenido", icon: FileText },
+  { label: "Asesoría", path: "/asesoria", icon: Lightbulb },
+  { label: "Landing", path: "/landing", icon: Image },
   { label: "Descuentos", path: "/descuentos", icon: Tag },
   { label: "Reportes", path: "/reportes", icon: BarChart2 },
   { label: "Configuración", path: "/configuracion", icon: Settings },
   { label: "Mapa", path: "/mapa", icon: Map },
-  { label: "ICON", path: "/icon", icon: Star },
-  { label: "Guías de Estilo", path: "/guias", icon: Sparkles },
 ];
 
 const NAV_BASE =
@@ -101,19 +97,7 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             </li>
           ))}
 
-          {user?.role === "superadmin" && (
-            <li>
-              <NavLink
-                to="/usuarios"
-                className={({ isActive }: { isActive: boolean }) =>
-                  isActive ? NAV_ACTIVE : NAV_INACTIVE
-                }
-              >
-                <UserCog size={15} strokeWidth={1.5} />
-                Usuarios Admin
-              </NavLink>
-            </li>
-          )}
+
         </ul>
       </nav>
 

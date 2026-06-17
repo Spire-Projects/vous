@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Plus, Pencil, Trash2, Eye, EyeOff, GripVertical, Video } from "lucide-react";
-import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { StatCard } from "@/components/ui/StatCard";
@@ -16,9 +15,7 @@ const PLATFORM_LABELS: Record<SocialPost["platform"], string> = {
   facebook: "Facebook",
 };
 
-
-
-export function SocialPostsPage() {
+export function NewPostsTab() {
   const { posts, loading, create, update, remove, toggleActive, reorder } = useSocialPosts();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<SocialPost | null>(null);
@@ -50,17 +47,16 @@ export function SocialPostsPage() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
-      <PageHeader
-        title="New Post"
-        subtitle="Se podrá ver los nuevos videos subidos en nuestras redes. Gestiona los posts y videos que aparecen en la landing."
-        action={<Button onClick={handleNew}><Plus size={14} strokeWidth={2} />Nuevo post</Button>}
-      />
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
-        <StatCard label="Total" value={String(posts.length)} />
-        <StatCard label="Activos" value={String(activeCount)} />
-        <StatCard label="Inactivos" value={String(posts.length - activeCount)} />
+    <>
+      <div className="flex items-center justify-between mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 flex-1">
+          <StatCard label="Total" value={String(posts.length)} />
+          <StatCard label="Activos" value={String(activeCount)} />
+          <StatCard label="Inactivos" value={String(posts.length - activeCount)} />
+        </div>
+        <Button onClick={handleNew} className="ml-4 shrink-0">
+          <Plus size={14} strokeWidth={2} />Nuevo post
+        </Button>
       </div>
 
       <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden">
@@ -131,6 +127,6 @@ export function SocialPostsPage() {
         onCancel={() => setConfirmDelete(null)}
         onConfirm={() => confirmDelete && handleDelete(confirmDelete)}
       />
-    </div>
+    </>
   );
 }

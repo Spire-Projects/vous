@@ -9,6 +9,7 @@ import {
   DialogOverlay,
   DialogClose,
   DialogContentRaw,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -61,6 +62,7 @@ export function SearchModal({ open, onClose }: SearchModalProps) {
                   transition={{ type: "tween", duration: 0.25 }}
                   className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-black/5 px-4 md:px-6 lg:px-8 py-4 shadow-sm"
                 >
+                  <DialogTitle className="sr-only">Buscar en VOUS</DialogTitle>
                   <form
                     onSubmit={handleSubmit}
                     className="max-w-[1440px] mx-auto flex items-center gap-3"

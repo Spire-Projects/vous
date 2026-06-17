@@ -9,4 +9,6 @@ export interface WholesaleRules {
   restrictions: string[];
   notes?: string;
   isActive: boolean;
+  termsContent: string;
+  termsUrl?: string;
 }

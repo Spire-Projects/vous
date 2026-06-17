@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { CheckCircle, MessageCircle, Upload, X, AlertCircle } from "lucide-react";
+import { CheckCircle, MessageCircle, Upload, X, AlertCircle, ChevronDown, FileText, ExternalLink } from "lucide-react";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { getFirebaseDb } from "@/lib/firebase";
 import { CLOUDINARY_UPLOAD_PRESET, CLOUDINARY_CLOUD_NAME } from "@/lib/cloudinary.client";
@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useWholesaleRules } from "@/hooks/useWholesaleRules";
 
 // ── Constantes ─────────────────────────────────────────────────────────────
 
@@ -72,6 +73,7 @@ interface FormState {
 }
 
 export function WholesaleForm() {
+  const { rules, loading: rulesLoading } = useWholesaleRules();
   const [form, setForm] = useState<FormState>({
     nombre: "",
     carnet: "",
@@ -85,6 +87,7 @@ export function WholesaleForm() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [termsOpen, setTermsOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const set = (k: keyof FormState, v: string) => setForm((p) => ({ ...p, [k]: v }));
@@ -189,6 +192,40 @@ export function WholesaleForm() {
           Como parte de nuestro compromiso, compartimos la ubicación y nombre de tu tienda con
           clientes de otros departamentos, para ayudarte a generar mayor visibilidad y ventas.
         </p>
+
+        {/* Términos dinámicos desde admin */}
+        <div className="mt-4 border border-black/10 rounded-lg overflow-hidden">
+          <button
+            type="button"
+            onClick={() => setTermsOpen((v) => !v)}
+            className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left bg-[#FAF8F5] hover:bg-black/5 transition-colors"
+          >
+            <span className="flex items-center gap-2 font-sans text-xs font-medium text-black">
+              <FileText size={14} />
+              {rulesLoading ? "Cargando términos..." : "Reglas y condiciones para distribuidores"}
+            </span>
+            <ChevronDown size={14} className={`text-black/50 transition-transform ${termsOpen ? "rotate-180" : ""}`} />
+          </button>
+          {termsOpen && rules && (
+            <div className="px-4 py-4 space-y-3">
+              {rules.termsUrl && (
+                <a
+                  href={rules.termsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-xs text-black underline hover:text-black/70"
+                >
+                  <ExternalLink size={12} /> Ver documento completo de reglas
+                </a>
+              )}
+              <div
+                className="text-xs text-black/60 font-sans leading-relaxed [&_strong]:font-semibold [&_strong]:text-black [&_em]:italic [&_p]:mb-2 [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-1"
+                dangerouslySetInnerHTML={{ __html: rules.termsContent || "<p>Reglas y condiciones de distribución VOUS.</p>" }}
+              />
+            </div>
+          )}
+        </div>
+
         <p className="font-sans text-xs leading-relaxed">
           <span className="text-black font-medium">
             Al enviar este formulario aceptas todas nuestras reglas y condiciones. No aceptamos

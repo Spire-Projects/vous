@@ -1,0 +1,424 @@
+"use client";
+
+import { useState, useMemo } from "react";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import { useStyleGuides } from "@/hooks/useStyleGuides";
+import { useProducts } from "@/hooks/useProducts";
+import { ProductCard } from "@/components/catalogo/ProductCard";
+import {
+  Sparkles, Shirt, ArrowLeft, ChevronRight, Palette, Ruler,
+} from "lucide-react";
+import type { StyleGuide } from "@/domain/entities/style-guide.entity";
+
+type ViewMode = "menu" | "skinTones" | "bodyTypes" | "guideDetail";
+
+export default function AsesoriaPage() {
+  const { guides, loading: guidesLoading } = useStyleGuides();
+  const { products, loading: productsLoading } = useProducts();
+  const [view, setView] = useState<ViewMode>("menu");
+  const [selectedGuide, setSelectedGuide] = useState<StyleGuide | null>(null);
+  const [genderFilter, setGenderFilter] = useState<"all" | "men" | "women">("all");
+
+  const skinGuides = guides.filter((g) => g.type === "skinTone");
+  const bodyGuides = guides.filter((g) => g.type === "bodyType");
+
+  const filteredSkinGuides = useMemo(() => {
+    if (genderFilter === "all") return skinGuides;
+    return skinGuides.filter((g) => g.gender === genderFilter || g.gender === "unisex");
+  }, [skinGuides, genderFilter]);
+
+  const filteredBodyGuides = useMemo(() => {
+    if (genderFilter === "all") return bodyGuides;
+    return bodyGuides.filter((g) => g.gender === genderFilter || g.gender === "unisex");
+  }, [bodyGuides, genderFilter]);
+
+  const recommendedProducts = useMemo(() => {
+    if (!selectedGuide) return [];
+    return products.filter((p) => {
+      if (selectedGuide.type === "skinTone") {
+        const productColors = p.colors.map((c) => c.name);
+        return selectedGuide.recommendedColors.some((rc) =>
+          productColors.some((pc) => pc.toLowerCase().includes(rc.toLowerCase()) || rc.toLowerCase().includes(pc.toLowerCase()))
+        );
+      }
+      const attrValues = Object.values(p.attributes);
+      return selectedGuide.recommendedAttributes.some((ra) =>
+        attrValues.some((av) => av.toLowerCase().includes(ra.toLowerCase()) || ra.toLowerCase().includes(av.toLowerCase()))
+      );
+    });
+  }, [selectedGuide, products]);
+
+  function openGuide(guide: StyleGuide) {
+    setSelectedGuide(guide);
+    setView("guideDetail");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  return (
+    <div className="bg-white min-h-screen">
+      {/* ── Hero Header ── */}
+      <section className="bg-black py-14 md:py-20 overflow-hidden">
+        <div className="max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 font-nav text-[10px] uppercase tracking-wider text-white/40 hover:text-white transition-colors mb-6"
+          >
+            <ArrowLeft size={12} /> Volver al inicio
+          </Link>
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="font-nav text-[11px] tracking-[0.3em] uppercase text-white/40 mb-3 block">
+              Asesoría de Moda
+            </span>
+            <h1 className="font-serif text-4xl md:text-6xl text-white leading-tight mb-4">
+              Asesoría de Moda
+            </h1>
+            <p className="font-sans text-sm text-white/60 max-w-lg leading-relaxed">
+              Sección de ayuda al cliente con su compra. Descubre qué colores y cortes te favorecen según tu tono de piel y tipo de cuerpo.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      <div className="max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-20">
+        <AnimatePresence mode="wait">
+          {/* ── MENU ── */}
+          {view === "menu" && (
+            <motion.div
+              key="menu"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+              className="space-y-16"
+            >
+              {/* Gender filter */}
+              <div className="flex justify-center">
+                <div className="inline-flex bg-[#FAF8F5] border border-black/5 rounded-xl p-1">
+                  {(["all", "women", "men"] as const).map((g) => (
+                    <button
+                      key={g}
+                      onClick={() => setGenderFilter(g)}
+                      className={`px-5 py-2 font-nav text-[11px] uppercase tracking-wider rounded-lg transition-colors ${
+                        genderFilter === g
+                          ? "bg-black text-white"
+                          : "text-black/50 hover:text-black"
+                      }`}
+                    >
+                      {g === "all" ? "Todos" : g === "women" ? "Mujer" : "Hombre"}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Skin tones */}
+              <section>
+                <div className="flex items-center gap-3 mb-10">
+                  <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center">
+                    <Palette size={18} className="text-white" strokeWidth={1.5} />
+                  </div>
+                  <div className="flex-1">
+                    <h2 className="font-serif text-2xl md:text-3xl text-black">Colores para tu piel</h2>
+                    <p className="font-sans text-sm text-black/40 mt-1">Selecciona tu tono de piel y descubre la paleta de colores que te favorecen.</p>
+                  </div>
+                  <button
+                    onClick={() => setView("skinTones")}
+                    className="hidden md:inline-flex items-center gap-1 font-nav text-[10px] uppercase tracking-wider text-black/40 hover:text-black transition-colors"
+                  >
+                    Ver todos <ChevronRight size={14} />
+                  </button>
+                </div>
+
+                {guidesLoading ? (
+                  <div className="flex justify-center py-12">
+                    <span className="inline-block w-6 h-6 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                  </div>
+                ) : filteredSkinGuides.length === 0 ? (
+                  <p className="text-center font-sans text-sm text-black/40 py-8">No hay guías disponibles.</p>
+                ) : (
+                  <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-5">
+                    {filteredSkinGuides.slice(0, 5).map((guide) => (
+                      <SkinToneCard key={guide.id} guide={guide} onClick={() => openGuide(guide)} />
+                    ))}
+                  </div>
+                )}
+              </section>
+
+              {/* Body types */}
+              <section>
+                <div className="flex items-center gap-3 mb-10">
+                  <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center">
+                    <Ruler size={18} className="text-white" strokeWidth={1.5} />
+                  </div>
+                  <div className="flex-1">
+                    <h2 className="font-serif text-2xl md:text-3xl text-black">Cortes para tu cuerpo</h2>
+                    <p className="font-sans text-sm text-black/40 mt-1">Encuentra los cortes y estilos que mejor se adaptan a tu tipo de cuerpo.</p>
+                  </div>
+                  <button
+                    onClick={() => setView("bodyTypes")}
+                    className="hidden md:inline-flex items-center gap-1 font-nav text-[10px] uppercase tracking-wider text-black/40 hover:text-black transition-colors"
+                  >
+                    Ver todos <ChevronRight size={14} />
+                  </button>
+                </div>
+
+                {guidesLoading ? (
+                  <div className="flex justify-center py-12">
+                    <span className="inline-block w-6 h-6 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                  </div>
+                ) : filteredBodyGuides.length === 0 ? (
+                  <p className="text-center font-sans text-sm text-black/40 py-8">No hay guías disponibles.</p>
+                ) : (
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                    {filteredBodyGuides.slice(0, 4).map((guide) => (
+                      <BodyTypeCard key={guide.id} guide={guide} onClick={() => openGuide(guide)} />
+                    ))}
+                  </div>
+                )}
+              </section>
+            </motion.div>
+          )}
+
+          {/* ── SKIN TONES GRID ── */}
+          {view === "skinTones" && (
+            <motion.div
+              key="skinTones"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+            >
+              <button
+                onClick={() => setView("menu")}
+                className="inline-flex items-center gap-2 font-nav text-[10px] uppercase tracking-wider text-black/40 hover:text-black transition-colors mb-8"
+              >
+                <ArrowLeft size={12} /> Volver
+              </button>
+              <h2 className="font-serif text-2xl md:text-3xl text-black mb-8">Colores para tu piel</h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-5">
+                {filteredSkinGuides.map((guide) => (
+                  <SkinToneCard key={guide.id} guide={guide} onClick={() => openGuide(guide)} />
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {/* ── BODY TYPES GRID ── */}
+          {view === "bodyTypes" && (
+            <motion.div
+              key="bodyTypes"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+            >
+              <button
+                onClick={() => setView("menu")}
+                className="inline-flex items-center gap-2 font-nav text-[10px] uppercase tracking-wider text-black/40 hover:text-black transition-colors mb-8"
+              >
+                <ArrowLeft size={12} /> Volver
+              </button>
+              <h2 className="font-serif text-2xl md:text-3xl text-black mb-8">Cortes para tu cuerpo</h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                {filteredBodyGuides.map((guide) => (
+                  <BodyTypeCard key={guide.id} guide={guide} onClick={() => openGuide(guide)} />
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {/* ── GUIDE DETAIL ── */}
+          {view === "guideDetail" && selectedGuide && (
+            <motion.div
+              key="detail"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+              className="space-y-14"
+            >
+              <button
+                onClick={() => setView(selectedGuide.type === "skinTone" ? "skinTones" : "bodyTypes")}
+                className="inline-flex items-center gap-2 font-nav text-[10px] uppercase tracking-wider text-black/40 hover:text-black transition-colors"
+              >
+                <ArrowLeft size={12} /> Volver
+              </button>
+
+              {/* Guide header */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+                <div className="relative aspect-[4/5] md:aspect-square rounded-2xl overflow-hidden bg-neutral-100">
+                  {selectedGuide.imageUrl ? (
+                    <img
+                      src={selectedGuide.imageUrl}
+                      alt={selectedGuide.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : selectedGuide.colorHex ? (
+                    <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: selectedGuide.colorHex }}>
+                      <span className="font-serif text-4xl text-white/80">{selectedGuide.name[0]}</span>
+                    </div>
+                  ) : (
+                    <div className="w-full h-full bg-neutral-100 flex items-center justify-center">
+                      <Sparkles size={48} className="text-black/10" strokeWidth={1} />
+                    </div>
+                  )}
+                </div>
+
+                {/* Gallery thumbnails */}
+                {selectedGuide.galleryImages && selectedGuide.galleryImages.length > 0 && (
+                  <div className="flex flex-wrap gap-2 md:col-span-2">
+                    {selectedGuide.galleryImages.map((url, i) => (
+                      <div key={i} className="w-20 h-20 rounded-lg overflow-hidden border border-black/10">
+                        <img src={url} alt={`${selectedGuide.name} ${i + 1}`} className="w-full h-full object-cover" />
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div>
+                  <span className="font-nav text-[10px] tracking-[0.25em] uppercase text-[#C9A84C] mb-3 block">
+                    {selectedGuide.type === "skinTone" ? "Colorimetría" : "Tipología"}
+                  </span>
+                  <h2 className="font-serif text-3xl md:text-5xl text-black leading-tight mb-4">
+                    {selectedGuide.name}
+                  </h2>
+                  <p className="font-sans text-sm text-black/50 leading-relaxed mb-8">
+                    {selectedGuide.description}
+                  </p>
+
+                  {selectedGuide.type === "skinTone" && selectedGuide.recommendedColors.length > 0 && (
+                    <div className="mb-8">
+                      <h3 className="font-nav text-[10px] tracking-[0.2em] uppercase text-black/40 mb-3">
+                        Paleta de colores que te favorecen
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedGuide.recommendedColors.map((color) => (
+                          <span
+                            key={color}
+                            className="px-3 py-1.5 bg-[#FAF8F5] border border-black/10 font-sans text-xs text-black rounded-lg"
+                          >
+                            {color}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedGuide.type === "bodyType" && selectedGuide.recommendedAttributes.length > 0 && (
+                    <div className="mb-8">
+                      <h3 className="font-nav text-[10px] tracking-[0.2em] uppercase text-black/40 mb-3">
+                        Cortes recomendados
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedGuide.recommendedAttributes.map((attr) => (
+                          <span
+                            key={attr}
+                            className="px-3 py-1.5 bg-[#FAF8F5] border border-black/10 font-sans text-xs text-black rounded-lg"
+                          >
+                            {attr}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <Link
+                    href={`/catalogo${selectedGuide.type === "skinTone"
+                      ? `?color=${selectedGuide.recommendedColors.map((c) => encodeURIComponent(c)).join("&color=")}`
+                      : ""
+                    }`}
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white font-nav text-[11px] uppercase tracking-wider rounded-lg hover:bg-black/80 transition-colors"
+                  >
+                    Ver productos recomendados <ChevronRight size={14} />
+                  </Link>
+                </div>
+              </div>
+
+              {/* Recommended products */}
+              <div>
+                <h3 className="font-serif text-2xl text-black mb-6">
+                  Productos recomendados
+                </h3>
+                {productsLoading ? (
+                  <div className="flex justify-center py-12">
+                    <span className="inline-block w-6 h-6 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                  </div>
+                ) : recommendedProducts.length === 0 ? (
+                  <p className="font-sans text-sm text-black/40 text-center py-12">
+                    No hay productos que coincidan con esta guía por el momento.
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    {recommendedProducts.map((p) => (
+                      <ProductCard key={p.id} {...p} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+
+/* ── Card components ─────────────────────────────────────────────────────── */
+
+function SkinToneCard({ guide, onClick }: { guide: StyleGuide; onClick: () => void }) {
+  return (
+    <button onClick={onClick} className="group text-left w-full">
+      <div className="relative aspect-[3/4] rounded-xl overflow-hidden bg-neutral-100 mb-3">
+        {guide.imageUrl ? (
+          <img src={guide.imageUrl} alt={guide.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+        ) : guide.colorHex ? (
+          <div className="w-full h-full" style={{ backgroundColor: guide.colorHex }} />
+        ) : (
+          <div className="w-full h-full bg-neutral-100 flex items-center justify-center">
+            <Sparkles size={32} className="text-black/10" strokeWidth={1} />
+          </div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+          <span className="inline-flex items-center gap-1 text-white font-nav text-[10px] uppercase tracking-wider">
+            Ver guía <ChevronRight size={12} />
+          </span>
+        </div>
+      </div>
+      <h3 className="font-serif text-base text-black group-hover:text-black/70 transition-colors">{guide.name}</h3>
+      <p className="font-sans text-xs text-black/40 line-clamp-1 mt-0.5">
+        {guide.recommendedColors.length} colores recomendados
+      </p>
+    </button>
+  );
+}
+
+function BodyTypeCard({ guide, onClick }: { guide: StyleGuide; onClick: () => void }) {
+  return (
+    <button onClick={onClick} className="group text-left w-full">
+      <div className="relative aspect-[3/4] rounded-xl overflow-hidden bg-neutral-100 mb-3">
+        {guide.imageUrl ? (
+          <img src={guide.imageUrl} alt={guide.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+        ) : (
+          <div className="w-full h-full bg-neutral-100 flex items-center justify-center">
+            <Shirt size={32} className="text-black/10" strokeWidth={1} />
+          </div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+          <span className="inline-flex items-center gap-1 text-white font-nav text-[10px] uppercase tracking-wider">
+            Ver guía <ChevronRight size={12} />
+          </span>
+        </div>
+      </div>
+      <h3 className="font-serif text-base text-black group-hover:text-black/70 transition-colors">{guide.name}</h3>
+      <p className="font-sans text-xs text-black/40 line-clamp-1 mt-0.5">
+        {guide.recommendedAttributes.length} cortes recomendados
+      </p>
+    </button>
+  );
+}

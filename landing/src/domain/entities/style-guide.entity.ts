@@ -8,6 +8,7 @@ export interface StyleGuide {
   name: string;
   description: string;
   imageUrl: string;
+  galleryImages: string[];
   colorHex?: string;
   recommendedColors: string[];
   recommendedAttributes: string[];

@@ -6,7 +6,7 @@ const NAV_LINKS = [
   { href: "/catalogo", label: "CATÁLOGO" },
   { href: "/categorias", label: "CATEGORÍAS" },
   { href: "/icon", label: "ICON" },
-  { href: "/tendencias", label: "TENDENCIAS" },
+  { href: "/asesoria-de-moda", label: "ASESORIA DE MODA" },
   { href: "/recomendaciones", label: "RECOMENDACIONES" },
   { href: "/revista", label: "BLOG DE MODA" },
   { href: "/nuevos-posts", label: "NEW POST" },
