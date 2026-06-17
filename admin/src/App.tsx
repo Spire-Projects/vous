@@ -18,6 +18,7 @@ import { LandingPage } from "./pages/LandingPage";
 import { MapaPage } from "./pages/MapaPage";
 import { AsesoriaPage } from "./pages/AsesoriaPage";
 import { UsersPage } from "./pages/UsersPage";
+import { ClothingConfigPage } from "./pages/ClothingConfigPage";
 
 function AdminRoutes() {
   return (
@@ -37,6 +38,7 @@ function AdminRoutes() {
           <Route path="descuentos" element={<DiscountsPage />} />
           <Route path="reportes" element={<ReportsPage />} />
           <Route path="configuracion" element={<SettingsPage />} />
+          <Route path="ropa" element={<ClothingConfigPage />} />
           <Route path="mapa" element={<MapaPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

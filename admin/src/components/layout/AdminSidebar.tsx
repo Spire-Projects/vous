@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, ShoppingCart, Package, Users, Settings, Tag,
   FileText, BarChart2, UserCog, Layers, LogOut, Image, X, Map,
-  Lightbulb, HelpCircle,
+  Lightbulb, HelpCircle, Shirt,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { useSiteConfig } from "../../hooks/useSiteConfig";
@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { label: "Pedidos", path: "/pedidos", icon: ShoppingCart },
   { label: "Inventario", path: "/inventario", icon: Package },
   { label: "Categorías", path: "/categorias", icon: Layers },
+  { label: "Ropa", path: "/ropa", icon: Shirt },
   { label: "Usuarios", path: "/usuarios", icon: Users },
   { label: "Mayoristas", path: "/mayoristas", icon: UserCog },
   { label: "Soporte", path: "/soporte", icon: HelpCircle },
