@@ -59,6 +59,7 @@ export function VariantDrawer({ product, onClose }: VariantDrawerProps) {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead className="w-20">Imagenes</TableHead>
                   <TableHead>Talla</TableHead>
                   <TableHead>Color</TableHead>
                   <TableHead>Stock</TableHead>
@@ -70,6 +71,22 @@ export function VariantDrawer({ product, onClose }: VariantDrawerProps) {
               <TableBody>
                 {variants.map((v) => (
                   <TableRow key={v.id}>
+                    <TableCell>
+                      {v.images && v.images.length > 0 ? (
+                        <div className="flex items-center gap-1">
+                          <div className="relative w-10 h-10 border border-vous-border rounded overflow-hidden">
+                            <img src={v.images[0]} alt="" className="w-full h-full object-cover" />
+                            {v.images.length > 1 && (
+                              <span className="absolute bottom-0 right-0 bg-black/60 text-white text-[8px] px-1 rounded-tl">
+                                +{v.images.length - 1}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      ) : (
+                        <span className="text-vous-text-secondary text-[11px]">—</span>
+                      )}
+                    </TableCell>
                     <TableCell>{v.size ?? "—"}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">

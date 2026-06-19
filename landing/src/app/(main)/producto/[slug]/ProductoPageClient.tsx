@@ -7,6 +7,9 @@ import { firestoreProductRepository } from "@/infrastructure/repositories/firest
 import { ProductGallery } from "@/components/producto/ProductGallery";
 import { ProductInfo } from "@/components/producto/ProductInfo";
 import { RelatedProducts } from "@/components/producto/RelatedProducts";
+import { CategoryDiscounts } from "@/components/producto/CategoryDiscounts";
+import { ProductVariantsList } from "@/components/producto/ProductVariantsList";
+import { useCategories } from "@/hooks/useCategories";
 import type { Product, ProductVariant } from "@/domain/entities/product.entity";
 
 export function ProductoPageClient() {
@@ -21,6 +24,10 @@ export function ProductoPageClient() {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+
+  const { categories } = useCategories();
+  const categorySlug =
+    categories.find((c) => c.id === product?.categoryId)?.slug ?? undefined;
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -46,18 +53,11 @@ export function ProductoPageClient() {
           .then((all) => all.filter((r) => r.id !== p.id).slice(0, 4))
           .catch(() => [] as Product[]);
 
-        if (p.hasVariants) {
-          setVariantsLoading(true);
-          const [rel, vars] = await Promise.all([
-            relPromise,
-            firestoreProductRepository.findVariants(p.id).catch(() => [] as ProductVariant[]),
-          ]);
-          setRelated(rel);
-          setVariants(vars);
-          setVariantsLoading(false);
-        } else {
-          setRelated(await relPromise);
-        }
+        const varsPromise = firestoreProductRepository.findVariants(p.id).catch(() => [] as ProductVariant[]);
+        const [rel, vars] = await Promise.all([relPromise, varsPromise]);
+        setRelated(rel);
+        setVariants(vars);
+        setVariantsLoading(false);
       })
       .catch(() => setNotFound(true))
       .finally(() => setLoading(false));
@@ -107,7 +107,17 @@ export function ProductoPageClient() {
             onSelectColor={handleSelectColor}
           />
         </div>
-        <RelatedProducts products={related} />
+        <ProductVariantsList
+          variants={variants}
+          sizes={product.sizes}
+          colors={product.colors}
+        />
+        <CategoryDiscounts
+          categoryId={product.categoryId}
+          currentProductId={product.id}
+          categorySlug={categorySlug}
+        />
+        <RelatedProducts products={related} categorySlug={categorySlug} />
       </div>
     </div>
   );

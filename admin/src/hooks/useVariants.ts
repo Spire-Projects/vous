@@ -3,6 +3,7 @@ import { firestoreProductRepository } from "@/infrastructure";
 import { createVariant } from "@/application/use-cases/product/create-variant";
 import { updateVariant } from "@/application/use-cases/product/update-variant";
 import { deleteVariant } from "@/application/use-cases/product/delete-variant";
+import { recalculateProductStock } from "@/application/use-cases/product/recalculate-product-stock";
 import type {
   ProductVariant,
   CreateVariantInput,
@@ -35,6 +36,7 @@ export function useVariants(productId: string | null) {
     async (input: CreateVariantInput) => {
       if (!productId) return;
       await createVariant(firestoreProductRepository, productId, input);
+      await recalculateProductStock(firestoreProductRepository, productId);
       await fetchVariants();
     },
     [productId, fetchVariants]
@@ -44,6 +46,7 @@ export function useVariants(productId: string | null) {
     async (variantId: string, input: UpdateVariantInput) => {
       if (!productId) return;
       await updateVariant(firestoreProductRepository, productId, variantId, input);
+      await recalculateProductStock(firestoreProductRepository, productId);
       await fetchVariants();
     },
     [productId, fetchVariants]
@@ -53,6 +56,7 @@ export function useVariants(productId: string | null) {
     async (variantId: string) => {
       if (!productId) return;
       await deleteVariant(firestoreProductRepository, productId, variantId);
+      await recalculateProductStock(firestoreProductRepository, productId);
       await fetchVariants();
     },
     [productId, fetchVariants]

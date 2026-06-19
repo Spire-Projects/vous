@@ -57,6 +57,7 @@ function mapVariant(id: string, data: Record<string, unknown>): ProductVariant {
     size: (data.size as string | null) ?? null,
     stock: (data.stock as number) ?? 0,
     isActive: (data.isActive as boolean) ?? true,
+    images: (data.images as string[]) ?? undefined,
     createdAt:
       (data.createdAt as { toDate?: () => Date })?.toDate?.().toISOString() ??
       new Date().toISOString(),

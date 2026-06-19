@@ -83,7 +83,7 @@ export function ProductInfo({
 
   /** Variant that matches the current size/color selection */
   const selectedVariant = useMemo(() => {
-    if (!product.hasVariants || variants.length === 0) return null;
+    if (variants.length === 0) return null;
     return (
       variants.find((v) => {
         const sizeMatch = !product.sizes.length || v.size === selectedSize;
@@ -110,23 +110,24 @@ export function ProductInfo({
   }
 
   const visibleColors = useMemo(() => {
-    if (!product.hasVariants || variantsLoading || variants.length === 0) return product.colors;
+    if (variantsLoading || variants.length === 0) return product.colors;
     return product.colors.filter((c) => variants.some((v) => v.color === c.name && v.stock > 0));
-  }, [product.colors, product.hasVariants, variants, variantsLoading]);
+  }, [product.colors, variants, variantsLoading]);
 
   const visibleSizes = useMemo(() => {
-    if (!product.hasVariants || variantsLoading || variants.length === 0) return product.sizes;
+    if (variantsLoading || variants.length === 0) return product.sizes;
     return product.sizes.filter((s) => variants.some((v) => v.size === s && v.stock > 0));
-  }, [product.sizes, product.hasVariants, variants, variantsLoading]);
+  }, [product.sizes, variants, variantsLoading]);
 
   const effectiveStock = selectedVariant ? selectedVariant.stock : product.stock;
 
   function handleAddToCart() {
-    if (product.hasVariants && (variantsLoading || variants.length === 0)) {
+    const hasVariantOptions = product.sizes.length > 0 || product.colors.length > 0;
+    if (hasVariantOptions && (variantsLoading || variants.length === 0)) {
       setError("Cargando opciones de variantes. Intenta nuevamente.");
       return;
     }
-    if (product.hasVariants) {
+    if (hasVariantOptions) {
       const needsSize = product.sizes.length > 0 && !selectedSize;
       const needsColor = product.colors.length > 0 && !selectedColor;
       if (needsSize || needsColor) {

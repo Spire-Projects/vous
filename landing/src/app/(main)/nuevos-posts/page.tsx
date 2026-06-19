@@ -10,12 +10,6 @@ export default function NuevosPostsPage() {
   return (
     <main className="bg-white min-h-screen">
       <div className="max-w-[1440px] mx-auto px-5 md:px-20 pt-20 md:pt-28 pb-16 md:pb-24">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 font-nav text-[10px] uppercase tracking-wider text-black/50 hover:text-black transition-colors mb-10"
-        >
-          <ArrowLeft size={12} /> Volver al inicio
-        </Link>
 
         <span className="font-nav text-[10px] tracking-[0.25em] uppercase text-black mb-4 block">
           Redes Sociales

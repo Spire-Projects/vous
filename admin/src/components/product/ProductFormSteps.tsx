@@ -1,11 +1,8 @@
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ImagePicker } from "@/components/shared/ImagePicker";
 import { ColorVariantPicker, type ColorItem } from "@/components/shared/ColorVariantPicker";
-import { AttributeEditor } from "@/components/shared/AttributeEditor";
-import { ChipInput } from "@/components/shared/ChipInput";
 import { VariantEditor } from "./VariantEditor";
-import type { CreateVariantInput } from "@/domain/entities/product.entity";
+import type { CreateVariantInput, ProductVariant } from "@/domain/entities/product.entity";
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
@@ -30,7 +27,7 @@ export function StepColors({ colors, productImages, onColorsChange, onProductIma
   return (
     <section className="space-y-4">
       <SectionTitle>Colores y fotos</SectionTitle>
-      <HelpText>Cada color puede tener sus propias fotos. Cuando el cliente seleccione un color, verá las fotos específicas. Las fotos generales se muestran cuando no hay color seleccionado.</HelpText>
+      <HelpText>Cada color puede tener sus propias fotos. Cuando el cliente seleccione un color, vera las fotos especificas. Las fotos generales se muestran cuando no hay color seleccionado.</HelpText>
       <div className="space-y-1">
         <Label>Colores del producto</Label>
         <ColorVariantPicker value={colors} onChange={onColorsChange} />
@@ -51,70 +48,25 @@ export function StepColors({ colors, productImages, onColorsChange, onProductIma
   );
 }
 
-interface StepSizesProps {
-  sizes: string[];
-  onSizesChange: (v: string[]) => void;
-}
-
-export function StepSizes({ sizes, onSizesChange }: StepSizesProps) {
-  return (
-    <section className="space-y-3">
-      <SectionTitle>Tallas disponibles</SectionTitle>
-      <HelpText>Escribe cada talla y presiona Enter. Si el producto no tiene tallas, deja este campo vacío.</HelpText>
-      <div className="space-y-1">
-        <Label>Tallas</Label>
-        <ChipInput value={sizes} onChange={onSizesChange} placeholder="XS, S, M, L, XL…" />
-      </div>
-    </section>
-  );
-}
-
 interface StepVariantsProps {
   colors: ColorItem[];
   sizes: string[];
   variants: CreateVariantInput[];
+  existingVariants?: ProductVariant[];
   onVariantsChange: (v: CreateVariantInput[]) => void;
 }
 
-export function StepVariants({ colors, sizes, variants, onVariantsChange }: StepVariantsProps) {
+export function StepVariants({ colors, sizes, variants, existingVariants, onVariantsChange }: StepVariantsProps) {
   const hasAny = sizes.length > 0 || colors.length > 0;
   return (
     <section className="space-y-3">
       <SectionTitle>Stock por variante</SectionTitle>
       {!hasAny ? (
-        <HelpText>Aún no has agregado colores ni tallas. Ve a los pasos Colores y Tallas para definir las opciones.</HelpText>
+        <HelpText>Aun no has agregado colores ni tallas. Ve a los pasos Colores y Tallas para definir las opciones.</HelpText>
       ) : (
         <HelpText>Agrega manualmente las combinaciones de color y talla que existen. Cada variante tiene su propio stock y SKU opcional.</HelpText>
       )}
-      <VariantEditor colors={colors} sizes={sizes} variants={variants} onChange={onVariantsChange} />
-    </section>
-  );
-}
-
-interface StepDetailsProps {
-  materials: string[]; attributes: Record<string, string>; badge: string;
-  onMaterialsChange: (v: string[]) => void; onAttributesChange: (v: Record<string, string>) => void;
-  onBadgeChange: (v: string) => void;
-}
-
-export function StepDetails({ materials, attributes, badge, onMaterialsChange, onAttributesChange, onBadgeChange }: StepDetailsProps) {
-  return (
-    <section className="space-y-3">
-      <SectionTitle>Características de la prenda</SectionTitle>
-      <HelpText>Estos detalles ayudan al cliente a conocer mejor el producto.</HelpText>
-      <div className="space-y-1">
-        <Label>Materiales</Label>
-        <ChipInput value={materials} onChange={onMaterialsChange} placeholder="Algodón, Lana, Poliéster…" />
-      </div>
-      <div className="space-y-1">
-        <Label>Atributos (corte, tela, pretina, largo…)</Label>
-        <AttributeEditor value={attributes} onChange={onAttributesChange} />
-      </div>
-      <div className="space-y-1">
-        <Label>Etiqueta especial (Badge)</Label>
-        <Input value={badge} onChange={(e) => onBadgeChange(e.target.value)} placeholder="Nuevo, Sale, Exclusivo…" />
-        <p className="text-[10px] text-vous-text-secondary mt-1">Aparece como una etiqueta sobre la foto del producto.</p>
-      </div>
+      <VariantEditor colors={colors} sizes={sizes} variants={variants} existingVariants={existingVariants} onChange={onVariantsChange} />
     </section>
   );
 }

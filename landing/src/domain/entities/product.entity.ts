@@ -48,4 +48,5 @@ export interface ProductVariant {
   size?: string | null;
   stock: number;
   isActive: boolean;
+  images?: string[];
 }

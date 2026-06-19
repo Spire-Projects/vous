@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Search, Plus, Pencil, AlertTriangle, Eye, EyeOff, Maximize2, X, Star, Package, Trash2, Settings2, Layers, GripVertical } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Search, Plus, Pencil, AlertTriangle, Eye, EyeOff, Maximize2, X, Star, Package, Trash2, Settings2, Layers, GripVertical, ChevronDown, ChevronUp } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { StatCard } from "@/components/ui/StatCard";
 import { Badge } from "@/components/ui/badge";
@@ -14,10 +14,11 @@ import { VariantDrawer } from "@/components/product/VariantDrawer";
 import { ConfirmDeleteDialog } from "@/components/shared/ConfirmDeleteDialog";
 import { useProducts } from "@/hooks/useProducts";
 import { useCategories } from "@/hooks/useCategories";
-import type { Product, CreateProductInput, CreateVariantInput } from "@/domain/entities/product.entity";
+import { firestoreProductRepository } from "@/infrastructure/repositories/firestore-product.repository";
+import type { Product, CreateProductInput, CreateVariantInput, ProductVariant } from "@/domain/entities/product.entity";
 
 export function InventoryPage() {
-  const { products, loading, createWithVariants, update, toggleActive, remove, setFlags, applyDiscount, applyCatDiscount, adjustWholesaleStock, reorder } = useProducts();
+  const { products, loading, createWithVariants, addVariants, update, toggleActive, remove, setFlags, applyDiscount, applyCatDiscount, adjustWholesaleStock, reorder } = useProducts();
   const { categories } = useCategories();
   const [search, setSearch] = useState("");
   const [filterLowStock, setFilterLowStock] = useState(false);
@@ -25,11 +26,17 @@ export function InventoryPage() {
   const [editing, setEditing] = useState<Product | null>(null);
   const [preview, setPreview] = useState<Product | null>(null);
   const [previewImg, setPreviewImg] = useState<string | null>(null);
+  const [previewVariants, setPreviewVariants] = useState<ProductVariant[]>([]);
   const [variantProduct, setVariantProduct] = useState<Product | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   const [flagsProduct, setFlagsProduct] = useState<Product | null>(null);
   const [categoryDiscountOpen, setCategoryDiscountOpen] = useState(false);
   const [dragIdx, setDragIdx] = useState<number | null>(null);
+
+  // Expanded rows for inline variant viewing
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+  const [variantsMap, setVariantsMap] = useState<Record<string, ProductVariant[]>>({});
+  const [variantsLoadingMap, setVariantsLoadingMap] = useState<Record<string, boolean>>({});
 
   const filtered = products.filter((p) => {
     const matchSearch = !search || p.name.toLowerCase().includes(search.toLowerCase());
@@ -40,12 +47,52 @@ export function InventoryPage() {
   const activeCount = products.filter((p) => p.isActive).length;
   const lowStockCount = products.filter((p) => p.stock <= 5).length;
 
+  // Load variants when opening product preview
+  useEffect(() => {
+    if (!preview) {
+      setPreviewVariants([]);
+      return;
+    }
+    firestoreProductRepository.findVariants(preview.id)
+      .then((data) => setPreviewVariants(data))
+      .catch(() => setPreviewVariants([]));
+  }, [preview?.id]);
+
+  async function toggleExpand(productId: string) {
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(productId)) {
+        next.delete(productId);
+      } else {
+        next.add(productId);
+      }
+      return next;
+    });
+    if (!variantsMap[productId] && !variantsLoadingMap[productId]) {
+      setVariantsLoadingMap((m) => ({ ...m, [productId]: true }));
+      try {
+        const data = await firestoreProductRepository.findVariants(productId);
+        setVariantsMap((m) => ({ ...m, [productId]: data }));
+      } catch {
+        setVariantsMap((m) => ({ ...m, [productId]: [] }));
+      } finally {
+        setVariantsLoadingMap((m) => ({ ...m, [productId]: false }));
+      }
+    }
+  }
+
   function handleNew() { setEditing(null); setDialogOpen(true); }
   function handleEdit(product: Product) { setEditing(product); setDialogOpen(true); }
 
   async function handleSave(data: CreateProductInput, variants: CreateVariantInput[]) {
-    if (editing) await update(editing.id, data);
-    else await createWithVariants(data, variants);
+    if (editing) {
+      await update(editing.id, data);
+      if (variants.length > 0) {
+        await addVariants(editing.id, variants);
+      }
+    } else {
+      await createWithVariants(data, variants);
+    }
   }
 
   async function handleDelete(id: string) {
@@ -170,16 +217,80 @@ export function InventoryPage() {
                     {product.isBestseller && <span className="text-[10px] font-nav text-green-600 uppercase">Bestseller</span>}
                     {product.isPreorder && <span className="text-[10px] font-nav text-blue-600 uppercase">Preventa</span>}
                     {product.isSpecialCollection && <span className="text-[10px] font-nav text-purple-600 uppercase">Col. Especial</span>}
-                  </div>
-                  <div className="flex items-center gap-1 flex-wrap mt-3 pt-3 border-t border-white/30">
-                    <Button variant="ghost" size="icon-sm" onClick={() => { setPreview(product); setPreviewImg(product.images[0] ?? null); }} title="Ver"><Maximize2 size={13} /></Button>
-                    <Button variant="ghost" size="icon-sm" onClick={() => toggleActive(product.id, product.isActive)} title={product.isActive ? "Desactivar" : "Activar"}>{product.isActive ? <EyeOff size={14} /> : <Eye size={14} />}</Button>
-                    <Button variant="ghost" size="icon-sm" onClick={() => handleEdit(product)}><Pencil size={14} /></Button>
-                    <Button variant="ghost" size="icon-sm" className="text-red-600 hover:text-red-700" onClick={() => setConfirmDelete(product.id)}><Trash2 size={14} /></Button>
-                    {product.hasVariants && <Button variant="ghost" size="icon-sm" onClick={() => setVariantProduct(product)}><Package size={14} /></Button>}
-                    <Button variant="ghost" size="icon-sm" onClick={() => setFlagsProduct(product)}><Settings2 size={14} /></Button>
-                  </div>
-                </div>
+                   </div>
+                   {(product.colors.length > 0 || product.sizes.length > 0) && (
+                     <div className="mt-2">
+                       <button
+                         type="button"
+                         onClick={() => toggleExpand(product.id)}
+                         className="flex items-center gap-1 text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary hover:text-vous-text transition-colors"
+                       >
+                         {expandedIds.has(product.id) ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                         {expandedIds.has(product.id) ? "Ocultar variantes" : `Ver variantes (${(variantsMap[product.id] ?? []).length || "?"})`}
+                       </button>
+                       {expandedIds.has(product.id) && (
+                         <div className="mt-2 space-y-2">
+                           {variantsLoadingMap[product.id] ? (
+                             <p className="text-[11px] text-vous-text-secondary">Cargando variantes...</p>
+                           ) : (variantsMap[product.id] ?? []).length === 0 ? (
+                             <p className="text-[11px] text-vous-text-secondary">Sin variantes guardadas.</p>
+                           ) : (
+                             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                               {(variantsMap[product.id] ?? []).map((v) => (
+                                 <button
+                                   key={v.id}
+                                   type="button"
+                                   onClick={() => { setPreview(product); setPreviewImg(v.images?.[0] ?? product.images[0] ?? null); }}
+                                   className="text-left border border-vous-border bg-white/90 p-2 rounded hover:border-vous-text/30 transition-colors"
+                                 >
+                                   <div className="aspect-square bg-vous-surface rounded overflow-hidden mb-1.5 relative">
+                                     {v.images?.[0] ? (
+                                       <img src={v.images[0]} alt="" className="w-full h-full object-cover" />
+                                     ) : product.images[0] ? (
+                                       <img src={product.images[0]} alt="" className="w-full h-full object-cover opacity-60" />
+                                     ) : (
+                                       <div className="w-full h-full flex items-center justify-center"><Package size={20} className="text-vous-text-secondary" /></div>
+                                     )}
+                                     {!v.isActive && (
+                                       <span className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                         <span className="text-white text-[9px] font-nav uppercase tracking-wider">Inactiva</span>
+                                       </span>
+                                     )}
+                                   </div>
+                                   <div className="space-y-0.5">
+                                     <div className="flex items-center gap-1">
+                                       {v.color && (
+                                         <>
+                                           <span className="w-2.5 h-2.5 rounded-full border border-vous-border shrink-0" style={{ background: v.colorHex ?? "#888" }} />
+                                           <span className="text-[10px] font-nav uppercase text-vous-text">{v.color}</span>
+                                         </>
+                                       )}
+                                     </div>
+                                     {v.size && <span className="text-[10px] font-nav uppercase text-vous-text-secondary">Talla {v.size}</span>}
+                                     <div className="flex items-center gap-1 pt-0.5">
+                                       <span className={`text-[11px] font-nav font-semibold ${v.stock <= 0 ? "text-red-600" : v.stock <= 3 ? "text-amber-600" : "text-vous-text"}`}>
+                                         {v.stock} u.
+                                       </span>
+                                       {v.sku && <span className="text-[9px] text-vous-text-secondary font-mono ml-auto">{v.sku}</span>}
+                                     </div>
+                                   </div>
+                                 </button>
+                               ))}
+                             </div>
+                           )}
+                         </div>
+                       )}
+                     </div>
+                   )}
+                   <div className="flex items-center gap-1 flex-wrap mt-3 pt-3 border-t border-white/30">
+                     <Button variant="ghost" size="icon-sm" onClick={() => { setPreview(product); setPreviewImg(product.images[0] ?? null); }} title="Ver"><Maximize2 size={13} /></Button>
+                     <Button variant="ghost" size="icon-sm" onClick={() => toggleActive(product.id, product.isActive)} title={product.isActive ? "Desactivar" : "Activar"}>{product.isActive ? <EyeOff size={14} /> : <Eye size={14} />}</Button>
+                     <Button variant="ghost" size="icon-sm" onClick={() => handleEdit(product)}><Pencil size={14} /></Button>
+                     <Button variant="ghost" size="icon-sm" className="text-red-600 hover:text-red-700" onClick={() => setConfirmDelete(product.id)}><Trash2 size={14} /></Button>
+                     {(product.colors.length > 0 || product.sizes.length > 0) && <Button variant="ghost" size="icon-sm" onClick={() => setVariantProduct(product)}><Package size={14} /></Button>}
+                     <Button variant="ghost" size="icon-sm" onClick={() => setFlagsProduct(product)}><Settings2 size={14} /></Button>
+                   </div>
+                 </div>
               ))}
             </div>
 
@@ -193,6 +304,7 @@ export function InventoryPage() {
                 </TableHeader>
                 <TableBody>
                   {filtered.map((product, idx) => (
+                    <>
                     <TableRow key={product.id} draggable onDragStart={() => setDragIdx(idx)} onDragOver={(e) => e.preventDefault()} onDrop={() => handleDrop(idx)} className={dragIdx === idx ? "opacity-40" : ""}>
                       <TableCell className="w-14">
                         <div className="flex items-center gap-1">
@@ -231,12 +343,36 @@ export function InventoryPage() {
                             </div>
                           )}
                           {product.colors.length === 0 && product.sizes.length === 0 && <span className="text-[11px] text-vous-text-secondary font-sans">—</span>}
+                          {(product.colors.length > 0 || product.sizes.length > 0) && (
+                            <button
+                              type="button"
+                              onClick={() => toggleExpand(product.id)}
+                              className="flex items-center gap-1 text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary hover:text-vous-text mt-1 transition-colors"
+                            >
+                              {expandedIds.has(product.id) ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                              {expandedIds.has(product.id) ? "Ocultar variantes" : "Ver variantes"}
+                            </button>
+                          )}
                         </div>
                       </TableCell>
                       <TableCell>
                         <div className="flex flex-col gap-0.5">
-                          <span className={`font-nav text-[13px] font-semibold ${product.stock <= 5 ? "text-red-600" : "text-vous-text"}`}>{product.stock}</span>
-                          {product.stock <= 5 && <span className="text-[10px] font-nav text-red-600 uppercase">CRÍTICO</span>}
+                          <div className="flex items-center gap-1.5">
+                            <input
+                              type="number"
+                              min={0}
+                              defaultValue={product.stock}
+                              onBlur={(e) => {
+                                const val = Number(e.target.value);
+                                if (Number.isFinite(val) && val >= 0 && val !== product.stock) {
+                                  void update(product.id, { stock: Math.floor(val) });
+                                }
+                              }}
+                              className={`w-16 text-[12px] font-sans border border-vous-border bg-vous-surface px-1.5 py-0.5 text-vous-text ${product.stock <= 5 ? "text-red-600" : ""}`}
+                              title="Ajustar stock general"
+                            />
+                            {product.stock <= 5 && <span className="text-[10px] font-nav text-red-600 uppercase">CRÍTICO</span>}
+                          </div>
                           {product.wholesaleOnly && (
                             <div className="flex items-center gap-1 mt-0.5">
                               <span className="text-[10px] font-nav text-vous-gold uppercase">Mayorista:</span>
@@ -260,11 +396,79 @@ export function InventoryPage() {
                           <Button variant="ghost" size="icon-sm" onClick={() => toggleActive(product.id, product.isActive)} title={product.isActive ? "Desactivar" : "Activar"}>{product.isActive ? <EyeOff size={14} /> : <Eye size={14} />}</Button>
                           <Button variant="ghost" size="icon-sm" onClick={() => handleEdit(product)}><Pencil size={14} /></Button>
                           <Button variant="ghost" size="icon-sm" className="text-red-600 hover:text-red-700" title="Eliminar producto" onClick={() => setConfirmDelete(product.id)}><Trash2 size={14} /></Button>
-                          {product.hasVariants && <Button variant="ghost" size="icon-sm" title="Gestionar variantes" onClick={() => setVariantProduct(product)}><Package size={14} /></Button>}
+                          {(product.colors.length > 0 || product.sizes.length > 0) && <Button variant="ghost" size="icon-sm" title="Gestionar variantes" onClick={() => setVariantProduct(product)}><Package size={14} /></Button>}
                           <Button variant="ghost" size="icon-sm" title="Configurar marcadores" onClick={() => setFlagsProduct(product)}><Settings2 size={14} /></Button>
                         </div>
                       </TableCell>
                     </TableRow>
+                    {/* Expanded variants row */}
+                    {expandedIds.has(product.id) && (
+                      <TableRow key={`${product.id}-variants`} className="bg-vous-surface/50">
+                        <TableCell colSpan={8} className="py-3">
+                          {variantsLoadingMap[product.id] ? (
+                            <p className="text-[11px] text-vous-text-secondary">Cargando variantes...</p>
+                          ) : (
+                            <div className="space-y-2">
+                              <div className="flex items-center justify-between">
+                                <p className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">
+                                  Variantes de {product.name} ({(variantsMap[product.id] ?? []).length})
+                                </p>
+                                <Button variant="outline" size="sm" className="h-7 text-[11px]" onClick={() => setVariantProduct(product)}>
+                                  <Pencil size={11} /> Editar variantes
+                                </Button>
+                              </div>
+                              {(variantsMap[product.id] ?? []).length === 0 ? (
+                                <p className="text-[11px] text-vous-text-secondary">Este producto no tiene variantes guardadas.</p>
+                              ) : (
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+                                  {(variantsMap[product.id] ?? []).map((v) => (
+                                    <button
+                                      key={v.id}
+                                      type="button"
+                                      onClick={() => { setPreview(product); setPreviewImg(v.images?.[0] ?? product.images[0] ?? null); }}
+                                      className="text-left border border-vous-border bg-white/90 p-2.5 rounded hover:border-vous-text/30 transition-colors group"
+                                    >
+                                      <div className="aspect-square bg-vous-surface rounded overflow-hidden mb-2 relative">
+                                        {v.images?.[0] ? (
+                                          <img src={v.images[0]} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                                        ) : product.images[0] ? (
+                                          <img src={product.images[0]} alt="" className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity" />
+                                        ) : (
+                                          <div className="w-full h-full flex items-center justify-center"><Package size={20} className="text-vous-text-secondary" /></div>
+                                        )}
+                                        {!v.isActive && (
+                                          <span className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                            <span className="text-white text-[9px] font-nav uppercase tracking-wider">Inactiva</span>
+                                          </span>
+                                        )}
+                                      </div>
+                                      <div className="space-y-0.5">
+                                        <div className="flex items-center gap-1">
+                                          {v.color && (
+                                            <>
+                                              <span className="w-2.5 h-2.5 rounded-full border border-vous-border shrink-0" style={{ background: v.colorHex ?? "#888" }} />
+                                              <span className="text-[10px] font-nav uppercase text-vous-text">{v.color}</span>
+                                            </>
+                                          )}
+                                        </div>
+                                        {v.size && <span className="text-[10px] font-nav uppercase text-vous-text-secondary">Talla {v.size}</span>}
+                                        <div className="flex items-center gap-1 pt-0.5">
+                                          <span className={`text-[11px] font-nav font-semibold ${v.stock <= 0 ? "text-red-600" : v.stock <= 3 ? "text-amber-600" : "text-vous-text"}`}>
+                                            {v.stock} u.
+                                          </span>
+                                          {v.sku && <span className="text-[9px] text-vous-text-secondary font-mono ml-auto">{v.sku}</span>}
+                                        </div>
+                                      </div>
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    )}
+                    </>
                   ))}
                 </TableBody>
               </Table>
@@ -430,6 +634,68 @@ export function InventoryPage() {
                   <p className="text-vous-text-secondary">{new Date(preview.createdAt).toLocaleDateString("es-BO", { year: "numeric", month: "short", day: "numeric" })}</p>
                 </div>
               </div>
+
+              {/* Variants section in preview */}
+              {previewVariants.length > 0 && (
+                <div className="border-t border-white/40 pt-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">Variantes ({previewVariants.length})</p>
+                    <Button variant="outline" size="sm" className="h-7 text-[11px]" onClick={() => { setVariantProduct(preview); setPreview(null); setPreviewImg(null); }}>
+                      <Pencil size={11} /> Gestionar variantes
+                    </Button>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="w-16">Img</TableHead>
+                          <TableHead>Color</TableHead>
+                          <TableHead>Talla</TableHead>
+                          <TableHead className="w-20">Stock</TableHead>
+                          <TableHead className="w-28">SKU</TableHead>
+                          <TableHead className="w-16">Estado</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {previewVariants.map((v) => (
+                          <TableRow key={v.id}>
+                            <TableCell>
+                              {v.images && v.images.length > 0 ? (
+                                <div className="relative w-8 h-8 border border-vous-border rounded overflow-hidden">
+                                  <img src={v.images[0]} alt="" className="w-full h-full object-cover" />
+                                  {v.images.length > 1 && (
+                                    <span className="absolute bottom-0 right-0 bg-black/60 text-white text-[7px] px-0.5 rounded-tl">+{v.images.length - 1}</span>
+                                  )}
+                                </div>
+                              ) : (
+                                <span className="text-vous-text-secondary text-[10px]">—</span>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {v.color ? (
+                                <span className="inline-flex items-center gap-1.5 text-[11px] font-nav uppercase">
+                                  <span className="w-3 h-3 rounded-full border border-vous-border" style={{ background: v.colorHex ?? "#888" }} />
+                                  {v.color}
+                                </span>
+                              ) : (
+                                <span className="text-vous-text-secondary text-[11px]">—</span>
+                              )}
+                            </TableCell>
+                            <TableCell className="text-[11px] font-nav uppercase">{v.size ?? "—"}</TableCell>
+                            <TableCell>
+                              <span className={`text-[11px] font-nav font-semibold ${v.stock <= 0 ? "text-red-600" : v.stock <= 5 ? "text-amber-600" : "text-vous-text"}`}>{v.stock}</span>
+                            </TableCell>
+                            <TableCell className="text-[10px] text-vous-text-secondary font-mono">{v.sku ?? "—"}</TableCell>
+                            <TableCell>
+                              <Badge variant={v.isActive ? "active" : "inactive"} className="text-[9px]">{v.isActive ? "Activa" : "Inactiva"}</Badge>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </div>
+              )}
 
               <div className="flex justify-end gap-2 pt-2 border-t border-white/40">
                 <Button variant="outline" onClick={() => { setPreview(null); setPreviewImg(null); }}>

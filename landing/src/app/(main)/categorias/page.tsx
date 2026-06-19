@@ -65,7 +65,7 @@ export default function CategoriasPage() {
         {!loading && !error && categories.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
             {categories.map(({ id, slug, name, image, banner }, index) => (
-              <Link key={id} href={`/catalogo?categoria=${slug}`} className="group block">
+              <Link key={id} href={`/categoria/${slug}`} className="group block">
                 <div
                   className={`relative aspect-square overflow-hidden mb-4 ${
                     !(image || banner) ? `bg-gradient-to-b ${getBg(index)}` : "bg-black"

@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { X } from "lucide-react";
+import { ImagePicker } from "@/components/shared/ImagePicker";
 import type { ProductVariant, CreateVariantInput } from "@/domain/entities/product.entity";
 
 interface VariantFormDialogProps {
@@ -20,6 +22,7 @@ export function VariantFormDialog({ open, variant, onClose, onSave }: VariantFor
   const [sku, setSku] = useState(variant?.sku ?? "");
   const [stock, setStock] = useState(variant?.stock ?? 0);
   const [isActive, setIsActive] = useState(variant?.isActive ?? true);
+  const [images, setImages] = useState<string[]>(variant?.images ?? []);
   const [saving, setSaving] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -34,6 +37,7 @@ export function VariantFormDialog({ open, variant, onClose, onSave }: VariantFor
         sku: sku.trim() || undefined,
         stock: Math.max(0, stock),
         isActive,
+        images: images.length > 0 ? images : undefined,
       });
       onClose();
     } finally {
@@ -41,9 +45,18 @@ export function VariantFormDialog({ open, variant, onClose, onSave }: VariantFor
     }
   }
 
+  function addImage(url: string) {
+    if (!url || images.includes(url)) return;
+    setImages([...images, url]);
+  }
+
+  function removeImage(idx: number) {
+    setImages(images.filter((_, i) => i !== idx));
+  }
+
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-sm">
+      <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>{variant ? "Editar variante" : "Nueva variante"}</DialogTitle>
         </DialogHeader>
@@ -83,6 +96,35 @@ export function VariantFormDialog({ open, variant, onClose, onSave }: VariantFor
               <Input id="vf-sku" value={sku} onChange={(e) => setSku(e.target.value)} placeholder="ABC-001" />
             </div>
           </div>
+
+          {/* Variant images */}
+          <div className="space-y-2">
+            <Label>Imagenes de la variante</Label>
+            {images.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {images.map((img, i) => (
+                  <div key={i} className="relative w-16 h-16 border border-vous-border rounded overflow-hidden">
+                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(i)}
+                      className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center"
+                    >
+                      <X size={10} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+            <ImagePicker
+              value=""
+              onChange={addImage}
+              folder="vous/products/variants"
+              label="Agregar imagen"
+              aspect="square"
+            />
+          </div>
+
           <div className="flex items-center gap-2">
             <Checkbox id="vf-active" checked={isActive} onCheckedChange={(v) => setIsActive(Boolean(v))} />
             <Label htmlFor="vf-active">Activa</Label>
@@ -90,7 +132,7 @@ export function VariantFormDialog({ open, variant, onClose, onSave }: VariantFor
           <div className="flex justify-end gap-2 pt-2">
             <Button type="button" variant="outline" onClick={onClose}>Cancelar</Button>
             <Button type="submit" disabled={saving || (!size.trim() && !color.trim())}>
-              {saving ? "Guardando…" : "Guardar"}
+              {saving ? "Guardando..." : "Guardar"}
             </Button>
           </div>
         </form>

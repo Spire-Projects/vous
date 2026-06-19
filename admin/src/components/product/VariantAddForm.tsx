@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ImagePicker } from "@/components/shared/ImagePicker";
 import type { ColorItem } from "@/components/shared/ColorVariantPicker";
 import type { CreateVariantInput } from "@/domain/entities/product.entity";
 
@@ -25,6 +26,7 @@ export function VariantAddForm({ colors, sizes, onAdd, onCancel }: VariantAddFor
   const [selSize, setSelSize] = useState("");
   const [selStock, setSelStock] = useState(0);
   const [selSku, setSelSku] = useState("");
+  const [images, setImages] = useState<string[]>([]);
 
   function handleAdd() {
     if (!selColor && !selSize) return;
@@ -36,11 +38,22 @@ export function VariantAddForm({ colors, sizes, onAdd, onCancel }: VariantAddFor
       stock: selStock,
       sku: selSku.trim() || undefined,
       isActive: true,
+      images: images.length > 0 ? images : undefined,
     });
     setSelColor("");
     setSelSize("");
     setSelStock(0);
     setSelSku("");
+    setImages([]);
+  }
+
+  function addImage(url: string) {
+    if (!url || images.includes(url)) return;
+    setImages([...images, url]);
+  }
+
+  function removeImage(idx: number) {
+    setImages(images.filter((_, i) => i !== idx));
   }
 
   return (
@@ -89,6 +102,35 @@ export function VariantAddForm({ colors, sizes, onAdd, onCancel }: VariantAddFor
           <Input value={selSku} onChange={(e) => setSelSku(e.target.value)} placeholder="ABC-001" className="h-8 text-[11px]" />
         </div>
       </div>
+
+      {/* Variant images */}
+      <div className="space-y-2">
+        <Label className="text-[10px]">Imagenes de la variante</Label>
+        {images.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {images.map((img, i) => (
+              <div key={i} className="relative w-14 h-14 border border-vous-border rounded overflow-hidden">
+                <img src={img} alt="" className="w-full h-full object-cover" />
+                <button
+                  type="button"
+                  onClick={() => removeImage(i)}
+                  className="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center"
+                >
+                  <X size={10} />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+        <ImagePicker
+          value=""
+          onChange={addImage}
+          folder="vous/products/variants"
+          label="Agregar imagen"
+          aspect="square"
+        />
+      </div>
+
       <div className="flex gap-2">
         <Button type="button" size="sm" onClick={handleAdd} disabled={!selColor.trim() && !selSize.trim()}>
           <Plus size={12} /> Guardar

@@ -76,6 +76,7 @@ export interface ProductVariant {
   size?: string | null;
   stock: number;
   isActive: boolean;
+  images?: string[];
   createdAt: string;
   updatedAt: string;
 }
@@ -87,6 +88,7 @@ export interface CreateVariantInput {
   size?: string | null;
   stock: number;
   isActive: boolean;
+  images?: string[];
 }
 
 export type UpdateVariantInput = Partial<CreateVariantInput>;

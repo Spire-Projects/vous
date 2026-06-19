@@ -17,6 +17,7 @@ interface CatalogFiltersProps {
   onPriceChange: (min: number | null, max: number | null) => void;
   onToggleTag: (tag: string) => void;
   onClear: () => void;
+  hideCategoryFilter?: boolean;
 }
 
 /* ── Color map for known colors ── */
@@ -52,6 +53,7 @@ export function CatalogFilters({
   onPriceChange,
   onToggleTag,
   onClear,
+  hideCategoryFilter = false,
 }: CatalogFiltersProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -92,11 +94,13 @@ export function CatalogFilters({
       <aside className="hidden lg:block w-60 shrink-0 space-y-8">
         <SearchField value={state.query} onChange={onQueryChange} />
 
-        <CategoryFilter
-          options={filters.categories}
-          active={state.categoryId}
-          onChange={onCategoryChange}
-        />
+        {!hideCategoryFilter && (
+          <CategoryFilter
+            options={filters.categories}
+            active={state.categoryId}
+            onChange={onCategoryChange}
+          />
+        )}
 
         {filters.sizes.length > 0 && (
           <SizeFilter options={filters.sizes} active={state.sizes} onToggle={onToggleSize} />
@@ -145,7 +149,9 @@ export function CatalogFilters({
             </div>
             <div className="space-y-8">
               <SearchField value={state.query} onChange={onQueryChange} />
-              <CategoryFilter options={filters.categories} active={state.categoryId} onChange={onCategoryChange} />
+              {!hideCategoryFilter && (
+                <CategoryFilter options={filters.categories} active={state.categoryId} onChange={onCategoryChange} />
+              )}
               {filters.sizes.length > 0 && (
                 <SizeFilter options={filters.sizes} active={state.sizes} onToggle={onToggleSize} />
               )}

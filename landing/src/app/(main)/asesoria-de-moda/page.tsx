@@ -60,12 +60,6 @@ export default function AsesoriaPage() {
       {/* ── Hero Header ── */}
       <section className="bg-black py-14 md:py-20 overflow-hidden">
         <div className="max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 font-nav text-[10px] uppercase tracking-wider text-white/40 hover:text-white transition-colors mb-6"
-          >
-            <ArrowLeft size={12} /> Volver al inicio
-          </Link>
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}

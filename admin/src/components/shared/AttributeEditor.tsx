@@ -10,18 +10,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const SUGGESTED_KEYS = ["Tela", "Corte", "Pretina", "Largo"];
+const DEFAULT_SUGGESTED_KEYS = ["Tela", "Corte", "Pretina", "Largo"];
 
 interface Props {
   value: Record<string, string>;
   onChange: (attrs: Record<string, string>) => void;
+  suggestions?: string[];
 }
 
-export function AttributeEditor({ value, onChange }: Props) {
+export function AttributeEditor({ value, onChange, suggestions }: Props) {
   const [customKey, setCustomKey] = useState("");
 
+  const suggestionList = suggestions && suggestions.length > 0 ? suggestions : DEFAULT_SUGGESTED_KEYS;
   const entries = Object.entries(value);
-  const unusedSuggestions = SUGGESTED_KEYS.filter((k) => !(k in value));
+  const unusedSuggestions = suggestionList.filter((k) => !(k in value));
 
   function addSuggested(key: string) {
     if (!key || key in value) return;

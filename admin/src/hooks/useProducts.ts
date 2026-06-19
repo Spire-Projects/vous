@@ -11,6 +11,7 @@ import { applyProductDiscount } from "@/application/use-cases/product/apply-prod
 import { applyCategoryDiscount } from "@/application/use-cases/product/apply-category-discount";
 import { updateWholesaleStock } from "@/application/use-cases/product/update-wholesale-stock";
 import { setProductOrder } from "@/application/use-cases/product/set-product-order";
+import { recalculateProductStock } from "@/application/use-cases/product/recalculate-product-stock";
 import type { Product, CreateProductInput, UpdateProductInput, CreateVariantInput } from "@/domain/entities/product.entity";
 import type { ProductFlags } from "@/domain/repositories/product.repository";
 
@@ -43,6 +44,15 @@ export function useProducts() {
     const product = await createProduct(firestoreProductRepository, input);
     if (variants.length > 0) {
       await createVariantsBatch(firestoreProductRepository, product.id, variants);
+      await recalculateProductStock(firestoreProductRepository, product.id);
+    }
+    await fetchProducts();
+  }, [fetchProducts]);
+
+  const addVariants = useCallback(async (productId: string, variants: CreateVariantInput[]) => {
+    if (variants.length > 0) {
+      await createVariantsBatch(firestoreProductRepository, productId, variants);
+      await recalculateProductStock(firestoreProductRepository, productId);
     }
     await fetchProducts();
   }, [fetchProducts]);
@@ -87,5 +97,5 @@ export function useProducts() {
     await fetchProducts();
   }, [fetchProducts]);
 
-  return { products, loading, error, refetch: fetchProducts, create, createWithVariants, update, toggleActive, remove, setFlags, applyDiscount, applyCatDiscount, adjustWholesaleStock, reorder };
+  return { products, loading, error, refetch: fetchProducts, create, createWithVariants, addVariants, update, toggleActive, remove, setFlags, applyDiscount, applyCatDiscount, adjustWholesaleStock, reorder };
 }
