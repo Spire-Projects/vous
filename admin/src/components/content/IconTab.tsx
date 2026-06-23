@@ -57,7 +57,7 @@ function InfluencerForm({
 }) {
   const [form, setForm] = useState<CreateInfluencerInput>({ ...initial });
 
-  const handleChange = (field: keyof CreateInfluencerInput, value: string | number) => {
+  const handleChange = (field: keyof CreateInfluencerInput, value: string | number | string[]) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 

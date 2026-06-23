@@ -70,18 +70,31 @@ export function SocialPostFormDialog({ open, post, onClose, onSave }: SocialPost
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Imagen principal */}
+          <div className="space-y-2">
+            <Label>Imágenes *</Label>
+            <MultiImagePicker values={images} onChange={setImages} folder="vous/social-posts" />
+          </div>
+
+          {/* Miniatura opcional */}
+          <div className="space-y-1">
+            <Label>URL de miniatura (opcional)</Label>
+            <Input value={thumbnailUrl} onChange={(e) => setThumbnailUrl(e.target.value)} placeholder="https://..." />
+          </div>
+
+          {/* Título */}
           <div className="space-y-1">
             <Label>Título *</Label>
             <Input required value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Ej: Nuevo look de verano" />
           </div>
+
+          {/* Descripción */}
           <div className="space-y-1">
             <Label>Descripción</Label>
             <Input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Breve descripción..." />
           </div>
-          <div className="space-y-1">
-            <Label>URL del video *</Label>
-            <Input required value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} placeholder="https://..." />
-          </div>
+
+          {/* Plataforma */}
           <div className="space-y-1">
             <Label>Plataforma</Label>
             <Select value={platform} onValueChange={(v: SocialPost["platform"]) => setPlatform(v)}>
@@ -96,14 +109,16 @@ export function SocialPostFormDialog({ open, post, onClose, onSave }: SocialPost
               </SelectContent>
             </Select>
           </div>
+
+          {/* URL del post/video — obligatorio para links de redes */}
           <div className="space-y-1">
-            <Label>URL de miniatura</Label>
-            <Input value={thumbnailUrl} onChange={(e) => setThumbnailUrl(e.target.value)} placeholder="https://..." />
+            <Label>Link de la red social *</Label>
+            <Input required value={videoUrl} onChange={(e) => setVideoUrl(e.target.value)} placeholder="https://..." />
+            <p className="text-[11px] text-black/40 font-sans">
+              Obligatorio. Pegá el link directo al post, reel o video.
+            </p>
           </div>
-          <div className="space-y-2">
-            <Label>Imágenes adicionales</Label>
-            <MultiImagePicker values={images} onChange={setImages} folder="vous/social-posts" />
-          </div>
+
           <div className="space-y-1">
             <Label>Orden</Label>
             <Input type="number" min={0} value={order} onChange={(e) => setOrder(Number(e.target.value))} />
