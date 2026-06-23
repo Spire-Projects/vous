@@ -10,6 +10,7 @@ function mapDoc(id: string, data: Record<string, unknown>): Influencer {
     id,
     name: (data.name as string) ?? "",
     imageUrl: (data.imageUrl as string) ?? "",
+    images: (data.images as string[]) ?? [],
     instagramUrl: (data.instagramUrl as string) ?? "",
     tiktokUrl: (data.tiktokUrl as string) ?? "",
     order: (data.order as number) ?? 0,

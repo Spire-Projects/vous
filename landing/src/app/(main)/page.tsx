@@ -4,7 +4,7 @@ import {
   NewInSection,
   CollectionsSection,
   FeaturedProductsSection,
-  SocialPostsSection,
+  TrendingProductsSection,
   FeedbackSection,
 } from "@/components/home";
 
@@ -14,9 +14,9 @@ export default function HomePage() {
       <HeroSection />
       <ValuesSection />
       <FeaturedProductsSection />
+      <TrendingProductsSection />
       <CollectionsSection />
       <NewInSection />
-      <SocialPostsSection />
       <FeedbackSection />
     </>
   );

@@ -4,12 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ImagePicker } from "@/components/shared/ImagePicker";
+import { MultiImagePicker } from "@/components/shared/MultiImagePicker";
 import { useInfluencers } from "@/hooks/useInfluencers";
 import type { Influencer, CreateInfluencerInput } from "@/domain/entities/influencer.entity";
 
 const EMPTY_FORM: CreateInfluencerInput = {
   name: "",
   imageUrl: "",
+  images: [],
   instagramUrl: "",
   tiktokUrl: "",
   order: 0,
@@ -19,6 +21,7 @@ const DEFAULT_INFLUENCERS: CreateInfluencerInput[] = [
   {
     name: "Danny Beltran",
     imageUrl: "",
+    images: [],
     instagramUrl: "https://www.instagram.com/danny.stylist_ba?igsh=eXhtcGtkczJiOGpi",
     tiktokUrl: "https://www.tiktok.com/@dani.stylebiz?_r=1&_t=ZS-96nb7RgOZVw",
     order: 1,
@@ -26,6 +29,7 @@ const DEFAULT_INFLUENCERS: CreateInfluencerInput[] = [
   {
     name: "Romer Angola",
     imageUrl: "",
+    images: [],
     instagramUrl: "https://www.instagram.com/rom_angola?igsh=MW5vcmJxc3ZhMDM4eQ==",
     tiktokUrl: "https://www.tiktok.com/@rom_angola?_r=1&_t=ZS-96nc04SS6lj",
     order: 2,
@@ -33,6 +37,7 @@ const DEFAULT_INFLUENCERS: CreateInfluencerInput[] = [
   {
     name: "Sasha Vasquez",
     imageUrl: "",
+    images: [],
     instagramUrl: "https://www.instagram.com/sashavasquez__?igsh=MW4wa3hxMXVvNjI0MA==",
     tiktokUrl: "https://www.tiktok.com/@sashavasquez__?_r=1&_t=ZS-96nbiu5EBxn",
     order: 3,
@@ -72,13 +77,22 @@ function InfluencerForm({
           <Input value={form.name} onChange={(e) => handleChange("name", e.target.value)} placeholder="Danny Beltran" className="text-xs" />
         </div>
         <div className="space-y-1">
-          <Label className="text-[11px]">Imagen</Label>
+          <Label className="text-[11px]">Imagen principal</Label>
           <ImagePicker
             value={form.imageUrl}
             onChange={(url) => handleChange("imageUrl", url)}
             folder="vous/influencers"
             label="Subir foto del influencer"
             aspect="square"
+          />
+        </div>
+        <div className="space-y-1 md:col-span-2">
+          <Label className="text-[11px]">Galería de imágenes</Label>
+          <MultiImagePicker
+            values={form.images ?? []}
+            onChange={(urls) => handleChange("images", urls)}
+            folder="vous/influencers"
+            label="Agregar imagen"
           />
         </div>
         <div className="space-y-1">

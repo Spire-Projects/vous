@@ -22,6 +22,7 @@ function mapDoc(id: string, data: Record<string, unknown>): SocialPost {
     videoUrl: (data.videoUrl as string) ?? "",
     platform: (data.platform as SocialPost["platform"]) ?? "instagram",
     thumbnailUrl: (data.thumbnailUrl as string) ?? "",
+    images: (data.images as string[]) ?? [],
     active: (data.active as boolean) ?? true,
     order: (data.order as number) ?? 0,
     createdAt:

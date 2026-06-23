@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ImagePicker } from "@/components/shared/ImagePicker";
+import { MultiImagePicker } from "@/components/shared/MultiImagePicker";
 import type { Category, CreateCategoryInput } from "@/domain/entities/category.entity";
 import { toSlug } from "@/utils/slug";
 
@@ -23,6 +24,7 @@ export function CategoryFormDialog({ open, category, nextOrder, onClose, onSave 
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
   const [banner, setBanner] = useState("");
+  const [images, setImages] = useState<string[]>([]);
   const [isActive, setIsActive] = useState(true);
   const [saving, setSaving] = useState(false);
   const [slugManual, setSlugManual] = useState(false);
@@ -32,9 +34,9 @@ export function CategoryFormDialog({ open, category, nextOrder, onClose, onSave 
     if (category) {
       setName(category.name); setSlug(category.slug);
       setDescription(category.description ?? ""); setImage(category.image ?? "");
-      setBanner(category.banner ?? ""); setIsActive(category.isActive);
+      setBanner(category.banner ?? ""); setImages(category.images ?? []); setIsActive(category.isActive);
     } else {
-      setName(""); setSlug(""); setDescription(""); setImage(""); setBanner(""); setIsActive(true); setSlugManual(false);
+      setName(""); setSlug(""); setDescription(""); setImage(""); setBanner(""); setImages([]); setIsActive(true); setSlugManual(false);
     }
   }, [category, open]);
   /* eslint-enable react-hooks/set-state-in-effect */
@@ -54,6 +56,7 @@ export function CategoryFormDialog({ open, category, nextOrder, onClose, onSave 
         description: description || undefined,
         image: image || undefined,
         banner: banner || undefined,
+        images,
         isActive,
         sortOrder: category?.sortOrder ?? nextOrder,
       });
@@ -91,6 +94,10 @@ export function CategoryFormDialog({ open, category, nextOrder, onClose, onSave 
           <div className="space-y-1">
             <Label>Banner</Label>
             <ImagePicker value={banner} onChange={setBanner} folder="vous/banners" label="Subir banner" aspect="video" />
+          </div>
+          <div className="space-y-2">
+            <Label>Galería de imágenes</Label>
+            <MultiImagePicker values={images} onChange={setImages} folder="vous/categories" label="Agregar imagen" />
           </div>
           <div className="flex items-center gap-2">
             <Checkbox checked={isActive} onCheckedChange={(v) => setIsActive(v === true)} />

@@ -3,7 +3,6 @@ import {
   getDocs,
   query,
   orderBy,
-  where,
 } from "firebase/firestore";
 import { getFirebaseDb } from "@/lib/firebase";
 import type { SocialPostRepository } from "@/domain/repositories/social-post.repository";
@@ -17,6 +16,7 @@ function mapDoc(id: string, data: Record<string, unknown>): SocialPost {
     videoUrl: (data.videoUrl as string) ?? "",
     platform: (data.platform as SocialPost["platform"]) ?? "instagram",
     thumbnailUrl: (data.thumbnailUrl as string) ?? "",
+    images: (data.images as string[]) ?? [],
     active: (data.active as boolean) ?? true,
     order: (data.order as number) ?? 0,
     createdAt:
@@ -30,10 +30,11 @@ export const firestoreSocialPostRepository: SocialPostRepository = {
     const db = getFirebaseDb();
     const q = query(
       collection(db, "socialPosts"),
-      where("active", "==", true),
       orderBy("order", "asc")
     );
     const snap = await getDocs(q);
-    return snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>));
+    return snap.docs
+      .map((d) => mapDoc(d.id, d.data() as Record<string, unknown>))
+      .filter((p) => p.active);
   },
 };

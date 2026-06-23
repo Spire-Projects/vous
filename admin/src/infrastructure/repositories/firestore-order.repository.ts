@@ -1,7 +1,7 @@
 import {
   collection, getDocs, doc, getDoc, updateDoc,
   query, orderBy, where, limit as fsLimit, serverTimestamp,
-  onSnapshot, runTransaction, arrayUnion,
+  onSnapshot, runTransaction, arrayUnion, increment,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import type { OrderRepository } from "@/domain/repositories/order.repository";
@@ -94,16 +94,64 @@ export const firestoreOrderRepository: OrderRepository = {
   },
 
   async updateStatus({ orderId, status, note }: UpdateOrderStatusInput): Promise<void> {
-    const entry: StatusHistoryEntry = {
-      status,
-      notes: note,
-      timestamp: new Date().toISOString(),
-    };
-    await updateDoc(doc(db, "orders", orderId), {
-      status,
-      ...(note ? { adminNotes: note } : {}),
-      statusHistory: arrayUnion(entry),
-      updatedAt: serverTimestamp(),
+    const orderRef = doc(db, "orders", orderId);
+    const confirmedStatuses = ["confirmed", "preparing", "shipped", "delivered"];
+    const pendingStatuses = ["pending", "payment_sent", "verifying_payment"];
+
+    await runTransaction(db, async (transaction) => {
+      const orderSnap = await transaction.get(orderRef);
+      if (!orderSnap.exists()) throw new Error("Pedido no encontrado");
+
+      const currentStatus = orderSnap.data()["status"] as Order["status"];
+      const items = (orderSnap.data()["items"] ?? []) as OrderItem[];
+
+      const isNowConfirmed = confirmedStatuses.includes(status);
+      const wasPending = pendingStatuses.includes(currentStatus);
+
+      // Incrementar contadores solo al pasar de pendiente a confirmado
+      if (isNowConfirmed && wasPending) {
+        for (const item of items) {
+          const productRef = doc(db, "products", item.productId);
+          const productSnap = await transaction.get(productRef);
+          if (productSnap.exists()) {
+            transaction.update(productRef, {
+              totalSales: increment(item.quantity),
+              weeklySales: increment(item.quantity),
+              updatedAt: serverTimestamp(),
+            });
+          }
+        }
+      }
+
+      // Si se cancela un pedido confirmado, restar contadores
+      if (status === "cancelled" && !pendingStatuses.includes(currentStatus)) {
+        for (const item of items) {
+          const productRef = doc(db, "products", item.productId);
+          const productSnap = await transaction.get(productRef);
+          if (productSnap.exists()) {
+            const currentTotal = (productSnap.data()["totalSales"] as number) ?? 0;
+            const currentWeekly = (productSnap.data()["weeklySales"] as number) ?? 0;
+            transaction.update(productRef, {
+              totalSales: Math.max(0, currentTotal - item.quantity),
+              weeklySales: Math.max(0, currentWeekly - item.quantity),
+              updatedAt: serverTimestamp(),
+            });
+          }
+        }
+      }
+
+      const entry: StatusHistoryEntry = {
+        status,
+        notes: note,
+        timestamp: new Date().toISOString(),
+      };
+
+      transaction.update(orderRef, {
+        status,
+        ...(note ? { adminNotes: note } : {}),
+        statusHistory: arrayUnion(entry),
+        updatedAt: serverTimestamp(),
+      });
     });
   },
 

@@ -20,7 +20,7 @@ const VALUES = [
 
 export function NosotrosPilares() {
   return (
-    <section className="bg-white border-y border-black/10 py-12 md:py-24">
+    <section className="border-y border-black/10 py-12 md:py-24">
       <div className="max-w-[1440px] mx-auto px-5 md:px-20">
         <div className="mb-14 text-center">
           <span className="font-nav text-[10px] tracking-[0.25em] uppercase text-black mb-3 block">

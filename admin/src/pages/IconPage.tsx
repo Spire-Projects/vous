@@ -5,40 +5,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ImagePicker } from "@/components/shared/ImagePicker";
+import { MultiImagePicker } from "@/components/shared/MultiImagePicker";
 import { useInfluencers } from "@/hooks/useInfluencers";
 import type { Influencer, CreateInfluencerInput } from "@/domain/entities/influencer.entity";
 
 const EMPTY_FORM: CreateInfluencerInput = {
   name: "",
   imageUrl: "",
+  images: [],
   instagramUrl: "",
   tiktokUrl: "",
   order: 0,
 };
-
-const DEFAULT_INFLUENCERS: CreateInfluencerInput[] = [
-  {
-    name: "Danny Beltran",
-    imageUrl: "",
-    instagramUrl: "https://www.instagram.com/danny.stylist_ba?igsh=eXhtcGtkczJiOGpi",
-    tiktokUrl: "https://www.tiktok.com/@dani.stylebiz?_r=1&_t=ZS-96nb7RgOZVw",
-    order: 1,
-  },
-  {
-    name: "Romer Angola",
-    imageUrl: "",
-    instagramUrl: "https://www.instagram.com/rom_angola?igsh=MW5vcmJxc3ZhMDM4eQ==",
-    tiktokUrl: "https://www.tiktok.com/@rom_angola?_r=1&_t=ZS-96nc04SS6lj",
-    order: 2,
-  },
-  {
-    name: "Sasha Vasquez",
-    imageUrl: "",
-    instagramUrl: "https://www.instagram.com/sashavasquez__?igsh=MW4wa3hxMXVvNjI0MA==",
-    tiktokUrl: "https://www.tiktok.com/@sashavasquez__?_r=1&_t=ZS-96nbiu5EBxn",
-    order: 3,
-  },
-];
 
 function InfluencerForm({
   initial,
@@ -53,7 +31,7 @@ function InfluencerForm({
 }) {
   const [form, setForm] = useState<CreateInfluencerInput>({ ...initial });
 
-  const handleChange = (field: keyof CreateInfluencerInput, value: string | number) => {
+  const handleChange = (field: keyof CreateInfluencerInput, value: string | number | string[]) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -73,13 +51,22 @@ function InfluencerForm({
           <Input value={form.name} onChange={(e) => handleChange("name", e.target.value)} placeholder="Danny Beltran" className="text-xs" />
         </div>
         <div className="space-y-1">
-          <Label className="text-[11px]">Imagen</Label>
+          <Label className="text-[11px]">Imagen principal</Label>
           <ImagePicker
             value={form.imageUrl}
             onChange={(url) => handleChange("imageUrl", url)}
             folder="vous/influencers"
             label="Subir foto del influencer"
             aspect="square"
+          />
+        </div>
+        <div className="space-y-1 md:col-span-2">
+          <Label className="text-[11px]">Galería de imágenes</Label>
+          <MultiImagePicker
+            values={form.images ?? []}
+            onChange={(urls) => handleChange("images", urls)}
+            folder="vous/influencers"
+            label="Agregar imagen"
           />
         </div>
         <div className="space-y-1">
@@ -121,12 +108,6 @@ export function IconPage() {
     setShowForm(false);
   }
 
-  async function loadDefaults() {
-    for (const inf of DEFAULT_INFLUENCERS) {
-      await create(inf);
-    }
-  }
-
   if (loading) {
     return (
       <div className="w-full px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
@@ -144,15 +125,9 @@ export function IconPage() {
         title="VOUS ICON"
         subtitle="Influencers y colaboradores que representan la marca."
         action={
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={loadDefaults} className="text-xs font-sans">
-              <Star size={13} className="mr-1" />
-              Cargar influencers
-            </Button>
-            <Button size="sm" onClick={() => { setEditing(null); setShowForm(true); }} className="text-xs">
-              <Plus size={13} /> Agregar
-            </Button>
-          </div>
+          <Button size="sm" onClick={() => { setEditing(null); setShowForm(true); }} className="text-xs">
+            <Plus size={13} /> Agregar
+          </Button>
         }
       />
 

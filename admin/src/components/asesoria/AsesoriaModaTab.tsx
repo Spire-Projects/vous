@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RichTextEditor } from "@/components/blog/RichTextEditor";
 import { ImagePicker } from "@/components/shared/ImagePicker";
+import { MultiImagePicker } from "@/components/shared/MultiImagePicker";
 import { useSiteConfig } from "@/hooks/useSiteConfig";
 import type { ContentSection } from "@/domain/entities/site-config.entity";
 
@@ -18,6 +19,7 @@ export function AsesoriaModaTab() {
     subtitle: "",
     content: "",
     imageUrl: "",
+    images: [],
     linkUrl: "",
   });
 
@@ -98,6 +100,16 @@ export function AsesoriaModaTab() {
                 folder="vous/asesoria"
                 label="Subir imagen"
                 aspect="video"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Galería de imágenes</Label>
+              <MultiImagePicker
+                values={form.images ?? []}
+                onChange={(urls) => setForm((f) => ({ ...f, images: urls }))}
+                folder="vous/asesoria"
+                label="Agregar imagen"
               />
             </div>
 

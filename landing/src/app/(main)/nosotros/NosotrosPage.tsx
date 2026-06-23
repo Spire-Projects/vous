@@ -36,10 +36,18 @@ export function NosotrosPage() {
 
   return (
     <>
-      <NosotrosHero storeName={storeName} />
-      <NosotrosHistoria storeName={storeName} />
-      <NosotrosPilares />
-      <NosotrosScheduleContact config={config} whatsappHref={whatsappHref} />
+      <section className="bg-white">
+        <NosotrosHero storeName={storeName} />
+      </section>
+      <section className="bg-[#FAF8F5]">
+        <NosotrosHistoria storeName={storeName} />
+      </section>
+      <section className="bg-white">
+        <NosotrosPilares />
+      </section>
+      <section className="bg-[#FAF8F5]">
+        <NosotrosScheduleContact config={config} whatsappHref={whatsappHref} />
+      </section>
       <section className="bg-white border-y border-black/10 py-12 md:py-24">
         <div className="max-w-[1440px] mx-auto px-5 md:px-20">
           <div className="mb-14 text-center">
@@ -53,11 +61,17 @@ export function NosotrosPage() {
               Selecciona un departamento en el mapa para ver los puntos de venta oficiales.
             </p>
           </div>
-          <NosotrosMap departmentLinks={departmentLinks} otherCountryLinks={otherCountryLinks} />
+          <div className="relative z-0">
+            <NosotrosMap departmentLinks={departmentLinks} otherCountryLinks={otherCountryLinks} />
+          </div>
         </div>
       </section>
-      <FAQSection />
-      <NosotrosCta />
+      <section className="bg-[#FAF8F5]">
+        <FAQSection />
+      </section>
+      <section className="bg-white">
+        <NosotrosCta />
+      </section>
     </>
   );
 }

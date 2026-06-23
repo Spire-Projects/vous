@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import type { BlogPost } from "@/domain/entities/blog-post.entity";
 
 interface PostCardProps {
@@ -17,17 +16,15 @@ export function PostCard({ post }: PostCardProps) {
 
   return (
     <Link href={`/revista/${post.slug}`} className="group block">
-      <div className="aspect-video overflow-hidden bg-black mb-4 relative">
+      <div className="overflow-hidden bg-black mb-4 relative">
         {post.coverImage ? (
-          <Image
+          <img
             src={post.coverImage}
             alt={post.title}
-            fill
-            sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-auto group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <div className="w-full h-full bg-black" />
+          <div className="w-full aspect-video bg-black" />
         )}
       </div>
       <p className="font-nav text-[10px] tracking-[0.2em] uppercase text-black mb-2">

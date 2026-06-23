@@ -30,6 +30,7 @@ export interface ContentSection {
   subtitle: string;
   content: string;
   imageUrl?: string;
+  images?: string[];
   linkUrl?: string;
 }
 

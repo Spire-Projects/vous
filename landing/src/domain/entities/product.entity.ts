@@ -36,6 +36,10 @@ export interface Product {
   sortOrder: number;
   attributes: Record<string, string>;
   tags?: string[];
+  /** Ventas totales acumuladas */
+  totalSales?: number;
+  /** Ventas de la última semana (para trending) */
+  weeklySales?: number;
   createdAt: string;
   updatedAt: string;
 }

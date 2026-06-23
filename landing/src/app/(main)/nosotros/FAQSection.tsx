@@ -11,7 +11,7 @@ export function FAQSection() {
 
   if (loading) {
     return (
-      <section className="bg-white py-16 md:py-24 px-4 md:px-8 lg:px-12">
+      <section className="py-16 md:py-24 px-4 md:px-8 lg:px-12">
         <div className="max-w-[1440px] mx-auto flex justify-center">
           <span className="inline-block w-6 h-6 border-2 border-black/30 border-t-black rounded-full animate-spin" />
         </div>
@@ -21,7 +21,7 @@ export function FAQSection() {
 
   if (error) {
     return (
-      <section className="bg-white py-16 md:py-24 px-4 md:px-8 lg:px-12">
+      <section className="py-16 md:py-24 px-4 md:px-8 lg:px-12">
         <div className="max-w-[1440px] mx-auto text-center">
           <p className="font-sans text-sm text-black/50">
             No se pudieron cargar las preguntas frecuentes. Revisa la consola para más detalles.
@@ -33,7 +33,7 @@ export function FAQSection() {
 
   if (faqs.length === 0) {
     return (
-      <section className="bg-white py-16 md:py-24 px-4 md:px-8 lg:px-12">
+      <section className="py-16 md:py-24 px-4 md:px-8 lg:px-12">
         <div className="max-w-[1440px] mx-auto">
           <p className="font-nav text-[11px] tracking-[0.25em] text-black uppercase mb-3">
             Preguntas frecuentes
@@ -49,7 +49,7 @@ export function FAQSection() {
   }
 
   return (
-    <section className="bg-white py-16 md:py-24 px-4 md:px-8 lg:px-12">
+    <section className="py-16 md:py-24 px-4 md:px-8 lg:px-12">
       <div className="max-w-[1440px] mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">

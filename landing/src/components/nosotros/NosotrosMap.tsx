@@ -15,9 +15,9 @@ import "leaflet/dist/leaflet.css";
 const DEFAULT_CENTER: [number, number] = [-16.5, -64.5];
 const DEFAULT_ZOOM = 6;
 
-const blackDotIcon = L.divIcon({
-  className: "black-dot",
-  html: `<div style="width:14px;height:14px;background:#000000;border-radius:50%;border:2px solid white;box-shadow:0 2px 5px rgba(0,0,0,0.35);"></div>`,
+const redDotIcon = L.divIcon({
+  className: "red-dot",
+  html: `<div style="width:14px;height:14px;background:#dc2626;border-radius:50%;border:2px solid white;box-shadow:0 2px 5px rgba(0,0,0,0.35);"></div>`,
   iconSize: [14, 14],
   iconAnchor: [7, 7],
   popupAnchor: [0, -7],
@@ -61,10 +61,10 @@ function geoJSONStyle(
   const deptId = resolveDeptId(feature.properties.name);
   const isSelected = deptId === selectedDept;
   return {
-    fillColor: isSelected ? "#000000" : "#000000",
-    fillOpacity: isSelected ? 0.30 : 0.08,
-    color: isSelected ? "#000000" : "#000000",
-    weight: isSelected ? 2.5 : 1,
+    fillColor: isSelected ? "#dc2626" : "#dc2626",
+    fillOpacity: isSelected ? 0.35 : 0.15,
+    color: isSelected ? "#b91c1c" : "#dc2626",
+    weight: isSelected ? 2.5 : 1.2,
     dashArray: isSelected ? "" : "3 3",
   };
 }
@@ -122,13 +122,14 @@ export function NosotrosMap({ departmentLinks, otherCountryLinks }: NosotrosMapP
   return (
     <div className="flex flex-col lg:flex-row gap-3" style={{ minHeight: 500 }}>
       {/* Mapa */}
-      <div className="flex-1 rounded-2xl overflow-hidden border border-black/10" style={{ minHeight: 500 }}>
+      <div className="flex-1 rounded-2xl overflow-hidden border border-black/10 z-[1]" style={{ minHeight: 500 }}>
         <MapContainer
           center={DEFAULT_CENTER}
           zoom={DEFAULT_ZOOM}
           scrollWheelZoom={true}
           style={{ width: "100%", height: "100%", minHeight: 500 }}
           attributionControl={false}
+          className="z-[1]"
         >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -145,7 +146,7 @@ export function NosotrosMap({ departmentLinks, otherCountryLinks }: NosotrosMapP
             const pos = markerPosition(link);
             if (!pos) return null;
             return (
-              <Marker key={`marker-${idx}`} position={pos} icon={blackDotIcon}>
+              <Marker key={`marker-${idx}`} position={pos} icon={redDotIcon}>
                 <Popup>
                   <div className="font-sans text-xs space-y-1 min-w-[150px]">
                     <p className="font-nav text-[11px] uppercase tracking-wide text-black font-semibold">

@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
+import { MultiImagePicker } from "@/components/shared/MultiImagePicker";
 import type { SocialPost, CreateSocialPostInput } from "@/domain/entities/social-post.entity";
 
 interface SocialPostFormDialogProps {
@@ -22,6 +23,7 @@ export function SocialPostFormDialog({ open, post, onClose, onSave }: SocialPost
   const [videoUrl, setVideoUrl] = useState("");
   const [platform, setPlatform] = useState<SocialPost['platform']>("instagram");
   const [thumbnailUrl, setThumbnailUrl] = useState("");
+  const [images, setImages] = useState<string[]>([]);
   const [active, setActive] = useState(true);
   const [order, setOrder] = useState(0);
   const [saving, setSaving] = useState(false);
@@ -33,6 +35,7 @@ export function SocialPostFormDialog({ open, post, onClose, onSave }: SocialPost
       setVideoUrl(post.videoUrl);
       setPlatform(post.platform);
       setThumbnailUrl(post.thumbnailUrl);
+      setImages(post.images ?? []);
       setActive(post.active);
       setOrder(post.order);
     } else {
@@ -41,6 +44,7 @@ export function SocialPostFormDialog({ open, post, onClose, onSave }: SocialPost
       setVideoUrl("");
       setPlatform("instagram");
       setThumbnailUrl("");
+      setImages([]);
       setActive(true);
       setOrder(0);
     }
@@ -50,7 +54,7 @@ export function SocialPostFormDialog({ open, post, onClose, onSave }: SocialPost
     e.preventDefault();
     setSaving(true);
     try {
-      await onSave({ title, description, videoUrl, platform, thumbnailUrl, active, order });
+      await onSave({ title, description, videoUrl, platform, thumbnailUrl, images, active, order });
       onClose();
     } finally {
       setSaving(false);
@@ -95,6 +99,10 @@ export function SocialPostFormDialog({ open, post, onClose, onSave }: SocialPost
           <div className="space-y-1">
             <Label>URL de miniatura</Label>
             <Input value={thumbnailUrl} onChange={(e) => setThumbnailUrl(e.target.value)} placeholder="https://..." />
+          </div>
+          <div className="space-y-2">
+            <Label>Imágenes adicionales</Label>
+            <MultiImagePicker values={images} onChange={setImages} folder="vous/social-posts" />
           </div>
           <div className="space-y-1">
             <Label>Orden</Label>

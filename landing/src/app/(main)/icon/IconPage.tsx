@@ -2,6 +2,7 @@
 
 import { Star, ExternalLink } from "lucide-react";
 import { useInfluencers } from "@/hooks/useInfluencers";
+import { ImageCarousel } from "@/components/shared/ImageCarousel";
 
 export function IconPage() {
   const { influencers, loading, error } = useInfluencers();
@@ -10,7 +11,7 @@ export function IconPage() {
     <>
       {/* Hero */}
       <section className="bg-black py-14 md:py-20 overflow-hidden">
-        <div className="max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8">
+        <div className="max-w-[1440px] mx-auto px-5 md:px-20">
           <div className="max-w-3xl">
             <span className="font-nav text-[11px] tracking-[0.3em] uppercase text-white/40 mb-3 block">
               Inspo Outfits
@@ -27,7 +28,7 @@ export function IconPage() {
 
       {/* Influencers Grid */}
       <section className="py-12 md:py-20 bg-white">
-        <div className="max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8">
+        <div className="max-w-[1440px] mx-auto px-5 md:px-20">
           <div className="mb-10 text-center">
             <span className="font-nav text-[10px] tracking-[0.25em] uppercase text-black mb-3 block">
               Nuestros Embajadores
@@ -64,7 +65,17 @@ export function IconPage() {
                 >
                   {/* Photo */}
                   <div className="aspect-[3/4] bg-neutral-100 relative overflow-hidden">
-                    {inf.imageUrl ? (
+                    {inf.images && inf.images.length > 0 ? (
+                      <ImageCarousel
+                        images={inf.images}
+                        alt={inf.name}
+                        aspect="auto"
+                        interval={1800}
+                        showDots={false}
+                        pauseOnHover
+                        className="w-full h-full"
+                      />
+                    ) : inf.imageUrl ? (
                       <img
                         src={inf.imageUrl}
                         alt={inf.name}
@@ -128,7 +139,7 @@ export function IconPage() {
 
       {/* CTA */}
       <section className="py-12 md:py-20 bg-black">
-        <div className="max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8 text-center">
+        <div className="max-w-[1440px] mx-auto px-5 md:px-20 text-center">
           <Star size={32} className="text-white mx-auto mb-4" />
           <h2 className="font-serif text-[28px] md:text-[36px] text-white mb-4">
             ¿Querés ser parte de VOUS ICON?

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import type { BlogPost } from "@/domain/entities/blog-post.entity";
 
 interface FeaturedPostProps {
@@ -17,18 +16,15 @@ export function FeaturedPost({ post }: FeaturedPostProps) {
 
   return (
     <Link href={`/revista/${post.slug}`} className="group md:flex gap-10 mb-16 block">
-      <div className="md:w-1/2 aspect-video overflow-hidden bg-black relative shrink-0 mb-6 md:mb-0">
+      <div className="md:w-1/2 overflow-hidden bg-black relative shrink-0 mb-6 md:mb-0">
         {post.coverImage ? (
-          <Image
+          <img
             src={post.coverImage}
             alt={post.title}
-            fill
-            sizes="(max-width: 768px) 100vw, 50vw"
-            priority
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-auto group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <div className="w-full h-full bg-black" />
+          <div className="w-full aspect-video bg-black" />
         )}
       </div>
       <div className="md:w-1/2 flex flex-col justify-center">

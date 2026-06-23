@@ -9,6 +9,7 @@ interface CatalogFiltersProps {
   filters: DynamicFilters;
   state: CatalogFilterState;
   activeCount: number;
+  loading?: boolean;
   onQueryChange: (q: string) => void;
   onCategoryChange: (id: string | null) => void;
   onToggleSize: (size: string) => void;
@@ -45,6 +46,7 @@ export function CatalogFilters({
   filters,
   state,
   activeCount,
+  loading = false,
   onQueryChange,
   onCategoryChange,
   onToggleSize,
@@ -92,7 +94,14 @@ export function CatalogFilters({
 
       {/* Desktop sidebar */}
       <aside className="hidden lg:block w-60 shrink-0 space-y-8">
-        <SearchField value={state.query} onChange={onQueryChange} />
+        {loading && (
+          <div className="flex items-center justify-center py-12">
+            <span className="inline-block w-6 h-6 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+          </div>
+        )}
+        {!loading && (
+          <>
+            <SearchField value={state.query} onChange={onQueryChange} />
 
         {!hideCategoryFilter && (
           <CategoryFilter
@@ -133,6 +142,8 @@ export function CatalogFilters({
           >
             Limpiar filtros ({activeCount})
           </button>
+        )}
+          </>
         )}
       </aside>
 

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCategories } from "@/hooks/useCategories";
+import { ImageCarousel } from "@/components/shared/ImageCarousel";
 import { proxyCldUrl } from "@/utils/proxyCldUrl";
 
 const PLACEHOLDER_BGS = [
@@ -64,35 +65,51 @@ export default function CategoriasPage() {
 
         {!loading && !error && categories.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
-            {categories.map(({ id, slug, name, image, banner }, index) => (
-              <Link key={id} href={`/categoria/${slug}`} className="group block">
-                <div
-                  className={`relative aspect-square overflow-hidden mb-4 ${
-                    !(image || banner) ? `bg-gradient-to-b ${getBg(index)}` : "bg-black"
-                  }`}
-                >
-                  {(image || banner) && (
-                    <img
-                      src={proxyCldUrl(image ?? banner ?? "")}
-                      alt={name}
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <h2 className="font-serif text-xl md:text-2xl text-white leading-tight">
-                      {name}
-                    </h2>
-                    <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-black mt-1">
-                      Ver productos
-                    </p>
+            {categories.map(({ id, slug, name, image, banner, images }, index) => {
+              const allImages = images && images.length > 0
+                ? images
+                : [banner, image].filter(Boolean) as string[];
+
+              return (
+                <Link key={id} href={`/categoria/${slug}`} className="group block">
+                  <div
+                    className={`relative aspect-square overflow-hidden mb-4 ${
+                      !(image || banner || (images && images.length > 0)) ? `bg-gradient-to-b ${getBg(index)}` : "bg-black"
+                    }`}
+                  >
+                    {allImages.length > 1 ? (
+                      <ImageCarousel
+                        images={allImages}
+                        alt={name}
+                        aspect="auto"
+                        interval={2000}
+                        showDots={false}
+                        pauseOnHover
+                        className="w-full h-full"
+                      />
+                    ) : allImages.length === 1 ? (
+                      <img
+                        src={proxyCldUrl(allImages[0])}
+                        alt={name}
+                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : null}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-5">
+                      <h2 className="font-serif text-xl md:text-2xl text-white leading-tight">
+                        {name}
+                      </h2>
+                      <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-white/70 mt-1">
+                        Ver productos
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <span className="font-nav text-[11px] tracking-[0.12em] uppercase text-black/50 group-hover:text-black transition-colors border-b border-black/10 pb-0.5">
-                  Explorar {name}
-                </span>
-              </Link>
-            ))}
+                  <span className="font-nav text-[11px] tracking-[0.12em] uppercase text-black/50 group-hover:text-black transition-colors border-b border-black/10 pb-0.5">
+                    Explorar {name}
+                  </span>
+                </Link>
+              );
+            })}
           </div>
         )}
       </div>

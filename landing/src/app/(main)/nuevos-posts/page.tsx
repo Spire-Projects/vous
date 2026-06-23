@@ -1,25 +1,30 @@
 "use client";
 
-import Link from "next/link";
 import { useSocialPosts } from "@/hooks/useSocialPosts";
-import { ArrowLeft, Video, ExternalLink } from "lucide-react";
+import { ImageCarousel } from "@/components/shared/ImageCarousel";
+import { Video, ExternalLink } from "lucide-react";
 
 export default function NuevosPostsPage() {
   const { posts, loading, error } = useSocialPosts();
 
   return (
     <main className="bg-white min-h-screen">
-      <div className="max-w-[1440px] mx-auto px-5 md:px-20 pt-20 md:pt-28 pb-16 md:pb-24">
+      {/* Black hero banner */}
+      <section className="bg-black text-white pt-20 md:pt-28 pb-16 md:pb-24">
+        <div className="max-w-[1440px] mx-auto px-5 md:px-20">
+          <span className="font-nav text-[10px] tracking-[0.25em] uppercase text-white/50 mb-4 block">
+            Redes Sociales
+          </span>
+          <h1 className="font-serif text-[36px] md:text-[64px] leading-[1.08] text-white mb-6">
+            New Post
+          </h1>
+          <p className="font-sans text-sm text-white/60 max-w-md leading-relaxed">
+            Nuestros últimos videos y posts en redes sociales.
+          </p>
+        </div>
+      </section>
 
-        <span className="font-nav text-[10px] tracking-[0.25em] uppercase text-black mb-4 block">
-          Redes Sociales
-        </span>
-        <h1 className="font-serif text-[36px] md:text-[64px] leading-[1.08] text-black mb-8">
-          New Post
-        </h1>
-        <p className="font-sans text-sm text-black/50 max-w-md leading-relaxed mb-12">
-          Nuestros últimos videos y posts en redes sociales.
-        </p>
+      <div className="max-w-[1440px] mx-auto px-5 md:px-20 py-16 md:py-24">
 
         {loading && (
           <div className="flex justify-center py-24">
@@ -47,19 +52,29 @@ export default function NuevosPostsPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts.map((post) => (
               <div key={post.id} className="group">
-                <div className="relative aspect-video overflow-hidden bg-black/5 mb-4">
-                  {post.thumbnailUrl ? (
+                <div className="relative overflow-hidden bg-black/5 mb-4">
+                  {post.images && post.images.length > 0 ? (
+                    <ImageCarousel
+                      images={post.images}
+                      alt={post.title}
+                      aspect="auto"
+                      interval={2000}
+                      showDots
+                      pauseOnHover
+                      className="w-full"
+                    />
+                  ) : post.thumbnailUrl ? (
                     <img
                       src={post.thumbnailUrl}
                       alt={post.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="w-full h-auto transition-transform duration-500 group-hover:scale-105"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center">
+                    <div className="w-full aspect-video flex items-center justify-center">
                       <Video size={32} className="text-black/20" />
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors pointer-events-none" />
                   <a
                     href={post.videoUrl}
                     target="_blank"

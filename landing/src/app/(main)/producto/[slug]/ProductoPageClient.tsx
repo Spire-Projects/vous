@@ -108,9 +108,11 @@ export function ProductoPageClient() {
           />
         </div>
         <ProductVariantsList
+          product={product}
           variants={variants}
           sizes={product.sizes}
           colors={product.colors}
+          basePrice={product.price}
         />
         <CategoryDiscounts
           categoryId={product.categoryId}

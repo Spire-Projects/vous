@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useSocialPosts } from "@/hooks/useSocialPosts";
+import { ImageCarousel } from "@/components/shared/ImageCarousel";
 import { Button } from "@/components/ui/button";
 import { Video, ExternalLink } from "lucide-react";
 
@@ -10,7 +11,7 @@ export function SocialPostsSection() {
 
   if (loading) {
     return (
-      <section className="bg-white py-12 md:py-20 px-4 md:px-6 lg:px-8">
+      <section className="bg-white py-20 md:py-28 px-5 md:px-20">
         <div className="max-w-[1440px] mx-auto flex justify-center">
           <span className="inline-block w-6 h-6 border-2 border-black/30 border-t-black rounded-full animate-spin" />
         </div>
@@ -23,7 +24,7 @@ export function SocialPostsSection() {
   }
 
   return (
-    <section className="bg-white py-12 md:py-20 px-4 md:px-6 lg:px-8">
+    <section className="bg-white py-20 md:py-28 px-5 md:px-20">
       <div className="max-w-[1440px] mx-auto">
         <div className="mb-14">
           <p className="font-nav text-[11px] tracking-[0.25em] text-black uppercase mb-3">
@@ -39,7 +40,17 @@ export function SocialPostsSection() {
           {posts.map((post) => (
             <div key={post.id} className="group">
               <div className="relative aspect-video overflow-hidden bg-black/5 mb-4">
-                {post.thumbnailUrl ? (
+                {post.images && post.images.length > 0 ? (
+                  <ImageCarousel
+                    images={post.images}
+                    alt={post.title}
+                    aspect="video"
+                    interval={2000}
+                    showDots
+                    pauseOnHover
+                    className="w-full h-full"
+                  />
+                ) : post.thumbnailUrl ? (
                   <img
                     src={post.thumbnailUrl}
                     alt={post.title}
@@ -50,7 +61,7 @@ export function SocialPostsSection() {
                     <Video size={32} className="text-black/20" />
                   </div>
                 )}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors pointer-events-none" />
                 <a
                   href={post.videoUrl}
                   target="_blank"

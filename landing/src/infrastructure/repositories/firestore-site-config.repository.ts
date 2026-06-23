@@ -12,6 +12,7 @@ const DEFAULT_CONTENT_SECTION: SiteConfig["fashionTrends"] = {
   subtitle: "",
   content: "",
   imageUrl: "",
+  images: [],
   linkUrl: "",
 };
 

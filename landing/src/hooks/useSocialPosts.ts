@@ -8,6 +8,7 @@ export interface SocialPost {
   videoUrl: string;
   platform: "instagram" | "tiktok" | "youtube" | "facebook";
   thumbnailUrl: string;
+  images: string[];
   active: boolean;
   order: number;
   createdAt: string;

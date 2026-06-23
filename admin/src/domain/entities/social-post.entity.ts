@@ -10,6 +10,7 @@ export interface SocialPost {
   videoUrl: string;
   platform: SocialPostPlatform;
   thumbnailUrl: string;
+  images: string[];
   active: boolean;
   order: number;
   createdAt: string;
@@ -21,6 +22,7 @@ export interface CreateSocialPostInput {
   videoUrl: string;
   platform: SocialPostPlatform;
   thumbnailUrl: string;
+  images: string[];
   active: boolean;
   order: number;
 }

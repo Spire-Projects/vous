@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useProducts } from "@/hooks/useProducts";
+import { ImageCarousel } from "@/components/shared/ImageCarousel";
 import { proxyCldUrl } from "@/utils/proxyCldUrl";
 import type { Product } from "@/domain/entities/product.entity";
 
@@ -70,13 +71,24 @@ export function NewInSection() {
 
 function ProductStandardCard({ product }: { product: Product }) {
   const imageUrl = product.images?.[0] ? proxyCldUrl(product.images[0]) : null;
+  const hasMultipleImages = product.images && product.images.length > 1;
 
   return (
     <Link href={`/producto/${product.slug}`} className="group block">
       <div
         className={`relative aspect-[3/4] overflow-hidden mb-3 bg-black/5 ${!imageUrl ? `bg-gradient-to-b ${PLACEHOLDER_BG}` : ""}`}
       >
-        {imageUrl ? (
+        {hasMultipleImages ? (
+          <ImageCarousel
+            images={product.images}
+            alt={product.name}
+            aspect="auto"
+            interval={1500}
+            showDots={false}
+            pauseOnHover
+            className="w-full h-full"
+          />
+        ) : imageUrl ? (
           <img
             src={imageUrl}
             alt={product.name}
@@ -129,13 +141,24 @@ function ProductFeaturedCard({ product }: { product: Product | null }) {
   }
 
   const imageUrl = product.images?.[0] ? proxyCldUrl(product.images[0]) : null;
+  const hasMultipleImages = product.images && product.images.length > 1;
 
   return (
     <Link
       href={`/producto/${product.slug}`}
       className="group relative aspect-[3/4] overflow-hidden block bg-neutral-900"
     >
-      {imageUrl ? (
+      {hasMultipleImages ? (
+        <ImageCarousel
+          images={product.images}
+          alt={product.name}
+          aspect="auto"
+          interval={1500}
+          showDots={false}
+          pauseOnHover
+          className="w-full h-full"
+        />
+      ) : imageUrl ? (
         <img
           src={imageUrl}
           alt={product.name}

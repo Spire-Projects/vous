@@ -44,15 +44,15 @@ export function BlogPostClient() {
   return (
     <article className="bg-white min-h-screen">
       {/* Hero cover */}
-      <div className="relative aspect-[21/9] md:aspect-[21/7] bg-black overflow-hidden">
+      <div className="relative bg-black overflow-hidden">
         {post.coverImage ? (
           <img
             src={proxyCldUrl(post.coverImage)}
             alt={post.title}
-            className="w-full h-full object-cover opacity-80"
+            className="w-full h-auto opacity-80"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-[#1a1a18] to-[#2a2015]" />
+          <div className="w-full aspect-[16/9] bg-gradient-to-br from-[#1a1a18] to-[#2a2015]" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 px-5 md:px-20 py-10 md:py-16">

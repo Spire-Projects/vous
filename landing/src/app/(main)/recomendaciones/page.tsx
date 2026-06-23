@@ -139,37 +139,37 @@ export default function RecomendacionesPage() {
               </section>
 
               {/* Body types */}
-              <section>
-                <div className="flex items-center gap-3 mb-8">
-                  <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center">
-                    <Ruler size={18} className="text-white" strokeWidth={1.5} />
+              {filteredBodyGuides.length > 0 && (
+                <section>
+                  <div className="flex items-center gap-3 mb-8">
+                    <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center">
+                      <Ruler size={18} className="text-white" strokeWidth={1.5} />
+                    </div>
+                    <div>
+                      <h2 className="font-serif text-2xl md:text-3xl text-black">Cortes para tu cuerpo</h2>
+                      <p className="font-sans text-sm text-black/40">Encuentra los cortes y estilos que mejor se adaptan a tu tipo de cuerpo.</p>
+                    </div>
+                    <button
+                      onClick={() => setView("bodyTypes")}
+                      className="ml-auto inline-flex items-center gap-1 font-nav text-[10px] uppercase tracking-wider text-black/40 hover:text-black transition-colors"
+                    >
+                      Ver todos <ChevronRight size={14} />
+                    </button>
                   </div>
-                  <div>
-                    <h2 className="font-serif text-2xl md:text-3xl text-black">Cortes para tu cuerpo</h2>
-                    <p className="font-sans text-sm text-black/40">Encuentra los cortes y estilos que mejor se adaptan a tu tipo de cuerpo.</p>
-                  </div>
-                  <button
-                    onClick={() => setView("bodyTypes")}
-                    className="ml-auto inline-flex items-center gap-1 font-nav text-[10px] uppercase tracking-wider text-black/40 hover:text-black transition-colors"
-                  >
-                    Ver todos <ChevronRight size={14} />
-                  </button>
-                </div>
 
-                {guidesLoading ? (
-                  <div className="flex justify-center py-12">
-                    <span className="inline-block w-6 h-6 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-                  </div>
-                ) : filteredBodyGuides.length === 0 ? (
-                  <p className="text-center font-sans text-sm text-black/40 py-8">No hay guías disponibles.</p>
-                ) : (
-                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {filteredBodyGuides.slice(0, 4).map((guide) => (
-                      <BodyTypeCard key={guide.id} guide={guide} onClick={() => openGuide(guide)} />
-                    ))}
-                  </div>
-                )}
-              </section>
+                  {guidesLoading ? (
+                    <div className="flex justify-center py-12">
+                      <span className="inline-block w-6 h-6 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                      {filteredBodyGuides.slice(0, 4).map((guide) => (
+                        <BodyTypeCard key={guide.id} guide={guide} onClick={() => openGuide(guide)} />
+                      ))}
+                    </div>
+                  )}
+                </section>
+              )}
             </motion.div>
           )}
 

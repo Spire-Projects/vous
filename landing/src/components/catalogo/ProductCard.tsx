@@ -7,6 +7,7 @@ import type { UserRole } from "@/types/auth.types";
 import { proxyCldUrl } from "@/utils/proxyCldUrl";
 import { calculateFinalPrice } from "@/utils/calculate-price";
 import { WholesaleWatermark } from "@/components/shared/WholesaleWatermark";
+import { ImageCarousel } from "@/components/shared/ImageCarousel";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface ProductCardProps extends Product {
@@ -71,6 +72,11 @@ export function ProductCard({
   // Also show color swatches even if they don't have dedicated images
   const colorSwatches = colors ?? [];
 
+  const hoverImages = hoveredColor
+    ? (colors?.find((c) => c.name === hoveredColor)?.images ?? [activeImage])
+    : images;
+  const showCarousel = isHovered && (hoverImages?.length ?? 0) > 1;
+
   return (
     <Link
       href={`/producto/${slug}`}
@@ -83,16 +89,37 @@ export function ProductCard({
     >
       <div className="relative aspect-[3/4] overflow-hidden bg-black/5 mb-3">
         <AnimatePresence mode="wait">
-          <motion.img
-            key={activeImage}
-            src={proxyCldUrl(activeImage ?? coverImage ?? "")}
-            alt={name}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
+          {showCarousel ? (
+            <motion.div
+              key="carousel"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="absolute inset-0"
+            >
+              <ImageCarousel
+                images={hoverImages}
+                alt={name}
+                aspect="auto"
+                interval={1200}
+                showDots={false}
+                pauseOnHover
+                className="w-full h-full"
+              />
+            </motion.div>
+          ) : (
+            <motion.img
+              key={activeImage}
+              src={proxyCldUrl(activeImage ?? coverImage ?? "")}
+              alt={name}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          )}
         </AnimatePresence>
 
         {/* Badges */}

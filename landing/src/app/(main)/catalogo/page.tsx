@@ -8,8 +8,9 @@ import { useCatalogFilters } from "@/hooks/useCatalogFilters";
 import { Suspense } from "react";
 
 function CatalogoContent() {
-  const { products, loading, error } = useProducts();
-  const { categories } = useCategories();
+  const { products, loading: productsLoading, error } = useProducts();
+  const { categories, loading: categoriesLoading } = useCategories();
+  const isLoading = productsLoading || categoriesLoading;
 
   const {
     state,
@@ -51,6 +52,7 @@ function CatalogoContent() {
             filters={filters}
             state={state}
             activeCount={activeCount}
+            loading={isLoading}
             onQueryChange={setQuery}
             onCategoryChange={setCategory}
             onToggleSize={toggleSize}
@@ -60,7 +62,7 @@ function CatalogoContent() {
             onToggleTag={toggleTag}
             onClear={clearFilters}
           />
-          <CatalogGrid products={filtered} loading={loading} error={error} />
+          <CatalogGrid products={filtered} loading={productsLoading} error={error} />
         </div>
       </div>
     </div>
