@@ -8,7 +8,6 @@ import { ProductGallery } from "@/components/producto/ProductGallery";
 import { ProductInfo } from "@/components/producto/ProductInfo";
 import { RelatedProducts } from "@/components/producto/RelatedProducts";
 import { CategoryDiscounts } from "@/components/producto/CategoryDiscounts";
-import { ProductVariantsList } from "@/components/producto/ProductVariantsList";
 import { useCategories } from "@/hooks/useCategories";
 import type { Product, ProductVariant } from "@/domain/entities/product.entity";
 
@@ -24,6 +23,7 @@ export function ProductoPageClient() {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
   const { categories } = useCategories();
   const categorySlug =
@@ -38,6 +38,7 @@ export function ProductoPageClient() {
     setVariants([]);
     setRelated([]);
     setSelectedColor(null);
+    setSelectedSize(null);
 
     firestoreProductRepository
       .findBySlug(slug)
@@ -65,6 +66,10 @@ export function ProductoPageClient() {
 
   const handleSelectColor = useCallback((color: string | null) => {
     setSelectedColor(color);
+  }, []);
+
+  const handleSelectSize = useCallback((size: string | null) => {
+    setSelectedSize(size);
   }, []);
 
   if (loading) {
@@ -98,6 +103,8 @@ export function ProductoPageClient() {
             name={product.name}
             colors={product.colors}
             selectedColor={selectedColor}
+            selectedSize={selectedSize}
+            variants={variants}
           />
           <ProductInfo
             product={product}
@@ -105,15 +112,10 @@ export function ProductoPageClient() {
             variantsLoading={variantsLoading}
             selectedColor={selectedColor}
             onSelectColor={handleSelectColor}
+            selectedSize={selectedSize}
+            onSelectSize={handleSelectSize}
           />
         </div>
-        <ProductVariantsList
-          product={product}
-          variants={variants}
-          sizes={product.sizes}
-          colors={product.colors}
-          basePrice={product.price}
-        />
         <CategoryDiscounts
           categoryId={product.categoryId}
           currentProductId={product.id}

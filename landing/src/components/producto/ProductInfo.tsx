@@ -50,6 +50,8 @@ interface ProductInfoProps {
   variantsLoading?: boolean;
   selectedColor?: string | null;
   onSelectColor?: (color: string | null) => void;
+  selectedSize?: string | null;
+  onSelectSize?: (size: string | null) => void;
 }
 
 export function ProductInfo({
@@ -58,16 +60,29 @@ export function ProductInfo({
   variantsLoading = false,
   selectedColor,
   onSelectColor,
+  selectedSize,
+  onSelectSize,
 }: ProductInfoProps) {
   const { addItem } = useCartContext();
   const { config } = useSiteConfig();
-  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [localSelectedSize, setLocalSelectedSize] = useState<string | null>(selectedSize ?? null);
   const [error, setError] = useState<string | null>(null);
   const [added, setAdded] = useState(false);
   const addedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const effectiveSelectedSize = selectedSize ?? localSelectedSize;
+
+  useEffect(() => {
+    setLocalSelectedSize(selectedSize ?? null);
+  }, [selectedSize]);
+
   function handleSelectColor(name: string | null) {
     if (onSelectColor) onSelectColor(name);
+  }
+
+  function handleSelectSize(size: string | null) {
+    setLocalSelectedSize(size);
+    if (onSelectSize) onSelectSize(size);
   }
 
   useEffect(() => {
@@ -86,12 +101,12 @@ export function ProductInfo({
     if (variants.length === 0) return null;
     return (
       variants.find((v) => {
-        const sizeMatch = !product.sizes.length || v.size === selectedSize;
+        const sizeMatch = !product.sizes.length || v.size === effectiveSelectedSize;
         const colorMatch = !product.colors.length || v.color === selectedColor;
         return sizeMatch && colorMatch;
       }) ?? null
     );
-  }, [variants, selectedSize, selectedColor, product]);
+  }, [variants, effectiveSelectedSize, selectedColor, product]);
 
   function isSizeUnavailable(size: string): boolean {
     if (variants.length === 0) return false;
@@ -104,8 +119,8 @@ export function ProductInfo({
   function isColorUnavailable(colorName: string): boolean {
     if (variants.length === 0) return false;
     if (!product.sizes.length) return !variants.some((v) => v.color === colorName && v.stock > 0);
-    if (selectedSize)
-      return !variants.some((v) => v.color === colorName && v.size === selectedSize && v.stock > 0);
+    if (effectiveSelectedSize)
+      return !variants.some((v) => v.color === colorName && v.size === effectiveSelectedSize && v.stock > 0);
     return !variants.some((v) => v.color === colorName && v.stock > 0);
   }
 
@@ -128,7 +143,7 @@ export function ProductInfo({
       return;
     }
     if (hasVariantOptions) {
-      const needsSize = product.sizes.length > 0 && !selectedSize;
+      const needsSize = product.sizes.length > 0 && !effectiveSelectedSize;
       const needsColor = product.colors.length > 0 && !selectedColor;
       if (needsSize || needsColor) {
         setError(
@@ -153,7 +168,7 @@ export function ProductInfo({
       price: discountPrice ?? product.price,
       quantity: 1,
       image: product.images[0] ?? "",
-      size: selectedSize ?? undefined,
+      size: effectiveSelectedSize ?? undefined,
       color: selectedColor ?? undefined,
       categoryId: product.categoryId,
     });
@@ -286,14 +301,14 @@ export function ProductInfo({
                   key={s}
                   onClick={() => {
                     if (!unavailable) {
-                      setSelectedSize(s);
+                      handleSelectSize(s);
                       setError(null);
                     }
                   }}
                   disabled={unavailable}
-                  aria-pressed={selectedSize === s}
+                  aria-pressed={effectiveSelectedSize === s}
                   className={`min-w-[44px] h-11 px-3 font-sans text-sm border transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
-                    selectedSize === s
+                    effectiveSelectedSize === s
                       ? "bg-black text-white border-black"
                       : "border-black/10 text-black/50 hover:border-black hover:text-black"
                   }`}

@@ -1,32 +1,72 @@
 "use client";
 
-import { useState, useRef, useMemo, useCallback } from "react";
+import { useState, useRef, useMemo, useCallback, useEffect } from "react";
 import type { MouseEvent, TouchEvent, RefObject } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { proxyCldUrl } from "@/utils/proxyCldUrl";
-import type { ProductColor } from "@/domain/entities/product.entity";
+import type { ProductColor, ProductVariant } from "@/domain/entities/product.entity";
 
 interface ProductGalleryProps {
   images: string[];
   name: string;
   colors?: ProductColor[];
   selectedColor?: string | null;
+  selectedSize?: string | null;
+  variants?: ProductVariant[];
 }
 
-export function ProductGallery({ images, name, colors, selectedColor }: ProductGalleryProps) {
-  const colorImages = useMemo(() => {
-    if (!selectedColor || !colors) return null;
-    const c = colors.find((c) => c.name === selectedColor);
-    return c?.images && c.images.length > 0 ? c.images : null;
-  }, [selectedColor, colors]);
+export function ProductGallery({ images, name, colors, selectedColor, selectedSize, variants }: ProductGalleryProps) {
+  const displayImages = useMemo(() => {
+    // 1. Exact variant match (color + size)
+    if (variants && variants.length > 0 && selectedColor && selectedSize) {
+      const exact = variants.find(
+        (v) => v.color === selectedColor && v.size === selectedSize && v.images && v.images.length > 0
+      );
+      if (exact?.images) return exact.images;
+    }
 
-  const displayImages = colorImages ?? images;
+    // 2. Any variant matching selected color
+    if (variants && variants.length > 0 && selectedColor) {
+      const colorVariants = variants.filter(
+        (v) => v.color === selectedColor && v.images && v.images.length > 0
+      );
+      if (colorVariants.length > 0) {
+        const imgs = colorVariants.flatMap((v) => v.images!);
+        return [...new Set(imgs)];
+      }
+    }
+
+    // 3. Any variant matching selected size
+    if (variants && variants.length > 0 && selectedSize) {
+      const sizeVariants = variants.filter(
+        (v) => v.size === selectedSize && v.images && v.images.length > 0
+      );
+      if (sizeVariants.length > 0) {
+        const imgs = sizeVariants.flatMap((v) => v.images!);
+        return [...new Set(imgs)];
+      }
+    }
+
+    // 4. Color images from product.colors
+    if (selectedColor && colors) {
+      const c = colors.find((c) => c.name === selectedColor);
+      if (c?.images && c.images.length > 0) return c.images;
+    }
+
+    // 5. Default product images
+    return images;
+  }, [variants, selectedColor, selectedSize, colors, images]);
+
   const [active, setActive] = useState(0);
   const [zoomed, setZoomed] = useState(false);
   const [direction, setDirection] = useState(0);
   const imgRef = useRef<HTMLImageElement>(null);
   const touchStartX = useRef<number | null>(null);
+
+  useEffect(() => {
+    setActive(0);
+  }, [displayImages]);
 
   const changeImage = useCallback(
     (newIndex: number) => {
@@ -71,7 +111,7 @@ export function ProductGallery({ images, name, colors, selectedColor }: ProductG
     touchStartX.current = null;
   }
 
-  const variants = {
+  const motionVariants = {
     enter: (dir: number) => ({
       x: dir > 0 ? 30 : -30,
       opacity: 0,
@@ -140,7 +180,7 @@ export function ProductGallery({ images, name, colors, selectedColor }: ProductG
             src={proxyCldUrl(displayImages[active])}
             alt={name}
             custom={direction}
-            variants={variants}
+            variants={motionVariants}
             initial="enter"
             animate="center"
             exit="exit"
