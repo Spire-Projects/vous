@@ -38,7 +38,10 @@ export function RecomendacionesTeaser() {
                   <span className="font-sans text-xs text-black/40">Cargando...</span>
                 ) : skinGuides.length > 0 ? (
                   skinGuides.map((g) => (
-                    <span key={g.id} className="px-3 py-1 bg-white border border-black/10 rounded-lg font-sans text-xs text-black">
+                    <span
+                      key={g.id}
+                      className="px-3 py-1 bg-white border border-black/10 rounded-lg font-sans text-xs text-black"
+                    >
                       {g.name}
                     </span>
                   ))
@@ -47,7 +50,8 @@ export function RecomendacionesTeaser() {
                 )}
               </div>
               <span className="inline-flex items-center gap-1 font-nav text-[10px] uppercase tracking-wider text-black/60 group-hover:text-black">
-                Explorar por color <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                Explorar por color{" "}
+                <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
               </span>
             </div>
           </Link>
@@ -65,7 +69,10 @@ export function RecomendacionesTeaser() {
                   <span className="font-sans text-xs text-black/40">Cargando...</span>
                 ) : bodyGuides.length > 0 ? (
                   bodyGuides.map((g) => (
-                    <span key={g.id} className="px-3 py-1 bg-white border border-black/10 rounded-lg font-sans text-xs text-black">
+                    <span
+                      key={g.id}
+                      className="px-3 py-1 bg-white border border-black/10 rounded-lg font-sans text-xs text-black"
+                    >
                       {g.name}
                     </span>
                   ))
@@ -74,7 +81,8 @@ export function RecomendacionesTeaser() {
                 )}
               </div>
               <span className="inline-flex items-center gap-1 font-nav text-[10px] uppercase tracking-wider text-black/60 group-hover:text-black">
-                Explorar por tipo <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                Explorar por tipo{" "}
+                <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
               </span>
             </div>
           </Link>

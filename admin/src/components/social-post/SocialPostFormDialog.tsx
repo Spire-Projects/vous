@@ -30,6 +30,7 @@ export function SocialPostFormDialog({ open, post, onClose, onSave }: SocialPost
 
   useEffect(() => {
     if (post) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setTitle(post.title);
       setDescription(post.description);
       setVideoUrl(post.videoUrl);

@@ -7,8 +7,15 @@ import { Eye, EyeOff, UserPlus } from "lucide-react";
 import { useAuthContext } from "@/context/AuthContext";
 
 const DEPARTAMENTOS = [
-  "La Paz", "Cochabamba", "Santa Cruz", "Oruro", "Potosí",
-  "Chuquisaca", "Tarija", "Beni", "Pando",
+  "La Paz",
+  "Cochabamba",
+  "Santa Cruz",
+  "Oruro",
+  "Potosí",
+  "Chuquisaca",
+  "Tarija",
+  "Beni",
+  "Pando",
 ];
 
 export default function RegistroPage() {

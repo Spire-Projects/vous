@@ -70,6 +70,7 @@ export function ProductFormDialog({ open, product, categories, onClose, onSave }
   // Load existing variants when editing
   useEffect(() => {
     if (!product) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setExistingVariants([]);
       return;
     }

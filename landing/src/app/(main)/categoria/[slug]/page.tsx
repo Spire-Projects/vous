@@ -16,10 +16,14 @@ import { Suspense } from "react";
 function CategoryPageContent() {
   const params = useParams();
   const slugRaw = params.slug;
-  const slug = Array.isArray(slugRaw) ? slugRaw[0] ?? "" : slugRaw ?? "";
+  const slug = Array.isArray(slugRaw) ? (slugRaw[0] ?? "") : (slugRaw ?? "");
 
   const { category, loading: catLoading, error: catError } = useCategoryBySlug(slug);
-  const { products, loading: prodLoading, error: prodError } = useProductsByCategory(category?.id ?? "");
+  const {
+    products,
+    loading: prodLoading,
+    error: prodError,
+  } = useProductsByCategory(category?.id ?? "");
   const { categories } = useCategories();
 
   const {

@@ -46,7 +46,9 @@ function mapDoc(data: Record<string, unknown>): SiteConfig {
     extendedSchedules: (data.extendedSchedules as SiteConfig["extendedSchedules"]) ?? [],
     departmentLinks: (data.departmentLinks as SiteConfig["departmentLinks"]) ?? [],
     otherCountryLinks: (data.otherCountryLinks as SiteConfig["otherCountryLinks"]) ?? [],
-    fashionTrends: (data.fashionTrends as SiteConfig["fashionTrends"]) ?? { ...DEFAULT_CONTENT_SECTION },
+    fashionTrends: (data.fashionTrends as SiteConfig["fashionTrends"]) ?? {
+      ...DEFAULT_CONTENT_SECTION,
+    },
     vousNews: (data.vousNews as SiteConfig["vousNews"]) ?? { ...DEFAULT_CONTENT_SECTION },
     newPosts: (data.newPosts as SiteConfig["newPosts"]) ?? { ...DEFAULT_CONTENT_SECTION },
     feedback: (data.feedback as SiteConfig["feedback"]) ?? { ...DEFAULT_FEEDBACK_SECTION },

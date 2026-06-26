@@ -9,14 +9,7 @@ import { useProducts } from "@/hooks/useProducts";
 import { useAuthContext } from "@/context/AuthContext";
 import { ProductCard } from "@/components/catalogo/ProductCard";
 import { Button } from "@/components/ui/button";
-import {
-  Sparkles,
-  Palette,
-  Ruler,
-  Shirt,
-  ChevronRight,
-  ArrowRight,
-} from "lucide-react";
+import { Sparkles, Palette, Ruler, Shirt, ChevronRight, ArrowRight } from "lucide-react";
 import type { StyleGuide } from "@/domain/entities/style-guide.entity";
 
 function GuidePin({ guide }: { guide: StyleGuide }) {
@@ -81,10 +74,7 @@ export default function AsesoriaPage() {
     () => guides.filter((g) => g.type === "bodyType" && g.active),
     [guides]
   );
-  const allActiveGuides = useMemo(
-    () => guides.filter((g) => g.active),
-    [guides]
-  );
+  const allActiveGuides = useMemo(() => guides.filter((g) => g.active), [guides]);
 
   const matchedProducts = useMemo(() => {
     if (!selectedSkin && !selectedBody) return [];
@@ -209,7 +199,9 @@ export default function AsesoriaPage() {
                       Editorial
                     </span>
                     <p className="font-serif text-3xl md:text-4xl text-white leading-[1.05]">
-                      Asesoría<br />de Moda
+                      Asesoría
+                      <br />
+                      de Moda
                     </p>
                   </div>
                 </div>
@@ -217,7 +209,9 @@ export default function AsesoriaPage() {
                   <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
                     <Sparkles size={28} className="text-[#C9A84C] mb-3" strokeWidth={1.5} />
                     <p className="font-serif text-2xl md:text-3xl text-black leading-[1.05]">
-                      Tu estilo,<br />tu esencia
+                      Tu estilo,
+                      <br />
+                      tu esencia
                     </p>
                     <span className="font-nav text-[9px] tracking-[0.25em] uppercase text-black/40 mt-3">
                       Curaduría 2026
@@ -236,11 +230,13 @@ export default function AsesoriaPage() {
               <p className="font-nav text-[11px] tracking-[0.25em] text-[#C9A84C] uppercase mb-2">
                 Inspiración
               </p>
-              <h2 className="font-serif text-2xl md:text-3xl text-black">
-                Descubrí tu estilo
-              </h2>
+              <h2 className="font-serif text-2xl md:text-3xl text-black">Descubrí tu estilo</h2>
             </div>
-            <Button variant="ghost" asChild className="font-nav text-[10px] uppercase tracking-wider text-black/60">
+            <Button
+              variant="ghost"
+              asChild
+              className="font-nav text-[10px] uppercase tracking-wider text-black/60"
+            >
               <Link href="/recomendaciones">
                 Ver recomendaciones <ChevronRight size={12} className="ml-1" />
               </Link>
@@ -270,12 +266,9 @@ export default function AsesoriaPage() {
             <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-black mb-4">
               <Sparkles size={18} className="text-white" strokeWidth={1.5} />
             </div>
-            <h2 className="font-serif text-2xl md:text-3xl text-black mb-3">
-              Encontrá tu match
-            </h2>
+            <h2 className="font-serif text-2xl md:text-3xl text-black mb-3">Encontrá tu match</h2>
             <p className="font-sans text-sm text-black/50 leading-relaxed">
-              Seleccioná tu tono de piel y tipo de cuerpo para descubrir prendas
-              que te favorecen.
+              Seleccioná tu tono de piel y tipo de cuerpo para descubrir prendas que te favorecen.
             </p>
           </div>
 
@@ -288,18 +281,14 @@ export default function AsesoriaPage() {
                 </h3>
               </div>
               {skinGuides.length === 0 ? (
-                <p className="text-sm text-black/40 font-sans">
-                  No hay guías de tono de piel.
-                </p>
+                <p className="text-sm text-black/40 font-sans">No hay guías de tono de piel.</p>
               ) : (
                 <div className="flex flex-wrap gap-2">
                   {skinGuides.map((guide) => (
                     <button
                       key={guide.id}
                       onClick={() =>
-                        setSelectedSkin((prev) =>
-                          prev?.id === guide.id ? null : guide
-                        )
+                        setSelectedSkin((prev) => (prev?.id === guide.id ? null : guide))
                       }
                       className={`px-4 py-2 rounded-lg border text-[11px] font-nav tracking-wider uppercase transition-all ${
                         selectedSkin?.id === guide.id
@@ -322,18 +311,14 @@ export default function AsesoriaPage() {
                 </h3>
               </div>
               {bodyGuides.length === 0 ? (
-                <p className="text-sm text-black/40 font-sans">
-                  No hay guías de tipo de cuerpo.
-                </p>
+                <p className="text-sm text-black/40 font-sans">No hay guías de tipo de cuerpo.</p>
               ) : (
                 <div className="flex flex-wrap gap-2">
                   {bodyGuides.map((guide) => (
                     <button
                       key={guide.id}
                       onClick={() =>
-                        setSelectedBody((prev) =>
-                          prev?.id === guide.id ? null : guide
-                        )
+                        setSelectedBody((prev) => (prev?.id === guide.id ? null : guide))
                       }
                       className={`px-4 py-2 rounded-lg border text-[11px] font-nav tracking-wider uppercase transition-all ${
                         selectedBody?.id === guide.id
@@ -352,9 +337,7 @@ export default function AsesoriaPage() {
           {(selectedSkin || selectedBody) && (
             <div>
               <div className="flex items-center justify-between mb-6">
-                <h3 className="font-serif text-xl text-black">
-                  Productos recomendados
-                </h3>
+                <h3 className="font-serif text-xl text-black">Productos recomendados</h3>
                 <span className="font-nav text-[10px] tracking-wider uppercase text-black/40">
                   {matchedProducts.length} resultados
                 </span>
@@ -366,18 +349,12 @@ export default function AsesoriaPage() {
                 </div>
               ) : matchedProducts.length === 0 ? (
                 <p className="text-center font-sans text-sm text-black/40 py-8">
-                  No hay productos que coincidan con tu selección. Probá con otra
-                  combinación.
+                  No hay productos que coincidan con tu selección. Probá con otra combinación.
                 </p>
               ) : (
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {matchedProducts.map((p) => (
-                    <ProductCard
-                      key={p.id}
-                      {...p}
-                      userRole={user?.role}
-                      userUid={user?.uid}
-                    />
+                    <ProductCard key={p.id} {...p} userRole={user?.role} userUid={user?.uid} />
                   ))}
                 </div>
               )}
@@ -402,15 +379,20 @@ export default function AsesoriaPage() {
               </p>
             </div>
             <div className="md:col-span-5 flex flex-col sm:flex-row md:justify-end gap-3">
-              <Button asChild className="bg-white text-black hover:bg-white/90 font-nav text-[11px] uppercase tracking-wider">
+              <Button
+                asChild
+                className="bg-white text-black hover:bg-white/90 font-nav text-[11px] uppercase tracking-wider"
+              >
                 <Link href="/catalogo">
                   Ir al catálogo <ArrowRight size={14} className="ml-2" />
                 </Link>
               </Button>
-              <Button asChild variant="outline-white" className="font-nav text-[11px] uppercase tracking-wider">
-                <Link href="/recomendaciones">
-                  Más recomendaciones
-                </Link>
+              <Button
+                asChild
+                variant="outline-white"
+                className="font-nav text-[11px] uppercase tracking-wider"
+              >
+                <Link href="/recomendaciones">Más recomendaciones</Link>
               </Button>
             </div>
           </div>

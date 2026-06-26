@@ -22,7 +22,9 @@ export function useInfluencers() {
       }
     }
     load();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return { influencers, loading, error };

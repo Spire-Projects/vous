@@ -35,7 +35,12 @@ export function NewInSection() {
               Nuestra última expresión de lujo urbano.
             </p>
           </div>
-          <Button variant="ghost" size="sm" asChild className="hidden md:inline-flex text-black/60 hover:text-black">
+          <Button
+            variant="ghost"
+            size="sm"
+            asChild
+            className="hidden md:inline-flex text-black/60 hover:text-black"
+          >
             <Link href="/catalogo?nuevas=1">Ver Todo</Link>
           </Button>
         </div>

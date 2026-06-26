@@ -69,9 +69,7 @@ export function ImageCarousel({
 
   if (validImages.length === 1) {
     return (
-      <div
-        className={`relative overflow-hidden ${ASPECT_CLASSES[aspect] ?? ""} ${className}`}
-      >
+      <div className={`relative overflow-hidden ${ASPECT_CLASSES[aspect] ?? ""} ${className}`}>
         <img
           src={proxyCldUrl(validImages[0])}
           alt={alt}
@@ -107,13 +105,19 @@ export function ImageCarousel({
       {showArrows && hasMultiple && hovered && (
         <>
           <button
-            onClick={(e) => { e.stopPropagation(); prev(); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              prev();
+            }}
             className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur rounded-full flex items-center justify-center shadow-sm hover:bg-white transition-colors z-10"
           >
             <ChevronLeft size={16} className="text-black" />
           </button>
           <button
-            onClick={(e) => { e.stopPropagation(); next(); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              next();
+            }}
             className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur rounded-full flex items-center justify-center shadow-sm hover:bg-white transition-colors z-10"
           >
             <ChevronRight size={16} className="text-black" />

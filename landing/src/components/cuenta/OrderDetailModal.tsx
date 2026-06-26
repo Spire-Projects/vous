@@ -143,9 +143,7 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
                     Envío
                   </h3>
                   <div className="bg-white p-4 space-y-1.5">
-                    <p className="font-sans text-sm text-black">
-                      {order.shippingInfo.fullName}
-                    </p>
+                    <p className="font-sans text-sm text-black">{order.shippingInfo.fullName}</p>
                     <p className="font-sans text-xs text-black/50">
                       {order.shippingInfo.address}, {order.shippingInfo.city},{" "}
                       {order.shippingInfo.department}

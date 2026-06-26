@@ -7,9 +7,7 @@ import { useStyleGuides } from "@/hooks/useStyleGuides";
 import { useProducts } from "@/hooks/useProducts";
 import { ProductCard } from "@/components/catalogo/ProductCard";
 import { Button } from "@/components/ui/button";
-import {
-  Sparkles, Shirt, ArrowLeft, ChevronRight, Palette, Ruler, ArrowRight,
-} from "lucide-react";
+import { Sparkles, Shirt, ArrowLeft, ChevronRight, Palette, Ruler, ArrowRight } from "lucide-react";
 import type { StyleGuide } from "@/domain/entities/style-guide.entity";
 
 type ViewMode = "menu" | "skinTones" | "bodyTypes" | "guideDetail";
@@ -40,12 +38,20 @@ export default function RecomendacionesPage() {
       if (selectedGuide.type === "skinTone") {
         const productColors = p.colors.map((c) => c.name);
         return selectedGuide.recommendedColors.some((rc) =>
-          productColors.some((pc) => pc.toLowerCase().includes(rc.toLowerCase()) || rc.toLowerCase().includes(pc.toLowerCase()))
+          productColors.some(
+            (pc) =>
+              pc.toLowerCase().includes(rc.toLowerCase()) ||
+              rc.toLowerCase().includes(pc.toLowerCase())
+          )
         );
       }
       const attrValues = Object.values(p.attributes);
       return selectedGuide.recommendedAttributes.some((ra) =>
-        attrValues.some((av) => av.toLowerCase().includes(ra.toLowerCase()) || ra.toLowerCase().includes(av.toLowerCase()))
+        attrValues.some(
+          (av) =>
+            av.toLowerCase().includes(ra.toLowerCase()) ||
+            ra.toLowerCase().includes(av.toLowerCase())
+        )
       );
     });
   }, [selectedGuide, products]);
@@ -135,8 +141,12 @@ export default function RecomendacionesPage() {
                     <Palette size={18} className="text-white" strokeWidth={1.5} />
                   </div>
                   <div>
-                    <h2 className="font-serif text-2xl md:text-3xl text-black">Colores para tu piel</h2>
-                    <p className="font-sans text-sm text-black/40">Selecciona tu tono de piel y descubre los colores que te favorecen.</p>
+                    <h2 className="font-serif text-2xl md:text-3xl text-black">
+                      Colores para tu piel
+                    </h2>
+                    <p className="font-sans text-sm text-black/40">
+                      Selecciona tu tono de piel y descubre los colores que te favorecen.
+                    </p>
                   </div>
                   <button
                     onClick={() => setView("skinTones")}
@@ -151,7 +161,9 @@ export default function RecomendacionesPage() {
                     <span className="inline-block w-6 h-6 border-2 border-black/30 border-t-black rounded-full animate-spin" />
                   </div>
                 ) : filteredSkinGuides.length === 0 ? (
-                  <p className="text-center font-sans text-sm text-black/40 py-8">No hay guías disponibles.</p>
+                  <p className="text-center font-sans text-sm text-black/40 py-8">
+                    No hay guías disponibles.
+                  </p>
                 ) : (
                   <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
                     {filteredSkinGuides.slice(0, 5).map((guide) => (
@@ -168,8 +180,12 @@ export default function RecomendacionesPage() {
                       <Ruler size={18} className="text-white" strokeWidth={1.5} />
                     </div>
                     <div>
-                      <h2 className="font-serif text-2xl md:text-3xl text-black">Cortes para tu cuerpo</h2>
-                      <p className="font-sans text-sm text-black/40">Encuentra los cortes y estilos que mejor se adaptan a tu tipo de cuerpo.</p>
+                      <h2 className="font-serif text-2xl md:text-3xl text-black">
+                        Cortes para tu cuerpo
+                      </h2>
+                      <p className="font-sans text-sm text-black/40">
+                        Encuentra los cortes y estilos que mejor se adaptan a tu tipo de cuerpo.
+                      </p>
                     </div>
                     <button
                       onClick={() => setView("bodyTypes")}
@@ -186,7 +202,11 @@ export default function RecomendacionesPage() {
                   ) : (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                       {filteredBodyGuides.slice(0, 4).map((guide) => (
-                        <BodyTypeCard key={guide.id} guide={guide} onClick={() => openGuide(guide)} />
+                        <BodyTypeCard
+                          key={guide.id}
+                          guide={guide}
+                          onClick={() => openGuide(guide)}
+                        />
                       ))}
                     </div>
                   )}
@@ -209,7 +229,9 @@ export default function RecomendacionesPage() {
               >
                 <ArrowLeft size={12} /> Volver
               </button>
-              <h2 className="font-serif text-2xl md:text-3xl text-black mb-8">Colores para tu piel</h2>
+              <h2 className="font-serif text-2xl md:text-3xl text-black mb-8">
+                Colores para tu piel
+              </h2>
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {filteredSkinGuides.map((guide) => (
                   <SkinToneCard key={guide.id} guide={guide} onClick={() => openGuide(guide)} />
@@ -232,7 +254,9 @@ export default function RecomendacionesPage() {
               >
                 <ArrowLeft size={12} /> Volver
               </button>
-              <h2 className="font-serif text-2xl md:text-3xl text-black mb-8">Cortes para tu cuerpo</h2>
+              <h2 className="font-serif text-2xl md:text-3xl text-black mb-8">
+                Cortes para tu cuerpo
+              </h2>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {filteredBodyGuides.map((guide) => (
                   <BodyTypeCard key={guide.id} guide={guide} onClick={() => openGuide(guide)} />
@@ -251,7 +275,9 @@ export default function RecomendacionesPage() {
               className="space-y-12"
             >
               <button
-                onClick={() => setView(selectedGuide.type === "skinTone" ? "skinTones" : "bodyTypes")}
+                onClick={() =>
+                  setView(selectedGuide.type === "skinTone" ? "skinTones" : "bodyTypes")
+                }
                 className="inline-flex items-center gap-2 font-nav text-[10px] uppercase tracking-wider text-black/40 hover:text-black transition-colors"
               >
                 <ArrowLeft size={12} /> Volver
@@ -266,8 +292,13 @@ export default function RecomendacionesPage() {
                       className="w-full h-full object-cover"
                     />
                   ) : selectedGuide.colorHex ? (
-                    <div className="w-full h-full flex items-center justify-center" style={{ backgroundColor: selectedGuide.colorHex }}>
-                      <span className="font-serif text-4xl text-white/80">{selectedGuide.name[0]}</span>
+                    <div
+                      className="w-full h-full flex items-center justify-center"
+                      style={{ backgroundColor: selectedGuide.colorHex }}
+                    >
+                      <span className="font-serif text-4xl text-white/80">
+                        {selectedGuide.name[0]}
+                      </span>
                     </div>
                   ) : (
                     <div className="w-full h-full bg-neutral-100 flex items-center justify-center">
@@ -286,46 +317,49 @@ export default function RecomendacionesPage() {
                     {selectedGuide.description}
                   </p>
 
-                  {selectedGuide.type === "skinTone" && selectedGuide.recommendedColors.length > 0 && (
-                    <div className="mb-8">
-                      <h3 className="font-nav text-[10px] tracking-[0.2em] uppercase text-black/40 mb-3">
-                        Colores que te favorecen
-                      </h3>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedGuide.recommendedColors.map((color) => (
-                          <span
-                            key={color}
-                            className="px-3 py-1.5 bg-[#FAF8F5] border border-black/10 font-sans text-xs text-black rounded-lg"
-                          >
-                            {color}
-                          </span>
-                        ))}
+                  {selectedGuide.type === "skinTone" &&
+                    selectedGuide.recommendedColors.length > 0 && (
+                      <div className="mb-8">
+                        <h3 className="font-nav text-[10px] tracking-[0.2em] uppercase text-black/40 mb-3">
+                          Colores que te favorecen
+                        </h3>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedGuide.recommendedColors.map((color) => (
+                            <span
+                              key={color}
+                              className="px-3 py-1.5 bg-[#FAF8F5] border border-black/10 font-sans text-xs text-black rounded-lg"
+                            >
+                              {color}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  {selectedGuide.type === "bodyType" && selectedGuide.recommendedAttributes.length > 0 && (
-                    <div className="mb-8">
-                      <h3 className="font-nav text-[10px] tracking-[0.2em] uppercase text-black/40 mb-3">
-                        Cortes recomendados
-                      </h3>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedGuide.recommendedAttributes.map((attr) => (
-                          <span
-                            key={attr}
-                            className="px-3 py-1.5 bg-[#FAF8F5] border border-black/10 font-sans text-xs text-black rounded-lg"
-                          >
-                            {attr}
-                          </span>
-                        ))}
+                  {selectedGuide.type === "bodyType" &&
+                    selectedGuide.recommendedAttributes.length > 0 && (
+                      <div className="mb-8">
+                        <h3 className="font-nav text-[10px] tracking-[0.2em] uppercase text-black/40 mb-3">
+                          Cortes recomendados
+                        </h3>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedGuide.recommendedAttributes.map((attr) => (
+                            <span
+                              key={attr}
+                              className="px-3 py-1.5 bg-[#FAF8F5] border border-black/10 font-sans text-xs text-black rounded-lg"
+                            >
+                              {attr}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
                   <Link
-                    href={`/catalogo${selectedGuide.type === "skinTone"
-                      ? `?color=${selectedGuide.recommendedColors.map((c) => encodeURIComponent(c)).join("&color=")}`
-                      : ""
+                    href={`/catalogo${
+                      selectedGuide.type === "skinTone"
+                        ? `?color=${selectedGuide.recommendedColors.map((c) => encodeURIComponent(c)).join("&color=")}`
+                        : ""
                     }`}
                     className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white font-nav text-[11px] uppercase tracking-wider rounded-lg hover:bg-black/80 transition-colors"
                   >
@@ -335,9 +369,7 @@ export default function RecomendacionesPage() {
               </div>
 
               <div>
-                <h3 className="font-serif text-2xl text-black mb-6">
-                  Productos recomendados
-                </h3>
+                <h3 className="font-serif text-2xl text-black mb-6">Productos recomendados</h3>
                 {productsLoading ? (
                   <div className="flex justify-center py-12">
                     <span className="inline-block w-6 h-6 border-2 border-black/30 border-t-black rounded-full animate-spin" />
@@ -375,15 +407,20 @@ export default function RecomendacionesPage() {
               </p>
             </div>
             <div className="md:col-span-5 flex flex-col sm:flex-row md:justify-end gap-3">
-              <Button asChild className="bg-white text-black hover:bg-white/90 font-nav text-[11px] uppercase tracking-wider">
+              <Button
+                asChild
+                className="bg-white text-black hover:bg-white/90 font-nav text-[11px] uppercase tracking-wider"
+              >
                 <Link href="/catalogo">
                   Ir al catálogo <ArrowRight size={14} className="ml-2" />
                 </Link>
               </Button>
-              <Button asChild variant="outline-white" className="font-nav text-[11px] uppercase tracking-wider">
-                <Link href="/asesoria-de-moda">
-                  Asesoría de moda
-                </Link>
+              <Button
+                asChild
+                variant="outline-white"
+                className="font-nav text-[11px] uppercase tracking-wider"
+              >
+                <Link href="/asesoria-de-moda">Asesoría de moda</Link>
               </Button>
             </div>
           </div>

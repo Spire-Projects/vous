@@ -22,7 +22,9 @@ export function useStyleGuides() {
       }
     }
     load();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return { guides, loading, error };

@@ -1,9 +1,4 @@
-import {
-  collection,
-  getDocs,
-  query,
-  orderBy,
-} from "firebase/firestore";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { getFirebaseDb } from "@/lib/firebase";
 import type { Influencer } from "@/domain/entities/influencer.entity";
 

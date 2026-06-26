@@ -74,7 +74,8 @@ export function FeedbackPage() {
             <MessageSquare size={48} className="text-black/30" strokeWidth={1.5} />
             <p className="font-sans text-lg text-black">Inicia sesión para enviar tu mensaje</p>
             <p className="font-sans text-sm text-black/50 max-w-sm">
-              Debes tener una cuenta para enviar quejas o recomendaciones. Así podemos darte seguimiento.
+              Debes tener una cuenta para enviar quejas o recomendaciones. Así podemos darte
+              seguimiento.
             </p>
             <Button asChild>
               <Link href="/auth/login">Iniciar sesión</Link>
@@ -84,7 +85,8 @@ export function FeedbackPage() {
           <div className="flex flex-col items-center gap-4 py-12 text-center">
             <CheckCircle size={48} className="text-black" strokeWidth={1.5} />
             <p className="font-sans text-lg text-black">
-              {feedback.successMessage || "Gracias por tu mensaje. Lo hemos recibido correctamente."}
+              {feedback.successMessage ||
+                "Gracias por tu mensaje. Lo hemos recibido correctamente."}
             </p>
             <Button
               variant="outline"
@@ -126,7 +128,9 @@ export function FeedbackPage() {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="feedback-message" className="font-sans text-sm text-black">Mensaje</Label>
+              <Label htmlFor="feedback-message" className="font-sans text-sm text-black">
+                Mensaje
+              </Label>
               <textarea
                 id="feedback-message"
                 value={message}

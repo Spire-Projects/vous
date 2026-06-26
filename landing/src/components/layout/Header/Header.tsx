@@ -27,9 +27,7 @@ export function Header() {
       <header
         className={clsx(
           "fixed top-0 left-0 right-0 z-40 h-14 transition-all duration-300 border-b",
-          scrolled
-            ? "bg-white border-black/5 shadow-sm"
-            : "bg-white border-transparent"
+          scrolled ? "bg-white border-black/5 shadow-sm" : "bg-white border-transparent"
         )}
       >
         <div className="max-w-[1440px] mx-auto h-full px-4 md:px-6 lg:px-8 flex items-center justify-between gap-4">

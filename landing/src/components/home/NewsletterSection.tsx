@@ -15,12 +15,10 @@ export function NewsletterSection() {
     <section className="py-20 md:py-28 bg-black text-white">
       <div className="max-w-[1440px] mx-auto px-5 md:px-20 flex flex-col md:flex-row justify-between items-center gap-12">
         <div className="text-center md:text-left">
-          <h2 className="font-serif text-3xl md:text-4xl mb-4 uppercase">
-            Acceso Privilegiado
-          </h2>
+          <h2 className="font-serif text-3xl md:text-4xl mb-4 uppercase">Acceso Privilegiado</h2>
           <p className="font-sans text-base text-white/70 max-w-md leading-relaxed">
-            Únete a nuestro círculo exclusivo para acceso anticipado a
-            lanzamientos limitados y contenido editorial.
+            Únete a nuestro círculo exclusivo para acceso anticipado a lanzamientos limitados y
+            contenido editorial.
           </p>
         </div>
         <div className="w-full max-w-md">

@@ -65,9 +65,7 @@ export const firestoreOrderRepository: OrderRepository = {
 
   async create(input: CreateOrderInput): Promise<Order> {
     const orderNumber = `VOUS-${new Date().getFullYear()}-${String(Date.now()).slice(-6)}`;
-    const cleanInput = Object.fromEntries(
-      Object.entries(input).filter(([, v]) => v !== undefined)
-    );
+    const cleanInput = Object.fromEntries(Object.entries(input).filter(([, v]) => v !== undefined));
     const ref = await addDoc(collection(getFirebaseDb(), "orders"), {
       ...cleanInput,
       orderNumber,

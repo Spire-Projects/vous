@@ -78,9 +78,7 @@ export function ProductVariantsList({
       <p className="font-nav text-[10px] tracking-[0.2em] uppercase text-black/40 mb-2">
         Disponibilidad
       </p>
-      <h2 className="font-serif text-xl md:text-2xl text-black mb-6">
-        Seleccioná tu variante
-      </h2>
+      <h2 className="font-serif text-xl md:text-2xl text-black mb-6">Seleccioná tu variante</h2>
 
       {/* Color groups with size cards */}
       {hasColors && hasSizes && (
@@ -113,7 +111,8 @@ export function ProductVariantsList({
                     </>
                   )}
                   <span className="text-[10px] text-black/40 font-sans ml-auto">
-                    {colorVariants.filter((v) => v.stock > 0).length} de {colorVariants.length} tallas disponibles
+                    {colorVariants.filter((v) => v.stock > 0).length} de {colorVariants.length}{" "}
+                    tallas disponibles
                   </span>
                 </div>
 
@@ -171,9 +170,7 @@ export function ProductVariantsList({
                           ) : (
                             <>
                               <X size={10} className="text-red-500" />
-                              <span className="text-[10px] font-sans text-red-500">
-                                Agotado
-                              </span>
+                              <span className="text-[10px] font-sans text-red-500">Agotado</span>
                             </>
                           )}
                         </div>
@@ -182,9 +179,7 @@ export function ProductVariantsList({
                             Últimas
                           </p>
                         )}
-                        {v.sku && (
-                          <p className="text-[9px] text-black/30 font-mono">{v.sku}</p>
-                        )}
+                        {v.sku && <p className="text-[9px] text-black/30 font-mono">{v.sku}</p>}
                         {inStock ? (
                           <Button
                             size="sm"
@@ -255,9 +250,7 @@ export function ProductVariantsList({
                   {inStock ? (
                     <>
                       <Check size={10} className="text-emerald-600" />
-                      <span className="text-[10px] font-sans text-emerald-600">
-                        {v.stock} u.
-                      </span>
+                      <span className="text-[10px] font-sans text-emerald-600">{v.stock} u.</span>
                     </>
                   ) : (
                     <>
@@ -271,9 +264,7 @@ export function ProductVariantsList({
                     Últimas
                   </p>
                 )}
-                {v.sku && (
-                  <p className="text-[9px] text-black/30 font-mono">{v.sku}</p>
-                )}
+                {v.sku && <p className="text-[9px] text-black/30 font-mono">{v.sku}</p>}
                 {inStock ? (
                   <Button
                     size="sm"

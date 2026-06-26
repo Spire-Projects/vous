@@ -19,9 +19,7 @@ export function NosotrosHistoria({ storeName }: NosotrosHistoriaProps) {
           />
         </div>
         <div className="col-span-12 md:col-span-5 md:col-start-8 mt-10 md:mt-0">
-          <h2 className="font-serif text-[28px] md:text-4xl text-black mb-8">
-            Nuestra Historia
-          </h2>
+          <h2 className="font-serif text-[28px] md:text-4xl text-black mb-8">Nuestra Historia</h2>
           <div className="space-y-5 font-sans text-sm md:text-base text-black/50 leading-relaxed">
             <p>
               Nacimos en el corazón de la metrópolis, inspirados por la intersección entre la alta

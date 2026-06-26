@@ -42,10 +42,7 @@ export function CartSummary({ subtotal, total }: CartSummaryProps) {
             { icon: Truck, text: "Envío Express Disponible" },
             { icon: RefreshCcw, text: "Devoluciones en 14 días" },
           ].map(({ icon: Icon, text }) => (
-            <div
-              key={text}
-              className="flex items-center gap-2 font-sans text-[11px] text-black/50"
-            >
+            <div key={text} className="flex items-center gap-2 font-sans text-[11px] text-black/50">
               <Icon size={12} className="shrink-0 text-black" />
               {text}
             </div>

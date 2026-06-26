@@ -39,7 +39,6 @@ function mapDoc(id: string, data: Record<string, unknown>): Product {
     sortOrder: (data.sortOrder as number) ?? 0,
     attributes: (data.attributes as Record<string, string>) ?? {},
     tags: (data.tags as string[]) ?? undefined,
-    totalSales: (data.totalSales as number) ?? 0,
     weeklySales: (data.weeklySales as number) ?? 0,
     createdAt:
       (data.createdAt as { toDate?: () => Date })?.toDate?.().toISOString() ??

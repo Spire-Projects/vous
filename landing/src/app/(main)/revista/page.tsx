@@ -68,9 +68,7 @@ export default function RevistaPage() {
               <span className="font-nav text-[11px] tracking-[0.3em] uppercase text-[#C9A84C] mb-4 block">
                 Editorial VOUS
               </span>
-              <h1 className="font-serif text-5xl md:text-7xl leading-[1.05] mb-6">
-                Blog de Moda
-              </h1>
+              <h1 className="font-serif text-5xl md:text-7xl leading-[1.05] mb-6">Blog de Moda</h1>
               <p className="font-sans text-base text-white/60 max-w-xl leading-relaxed">
                 Historias, tendencias y el proceso detrás de cada colección.
               </p>
@@ -124,15 +122,20 @@ export default function RevistaPage() {
               </p>
             </div>
             <div className="md:col-span-5 flex flex-col sm:flex-row md:justify-end gap-3">
-              <Button asChild className="bg-white text-black hover:bg-white/90 font-nav text-[11px] uppercase tracking-wider">
+              <Button
+                asChild
+                className="bg-white text-black hover:bg-white/90 font-nav text-[11px] uppercase tracking-wider"
+              >
                 <Link href="/catalogo">
                   Ir al catálogo <ArrowRight size={14} className="ml-2" />
                 </Link>
               </Button>
-              <Button asChild variant="outline-white" className="font-nav text-[11px] uppercase tracking-wider">
-                <Link href="/nuevos-posts">
-                  Ver new post
-                </Link>
+              <Button
+                asChild
+                variant="outline-white"
+                className="font-nav text-[11px] uppercase tracking-wider"
+              >
+                <Link href="/nuevos-posts">Ver new post</Link>
               </Button>
             </div>
           </div>

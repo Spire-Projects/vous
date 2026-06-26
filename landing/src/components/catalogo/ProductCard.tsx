@@ -65,9 +65,7 @@ export function ProductCard({
   }, [hoveredColor, colors, images, coverImage, isHovered])();
 
   // Unique colors with images for preview strip
-  const previewColors = colors?.filter(
-    (c) => c.images && c.images.length > 0
-  ) ?? [];
+  const previewColors = colors?.filter((c) => c.images && c.images.length > 0) ?? [];
 
   // Also show color swatches even if they don't have dedicated images
   const colorSwatches = colors ?? [];
@@ -153,9 +151,7 @@ export function ProductCard({
           </span>
         )}
 
-        {wholesaleOnly && isWholesaler && userUid && (
-          <WholesaleWatermark userUid={userUid} />
-        )}
+        {wholesaleOnly && isWholesaler && userUid && <WholesaleWatermark userUid={userUid} />}
         {wholesaleOnly && !isWholesaler && (
           <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-20">
             <span className="font-nav text-[10px] tracking-[0.2em] uppercase text-white/80 border border-white/30 px-3 py-1.5">
@@ -195,9 +191,7 @@ export function ProductCard({
                   e.stopPropagation();
                 }}
                 className={`w-6 h-6 rounded-full border-2 transition-transform hover:scale-110 ${
-                  hoveredColor === c.name
-                    ? "border-white shadow-lg"
-                    : "border-white/60"
+                  hoveredColor === c.name ? "border-white shadow-lg" : "border-white/60"
                 }`}
                 style={{ backgroundColor: c.hex }}
                 title={c.name}
@@ -223,9 +217,7 @@ export function ProductCard({
               <span
                 key={idx}
                 className={`block w-1.5 h-1.5 rounded-full transition-colors ${
-                  (isHovered && idx === 1) || (!isHovered && idx === 0)
-                    ? "bg-white"
-                    : "bg-white/40"
+                  (isHovered && idx === 1) || (!isHovered && idx === 0) ? "bg-white" : "bg-white/40"
                 }`}
               />
             ))}
@@ -242,17 +234,11 @@ export function ProductCard({
       <div className="flex items-center gap-2">
         {originalPriceLabel ? (
           <>
-            <p className="font-sans text-sm text-black font-medium">
-              {finalPriceLabel}
-            </p>
-            <p className="font-sans text-xs text-black/40 line-through">
-              {originalPriceLabel}
-            </p>
+            <p className="font-sans text-sm text-black font-medium">{finalPriceLabel}</p>
+            <p className="font-sans text-xs text-black/40 line-through">{originalPriceLabel}</p>
           </>
         ) : (
-          <p className="font-sans text-sm text-black font-medium">
-            {finalPriceLabel}
-          </p>
+          <p className="font-sans text-sm text-black font-medium">{finalPriceLabel}</p>
         )}
         {isWholesaler && pricing.discountLabel && (
           <span className="font-nav text-[10px] tracking-wider text-black/60 ml-1">
@@ -273,9 +259,7 @@ export function ProductCard({
             />
           ))}
           {colorSwatches.length > 4 && (
-            <span className="text-[10px] text-black/40 font-sans">
-              +{colorSwatches.length - 4}
-            </span>
+            <span className="text-[10px] text-black/40 font-sans">+{colorSwatches.length - 4}</span>
           )}
         </div>
       )}

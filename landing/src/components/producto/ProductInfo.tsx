@@ -16,8 +16,7 @@ function badgeStyle(badge: string): string {
   if (lower.includes("descuento") || lower.includes("sale") || lower.includes("oferta"))
     return "bg-red-600 text-white";
   if (lower.includes("preventa") || lower.includes("pre-venta")) return "bg-blue-700 text-white";
-  if (lower.includes("exclusivo") || lower.includes("exclusive"))
-    return "bg-black text-white";
+  if (lower.includes("exclusivo") || lower.includes("exclusive")) return "bg-black text-white";
   return "bg-black text-white";
 }
 
@@ -120,7 +119,9 @@ export function ProductInfo({
     if (variants.length === 0) return false;
     if (!product.sizes.length) return !variants.some((v) => v.color === colorName && v.stock > 0);
     if (effectiveSelectedSize)
-      return !variants.some((v) => v.color === colorName && v.size === effectiveSelectedSize && v.stock > 0);
+      return !variants.some(
+        (v) => v.color === colorName && v.size === effectiveSelectedSize && v.stock > 0
+      );
     return !variants.some((v) => v.color === colorName && v.stock > 0);
   }
 

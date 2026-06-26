@@ -21,9 +21,7 @@ export function NewPostTeaser() {
             <span className="font-nav text-[11px] tracking-[0.3em] uppercase text-[#C9A84C] mb-3 block">
               Redes Sociales
             </span>
-            <h2 className="font-serif text-4xl md:text-5xl">
-              New Post
-            </h2>
+            <h2 className="font-serif text-4xl md:text-5xl">New Post</h2>
           </div>
           <Link
             href="/nuevos-posts"
@@ -62,12 +60,8 @@ export function NewPostTeaser() {
                   </span>
                 </span>
               </div>
-              <h3 className="font-nav text-[13px] font-semibold text-white mb-1">
-                {post.title}
-              </h3>
-              <p className="font-sans text-sm text-white/50 line-clamp-2">
-                {post.description}
-              </p>
+              <h3 className="font-nav text-[13px] font-semibold text-white mb-1">{post.title}</h3>
+              <p className="font-sans text-sm text-white/50 line-clamp-2">{post.description}</p>
             </a>
           ))}
         </div>

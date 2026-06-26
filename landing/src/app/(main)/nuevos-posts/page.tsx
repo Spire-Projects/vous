@@ -22,11 +22,10 @@ export default function NuevosPostsPage() {
               <span className="font-nav text-[11px] tracking-[0.3em] uppercase text-[#C9A84C] mb-4 block">
                 Redes Sociales · En Vivo
               </span>
-              <h1 className="font-serif text-5xl md:text-7xl leading-[1.05] mb-6">
-                New Post
-              </h1>
+              <h1 className="font-serif text-5xl md:text-7xl leading-[1.05] mb-6">New Post</h1>
               <p className="font-sans text-base text-white/60 max-w-xl leading-relaxed">
-                Nuestros últimos videos y posts en redes sociales. Conoce el detrás de cámara, campañas y más.
+                Nuestros últimos videos y posts en redes sociales. Conoce el detrás de cámara,
+                campañas y más.
               </p>
             </div>
             <div className="md:col-span-4 md:text-right">
@@ -42,7 +41,6 @@ export default function NuevosPostsPage() {
       </section>
 
       <div className="max-w-[1440px] mx-auto px-5 md:px-20 py-16 md:py-24">
-
         {loading && (
           <div className="flex justify-center py-24">
             <span className="inline-block w-6 h-6 border-2 border-black/30 border-t-black rounded-full animate-spin" />
@@ -104,12 +102,8 @@ export default function NuevosPostsPage() {
                     </span>
                   </a>
                 </div>
-                <h3 className="font-nav text-[13px] font-semibold text-black mb-1">
-                  {post.title}
-                </h3>
-                <p className="font-sans text-sm text-black/50 line-clamp-2">
-                  {post.description}
-                </p>
+                <h3 className="font-nav text-[13px] font-semibold text-black mb-1">{post.title}</h3>
+                <p className="font-sans text-sm text-black/50 line-clamp-2">{post.description}</p>
               </div>
             ))}
           </div>
@@ -132,15 +126,20 @@ export default function NuevosPostsPage() {
               </p>
             </div>
             <div className="md:col-span-5 flex flex-col sm:flex-row md:justify-end gap-3">
-              <Button asChild className="bg-white text-black hover:bg-white/90 font-nav text-[11px] uppercase tracking-wider">
+              <Button
+                asChild
+                className="bg-white text-black hover:bg-white/90 font-nav text-[11px] uppercase tracking-wider"
+              >
                 <Link href="/catalogo">
                   Ir al catálogo <ArrowRight size={14} className="ml-2" />
                 </Link>
               </Button>
-              <Button asChild variant="outline-white" className="font-nav text-[11px] uppercase tracking-wider">
-                <Link href="/revista">
-                  Leer el blog
-                </Link>
+              <Button
+                asChild
+                variant="outline-white"
+                className="font-nav text-[11px] uppercase tracking-wider"
+              >
+                <Link href="/revista">Leer el blog</Link>
               </Button>
             </div>
           </div>

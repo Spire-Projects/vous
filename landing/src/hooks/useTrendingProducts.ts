@@ -74,7 +74,9 @@ export function useTrendingProducts() {
       }
     }
     load();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return { products, loading, error };

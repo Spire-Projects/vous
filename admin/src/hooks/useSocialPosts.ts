@@ -25,6 +25,7 @@ export function useSocialPosts() {
     }
   }, []);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { fetchPosts(); }, [fetchPosts]);
 
   const create = useCallback(async (input: CreateSocialPostInput) => {

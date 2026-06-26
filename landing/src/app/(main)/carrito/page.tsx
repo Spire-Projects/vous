@@ -31,9 +31,7 @@ export default function CarritoPage() {
   return (
     <div className="bg-white min-h-screen">
       <div className="max-w-[1440px] mx-auto px-5 md:px-20 py-12 md:py-16">
-        <h1 className="font-serif text-3xl md:text-4xl text-black mb-10">
-          Carrito de Compras
-        </h1>
+        <h1 className="font-serif text-3xl md:text-4xl text-black mb-10">Carrito de Compras</h1>
 
         <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
           {/* Items list */}

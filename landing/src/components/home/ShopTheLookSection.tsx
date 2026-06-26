@@ -19,9 +19,7 @@ export function ShopTheLookSection() {
 
   return (
     <section className="max-w-[1440px] mx-auto px-5 md:px-20 pb-20 md:pb-28">
-      <h3 className="font-serif text-2xl italic text-black mb-12 uppercase">
-        Completa el Look
-      </h3>
+      <h3 className="font-serif text-2xl italic text-black mb-12 uppercase">Completa el Look</h3>
 
       {loading && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-8">
@@ -80,12 +78,8 @@ function ProductLookCard({ product }: { product: Product }) {
           </span>
         </div>
       </div>
-      <h4 className="font-sans text-sm mb-1 uppercase tracking-tight text-black">
-        {product.name}
-      </h4>
-      <span className="font-sans text-sm font-bold text-black">
-        {formatPrice(product.price)}
-      </span>
+      <h4 className="font-sans text-sm mb-1 uppercase tracking-tight text-black">{product.name}</h4>
+      <span className="font-sans text-sm font-bold text-black">{formatPrice(product.price)}</span>
     </Link>
   );
 }

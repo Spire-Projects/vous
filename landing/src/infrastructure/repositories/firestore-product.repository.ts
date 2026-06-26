@@ -93,16 +93,16 @@ export const firestoreProductRepository: ProductRepository = {
     return snap.docs
       .map((d) => {
         const data = d.data() as Record<string, unknown>;
-      return {
-        id: d.id,
-        sku: (data.sku as string) ?? undefined,
-        color: (data.color as string | null) ?? null,
-        colorHex: (data.colorHex as string | null) ?? null,
-        size: (data.size as string | null) ?? null,
-        stock: (data.stock as number) ?? 0,
-        isActive: (data.isActive as boolean) ?? true,
-        images: (data.images as string[]) ?? undefined,
-      } satisfies ProductVariant;
+        return {
+          id: d.id,
+          sku: (data.sku as string) ?? undefined,
+          color: (data.color as string | null) ?? null,
+          colorHex: (data.colorHex as string | null) ?? null,
+          size: (data.size as string | null) ?? null,
+          stock: (data.stock as number) ?? 0,
+          isActive: (data.isActive as boolean) ?? true,
+          images: (data.images as string[]) ?? undefined,
+        } satisfies ProductVariant;
       })
       .filter((v) => v.isActive);
   },

@@ -2,6 +2,7 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const badgeVariants = cva(
   "inline-flex items-center gap-1 px-2.5 py-0.5 text-[10px] font-nav font-semibold uppercase tracking-wider rounded-xl border backdrop-blur-sm",
   {

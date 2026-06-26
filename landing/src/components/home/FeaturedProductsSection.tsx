@@ -48,7 +48,9 @@ export function FeaturedProductsSection() {
             <div className="max-w-[1440px] mx-auto px-4 md:px-6 lg:px-8">
               <div className="flex items-end justify-between mb-6 md:mb-10">
                 <div>
-                  <p className={`font-nav text-[11px] font-semibold tracking-[0.2em] uppercase mb-2 ${isDark ? "text-white/40" : "text-black/40"}`}>
+                  <p
+                    className={`font-nav text-[11px] font-semibold tracking-[0.2em] uppercase mb-2 ${isDark ? "text-white/40" : "text-black/40"}`}
+                  >
                     {section.customType || SECTION_EYEBROW[section.type]}
                   </p>
                   <h2

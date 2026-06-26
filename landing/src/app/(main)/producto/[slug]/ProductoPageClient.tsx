@@ -26,12 +26,15 @@ export function ProductoPageClient() {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
   const { categories } = useCategories();
-  const categorySlug =
-    categories.find((c) => c.id === product?.categoryId)?.slug ?? undefined;
+  const categorySlug = categories.find((c) => c.id === product?.categoryId)?.slug ?? undefined;
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (!slug) { setLoading(false); setNotFound(true); return; }
+    if (!slug) {
+      setLoading(false);
+      setNotFound(true);
+      return;
+    }
     setLoading(true);
     setNotFound(false);
     setProduct(null);
@@ -54,7 +57,9 @@ export function ProductoPageClient() {
           .then((all) => all.filter((r) => r.id !== p.id).slice(0, 4))
           .catch(() => [] as Product[]);
 
-        const varsPromise = firestoreProductRepository.findVariants(p.id).catch(() => [] as ProductVariant[]);
+        const varsPromise = firestoreProductRepository
+          .findVariants(p.id)
+          .catch(() => [] as ProductVariant[]);
         const [rel, vars] = await Promise.all([relPromise, varsPromise]);
         setRelated(rel);
         setVariants(vars);

@@ -14,7 +14,11 @@ interface CategoryDiscountsProps {
   categorySlug?: string;
 }
 
-export function CategoryDiscounts({ categoryId, currentProductId, categorySlug }: CategoryDiscountsProps) {
+export function CategoryDiscounts({
+  categoryId,
+  currentProductId,
+  categorySlug,
+}: CategoryDiscountsProps) {
   const [discountedProducts, setDiscountedProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -53,9 +57,7 @@ export function CategoryDiscounts({ categoryId, currentProductId, categorySlug }
               Ofertas en la categoría
             </p>
           </div>
-          <h2 className="font-serif text-2xl md:text-3xl text-black">
-            Descuentos Especiales
-          </h2>
+          <h2 className="font-serif text-2xl md:text-3xl text-black">Descuentos Especiales</h2>
         </div>
         <Link
           href={`/categoria/${categorySlug ?? categoryId}`}
@@ -111,10 +113,9 @@ export function CategoryDiscounts({ categoryId, currentProductId, categorySlug }
                 <div className="flex items-center gap-2 mt-1">
                   <p className="font-sans text-sm text-black font-medium">
                     Bs.{" "}
-                    {(
-                      p.price *
-                      (1 - (p.discountPercentage ?? 0) / 100)
-                    ).toLocaleString("es-BO", { maximumFractionDigits: 0 })}
+                    {(p.price * (1 - (p.discountPercentage ?? 0) / 100)).toLocaleString("es-BO", {
+                      maximumFractionDigits: 0,
+                    })}
                   </p>
                   <p className="font-sans text-xs text-black/40 line-through">
                     Bs. {p.price.toLocaleString("es-BO")}

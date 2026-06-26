@@ -66,8 +66,8 @@ export function FeedbackSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="font-sans text-sm text-white/50 leading-relaxed max-w-md mx-auto"
           >
-            Queremos escucharte. Tu opinión nos ayuda a mejorar la experiencia VOUS.
-            Envíanos tus quejas o recomendaciones y las revisaremos con atención.
+            Queremos escucharte. Tu opinión nos ayuda a mejorar la experiencia VOUS. Envíanos tus
+            quejas o recomendaciones y las revisaremos con atención.
           </motion.p>
         </div>
 

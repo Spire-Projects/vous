@@ -14,14 +14,14 @@
   --color-vous-gray-dark: #3d3d38;
 
   /* Admin glass tokens */
-  --color-vous-bg: #FAFAF8;
-  --color-vous-surface: #FFFFFF;
-  --color-vous-elevated: #FFFDF7;
-  --color-vous-border: #E8E5E1;
-  --color-vous-text: #0D0D0C;
-  --color-vous-text-secondary: #6B6B65;
-  --color-vous-text-muted: #9E9E94;
-  --color-vous-gold-bright: #B8960F;
+  --color-vous-bg: #fafaf8;
+  --color-vous-surface: #ffffff;
+  --color-vous-elevated: #fffdf7;
+  --color-vous-border: #e8e5e1;
+  --color-vous-text: #0d0d0c;
+  --color-vous-text-secondary: #6b6b65;
+  --color-vous-text-muted: #9e9e94;
+  --color-vous-gold-bright: #b8960f;
 
   /* Semánticos */
   --color-background: #ffffff;
@@ -49,10 +49,19 @@ body {
 }
 
 /* ── Scrollbar ──────────────────────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #e5e5e5; border-radius: 9999px; }
-::-webkit-scrollbar-thumb:hover { background: #cccccc; }
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #e5e5e5;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #cccccc;
+}
 
 /* ── Selection ──────────────────────────────────────────────────────────────── */
 ::selection {

@@ -51,7 +51,8 @@ export function AsesoriaTeaser() {
               Consejos de estilo curados
             </h2>
             <p className="font-sans text-sm text-black/60 max-w-md leading-relaxed mb-8">
-              Tendencias, guías y tips editoriales para construir tu identidad. Encuentra lo que mejor te representa.
+              Tendencias, guías y tips editoriales para construir tu identidad. Encuentra lo que
+              mejor te representa.
             </p>
             <Link
               href="/asesoria-de-moda"

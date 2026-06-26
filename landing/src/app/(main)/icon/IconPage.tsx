@@ -23,12 +23,10 @@ export function IconPage() {
               <span className="font-nav text-[11px] tracking-[0.3em] uppercase text-[#C9A84C] mb-4 block">
                 Embajadores VOUS · Inspo Outfits
               </span>
-              <h1 className="font-serif text-5xl md:text-7xl leading-[1.05] mb-6">
-                VOUS ICON
-              </h1>
+              <h1 className="font-serif text-5xl md:text-7xl leading-[1.05] mb-6">VOUS ICON</h1>
               <p className="font-sans text-base text-white/60 max-w-xl leading-relaxed">
-                Las voces y miradas que dan vida a cada colección. Descubre los outfits que
-                nuestros influencers crean con VOUS y sé parte de la comunidad.
+                Las voces y miradas que dan vida a cada colección. Descubre los outfits que nuestros
+                influencers crean con VOUS y sé parte de la comunidad.
               </p>
             </div>
             <div className="md:col-span-4 md:text-right">
@@ -51,9 +49,7 @@ export function IconPage() {
               <p className="font-nav text-[11px] tracking-[0.25em] uppercase text-[#C9A84C] mb-3">
                 Nuestros Embajadores
               </p>
-              <h2 className="font-serif text-3xl md:text-5xl text-black">
-                Influencers VOUS
-              </h2>
+              <h2 className="font-serif text-3xl md:text-5xl text-black">Influencers VOUS</h2>
             </div>
             <p className="font-sans text-sm text-black/50 max-w-md">
               Síguelos en sus redes para más inspiración de estilo.
@@ -68,7 +64,9 @@ export function IconPage() {
 
           {error && (
             <div className="text-center py-20">
-              <p className="font-sans text-sm text-black/50">No se pudieron cargar los influencers.</p>
+              <p className="font-sans text-sm text-black/50">
+                No se pudieron cargar los influencers.
+              </p>
             </div>
           )}
 
@@ -121,8 +119,23 @@ export function IconPage() {
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1.5 text-black/50 hover:text-black text-[11px] font-sans transition-colors"
                         >
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-                          <span className="font-nav text-[10px] uppercase tracking-wide">Instagram</span>
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                          </svg>
+                          <span className="font-nav text-[10px] uppercase tracking-wide">
+                            Instagram
+                          </span>
                           <ExternalLink size="10" />
                         </a>
                       )}
@@ -136,7 +149,9 @@ export function IconPage() {
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1 0-5.78 2.87 2.87 0 0 1 1.14.23V9.16a6.34 6.34 0 0 0-1.14-.11A6.21 6.21 0 0 0 4.17 15.3a6.21 6.21 0 0 0 6.22 6.05 6.22 6.22 0 0 0 6.22-6.05V9.02a8.29 8.29 0 0 0 4.83 1.54V7.11a4.86 4.86 0 0 1-1.85-.42z" />
                           </svg>
-                          <span className="font-nav text-[10px] uppercase tracking-wide">TikTok</span>
+                          <span className="font-nav text-[10px] uppercase tracking-wide">
+                            TikTok
+                          </span>
                           <ExternalLink size="10" />
                         </a>
                       )}
@@ -164,15 +179,20 @@ export function IconPage() {
                 Explora el catálogo completo y encuentra las piezas que se ajustan a tu estilo.
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
-                <Button asChild className="bg-white text-black hover:bg-white/90 font-nav text-[11px] uppercase tracking-wider">
+                <Button
+                  asChild
+                  className="bg-white text-black hover:bg-white/90 font-nav text-[11px] uppercase tracking-wider"
+                >
                   <Link href="/catalogo">
                     Ir al catálogo <ArrowRight size={14} className="ml-2" />
                   </Link>
                 </Button>
-                <Button asChild variant="outline-white" className="font-nav text-[11px] uppercase tracking-wider">
-                  <Link href="/asesoria-de-moda">
-                    Asesoría de moda
-                  </Link>
+                <Button
+                  asChild
+                  variant="outline-white"
+                  className="font-nav text-[11px] uppercase tracking-wider"
+                >
+                  <Link href="/asesoria-de-moda">Asesoría de moda</Link>
                 </Button>
               </div>
             </div>
@@ -194,7 +214,8 @@ export function IconPage() {
             ¿Querés ser parte de VOUS ICON?
           </h2>
           <p className="font-sans text-sm text-black/50 max-w-lg mx-auto leading-relaxed mb-8">
-            Si sos creador de contenido y te apasiona la moda urbana, escribinos para colaborar con la marca.
+            Si sos creador de contenido y te apasiona la moda urbana, escribinos para colaborar con
+            la marca.
           </p>
           <a
             href="mailto:icon@vous.com"

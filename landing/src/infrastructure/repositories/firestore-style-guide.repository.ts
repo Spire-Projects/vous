@@ -1,12 +1,11 @@
-import {
-  collection,
-  getDocs,
-  query,
-  orderBy,
-} from "firebase/firestore";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { getFirebaseDb } from "@/lib/firebase";
 import type { StyleGuideRepository } from "@/domain/repositories/style-guide.repository";
-import type { StyleGuide, StyleGuideType, StyleGuideGender } from "@/domain/entities/style-guide.entity";
+import type {
+  StyleGuide,
+  StyleGuideType,
+  StyleGuideGender,
+} from "@/domain/entities/style-guide.entity";
 
 function mapDoc(id: string, data: Record<string, unknown>): StyleGuide {
   return {

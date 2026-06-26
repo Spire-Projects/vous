@@ -22,9 +22,7 @@ export function RevistaTeaser() {
             <span className="font-nav text-[11px] tracking-[0.3em] uppercase text-[#C9A84C] mb-3 block">
               Editorial
             </span>
-            <h2 className="font-serif text-4xl md:text-5xl text-black">
-              Blog de Moda
-            </h2>
+            <h2 className="font-serif text-4xl md:text-5xl text-black">Blog de Moda</h2>
           </div>
           <Link
             href="/revista"

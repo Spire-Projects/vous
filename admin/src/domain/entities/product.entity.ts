@@ -32,38 +32,6 @@ export interface Product {
   sortOrder: number;
   attributes: Record<string, string>;
   tags?: string[];
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface CreateProductInput {
-  name: string;
-  slug: string;
-  description: string;
-  detail: string;
-  categoryId: string;
-  categoryName: string;
-  images: string[];
-  price: number;
-  wholesalePrice?: number;
-  badge?: string;
-  sizes: string[];
-  colors: { hex: string; name: string; images?: string[] }[];
-  materials: string[];
-  hasVariants: boolean;
-  isActive: boolean;
-  isFeatured: boolean;
-  isPreorder: boolean;
-  isSpecialCollection: boolean;
-  isBestseller: boolean;
-  isDiscounted: boolean;
-  discountPercentage?: number;
-  wholesaleOnly?: boolean;
-  wholesaleStock?: number;
-  stock: number;
-  sortOrder: number;
-  attributes: Record<string, string>;
-  tags?: string[];
   totalSales?: number;
   weeklySales?: number;
   createdAt: string;

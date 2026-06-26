@@ -100,12 +100,8 @@ export function HeroSection() {
           <Link href={bannerHref} className="absolute inset-0 block" aria-label="Ver catálogo">
             {desktopSrc ? (
               <picture>
-                {banner.mobileImageUrl && (
-                  <source media="(max-width: 640px)" srcSet={mobileSrc} />
-                )}
-                {banner.tabletImageUrl && (
-                  <source media="(max-width: 1024px)" srcSet={tabletSrc} />
-                )}
+                {banner.mobileImageUrl && <source media="(max-width: 640px)" srcSet={mobileSrc} />}
+                {banner.tabletImageUrl && <source media="(max-width: 1024px)" srcSet={tabletSrc} />}
                 <img
                   src={desktopSrc}
                   alt={banner.title}

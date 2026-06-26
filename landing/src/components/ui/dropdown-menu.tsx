@@ -240,11 +240,7 @@ const DropdownMenuSeparator = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <_Separator
-    ref={ref}
-      className={cn("-mx-1 my-1 h-px bg-black/10", className)}
-    {...props}
-  />
+  <_Separator ref={ref} className={cn("-mx-1 my-1 h-px bg-black/10", className)} {...props} />
 ));
 DropdownMenuSeparator.displayName = "DropdownMenuSeparator";
 

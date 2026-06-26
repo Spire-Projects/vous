@@ -66,15 +66,18 @@ export default function CategoriasPage() {
         {!loading && !error && categories.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
             {categories.map(({ id, slug, name, image, banner, images }, index) => {
-              const allImages = images && images.length > 0
-                ? images
-                : [banner, image].filter(Boolean) as string[];
+              const allImages =
+                images && images.length > 0
+                  ? images
+                  : ([banner, image].filter(Boolean) as string[]);
 
               return (
                 <Link key={id} href={`/categoria/${slug}`} className="group block">
                   <div
                     className={`relative aspect-square overflow-hidden mb-4 ${
-                      !(image || banner || (images && images.length > 0)) ? `bg-gradient-to-b ${getBg(index)}` : "bg-black"
+                      !(image || banner || (images && images.length > 0))
+                        ? `bg-gradient-to-b ${getBg(index)}`
+                        : "bg-black"
                     }`}
                   >
                     {allImages.length > 1 ? (

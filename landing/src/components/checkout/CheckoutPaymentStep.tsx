@@ -133,9 +133,7 @@ export function CheckoutPaymentStep({
                 <p className="font-nav text-[11px] tracking-[0.15em] uppercase text-black/50">
                   Subir comprobante de pago
                 </p>
-                <p className="font-sans text-xs text-black/20 mt-1">
-                  JPG, PNG o PDF (máx. 5MB)
-                </p>
+                <p className="font-sans text-xs text-black/20 mt-1">JPG, PNG o PDF (máx. 5MB)</p>
               </>
             )}
           </div>

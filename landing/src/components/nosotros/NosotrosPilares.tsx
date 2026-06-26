@@ -26,9 +26,7 @@ export function NosotrosPilares() {
           <span className="font-nav text-[10px] tracking-[0.25em] uppercase text-black mb-3 block">
             Filosofía
           </span>
-          <h2 className="font-serif text-[28px] md:text-[42px] text-black">
-            Pilares de Marca
-          </h2>
+          <h2 className="font-serif text-[28px] md:text-[42px] text-black">Pilares de Marca</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
           {VALUES.map(({ icon: Icon, title, desc }) => (

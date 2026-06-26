@@ -19,9 +19,7 @@ export function RelatedProducts({ products, categorySlug }: RelatedProductsProps
           <p className="font-nav text-[10px] tracking-[0.2em] uppercase text-black/40 mb-2">
             Descubre más
           </p>
-          <h2 className="font-serif text-2xl md:text-3xl text-black">
-            Productos Relacionados
-          </h2>
+          <h2 className="font-serif text-2xl md:text-3xl text-black">Productos Relacionados</h2>
         </div>
         {categorySlug && (
           <Link

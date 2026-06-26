@@ -50,6 +50,7 @@ export function InventoryPage() {
   // Load variants when opening product preview
   useEffect(() => {
     if (!preview) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPreviewVariants([]);
       return;
     }

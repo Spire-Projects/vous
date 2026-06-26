@@ -162,6 +162,7 @@ function GuideFormDialog({ open, guide, onClose, onSave }: GuideFormDialogProps)
 
   useEffect(() => {
     if (guide) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setType(guide.type);
       setGender(guide.gender);
       setName(guide.name);

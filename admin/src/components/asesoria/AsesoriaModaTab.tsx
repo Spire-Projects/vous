@@ -25,6 +25,7 @@ export function AsesoriaModaTab() {
 
   useEffect(() => {
     if (config?.fashionTrends) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setForm(config.fashionTrends);
     }
   }, [config]);

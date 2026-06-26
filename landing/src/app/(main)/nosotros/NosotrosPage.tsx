@@ -7,12 +7,18 @@ import { useSiteConfig } from "@/hooks/useSiteConfig";
 import { buildWhatsAppHref } from "@/lib/whatsapp";
 import { FAQSection } from "@/app/(main)/nosotros/FAQSection";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Diamond, Users, Sparkles, Heart, BadgeCheck, Handshake, Crown, Infinity as InfinityIcon } from "lucide-react";
 import {
-  NosotrosHistoria,
-  NosotrosPilares,
-  NosotrosScheduleContact,
-} from "@/components/nosotros";
+  ArrowRight,
+  Diamond,
+  Users,
+  Sparkles,
+  Heart,
+  BadgeCheck,
+  Handshake,
+  Crown,
+  Infinity as InfinityIcon,
+} from "lucide-react";
+import { NosotrosHistoria, NosotrosPilares, NosotrosScheduleContact } from "@/components/nosotros";
 
 const NosotrosMap = dynamic(
   () => import("@/components/nosotros/NosotrosMap").then((mod) => mod.NosotrosMap),
@@ -20,21 +26,55 @@ const NosotrosMap = dynamic(
     ssr: false,
     loading: () => (
       <div className="h-[500px] bg-white animate-pulse rounded-2xl flex items-center justify-center">
-        <span className="font-nav text-[11px] uppercase tracking-[0.2em] text-black/50">Cargando mapa...</span>
+        <span className="font-nav text-[11px] uppercase tracking-[0.2em] text-black/50">
+          Cargando mapa...
+        </span>
       </div>
     ),
   }
 );
 
 const VALORES = [
-  { icon: Diamond, title: "Exclusividad", desc: "Cuidamos cada detalle de nuestros diseños, distribución y experiencia para mantener la esencia única de VOUS." },
-  { icon: Users, title: "Comunidad", desc: "Más que clientes, buscamos construir una comunidad donde cada persona se sienta parte del Team VOUS." },
-  { icon: Sparkles, title: "Autenticidad", desc: "Creemos en la belleza de lo real y en la individualidad que hace única a cada persona." },
-  { icon: Crown, title: "Estilo", desc: "Promovemos la libertad de expresión a través de la moda y las tendencias contemporáneas." },
-  { icon: Heart, title: "Inclusión", desc: "Creemos en la moda para todos, con opciones de tallas ampliadas y para chicas y chicos." },
-  { icon: BadgeCheck, title: "Calidad", desc: "Trabajamos con los mejores materiales y procesos para ofrecer productos que superen expectativas." },
-  { icon: Handshake, title: "Compromiso", desc: "Actuamos con responsabilidad, pasión y dedicación en cada proceso, trabajando siempre para mejorar y crecer." },
-  { icon: InfinityIcon, title: "Libertad", desc: "Diseñamos para quienes rompen moldes, crean su propia esencia y se expresan sin reglas." },
+  {
+    icon: Diamond,
+    title: "Exclusividad",
+    desc: "Cuidamos cada detalle de nuestros diseños, distribución y experiencia para mantener la esencia única de VOUS.",
+  },
+  {
+    icon: Users,
+    title: "Comunidad",
+    desc: "Más que clientes, buscamos construir una comunidad donde cada persona se sienta parte del Team VOUS.",
+  },
+  {
+    icon: Sparkles,
+    title: "Autenticidad",
+    desc: "Creemos en la belleza de lo real y en la individualidad que hace única a cada persona.",
+  },
+  {
+    icon: Crown,
+    title: "Estilo",
+    desc: "Promovemos la libertad de expresión a través de la moda y las tendencias contemporáneas.",
+  },
+  {
+    icon: Heart,
+    title: "Inclusión",
+    desc: "Creemos en la moda para todos, con opciones de tallas ampliadas y para chicas y chicos.",
+  },
+  {
+    icon: BadgeCheck,
+    title: "Calidad",
+    desc: "Trabajamos con los mejores materiales y procesos para ofrecer productos que superen expectativas.",
+  },
+  {
+    icon: Handshake,
+    title: "Compromiso",
+    desc: "Actuamos con responsabilidad, pasión y dedicación en cada proceso, trabajando siempre para mejorar y crecer.",
+  },
+  {
+    icon: InfinityIcon,
+    title: "Libertad",
+    desc: "Diseñamos para quienes rompen moldes, crean su propia esencia y se expresan sin reglas.",
+  },
 ];
 
 export function NosotrosPage() {
@@ -71,8 +111,8 @@ export function NosotrosPage() {
               Tú nos inspiras
             </h1>
             <p className="font-sans text-base md:text-lg text-white/80 max-w-xl leading-relaxed mb-8">
-              No seguimos reglas. Creamos esencia. {storeName} nace para quienes rompen
-              moldes y construyen su propio estilo.
+              No seguimos reglas. Creamos esencia. {storeName} nace para quienes rompen moldes y
+              construyen su propio estilo.
             </p>
             <div className="flex flex-wrap items-center gap-3 font-nav text-[10px] tracking-[0.3em] uppercase text-white/70">
               <span>Estilo</span>
@@ -114,9 +154,9 @@ export function NosotrosPage() {
                   La perfección nunca nos inspiró. Nos inspira lo real.
                 </h2>
                 <p className="font-sans text-base text-black/60 leading-relaxed max-w-xl">
-                  {storeName} nace para quienes rompen moldes y crean su propia esencia.
-                  Somos una marca de moda urbana contemporánea pensada para Bolivia y
-                  Latinoamérica, construida sobre exclusividad, comunidad y autenticidad.
+                  {storeName} nace para quienes rompen moldes y crean su propia esencia. Somos una
+                  marca de moda urbana contemporánea pensada para Bolivia y Latinoamérica,
+                  construida sobre exclusividad, comunidad y autenticidad.
                 </p>
               </div>
 
@@ -161,22 +201,21 @@ export function NosotrosPage() {
             <span className="font-nav text-[11px] tracking-[0.3em] uppercase text-[#C9A84C] mb-3 block">
               Nuestros Valores
             </span>
-            <h2 className="font-serif text-3xl md:text-5xl text-black">
-              Lo que nos define
-            </h2>
+            <h2 className="font-serif text-3xl md:text-5xl text-black">Lo que nos define</h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {VALORES.map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="bg-white rounded-2xl p-5 md:p-6 hover:shadow-lg transition-shadow">
+              <div
+                key={title}
+                className="bg-white rounded-2xl p-5 md:p-6 hover:shadow-lg transition-shadow"
+              >
                 <div className="w-10 h-10 rounded-full bg-black/5 flex items-center justify-center mb-4">
                   <Icon size={18} strokeWidth={1.5} className="text-[#C9A84C]" />
                 </div>
                 <h3 className="font-nav text-[11px] font-semibold tracking-[0.2em] uppercase text-black mb-2">
                   {title}
                 </h3>
-                <p className="font-sans text-xs text-black/60 leading-relaxed">
-                  {desc}
-                </p>
+                <p className="font-sans text-xs text-black/60 leading-relaxed">{desc}</p>
               </div>
             ))}
           </div>
@@ -230,7 +269,11 @@ export function NosotrosPage() {
             <p className="font-sans text-sm md:text-base text-white/60 mb-10">
               Descubrí nuestra última colección inspirada en el minimalismo industrial.
             </p>
-            <Button asChild size="lg" className="bg-white text-black hover:bg-white/90 font-nav text-[11px] uppercase tracking-[0.3em]">
+            <Button
+              asChild
+              size="lg"
+              className="bg-white text-black hover:bg-white/90 font-nav text-[11px] uppercase tracking-[0.3em]"
+            >
               <Link href="/catalogo">
                 Explorar catálogo <ArrowRight size={14} className="ml-2" />
               </Link>

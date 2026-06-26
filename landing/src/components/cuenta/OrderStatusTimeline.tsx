@@ -63,11 +63,7 @@ export function OrderStatusTimeline({ status }: { status: OrderStatus }) {
             {/* Label */}
             <span
               className={`font-sans text-[10px] text-center leading-tight ${
-                active
-                  ? "text-black font-semibold"
-                  : done
-                    ? "text-black"
-                    : "text-black/20"
+                active ? "text-black font-semibold" : done ? "text-black" : "text-black/20"
               }`}
             >
               {step.label}

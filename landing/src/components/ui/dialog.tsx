@@ -122,11 +122,7 @@ DialogHeader.displayName = "DialogHeader";
 
 const DialogTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(
   ({ className, ...props }, ref) => (
-    <_Title
-      ref={ref}
-      className={cn("font-serif text-xl text-black", className)}
-      {...props}
-    />
+    <_Title ref={ref} className={cn("font-serif text-xl text-black", className)} {...props} />
   )
 );
 DialogTitle.displayName = "DialogTitle";
@@ -135,11 +131,7 @@ const DialogDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <_Description
-    ref={ref}
-      className={cn("font-sans text-sm text-black/50", className)}
-    {...props}
-  />
+  <_Description ref={ref} className={cn("font-sans text-sm text-black/50", className)} {...props} />
 ));
 DialogDescription.displayName = "DialogDescription";
 

@@ -74,12 +74,8 @@ export function SocialPostsSection() {
                   </span>
                 </a>
               </div>
-              <h3 className="font-nav text-[13px] font-semibold text-black mb-1">
-                {post.title}
-              </h3>
-              <p className="font-sans text-sm text-black/50 line-clamp-2">
-                {post.description}
-              </p>
+              <h3 className="font-nav text-[13px] font-semibold text-black mb-1">{post.title}</h3>
+              <p className="font-sans text-sm text-black/50 line-clamp-2">{post.description}</p>
             </div>
           ))}
         </div>

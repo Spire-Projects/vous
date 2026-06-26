@@ -132,8 +132,15 @@ function buildDynamicFilters(products: Product[], categories: Category[]): Dynam
   }
 
   const sizeOrder = ["XS", "S", "M", "L", "XL", "XXL", "2XL", "3XL", "4XL", "UNICO", "U"];
-  const toOptions = (map: Map<string, number>, sorter?: (a: FilterOption, b: FilterOption) => number): FilterOption[] => {
-    const opts = Array.from(map.entries()).map(([value, count]) => ({ value, label: value, count }));
+  const toOptions = (
+    map: Map<string, number>,
+    sorter?: (a: FilterOption, b: FilterOption) => number
+  ): FilterOption[] => {
+    const opts = Array.from(map.entries()).map(([value, count]) => ({
+      value,
+      label: value,
+      count,
+    }));
     if (sorter) return opts.sort(sorter);
     return opts.sort((a, b) => a.label.localeCompare(b.label));
   };

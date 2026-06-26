@@ -20,7 +20,8 @@ export function IconTeaser() {
               Inspo Outfits de nuestra comunidad
             </h2>
             <p className="font-sans text-sm text-white/60 max-w-md leading-relaxed mb-8">
-              Las voces y miradas que dan vida a cada colección. Descubre cómo los influencers visten VOUS.
+              Las voces y miradas que dan vida a cada colección. Descubre cómo los influencers
+              visten VOUS.
             </p>
             <Link
               href="/icon"
@@ -59,7 +60,11 @@ export function IconTeaser() {
                     <div className="absolute bottom-3 left-3 right-3">
                       <p className="font-serif text-sm text-white truncate">{inf.name}</p>
                     </div>
-                    <Star size={14} className="absolute top-3 right-3 text-[#C9A84C]" strokeWidth={1.5} />
+                    <Star
+                      size={14}
+                      className="absolute top-3 right-3 text-[#C9A84C]"
+                      strokeWidth={1.5}
+                    />
                   </div>
                 ))}
               </div>

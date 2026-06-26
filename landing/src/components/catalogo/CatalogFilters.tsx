@@ -23,23 +23,23 @@ interface CatalogFiltersProps {
 
 /* ── Color map for known colors ── */
 const COLOR_SWATCHES: Record<string, string> = {
-  "Negro": "#1a1a1a",
-  "Blanco": "#f5f5f5",
-  "Rojo": "#dc2626",
-  "Azul": "#2563eb",
-  "Verde": "#16a34a",
-  "Amarillo": "#eab308",
-  "Rosa": "#ec4899",
-  "Gris": "#9ca3af",
-  "Beige": "#d4c4a8",
-  "Crema": "#fffdd0",
-  "Marron": "#92400e",
-  "Cafe": "#78350f",
-  "Naranja": "#f97316",
-  "Morado": "#9333ea",
-  "Violeta": "#8b5cf6",
-  "Dorado": "#c9a84c",
-  "Plateado": "#c0c0c0",
+  Negro: "#1a1a1a",
+  Blanco: "#f5f5f5",
+  Rojo: "#dc2626",
+  Azul: "#2563eb",
+  Verde: "#16a34a",
+  Amarillo: "#eab308",
+  Rosa: "#ec4899",
+  Gris: "#9ca3af",
+  Beige: "#d4c4a8",
+  Crema: "#fffdd0",
+  Marron: "#92400e",
+  Cafe: "#78350f",
+  Naranja: "#f97316",
+  Morado: "#9333ea",
+  Violeta: "#8b5cf6",
+  Dorado: "#c9a84c",
+  Plateado: "#c0c0c0",
 };
 
 export function CatalogFilters({
@@ -103,46 +103,54 @@ export function CatalogFilters({
           <>
             <SearchField value={state.query} onChange={onQueryChange} />
 
-        {!hideCategoryFilter && (
-          <CategoryFilter
-            options={filters.categories}
-            active={state.categoryId}
-            onChange={onCategoryChange}
-          />
-        )}
+            {!hideCategoryFilter && (
+              <CategoryFilter
+                options={filters.categories}
+                active={state.categoryId}
+                onChange={onCategoryChange}
+              />
+            )}
 
-        {filters.sizes.length > 0 && (
-          <SizeFilter options={filters.sizes} active={state.sizes} onToggle={onToggleSize} />
-        )}
+            {filters.sizes.length > 0 && (
+              <SizeFilter options={filters.sizes} active={state.sizes} onToggle={onToggleSize} />
+            )}
 
-        {filters.colors.length > 0 && (
-          <ColorFilter options={filters.colors} active={state.colors} onToggle={onToggleColor} />
-        )}
+            {filters.colors.length > 0 && (
+              <ColorFilter
+                options={filters.colors}
+                active={state.colors}
+                onToggle={onToggleColor}
+              />
+            )}
 
-        {filters.materials.length > 0 && (
-          <MaterialFilter options={filters.materials} active={state.materials} onToggle={onToggleMaterial} />
-        )}
+            {filters.materials.length > 0 && (
+              <MaterialFilter
+                options={filters.materials}
+                active={state.materials}
+                onToggle={onToggleMaterial}
+              />
+            )}
 
-        <PriceFilter
-          min={filters.priceMin}
-          max={filters.priceMax}
-          activeMin={state.priceMin}
-          activeMax={state.priceMax}
-          onChange={onPriceChange}
-        />
+            <PriceFilter
+              min={filters.priceMin}
+              max={filters.priceMax}
+              activeMin={state.priceMin}
+              activeMax={state.priceMax}
+              onChange={onPriceChange}
+            />
 
-        {filters.tags.length > 0 && (
-          <TagFilter options={filters.tags} active={state.tags} onToggle={onToggleTag} />
-        )}
+            {filters.tags.length > 0 && (
+              <TagFilter options={filters.tags} active={state.tags} onToggle={onToggleTag} />
+            )}
 
-        {activeCount > 0 && (
-          <button
-            onClick={onClear}
-            className="w-full font-nav text-[11px] uppercase tracking-wider border border-black/10 py-2.5 text-black/60 hover:text-black hover:border-black transition-colors"
-          >
-            Limpiar filtros ({activeCount})
-          </button>
-        )}
+            {activeCount > 0 && (
+              <button
+                onClick={onClear}
+                className="w-full font-nav text-[11px] uppercase tracking-wider border border-black/10 py-2.5 text-black/60 hover:text-black hover:border-black transition-colors"
+              >
+                Limpiar filtros ({activeCount})
+              </button>
+            )}
           </>
         )}
       </aside>
@@ -161,18 +169,36 @@ export function CatalogFilters({
             <div className="space-y-8">
               <SearchField value={state.query} onChange={onQueryChange} />
               {!hideCategoryFilter && (
-                <CategoryFilter options={filters.categories} active={state.categoryId} onChange={onCategoryChange} />
+                <CategoryFilter
+                  options={filters.categories}
+                  active={state.categoryId}
+                  onChange={onCategoryChange}
+                />
               )}
               {filters.sizes.length > 0 && (
                 <SizeFilter options={filters.sizes} active={state.sizes} onToggle={onToggleSize} />
               )}
               {filters.colors.length > 0 && (
-                <ColorFilter options={filters.colors} active={state.colors} onToggle={onToggleColor} />
+                <ColorFilter
+                  options={filters.colors}
+                  active={state.colors}
+                  onToggle={onToggleColor}
+                />
               )}
               {filters.materials.length > 0 && (
-                <MaterialFilter options={filters.materials} active={state.materials} onToggle={onToggleMaterial} />
+                <MaterialFilter
+                  options={filters.materials}
+                  active={state.materials}
+                  onToggle={onToggleMaterial}
+                />
               )}
-              <PriceFilter min={filters.priceMin} max={filters.priceMax} activeMin={state.priceMin} activeMax={state.priceMax} onChange={onPriceChange} />
+              <PriceFilter
+                min={filters.priceMin}
+                max={filters.priceMax}
+                activeMin={state.priceMin}
+                activeMax={state.priceMax}
+                onChange={onPriceChange}
+              />
               {filters.tags.length > 0 && (
                 <TagFilter options={filters.tags} active={state.tags} onToggle={onToggleTag} />
               )}
@@ -239,9 +265,7 @@ function CategoryFilter({
               key={value}
               onClick={() => onChange(isActive ? null : value)}
               className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-left font-sans text-sm transition-colors ${
-                isActive
-                  ? "bg-black text-white"
-                  : "text-black/60 hover:text-black hover:bg-black/5"
+                isActive ? "bg-black text-white" : "text-black/60 hover:text-black hover:bg-black/5"
               }`}
             >
               <span>{label}</span>
@@ -312,9 +336,7 @@ function ColorFilter({
               onClick={() => onToggle(value)}
               title={value}
               className={`group relative flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all ${
-                isActive
-                  ? "border-black scale-110"
-                  : "border-transparent hover:border-black/20"
+                isActive ? "border-black scale-110" : "border-transparent hover:border-black/20"
               }`}
             >
               <span
@@ -323,7 +345,11 @@ function ColorFilter({
               />
               {isActive && (
                 <span className="absolute inset-0 flex items-center justify-center">
-                  <Check size={12} className={swatch === "#f5f5f5" ? "text-black" : "text-white"} strokeWidth={3} />
+                  <Check
+                    size={12}
+                    className={swatch === "#f5f5f5" ? "text-black" : "text-white"}
+                    strokeWidth={3}
+                  />
                 </span>
               )}
             </button>
@@ -369,7 +395,8 @@ function MaterialFilter({
                   : "border-black/10 text-black/60 hover:border-black/30 hover:text-black"
               }`}
             >
-              {value} <span className={isActive ? "text-white/60" : "text-black/30"}>({count})</span>
+              {value}{" "}
+              <span className={isActive ? "text-white/60" : "text-black/30"}>({count})</span>
             </button>
           );
         })}
@@ -480,7 +507,8 @@ function TagFilter({
                   : "border-black/10 text-black/50 hover:border-black/30 hover:text-black"
               }`}
             >
-              {tagLabelMap[value] ?? value} <span className={isActive ? "text-white/60" : "text-black/30"}>({count})</span>
+              {tagLabelMap[value] ?? value}{" "}
+              <span className={isActive ? "text-white/60" : "text-black/30"}>({count})</span>
             </button>
           );
         })}

@@ -13,7 +13,8 @@ const DEFAULT_RULES: WholesaleRules = {
   restrictions: [],
   notes: "",
   isActive: true,
-  termsContent: "<p>Al registrarte como distribuidor mayorista de VOUS, aceptas las siguientes reglas y condiciones de la marca.</p>",
+  termsContent:
+    "<p>Al registrarte como distribuidor mayorista de VOUS, aceptas las siguientes reglas y condiciones de la marca.</p>",
   termsUrl: "",
 };
 

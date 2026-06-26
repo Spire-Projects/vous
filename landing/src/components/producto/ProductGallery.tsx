@@ -16,12 +16,20 @@ interface ProductGalleryProps {
   variants?: ProductVariant[];
 }
 
-export function ProductGallery({ images, name, colors, selectedColor, selectedSize, variants }: ProductGalleryProps) {
+export function ProductGallery({
+  images,
+  name,
+  colors,
+  selectedColor,
+  selectedSize,
+  variants,
+}: ProductGalleryProps) {
   const displayImages = useMemo(() => {
     // 1. Exact variant match (color + size)
     if (variants && variants.length > 0 && selectedColor && selectedSize) {
       const exact = variants.find(
-        (v) => v.color === selectedColor && v.size === selectedSize && v.images && v.images.length > 0
+        (v) =>
+          v.color === selectedColor && v.size === selectedSize && v.images && v.images.length > 0
       );
       if (exact?.images) return exact.images;
     }

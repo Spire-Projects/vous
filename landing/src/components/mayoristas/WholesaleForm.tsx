@@ -1,7 +1,16 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { CheckCircle, MessageCircle, Upload, X, AlertCircle, ChevronDown, FileText, ExternalLink } from "lucide-react";
+import {
+  CheckCircle,
+  MessageCircle,
+  Upload,
+  X,
+  AlertCircle,
+  ChevronDown,
+  FileText,
+  ExternalLink,
+} from "lucide-react";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { getFirebaseDb } from "@/lib/firebase";
 import { CLOUDINARY_UPLOAD_PRESET, CLOUDINARY_CLOUD_NAME } from "@/lib/cloudinary.client";
@@ -178,15 +187,13 @@ export function WholesaleForm() {
       <p className="font-nav text-[10px] tracking-[0.2em] uppercase text-black mb-1">
         Registro Oficial
       </p>
-      <h3 className="font-serif text-xl text-black mb-4">
-        Formulario Clientes Por Mayor VOUS
-      </h3>
+      <h3 className="font-serif text-xl text-black mb-4">Formulario Clientes Por Mayor VOUS</h3>
       <div className="space-y-2 mb-7 pb-7 border-b border-black/10">
         <p className="font-sans text-xs text-black/50 leading-relaxed">
           Somos una empresa de industria boliviana registrada en el{" "}
-          <strong className="text-black font-medium">SENAPI</strong>. Para proteger
-          nuestra marca y garantizar una correcta distribución, recopilamos los datos de todos
-          nuestros distribuidores VOUS.
+          <strong className="text-black font-medium">SENAPI</strong>. Para proteger nuestra marca y
+          garantizar una correcta distribución, recopilamos los datos de todos nuestros
+          distribuidores VOUS.
         </p>
         <p className="font-sans text-xs text-black/50 leading-relaxed">
           Como parte de nuestro compromiso, compartimos la ubicación y nombre de tu tienda con
@@ -204,7 +211,10 @@ export function WholesaleForm() {
               <FileText size={14} />
               {rulesLoading ? "Cargando términos..." : "Reglas y condiciones para distribuidores"}
             </span>
-            <ChevronDown size={14} className={`text-black/50 transition-transform ${termsOpen ? "rotate-180" : ""}`} />
+            <ChevronDown
+              size={14}
+              className={`text-black/50 transition-transform ${termsOpen ? "rotate-180" : ""}`}
+            />
           </button>
           {termsOpen && rules && (
             <div className="px-4 py-4 space-y-3">
@@ -220,7 +230,9 @@ export function WholesaleForm() {
               )}
               <div
                 className="text-xs text-black/60 font-sans leading-relaxed [&_strong]:font-semibold [&_strong]:text-black [&_em]:italic [&_p]:mb-2 [&_ul]:list-disc [&_ul]:pl-4 [&_li]:mb-1"
-                dangerouslySetInnerHTML={{ __html: rules.termsContent || "<p>Reglas y condiciones de distribución VOUS.</p>" }}
+                dangerouslySetInnerHTML={{
+                  __html: rules.termsContent || "<p>Reglas y condiciones de distribución VOUS.</p>",
+                }}
               />
             </div>
           )}

@@ -1,8 +1,4 @@
-import {
-  collection,
-  addDoc,
-  serverTimestamp,
-} from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { getFirebaseDb } from "@/lib/firebase";
 import type { FeedbackRepository } from "@/domain/repositories/feedback.repository";
 import type { Feedback, CreateFeedbackInput } from "@/domain/entities/feedback.entity";

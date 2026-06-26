@@ -3,11 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { MapContainer, TileLayer, GeoJSON, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
-import {
-  BOLIVIA_DEPARTMENTS,
-  DEPT_ID_TO_NAME,
-  DEPT_CENTERS,
-} from "@/data/bolivia-departments";
+import { BOLIVIA_DEPARTMENTS, DEPT_ID_TO_NAME, DEPT_CENTERS } from "@/data/bolivia-departments";
 import type { DepartmentLink } from "@/domain/entities/site-config.entity";
 import { MapSidePanel } from "@/components/map/MapSidePanel";
 import "leaflet/dist/leaflet.css";
@@ -87,14 +83,14 @@ export function NosotrosMap({ departmentLinks, otherCountryLinks }: NosotrosMapP
         mouseover: (e: L.LeafletMouseEvent) => {
           const tgt = e.target as L.Path;
           if (resolveDeptId(feature.properties.name) !== selectedDept) {
-            tgt.setStyle({ fillOpacity: 0.20, weight: 2 });
+            tgt.setStyle({ fillOpacity: 0.2, weight: 2 });
           }
         },
         mouseout: (e: L.LeafletMouseEvent) => {
           const tgt = e.target as L.Path;
           const isSel = resolveDeptId(feature.properties.name) === selectedDept;
           tgt.setStyle({
-            fillOpacity: isSel ? 0.30 : 0.08,
+            fillOpacity: isSel ? 0.3 : 0.08,
             weight: isSel ? 2.5 : 1,
           });
         },
@@ -103,15 +99,12 @@ export function NosotrosMap({ departmentLinks, otherCountryLinks }: NosotrosMapP
     [selectedDept]
   );
 
-  const selectedDeptName = selectedDept
-    ? (DEPT_ID_TO_NAME[selectedDept] ?? "")
-    : "";
+  const selectedDeptName = selectedDept ? (DEPT_ID_TO_NAME[selectedDept] ?? "") : "";
 
   const selectedLinks = useMemo(() => {
     if (!selectedDeptName) return [];
     return departmentLinks.filter(
-      (link) =>
-        link.name.toLowerCase().trim() === selectedDeptName.toLowerCase().trim()
+      (link) => link.name.toLowerCase().trim() === selectedDeptName.toLowerCase().trim()
     );
   }, [departmentLinks, selectedDeptName]);
 
@@ -122,7 +115,10 @@ export function NosotrosMap({ departmentLinks, otherCountryLinks }: NosotrosMapP
   return (
     <div className="flex flex-col lg:flex-row gap-3" style={{ minHeight: 500 }}>
       {/* Mapa */}
-      <div className="flex-1 rounded-2xl overflow-hidden border border-black/10 z-[1]" style={{ minHeight: 500 }}>
+      <div
+        className="flex-1 rounded-2xl overflow-hidden border border-black/10 z-[1]"
+        style={{ minHeight: 500 }}
+      >
         <MapContainer
           center={DEFAULT_CENTER}
           zoom={DEFAULT_ZOOM}
@@ -131,10 +127,10 @@ export function NosotrosMap({ departmentLinks, otherCountryLinks }: NosotrosMapP
           attributionControl={false}
           className="z-[1]"
         >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>'
-        />
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>'
+          />
           <GeoJSON
             key={selectedDept ?? "none"}
             data={BOLIVIA_DEPARTMENTS}
@@ -182,7 +178,10 @@ export function NosotrosMap({ departmentLinks, otherCountryLinks }: NosotrosMapP
       </div>
 
       {/* Panel de tiendas */}
-      <div className="w-full lg:w-80 bg-white border border-black/10 rounded-2xl shadow-lg overflow-hidden flex flex-col" style={{ minHeight: 200 }}>
+      <div
+        className="w-full lg:w-80 bg-white border border-black/10 rounded-2xl shadow-lg overflow-hidden flex flex-col"
+        style={{ minHeight: 200 }}
+      >
         <MapSidePanel deptName={selectedDeptName} links={selectedLinks} />
       </div>
     </div>
