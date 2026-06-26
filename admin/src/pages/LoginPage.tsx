@@ -14,7 +14,7 @@ const FOOTER_LINKS = [
     links: [
       { href: `${LANDING_URL}`, label: "Inicio" },
       { href: `${LANDING_URL}/catalogo`, label: "Catálogo" },
-      { href: `${LANDING_URL}/revista`, label: "Blog de Moda" },
+      { href: `${LANDING_URL}/revista`, label: "Vous News" },
       { href: `${LANDING_URL}/nosotros`, label: "Nosotros" },
     ],
   },

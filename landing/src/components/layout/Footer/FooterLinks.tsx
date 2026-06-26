@@ -10,7 +10,7 @@ const FOOTER_SECTIONS = [
       { href: "/nosotros", label: "Nosotros" },
       { href: "/asesoria-de-moda", label: "Asesoría de Moda" },
       { href: "/recomendaciones", label: "Recomendaciones" },
-      { href: "/revista", label: "Blog de Moda" },
+      { href: "/revista", label: "Vous News" },
     ],
   },
   {

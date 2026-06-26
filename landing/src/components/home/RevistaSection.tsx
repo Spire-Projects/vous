@@ -33,7 +33,7 @@ export function RevistaSection() {
           <p className="font-nav text-[11px] tracking-[0.25em] text-black uppercase mb-3">
             Editorial
           </p>
-          <h2 className="font-serif text-3xl md:text-4xl text-black">Blog de Moda</h2>
+          <h2 className="font-serif text-3xl md:text-4xl text-black">vous news</h2>
           <p className="font-sans text-sm text-black/50 mt-3 max-w-md leading-relaxed">
             Historias, tendencias y el proceso detrás de cada colección.
           </p>

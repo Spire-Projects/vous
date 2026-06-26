@@ -6,9 +6,9 @@ const NAV_LINKS = [
   { href: "/catalogo", label: "CATÁLOGO" },
   { href: "/categorias", label: "CATEGORÍAS" },
   { href: "/icon", label: "ICON" },
-  { href: "/asesoria-de-moda", label: "ASESORIA DE MODA" },
+  { href: "/asesoria-de-moda", label: "ASESORIA" },
   { href: "/recomendaciones", label: "RECOMENDACIONES" },
-  { href: "/revista", label: "BLOG DE MODA" },
+  { href: "/revista", label: "VOUS NEWS" },
   { href: "/nuevos-posts", label: "NEW POST" },
   { href: "/nosotros", label: "NOSOTROS" },
 ] as const;
