@@ -6,8 +6,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useStyleGuides } from "@/hooks/useStyleGuides";
 import { useProducts } from "@/hooks/useProducts";
 import { ProductCard } from "@/components/catalogo/ProductCard";
+import { Button } from "@/components/ui/button";
 import {
-  Sparkles, Shirt, ArrowLeft, ChevronRight, Palette, Ruler,
+  Sparkles, Shirt, ArrowLeft, ChevronRight, Palette, Ruler, ArrowRight,
 } from "lucide-react";
 import type { StyleGuide } from "@/domain/entities/style-guide.entity";
 
@@ -42,7 +43,6 @@ export default function RecomendacionesPage() {
           productColors.some((pc) => pc.toLowerCase().includes(rc.toLowerCase()) || rc.toLowerCase().includes(pc.toLowerCase()))
         );
       }
-      // bodyType
       const attrValues = Object.values(p.attributes);
       return selectedGuide.recommendedAttributes.some((ra) =>
         attrValues.some((av) => av.toLowerCase().includes(ra.toLowerCase()) || ra.toLowerCase().includes(av.toLowerCase()))
@@ -57,26 +57,51 @@ export default function RecomendacionesPage() {
   }
 
   return (
-    <div className="bg-white min-h-screen">
-      {/* ── Header / Breadcrumb ── */}
-      <div className="bg-black py-14 md:py-20 px-5 md:px-20">
-        <div className="max-w-[1440px] mx-auto">
-          <motion.h1
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="font-serif text-4xl md:text-6xl text-white leading-tight mb-4"
-          >
-            Recomendaciones
-          </motion.h1>
-          <p className="font-sans text-sm text-white/50 max-w-lg leading-relaxed">
-            Descubre qué colores y cortes te favorecen según tu tono de piel y tipo de cuerpo.
-          </p>
+    <div className="bg-white">
+      {/* Editorial Hero */}
+      <section className="relative bg-black text-white overflow-hidden">
+        <div className="absolute inset-0 opacity-30 pointer-events-none">
+          <div className="absolute top-1/2 -translate-y-1/2 -left-32 w-96 h-96 rounded-full bg-[#C9A84C]/20 blur-3xl" />
         </div>
-      </div>
+        <div className="relative max-w-[1440px] mx-auto px-5 md:px-20 py-20 md:py-28">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-end">
+            <div className="md:col-span-8">
+              <span className="font-nav text-[11px] tracking-[0.3em] uppercase text-[#C9A84C] mb-4 block">
+                Colorimetría · Tipología
+              </span>
+              <motion.h1
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="font-serif text-5xl md:text-7xl leading-[1.05] mb-6"
+              >
+                Recomendaciones
+              </motion.h1>
+              <p className="font-sans text-base text-white/60 max-w-xl leading-relaxed">
+                Descubre qué colores y cortes te favorecen según tu tono de piel y tipo de cuerpo.
+              </p>
+            </div>
+            <div className="md:col-span-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="border border-white/15 rounded-xl p-4 bg-white/[0.02]">
+                  <Palette size={18} className="text-[#C9A84C] mb-2" strokeWidth={1.5} />
+                  <p className="font-nav text-[10px] tracking-[0.2em] uppercase text-white/50">
+                    Color
+                  </p>
+                </div>
+                <div className="border border-white/15 rounded-xl p-4 bg-white/[0.02]">
+                  <Ruler size={18} className="text-[#C9A84C] mb-2" strokeWidth={1.5} />
+                  <p className="font-nav text-[10px] tracking-[0.2em] uppercase text-white/50">
+                    Corte
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <div className="max-w-[1440px] mx-auto px-5 md:px-20 py-12 md:py-16">
         <AnimatePresence mode="wait">
-          {/* ── MENU ── */}
           {view === "menu" && (
             <motion.div
               key="menu"
@@ -86,7 +111,6 @@ export default function RecomendacionesPage() {
               transition={{ duration: 0.4 }}
               className="space-y-12"
             >
-              {/* Gender filter */}
               <div className="flex justify-center">
                 <div className="inline-flex bg-[#FAF8F5] border border-black/5 rounded-xl p-1">
                   {(["all", "women", "men"] as const).map((g) => (
@@ -105,7 +129,6 @@ export default function RecomendacionesPage() {
                 </div>
               </div>
 
-              {/* Skin tones */}
               <section>
                 <div className="flex items-center gap-3 mb-8">
                   <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center">
@@ -138,7 +161,6 @@ export default function RecomendacionesPage() {
                 )}
               </section>
 
-              {/* Body types */}
               {filteredBodyGuides.length > 0 && (
                 <section>
                   <div className="flex items-center gap-3 mb-8">
@@ -173,7 +195,6 @@ export default function RecomendacionesPage() {
             </motion.div>
           )}
 
-          {/* ── SKIN TONES GRID ── */}
           {view === "skinTones" && (
             <motion.div
               key="skinTones"
@@ -197,7 +218,6 @@ export default function RecomendacionesPage() {
             </motion.div>
           )}
 
-          {/* ── BODY TYPES GRID ── */}
           {view === "bodyTypes" && (
             <motion.div
               key="bodyTypes"
@@ -221,7 +241,6 @@ export default function RecomendacionesPage() {
             </motion.div>
           )}
 
-          {/* ── GUIDE DETAIL ── */}
           {view === "guideDetail" && selectedGuide && (
             <motion.div
               key="detail"
@@ -238,7 +257,6 @@ export default function RecomendacionesPage() {
                 <ArrowLeft size={12} /> Volver
               </button>
 
-              {/* Guide header */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                 <div className="aspect-[4/5] md:aspect-square rounded-2xl overflow-hidden bg-neutral-100 relative">
                   {selectedGuide.imageUrl ? (
@@ -316,7 +334,6 @@ export default function RecomendacionesPage() {
                 </div>
               </div>
 
-              {/* Recommended products */}
               <div>
                 <h3 className="font-serif text-2xl text-black mb-6">
                   Productos recomendados
@@ -341,18 +358,44 @@ export default function RecomendacionesPage() {
           )}
         </AnimatePresence>
       </div>
+
+      {/* Editorial CTA */}
+      <section className="bg-black text-white py-20 md:py-24">
+        <div className="max-w-[1440px] mx-auto px-5 md:px-20">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
+            <div className="md:col-span-7">
+              <span className="font-nav text-[11px] tracking-[0.3em] uppercase text-[#C9A84C] mb-4 block">
+                ¿Listo para encontrar tu match?
+              </span>
+              <h2 className="font-serif text-4xl md:text-5xl leading-[1.1] mb-5">
+                Explorá el catálogo completo
+              </h2>
+              <p className="font-sans text-base text-white/60 max-w-md leading-relaxed">
+                Filtros por color, tipo de cuerpo, talla y más.
+              </p>
+            </div>
+            <div className="md:col-span-5 flex flex-col sm:flex-row md:justify-end gap-3">
+              <Button asChild className="bg-white text-black hover:bg-white/90 font-nav text-[11px] uppercase tracking-wider">
+                <Link href="/catalogo">
+                  Ir al catálogo <ArrowRight size={14} className="ml-2" />
+                </Link>
+              </Button>
+              <Button asChild variant="outline-white" className="font-nav text-[11px] uppercase tracking-wider">
+                <Link href="/asesoria-de-moda">
+                  Asesoría de moda
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
 
-/* ── Card components ─────────────────────────────────────────────────────── */
-
 function SkinToneCard({ guide, onClick }: { guide: StyleGuide; onClick: () => void }) {
   return (
-    <button
-      onClick={onClick}
-      className="group text-left w-full"
-    >
+    <button onClick={onClick} className="group text-left w-full">
       <div className="relative aspect-[3/4] rounded-xl overflow-hidden bg-neutral-100 mb-3">
         {guide.imageUrl ? (
           <img
@@ -386,10 +429,7 @@ function SkinToneCard({ guide, onClick }: { guide: StyleGuide; onClick: () => vo
 
 function BodyTypeCard({ guide, onClick }: { guide: StyleGuide; onClick: () => void }) {
   return (
-    <button
-      onClick={onClick}
-      className="group text-left w-full"
-    >
+    <button onClick={onClick} className="group text-left w-full">
       <div className="relative aspect-[3/4] rounded-xl overflow-hidden bg-neutral-100 mb-3">
         {guide.imageUrl ? (
           <img

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Pencil, Trash2, Eye, EyeOff, GripVertical } from "lucide-react";
+import { Plus, Pencil, Trash2, Eye, EyeOff, GripVertical, Monitor, Tablet, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { StatCard } from "@/components/ui/StatCard";
@@ -16,6 +16,7 @@ export function BannersTab() {
   const [dragIdx, setDragIdx] = useState<number | null>(null);
 
   const activeCount = banners.filter((b) => b.active).length;
+  const responsiveCount = banners.filter((b) => b.mobileImageUrl || b.tabletImageUrl).length;
 
   function handleNew() { setEditing(null); setDialogOpen(true); }
   function handleEdit(banner: Banner) { setEditing(banner); setDialogOpen(true); }
@@ -42,10 +43,10 @@ export function BannersTab() {
   return (
     <>
       <div className="flex items-center justify-between mb-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 flex-1">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 flex-1">
           <StatCard label="Total" value={String(banners.length)} />
           <StatCard label="Activos" value={String(activeCount)} />
-          <StatCard label="Inactivos" value={String(banners.length - activeCount)} />
+          <StatCard label="Con responsive" value={String(responsiveCount)} />
         </div>
         <Button onClick={handleNew} className="ml-4 shrink-0">
           <Plus size={14} strokeWidth={2} />Nuevo banner
@@ -73,13 +74,41 @@ export function BannersTab() {
                 className={`flex items-start gap-3 p-4 hover:bg-amber-50/30 transition-colors ${dragIdx === idx ? "opacity-40" : ""}`}
               >
                 <GripVertical size={16} className="text-vous-text-muted mt-0.5 shrink-0 cursor-grab" />
-                <div className="shrink-0 w-24 h-16 overflow-hidden border border-vous-border">
-                  {banner.imageUrl ? (
-                    <img src={banner.imageUrl} alt={banner.title} className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full bg-white/90 flex items-center justify-center text-vous-text-secondary text-[10px]">Sin imagen</div>
-                  )}
+
+                {/* Responsive previews */}
+                <div className="shrink-0 flex items-center gap-2">
+                  <div className="relative">
+                    <div className="w-24 h-14 overflow-hidden border border-vous-border bg-white">
+                      {banner.imageUrl ? (
+                        <img src={banner.imageUrl} alt={banner.title} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full bg-white/90 flex items-center justify-center text-vous-text-secondary text-[10px]">Sin imagen</div>
+                      )}
+                    </div>
+                    <Monitor size={10} className="absolute -bottom-3 left-1/2 -translate-x-1/2 text-black/40" />
+                  </div>
+                  <div className="relative">
+                    <div className={`w-12 h-14 overflow-hidden border ${banner.tabletImageUrl ? "border-black/40" : "border-vous-border border-dashed"} bg-white`}>
+                      {banner.tabletImageUrl ? (
+                        <img src={banner.tabletImageUrl} alt={`${banner.title} tablet`} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-black/30 text-[9px]">—</div>
+                      )}
+                    </div>
+                    <Tablet size={10} className="absolute -bottom-3 left-1/2 -translate-x-1/2 text-black/40" />
+                  </div>
+                  <div className="relative">
+                    <div className={`w-7 h-14 overflow-hidden border ${banner.mobileImageUrl ? "border-black/40" : "border-vous-border border-dashed"} bg-white`}>
+                      {banner.mobileImageUrl ? (
+                        <img src={banner.mobileImageUrl} alt={`${banner.title} mobile`} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-black/30 text-[9px]">—</div>
+                      )}
+                    </div>
+                    <Smartphone size={10} className="absolute -bottom-3 left-1/2 -translate-x-1/2 text-black/40" />
+                  </div>
                 </div>
+
                 <div className="flex-1 min-w-0">
                   <span className="text-[10px] font-nav uppercase text-vous-text-secondary block md:hidden">Título</span>
                   <div className="flex items-center gap-2 mb-1">
@@ -87,6 +116,11 @@ export function BannersTab() {
                     <Badge variant={banner.active ? "active" : "inactive"} className="font-nav text-[10px] uppercase tracking-wide">
                       {banner.active ? "Activo" : "Inactivo"}
                     </Badge>
+                    {(banner.mobileImageUrl || banner.tabletImageUrl) && (
+                      <Badge variant="outline" className="font-nav text-[10px] uppercase tracking-wide">
+                        Responsive
+                      </Badge>
+                    )}
                   </div>
                   <span className="text-[10px] font-nav uppercase text-vous-text-secondary block md:hidden">Subtítulo</span>
                   <p className="text-[12px] text-vous-text-secondary font-sans line-clamp-1">{banner.subtitle}</p>

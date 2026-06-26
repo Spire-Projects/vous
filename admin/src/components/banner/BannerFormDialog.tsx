@@ -14,6 +14,7 @@ import {
 import { ImagePicker } from "@/components/shared/ImagePicker";
 import { useCategories } from "@/hooks/useCategories";
 import type { Banner, CreateBannerInput } from "@/domain/entities/banner.entity";
+import { Monitor, Tablet, Smartphone } from "lucide-react";
 
 interface BannerFormDialogProps {
   open: boolean;
@@ -25,6 +26,8 @@ interface BannerFormDialogProps {
 export function BannerFormDialog({ open, banner, onClose, onSave }: BannerFormDialogProps) {
   const { categories } = useCategories();
   const [imageUrl, setImageUrl] = useState("");
+  const [tabletImageUrl, setTabletImageUrl] = useState("");
+  const [mobileImageUrl, setMobileImageUrl] = useState("");
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [categorySlug, setCategorySlug] = useState("");
@@ -36,6 +39,8 @@ export function BannerFormDialog({ open, banner, onClose, onSave }: BannerFormDi
   useEffect(() => {
     if (banner) {
       setImageUrl(banner.imageUrl);
+      setTabletImageUrl(banner.tabletImageUrl ?? "");
+      setMobileImageUrl(banner.mobileImageUrl ?? "");
       setTitle(banner.title);
       setSubtitle(banner.subtitle);
       setCategorySlug(banner.categorySlug ?? "");
@@ -43,6 +48,8 @@ export function BannerFormDialog({ open, banner, onClose, onSave }: BannerFormDi
       setOrder(banner.order);
     } else {
       setImageUrl("");
+      setTabletImageUrl("");
+      setMobileImageUrl("");
       setTitle("");
       setSubtitle("");
       setCategorySlug("");
@@ -63,6 +70,8 @@ export function BannerFormDialog({ open, banner, onClose, onSave }: BannerFormDi
     try {
       await onSave({
         imageUrl,
+        tabletImageUrl: tabletImageUrl.trim() || undefined,
+        mobileImageUrl: mobileImageUrl.trim() || undefined,
         title,
         subtitle,
         ctaText: "Ver Todo",
@@ -79,22 +88,64 @@ export function BannerFormDialog({ open, banner, onClose, onSave }: BannerFormDi
 
   return (
     <Dialog open={open} onOpenChange={(v: boolean) => !v && onClose()}>
-      <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-nav text-[13px] uppercase tracking-wider">
             {banner ? "Editar Banner" : "Nuevo Banner"}
           </DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-1">
-            <Label>Imagen del Banner *</Label>
-            <ImagePicker
-              value={imageUrl}
-              onChange={setImageUrl}
-              folder="vous/banners"
-              label="Subir imagen de banner"
-            />
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Responsive images */}
+          <div className="space-y-4 rounded-xl border border-black/10 bg-[#FAF8F5] p-4">
+            <div>
+              <p className="font-nav text-[11px] font-semibold tracking-[0.2em] uppercase text-black mb-1">
+                Imágenes Responsive
+              </p>
+              <p className="font-sans text-[11px] text-black/50 leading-relaxed">
+                Sube una versión por dispositivo. Si no subes tablet o móvil, se usará la imagen de desktop.
+              </p>
+            </div>
+
+            <div className="space-y-1.5">
+              <Label className="flex items-center gap-2">
+                <Monitor size={13} className="text-black/60" />
+                Imagen Desktop *
+              </Label>
+              <ImagePicker
+                value={imageUrl}
+                onChange={setImageUrl}
+                folder="vous/banners"
+                label="Subir imagen desktop (1920×1080 recomendado)"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label className="flex items-center gap-2">
+                <Tablet size={13} className="text-black/60" />
+                Imagen Tablet <span className="text-black/40 font-sans text-[10px]">(opcional)</span>
+              </Label>
+              <ImagePicker
+                value={tabletImageUrl}
+                onChange={setTabletImageUrl}
+                folder="vous/banners"
+                label="Subir imagen tablet (1024×768 recomendado)"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label className="flex items-center gap-2">
+                <Smartphone size={13} className="text-black/60" />
+                Imagen Mobile <span className="text-black/40 font-sans text-[10px]">(opcional)</span>
+              </Label>
+              <ImagePicker
+                value={mobileImageUrl}
+                onChange={setMobileImageUrl}
+                folder="vous/banners"
+                label="Subir imagen mobile (750×1000 recomendado)"
+              />
+            </div>
           </div>
+
           <div className="space-y-1">
             <Label>Título *</Label>
             <Input

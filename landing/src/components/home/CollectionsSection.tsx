@@ -14,8 +14,8 @@ const PLACEHOLDER_BGS = [
 export function CollectionsSection() {
   const { categories, loading } = useCategories();
 
-  // Show at most 4 categories in this section
-  const displayed = categories.slice(0, 4);
+  // Show at most 3 categories in this section (3 per row on desktop)
+  const displayed = categories.slice(0, 3);
 
   return (
     <section className="bg-black py-12 md:py-20">
@@ -30,20 +30,20 @@ export function CollectionsSection() {
         </div>
 
         {loading && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
-            {Array.from({ length: 2 }).map((_, i) => (
-              <div key={i} className="aspect-[4/5] animate-pulse bg-white/10" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="aspect-[3/4] animate-pulse bg-white/10" />
             ))}
           </div>
         )}
 
         {!loading && displayed.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
             {displayed.map((cat, index) => (
               <Link
                 key={cat.id}
                 href={`/catalogo?categoria=${cat.slug}`}
-                className="group relative block aspect-[4/5] overflow-hidden bg-neutral-900"
+                className="group relative block aspect-[3/4] overflow-hidden bg-neutral-900"
               >
                 {cat.banner || cat.image ? (
                   <img
@@ -57,18 +57,18 @@ export function CollectionsSection() {
                   />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-5 md:p-8">
-                  <p className="font-nav text-[11px] tracking-[0.2em] text-white/40 uppercase mb-2">
+                <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
+                  <p className="font-nav text-[10px] tracking-[0.2em] text-white/40 uppercase mb-1.5">
                     {String(index + 1).padStart(2, "0")} / {cat.name}
                   </p>
-                  <h3 className="font-serif text-xl md:text-2xl text-white mb-2">{cat.name}</h3>
+                  <h3 className="font-serif text-lg md:text-xl text-white mb-2">{cat.name}</h3>
                   {cat.description && (
-                    <p className="font-sans text-sm text-white/60 leading-relaxed mb-3 hidden md:block">
+                    <p className="font-sans text-xs md:text-sm text-white/60 leading-relaxed mb-3 hidden md:block line-clamp-2">
                       {cat.description}
                     </p>
                   )}
-                  <span className="font-nav text-[11px] font-semibold tracking-[0.12em] uppercase text-white border-b border-white/30 pb-0.5 group-hover:border-white transition-colors">
-                    Explorar Colección
+                  <span className="font-nav text-[10px] font-semibold tracking-[0.12em] uppercase text-white border-b border-white/30 pb-0.5 group-hover:border-white transition-colors">
+                    Explorar
                   </span>
                 </div>
               </Link>

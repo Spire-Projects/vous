@@ -4,6 +4,8 @@
 export interface Banner {
   id: string;
   imageUrl: string;
+  mobileImageUrl?: string;
+  tabletImageUrl?: string;
   title: string;
   subtitle: string;
   ctaText: string;

@@ -2,17 +2,20 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useSiteConfig } from "@/hooks/useSiteConfig";
 import { useStyleGuides } from "@/hooks/useStyleGuides";
 import { useProducts } from "@/hooks/useProducts";
 import { useAuthContext } from "@/context/AuthContext";
 import { ProductCard } from "@/components/catalogo/ProductCard";
+import { Button } from "@/components/ui/button";
 import {
   Sparkles,
   Palette,
   Ruler,
   Shirt,
   ChevronRight,
+  ArrowRight,
 } from "lucide-react";
 import type { StyleGuide } from "@/domain/entities/style-guide.entity";
 
@@ -121,54 +124,108 @@ export default function AsesoriaPage() {
   }
 
   return (
-    <div className="bg-white min-h-screen">
-      {/* Hero */}
-      <section className="bg-black py-14 md:py-20 overflow-hidden">
-        <div className="max-w-[1440px] mx-auto px-5 md:px-20">
-          <span className="font-nav text-[11px] tracking-[0.3em] uppercase text-white/40 mb-3 block">
-            Asesoría de Moda
-          </span>
-          <h1 className="font-serif text-4xl md:text-6xl text-white leading-tight mb-4">
-            {section?.title || "Asesoría de Moda"}
-          </h1>
-          <p className="font-sans text-sm text-white/60 max-w-lg leading-relaxed">
-            {section?.subtitle ||
-              "Descubre los mejores consejos de estilo seleccionados por nuestro equipo."}
-          </p>
+    <div className="bg-white">
+      {/* Editorial Hero */}
+      <section className="relative bg-black text-white overflow-hidden">
+        <div className="absolute inset-0 opacity-30 pointer-events-none">
+          <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-[#C9A84C]/20 blur-3xl" />
+        </div>
+        <div className="relative max-w-[1440px] mx-auto px-5 md:px-20 py-20 md:py-28">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-end">
+            <div className="md:col-span-8">
+              <span className="font-nav text-[11px] tracking-[0.3em] uppercase text-[#C9A84C] mb-4 block">
+                Asesoría de Moda
+              </span>
+              <h1 className="font-serif text-5xl md:text-7xl leading-[1.05] mb-6">
+                {section?.title || "Asesoría de Moda"}
+              </h1>
+              <p className="font-sans text-base text-white/60 max-w-xl leading-relaxed">
+                {section?.subtitle ||
+                  "Descubre los mejores consejos de estilo seleccionados por nuestro equipo editorial."}
+              </p>
+            </div>
+            <div className="md:col-span-4">
+              <div className="border border-white/15 rounded-2xl p-5 backdrop-blur-sm bg-white/[0.02]">
+                <p className="font-nav text-[10px] tracking-[0.25em] uppercase text-white/50 mb-2">
+                  Tendencias 2026
+                </p>
+                <p className="font-serif text-lg text-white leading-snug">
+                  Curaduría editorial para construir tu identidad.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <div className="max-w-[1440px] mx-auto px-5 md:px-20 py-12 md:py-20">
+      <div className="max-w-[1440px] mx-auto px-5 md:px-20 py-16 md:py-24">
         {/* Intro content */}
         {section?.content && (
           <div className="max-w-3xl mb-16">
             <div
-              className="font-sans text-black/50 leading-relaxed [&_strong]:font-semibold [&_strong]:text-black [&_em]:italic [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-4 [&_h2]:font-serif [&_h2]:text-xl [&_h2]:text-black [&_h2]:mt-6 [&_h2]:mb-3"
+              className="font-sans text-black/60 leading-relaxed [&_strong]:font-semibold [&_strong]:text-black [&_em]:italic [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-4 [&_h2]:font-serif [&_h2]:text-xl [&_h2]:text-black [&_h2]:mt-6 [&_h2]:mb-3"
               dangerouslySetInnerHTML={{ __html: section.content }}
             />
           </div>
         )}
 
-        {/* Main image if exists - shown naturally without zoom/crop */}
-        {(section?.imageUrl || (section?.images && section.images.length > 0)) && (
+        {/* Main image: config image → collage → tipographic fallback */}
+        {section?.images && section.images.length > 0 ? (
           <div className="mb-16">
-            {section.images && section.images.length > 0 ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {section.images.map((img, i) => (
-                  <div key={i} className="rounded-xl overflow-hidden bg-neutral-100">
-                    <img src={img} alt={`Asesoría ${i + 1}`} className="w-full h-auto" />
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="rounded-2xl overflow-hidden bg-neutral-100">
-                <img
-                  src={section.imageUrl}
-                  alt={section.title || "Asesoría"}
-                  className="w-full h-auto"
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {section.images.map((img, i) => (
+                <div key={i} className="rounded-xl overflow-hidden bg-neutral-100">
+                  <img src={img} alt={`Asesoría ${i + 1}`} className="w-full h-auto" />
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : section?.imageUrl ? (
+          <div className="mb-16">
+            <div className="rounded-2xl overflow-hidden bg-neutral-100">
+              <img
+                src={section.imageUrl}
+                alt={section.title || "Asesoría"}
+                className="w-full h-auto"
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="mb-16">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
+              <div className="md:col-span-7 relative aspect-[4/3] md:aspect-[16/10] rounded-2xl overflow-hidden bg-[#0d0d0b]">
+                <Image
+                  src="/vous-about-2.png"
+                  alt="Asesoría de Moda VOUS"
+                  fill
+                  sizes="(min-width: 768px) 60vw, 100vw"
+                  className="object-cover"
                 />
               </div>
-            )}
+              <div className="md:col-span-5 flex flex-col gap-3">
+                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-br from-[#1a1a18] via-[#2a2015] to-[#0d0d0b]">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                    <span className="font-nav text-[10px] tracking-[0.3em] uppercase text-[#C9A84C] mb-3">
+                      Editorial
+                    </span>
+                    <p className="font-serif text-3xl md:text-4xl text-white leading-[1.05]">
+                      Asesoría<br />de Moda
+                    </p>
+                  </div>
+                </div>
+                <div className="flex-1 relative aspect-[4/3] rounded-2xl overflow-hidden bg-[#FAF8F5] border border-black/10">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+                    <Sparkles size={28} className="text-[#C9A84C] mb-3" strokeWidth={1.5} />
+                    <p className="font-serif text-2xl md:text-3xl text-black leading-[1.05]">
+                      Tu estilo,<br />tu esencia
+                    </p>
+                    <span className="font-nav text-[9px] tracking-[0.25em] uppercase text-black/40 mt-3">
+                      Curaduría 2026
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
@@ -176,13 +233,18 @@ export default function AsesoriaPage() {
         <div className="mb-20">
           <div className="flex items-end justify-between mb-8">
             <div>
-              <p className="font-nav text-[11px] tracking-[0.25em] text-black uppercase mb-2">
+              <p className="font-nav text-[11px] tracking-[0.25em] text-[#C9A84C] uppercase mb-2">
                 Inspiración
               </p>
               <h2 className="font-serif text-2xl md:text-3xl text-black">
                 Descubrí tu estilo
               </h2>
             </div>
+            <Button variant="ghost" asChild className="font-nav text-[10px] uppercase tracking-wider text-black/60">
+              <Link href="/recomendaciones">
+                Ver recomendaciones <ChevronRight size={12} className="ml-1" />
+              </Link>
+            </Button>
           </div>
 
           {guidesLoading ? (
@@ -218,7 +280,6 @@ export default function AsesoriaPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-10">
-            {/* Skin tone selector */}
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Palette size={16} className="text-black" />
@@ -253,7 +314,6 @@ export default function AsesoriaPage() {
               )}
             </div>
 
-            {/* Body type selector */}
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Ruler size={16} className="text-black" />
@@ -289,7 +349,6 @@ export default function AsesoriaPage() {
             </div>
           </div>
 
-          {/* Matched products */}
           {(selectedSkin || selectedBody) && (
             <div>
               <div className="flex items-center justify-between mb-6">
@@ -326,6 +385,37 @@ export default function AsesoriaPage() {
           )}
         </div>
       </div>
+
+      {/* Editorial CTA */}
+      <section className="bg-black text-white py-20 md:py-24">
+        <div className="max-w-[1440px] mx-auto px-5 md:px-20">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
+            <div className="md:col-span-7">
+              <span className="font-nav text-[11px] tracking-[0.3em] uppercase text-[#C9A84C] mb-4 block">
+                Próximo paso
+              </span>
+              <h2 className="font-serif text-4xl md:text-5xl leading-[1.1] mb-5">
+                Explorá el catálogo y encontrá tu próximo look
+              </h2>
+              <p className="font-sans text-base text-white/60 max-w-md leading-relaxed">
+                Más de 500 prendas curadas para tu estilo. Envíos a todo Bolivia.
+              </p>
+            </div>
+            <div className="md:col-span-5 flex flex-col sm:flex-row md:justify-end gap-3">
+              <Button asChild className="bg-white text-black hover:bg-white/90 font-nav text-[11px] uppercase tracking-wider">
+                <Link href="/catalogo">
+                  Ir al catálogo <ArrowRight size={14} className="ml-2" />
+                </Link>
+              </Button>
+              <Button asChild variant="outline-white" className="font-nav text-[11px] uppercase tracking-wider">
+                <Link href="/recomendaciones">
+                  Más recomendaciones
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

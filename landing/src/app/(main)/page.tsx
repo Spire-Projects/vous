@@ -1,11 +1,17 @@
 import {
   HeroSection,
   ValuesSection,
-  NewInSection,
-  CollectionsSection,
+  IconTeaser,
   FeaturedProductsSection,
+  AsesoriaTeaser,
+  CollectionsSection,
   TrendingProductsSection,
+  RecomendacionesTeaser,
+  NewInSection,
+  RevistaTeaser,
+  NewPostTeaser,
   FeedbackSection,
+  NosotrosTeaser,
 } from "@/components/home";
 
 export default function HomePage() {
@@ -13,11 +19,17 @@ export default function HomePage() {
     <>
       <HeroSection />
       <ValuesSection />
+      <IconTeaser />
       <FeaturedProductsSection />
-      <TrendingProductsSection />
+      <AsesoriaTeaser />
       <CollectionsSection />
+      <TrendingProductsSection />
+      <RecomendacionesTeaser />
       <NewInSection />
+      <RevistaTeaser />
+      <NewPostTeaser />
       <FeedbackSection />
+      <NosotrosTeaser />
     </>
   );
 }
