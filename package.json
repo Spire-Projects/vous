@@ -1,0 +1,15 @@
+{
+  "name": "vous-monorepo",
+  "private": true,
+  "version": "0.0.0",
+  "workspaces": [
+    "landing",
+    "admin"
+  ],
+  "scripts": {
+    "dev:landing": "npm run dev --workspace=landing",
+    "dev:admin": "npm run dev --workspace=admin",
+    "build:landing": "npm run build --workspace=landing",
+    "build:admin": "npm run build --workspace=admin"
+  }
+}

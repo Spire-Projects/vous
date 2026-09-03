@@ -1,0 +1,21 @@
+// ── Infrastructure layer — barrel export ──────────────────────────────────
+export { firestoreProductRepository } from "./repositories/firestore-product.repository";
+export { firestoreOrderRepository } from "./repositories/firestore-order.repository";
+export {
+  firestoreCustomerRepository,
+  firestoreAdminUserRepository,
+} from "./repositories/firestore-user.repository";
+export { firestoreWholesaleRepository } from "./repositories/firestore-wholesale.repository";
+export { firestoreFAQRepository } from "./repositories/firestore-faq.repository";
+export { firestoreBannerRepository } from "./repositories/firestore-banner.repository";
+export { firestoreSiteConfigRepository } from "./repositories/firestore-site-config.repository";
+export { firestoreCategoryRepository } from "./repositories/firestore-category.repository";
+export { firestorePaymentConfigRepository } from "./repositories/firestore-payment-config.repository";
+export { firestoreLandingSectionRepository } from "./repositories/firestore-landing-section.repository";
+export { firestoreDiscountRepository } from "./repositories/firestore-discount.repository";
+export { firestoreWholesaleRulesRepository } from "./repositories/firestore-wholesale-rules.repository";
+export { firestoreInfluencerRepository } from "./repositories/firestore-influencer.repository";
+export { firestoreSocialPostRepository } from "./repositories/firestore-social-post.repository";
+export { firestoreFeedbackRepository } from "./repositories/firestore-feedback.repository";
+export { firestoreBlogPostRepository } from "./repositories/firestore-blog-post.repository";
+export { firestoreStyleGuideRepository } from "./repositories/firestore-style-guide.repository";

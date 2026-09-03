@@ -1,0 +1,63 @@
+name: CI — Landing (Next.js)
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "landing/**"
+      - ".github/workflows/ci-landing.yml"
+      - "package.json"
+      - "package-lock.json"
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - "landing/**"
+      - ".github/workflows/ci-landing.yml"
+      - "package.json"
+      - "package-lock.json"
+
+jobs:
+  ci-landing:
+    name: Lint, Format, Type Check & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+
+      - name: Install dependencies (monorepo root)
+        run: npm install
+
+      - name: Lint (ESLint)
+        run: npm run lint --workspace=landing
+
+      - name: Check formatting (Prettier)
+        run: npm run format:check --workspace=landing
+
+      - name: Type check & build
+        run: npm run build --workspace=landing
+        env:
+          # ── Firebase (cliente) ────────────────────────────────────────
+          NEXT_PUBLIC_FIREBASE_API_KEY: "dummy-api-key"
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: "dummy-project.firebaseapp.com"
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: "dummy-project"
+          NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: "dummy-project.appspot.com"
+          NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: "123456789"
+          NEXT_PUBLIC_FIREBASE_APP_ID: "1:123456789:web:dummy"
+          # ── Cloudinary (cliente) ──────────────────────────────────────
+          NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: "dummy-cloud"
+          NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET: "dummy-preset"
+          # ── Firebase Admin (servidor) ─────────────────────────────────
+          FIREBASE_ADMIN_PROJECT_ID: "dummy-project"
+          FIREBASE_ADMIN_CLIENT_EMAIL: "dummy@example.com"
+          FIREBASE_ADMIN_PRIVATE_KEY: "-----BEGIN PRIVATE KEY-----\ndummy\n-----END PRIVATE KEY-----\n"
+          # ── Cloudinary (servidor) ─────────────────────────────────────
+          CLOUDINARY_CLOUD_NAME: "dummy-cloud"
+          CLOUDINARY_API_KEY: "dummy-key"
+          CLOUDINARY_API_SECRET: "dummy-secret"

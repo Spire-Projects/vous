@@ -1,0 +1,52 @@
+name: CI — Admin (Vite + React)
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "admin/**"
+      - ".github/workflows/ci-admin.yml"
+      - "package.json"
+      - "package-lock.json"
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - "admin/**"
+      - ".github/workflows/ci-admin.yml"
+      - "package.json"
+      - "package-lock.json"
+
+jobs:
+  ci-admin:
+    name: Lint, Type Check & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+
+      - name: Install dependencies (monorepo root)
+        run: npm install
+
+      - name: Lint (ESLint)
+        run: npm run lint --workspace=admin
+
+      - name: Type check & build
+        run: npm run build --workspace=admin
+        env:
+          # ── Firebase (cliente — prefijo VITE) ─────────────────────────
+          VITE_FIREBASE_API_KEY: "dummy-api-key"
+          VITE_FIREBASE_AUTH_DOMAIN: "dummy-project.firebaseapp.com"
+          VITE_FIREBASE_PROJECT_ID: "dummy-project"
+          VITE_FIREBASE_STORAGE_BUCKET: "dummy-project.appspot.com"
+          VITE_FIREBASE_MESSAGING_SENDER_ID: "123456789"
+          VITE_FIREBASE_APP_ID: "1:123456789:web:dummy"
+          # ── Cloudinary (unsigned upload) ─────────────────────────────
+          VITE_CLOUDINARY_CLOUD_NAME: "dummy-cloud"
+          VITE_CLOUDINARY_UPLOAD_PRESET: "dummy-preset"

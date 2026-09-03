@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+/* ── Paleta VOUS ──────────────────────────────────────────────────────────── */
+@theme inline {
+  /* Colores de marca */
+  --color-vous-cream: #f5f0e8;
+  --color-vous-warm-white: #fdfaf5;
+  --color-vous-soft-black: #1a1a18;
+  --color-vous-gold: #c9a84c;
+  --color-vous-gold-light: #e2c97e;
+  --color-vous-gold-dark: #a07830;
+  --color-vous-gray: #6b6b63;
+  --color-vous-gray-light: #d4cfc6;
+  --color-vous-gray-dark: #3d3d38;
+
+  /* Admin glass tokens */
+  --color-vous-bg: #fafaf8;
+  --color-vous-surface: #ffffff;
+  --color-vous-elevated: #fffdf7;
+  --color-vous-border: #e8e5e1;
+  --color-vous-text: #0d0d0c;
+  --color-vous-text-secondary: #6b6b65;
+  --color-vous-text-muted: #9e9e94;
+  --color-vous-gold-bright: #b8960f;
+
+  /* Semánticos */
+  --color-background: #ffffff;
+  --color-foreground: #000000;
+  --color-primary: #000000;
+  --color-primary-hover: #333333;
+
+  /* Tipografías */
+  --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-inter), "Inter", system-ui, sans-serif;
+  --font-nav: var(--font-montserrat), "Montserrat", system-ui, sans-serif;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #000000;
+}
+
+body {
+  background: #ffffff;
+  color: #0a0a0a;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #e5e5e5;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #cccccc;
+}
+
+/* ── Selection ──────────────────────────────────────────────────────────────── */
+::selection {
+  background-color: rgba(0, 0, 0, 0.15);
+  color: #000000;
+}
+
+/* ── Leaflet overrides ─────────────────────────────────────────────────────── */
+.leaflet-container {
+  background: #ffffff;
+  font-family: "DM Sans", "Inter", sans-serif;
+}
+
+.vous-map-pin {
+  background: transparent !important;
+  border: none !important;
+}
+
+.vous-red-dot {
+  background: transparent !important;
+  border: none !important;
+}
