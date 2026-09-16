@@ -1,7 +1,18 @@
 import { useCallback, useEffect, useMemo } from "react";
-import { MapContainer, TileLayer, GeoJSON, Marker, Popup, useMap } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  GeoJSON,
+  Marker,
+  Popup,
+  useMap,
+} from "react-leaflet";
 import L from "leaflet";
-import { BOLIVIA_DEPARTMENTS, DEPT_ID_TO_NAME, DEPT_CENTERS } from "@/data/bolivia-departments";
+import {
+  BOLIVIA_DEPARTMENTS,
+  DEPT_ID_TO_NAME,
+  DEPT_CENTERS,
+} from "@/data/bolivia-departments";
 import type { DepartmentLink } from "@/domain/entities/site-config.entity";
 import { MapSidePanel } from "./MapSidePanel";
 import "leaflet/dist/leaflet.css";
@@ -18,7 +29,11 @@ const redDotIcon = L.divIcon({
 });
 
 function resolveDeptId(name: string): string {
-  return name.toLowerCase().replace(/ /g, "-").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return name
+    .toLowerCase()
+    .replace(/ /g, "-")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 }
 
 function markerPosition(link: DepartmentLink): [number, number] | null {
@@ -43,13 +58,16 @@ function FitBounds({ selectedDept }: { selectedDept: string | null }) {
   return null;
 }
 
-function geoJSONStyle(feature: { properties: { name: string } } | undefined, selectedDept: string | null) {
+function geoJSONStyle(
+  feature: { properties: { name: string } } | undefined,
+  selectedDept: string | null,
+) {
   if (!feature) return {};
   const deptId = resolveDeptId(feature.properties.name);
   const isSelected = deptId === selectedDept;
   return {
     fillColor: isSelected ? "#C9A84C" : "#C9A84C",
-    fillOpacity: isSelected ? 0.30 : 0.08,
+    fillOpacity: isSelected ? 0.3 : 0.08,
     color: isSelected ? "#8B6914" : "#C9A84C",
     weight: isSelected ? 2.5 : 1,
     dashArray: isSelected ? "" : "3 3",
@@ -115,35 +133,42 @@ export function BoliviaMap({
         mouseover: (e: L.LeafletMouseEvent) => {
           const tgt = e.target as L.Path;
           if (resolveDeptId(feature.properties.name) !== selectedDept) {
-            tgt.setStyle({ fillOpacity: 0.20, weight: 2 });
+            tgt.setStyle({ fillOpacity: 0.2, weight: 2 });
           }
         },
         mouseout: (e: L.LeafletMouseEvent) => {
           const tgt = e.target as L.Path;
           const isSel = resolveDeptId(feature.properties.name) === selectedDept;
           tgt.setStyle({
-            fillOpacity: isSel ? 0.30 : 0.08,
+            fillOpacity: isSel ? 0.3 : 0.08,
             weight: isSel ? 2.5 : 1,
           });
         },
       });
     },
-    [onSelectDept, selectedDept]
+    [onSelectDept, selectedDept],
   );
 
-  const selectedDeptName = selectedDept ? (DEPT_ID_TO_NAME[selectedDept] ?? "") : "";
+  const selectedDeptName = selectedDept
+    ? (DEPT_ID_TO_NAME[selectedDept] ?? "")
+    : "";
 
   const selectedLinks = useMemo(() => {
     if (!selectedDeptName) return [];
     return departmentLinks.filter(
-      (link) => link.name.toLowerCase().trim() === selectedDeptName.toLowerCase().trim()
+      (link) =>
+        link.name.toLowerCase().trim() ===
+        selectedDeptName.toLowerCase().trim(),
     );
   }, [departmentLinks, selectedDeptName]);
 
   return (
     <div className="flex flex-col lg:flex-row gap-3 h-full">
       {/* Mapa */}
-      <div className="flex-1 rounded-2xl overflow-hidden border border-vous-border" style={{ minHeight: 480 }}>
+      <div
+        className="flex-1 rounded-2xl overflow-hidden border border-vous-border"
+        style={{ minHeight: 480 }}
+      >
         <MapContainer
           center={DEFAULT_CENTER}
           zoom={DEFAULT_ZOOM}
@@ -151,10 +176,10 @@ export function BoliviaMap({
           style={{ width: "100%", height: "100%", minHeight: 480 }}
           attributionControl={false}
         >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>'
-        />
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>'
+          />
           <GeoJSON
             key={selectedDept ?? "none"}
             data={BOLIVIA_DEPARTMENTS}
@@ -173,7 +198,10 @@ export function BoliviaMap({
       </div>
 
       {/* Panel de tiendas */}
-      <div className="w-full lg:w-80 bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden flex flex-col" style={{ minHeight: 200 }}>
+      <div
+        className="w-full lg:w-80 bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden flex flex-col"
+        style={{ minHeight: 200 }}
+      >
         <MapSidePanel
           deptName={selectedDeptName}
           links={selectedLinks}

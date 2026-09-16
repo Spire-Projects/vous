@@ -54,7 +54,9 @@ export function getStockStatusClass(status: StockStatus): string {
 
 // ── Clases de color para solicitudes mayoristas ─────────────────────────────
 
-export function getWholesaleStatusLabel(status: WholesaleRequestStatus): string {
+export function getWholesaleStatusLabel(
+  status: WholesaleRequestStatus,
+): string {
   const map: Record<WholesaleRequestStatus, string> = {
     pending: "Pendiente",
     approved: "Aprobado",
@@ -63,7 +65,9 @@ export function getWholesaleStatusLabel(status: WholesaleRequestStatus): string 
   return map[status] ?? status;
 }
 
-export function getWholesaleStatusClass(status: WholesaleRequestStatus): string {
+export function getWholesaleStatusClass(
+  status: WholesaleRequestStatus,
+): string {
   const map: Record<WholesaleRequestStatus, string> = {
     pending: "bg-amber-50 text-amber-700",
     approved: "bg-emerald-50 text-emerald-700",

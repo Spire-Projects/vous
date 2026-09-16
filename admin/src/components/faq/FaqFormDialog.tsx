@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,7 +19,12 @@ interface FaqFormDialogProps {
   onSave: (data: CreateFAQInput) => Promise<void>;
 }
 
-export function FaqFormDialog({ open, faq, onClose, onSave }: FaqFormDialogProps) {
+export function FaqFormDialog({
+  open,
+  faq,
+  onClose,
+  onSave,
+}: FaqFormDialogProps) {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [order, setOrder] = useState(0);
@@ -49,7 +59,12 @@ export function FaqFormDialog({ open, faq, onClose, onSave }: FaqFormDialogProps
   }
 
   return (
-    <Dialog open={open} onOpenChange={(v: boolean) => { if (!v) onClose(); }}>
+    <Dialog
+      open={open}
+      onOpenChange={(v: boolean) => {
+        if (!v) onClose();
+      }}
+    >
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-nav text-[13px] uppercase tracking-wider">
@@ -71,7 +86,10 @@ export function FaqFormDialog({ open, faq, onClose, onSave }: FaqFormDialogProps
             <RichTextEditor content={answer} onChange={setAnswer} />
           </div>
           <div className="flex items-center gap-2 pt-6">
-            <Checkbox checked={isActive} onCheckedChange={(v) => setIsActive(v === true)} />
+            <Checkbox
+              checked={isActive}
+              onCheckedChange={(v) => setIsActive(v === true)}
+            />
             <Label className="mb-0">Activa</Label>
           </div>
           <div className="flex justify-end gap-3 pt-2">
@@ -79,7 +97,11 @@ export function FaqFormDialog({ open, faq, onClose, onSave }: FaqFormDialogProps
               Cancelar
             </Button>
             <Button type="submit" disabled={saving}>
-              {saving ? "Guardando..." : faq ? "Guardar cambios" : "Crear pregunta"}
+              {saving
+                ? "Guardando..."
+                : faq
+                  ? "Guardar cambios"
+                  : "Crear pregunta"}
             </Button>
           </div>
         </form>

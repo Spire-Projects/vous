@@ -9,7 +9,12 @@ interface MultiImagePickerProps {
   label?: string;
 }
 
-export function MultiImagePicker({ values, onChange, folder = "vous/guides", label = "Agregar imagen" }: MultiImagePickerProps) {
+export function MultiImagePicker({
+  values,
+  onChange,
+  folder = "vous/guides",
+  label = "Agregar imagen",
+}: MultiImagePickerProps) {
   const [adding, setAdding] = useState(false);
 
   function add(url: string) {
@@ -28,8 +33,15 @@ export function MultiImagePicker({ values, onChange, folder = "vous/guides", lab
       {values.length > 0 && (
         <div className="flex flex-wrap gap-3">
           {values.map((url, i) => (
-            <div key={`${url}-${i}`} className="relative w-24 h-24 rounded-xl overflow-hidden border border-vous-border group">
-              <img src={url} alt={`Imagen ${i + 1}`} className="w-full h-full object-cover" />
+            <div
+              key={`${url}-${i}`}
+              className="relative w-24 h-24 rounded-xl overflow-hidden border border-vous-border group"
+            >
+              <img
+                src={url}
+                alt={`Imagen ${i + 1}`}
+                className="w-full h-full object-cover"
+              />
               <button
                 type="button"
                 onClick={() => remove(i)}

@@ -12,7 +12,12 @@ import { applyCategoryDiscount } from "@/application/use-cases/product/apply-cat
 import { updateWholesaleStock } from "@/application/use-cases/product/update-wholesale-stock";
 import { setProductOrder } from "@/application/use-cases/product/set-product-order";
 import { recalculateProductStock } from "@/application/use-cases/product/recalculate-product-stock";
-import type { Product, CreateProductInput, UpdateProductInput, CreateVariantInput } from "@/domain/entities/product.entity";
+import type {
+  Product,
+  CreateProductInput,
+  UpdateProductInput,
+  CreateVariantInput,
+} from "@/domain/entities/product.entity";
 import type { ProductFlags } from "@/domain/repositories/product.repository";
 
 export function useProducts() {
@@ -33,69 +38,142 @@ export function useProducts() {
   }, []);
 
   // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { fetchProducts(); }, [fetchProducts]);
-
-  const create = useCallback(async (input: CreateProductInput) => {
-    await createProduct(firestoreProductRepository, input);
-    await fetchProducts();
+  useEffect(() => {
+    fetchProducts();
   }, [fetchProducts]);
 
-  const createWithVariants = useCallback(async (input: CreateProductInput, variants: CreateVariantInput[]) => {
-    const product = await createProduct(firestoreProductRepository, input);
-    if (variants.length > 0) {
-      await createVariantsBatch(firestoreProductRepository, product.id, variants);
-      await recalculateProductStock(firestoreProductRepository, product.id);
-    }
-    await fetchProducts();
-  }, [fetchProducts]);
+  const create = useCallback(
+    async (input: CreateProductInput) => {
+      await createProduct(firestoreProductRepository, input);
+      await fetchProducts();
+    },
+    [fetchProducts],
+  );
 
-  const addVariants = useCallback(async (productId: string, variants: CreateVariantInput[]) => {
-    if (variants.length > 0) {
-      await createVariantsBatch(firestoreProductRepository, productId, variants);
-      await recalculateProductStock(firestoreProductRepository, productId);
-    }
-    await fetchProducts();
-  }, [fetchProducts]);
+  const createWithVariants = useCallback(
+    async (input: CreateProductInput, variants: CreateVariantInput[]) => {
+      const product = await createProduct(firestoreProductRepository, input);
+      if (variants.length > 0) {
+        await createVariantsBatch(
+          firestoreProductRepository,
+          product.id,
+          variants,
+        );
+        await recalculateProductStock(firestoreProductRepository, product.id);
+      }
+      await fetchProducts();
+    },
+    [fetchProducts],
+  );
 
-  const update = useCallback(async (id: string, input: UpdateProductInput) => {
-    await updateProduct(firestoreProductRepository, id, input);
-    await fetchProducts();
-  }, [fetchProducts]);
+  const addVariants = useCallback(
+    async (productId: string, variants: CreateVariantInput[]) => {
+      if (variants.length > 0) {
+        await createVariantsBatch(
+          firestoreProductRepository,
+          productId,
+          variants,
+        );
+        await recalculateProductStock(firestoreProductRepository, productId);
+      }
+      await fetchProducts();
+    },
+    [fetchProducts],
+  );
 
-  const toggleActive = useCallback(async (id: string, isActive: boolean) => {
-    await setProductActive(firestoreProductRepository, id, !isActive);
-    await fetchProducts();
-  }, [fetchProducts]);
+  const update = useCallback(
+    async (id: string, input: UpdateProductInput) => {
+      await updateProduct(firestoreProductRepository, id, input);
+      await fetchProducts();
+    },
+    [fetchProducts],
+  );
 
-  const remove = useCallback(async (id: string) => {
-    await deleteProduct(firestoreProductRepository, id);
-    await fetchProducts();
-  }, [fetchProducts]);
+  const toggleActive = useCallback(
+    async (id: string, isActive: boolean) => {
+      await setProductActive(firestoreProductRepository, id, !isActive);
+      await fetchProducts();
+    },
+    [fetchProducts],
+  );
 
-  const setFlags = useCallback(async (id: string, flags: ProductFlags) => {
-    await setProductFlags(firestoreProductRepository, id, flags);
-    await fetchProducts();
-  }, [fetchProducts]);
+  const remove = useCallback(
+    async (id: string) => {
+      await deleteProduct(firestoreProductRepository, id);
+      await fetchProducts();
+    },
+    [fetchProducts],
+  );
 
-  const applyDiscount = useCallback(async (id: string, isDiscounted: boolean, discountPercentage?: number) => {
-    await applyProductDiscount(firestoreProductRepository, id, isDiscounted, discountPercentage);
-    await fetchProducts();
-  }, [fetchProducts]);
+  const setFlags = useCallback(
+    async (id: string, flags: ProductFlags) => {
+      await setProductFlags(firestoreProductRepository, id, flags);
+      await fetchProducts();
+    },
+    [fetchProducts],
+  );
 
-  const applyCatDiscount = useCallback(async (categoryId: string, isDiscounted: boolean, discountPercentage?: number) => {
-    await applyCategoryDiscount(firestoreProductRepository, categoryId, isDiscounted, discountPercentage);
-    await fetchProducts();
-  }, [fetchProducts]);
+  const applyDiscount = useCallback(
+    async (id: string, isDiscounted: boolean, discountPercentage?: number) => {
+      await applyProductDiscount(
+        firestoreProductRepository,
+        id,
+        isDiscounted,
+        discountPercentage,
+      );
+      await fetchProducts();
+    },
+    [fetchProducts],
+  );
 
-  const adjustWholesaleStock = useCallback(async (id: string, stock: number) => {
-    await updateWholesaleStock(firestoreProductRepository, id, stock);
-    await fetchProducts();
-  }, [fetchProducts]);
+  const applyCatDiscount = useCallback(
+    async (
+      categoryId: string,
+      isDiscounted: boolean,
+      discountPercentage?: number,
+    ) => {
+      await applyCategoryDiscount(
+        firestoreProductRepository,
+        categoryId,
+        isDiscounted,
+        discountPercentage,
+      );
+      await fetchProducts();
+    },
+    [fetchProducts],
+  );
 
-  const reorder = useCallback(async (items: { id: string; sortOrder: number }[]) => {
-    await setProductOrder(firestoreProductRepository, items);
-    await fetchProducts();
-  }, [fetchProducts]);
+  const adjustWholesaleStock = useCallback(
+    async (id: string, stock: number) => {
+      await updateWholesaleStock(firestoreProductRepository, id, stock);
+      await fetchProducts();
+    },
+    [fetchProducts],
+  );
 
-  return { products, loading, error, refetch: fetchProducts, create, createWithVariants, addVariants, update, toggleActive, remove, setFlags, applyDiscount, applyCatDiscount, adjustWholesaleStock, reorder };
+  const reorder = useCallback(
+    async (items: { id: string; sortOrder: number }[]) => {
+      await setProductOrder(firestoreProductRepository, items);
+      await fetchProducts();
+    },
+    [fetchProducts],
+  );
+
+  return {
+    products,
+    loading,
+    error,
+    refetch: fetchProducts,
+    create,
+    createWithVariants,
+    addVariants,
+    update,
+    toggleActive,
+    remove,
+    setFlags,
+    applyDiscount,
+    applyCatDiscount,
+    adjustWholesaleStock,
+    reorder,
+  };
 }

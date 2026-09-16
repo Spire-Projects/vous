@@ -40,26 +40,40 @@ export function WholesaleTermsPanel() {
   }
 
   if (error) {
-    return <div className="py-16 text-center"><p className="text-sm text-red-600 font-nav">{error}</p></div>;
+    return (
+      <div className="py-16 text-center">
+        <p className="text-sm text-red-600 font-nav">{error}</p>
+      </div>
+    );
   }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2 mb-4">
         <FileText size={16} className="text-vous-gold" />
-        <h3 className="font-nav text-[13px] uppercase tracking-wider text-vous-text">Términos para Mayoristas</h3>
+        <h3 className="font-nav text-[13px] uppercase tracking-wider text-vous-text">
+          Términos para Mayoristas
+        </h3>
       </div>
 
       <p className="text-sm text-vous-text-secondary font-sans">
-        Este es el documento de reglas de conducta y marca que los clientes deben leer y aceptar antes de enviar su solicitud como distribuidor mayorista.
-        <span className="block mt-1 text-vous-text-muted text-xs">Diferente de la Configuración Comercial (montos, descuentos y restricciones operativas).</span>
+        Este es el documento de reglas de conducta y marca que los clientes
+        deben leer y aceptar antes de enviar su solicitud como distribuidor
+        mayorista.
+        <span className="block mt-1 text-vous-text-muted text-xs">
+          Diferente de la Configuración Comercial (montos, descuentos y
+          restricciones operativas).
+        </span>
       </p>
 
       <div className="space-y-4">
         <div className="space-y-1">
           <Label>Link externo al documento (opcional)</Label>
           <div className="flex gap-2">
-            <Link2 size={14} className="text-vous-text-secondary shrink-0 mt-2.5" />
+            <Link2
+              size={14}
+              className="text-vous-text-secondary shrink-0 mt-2.5"
+            />
             <Input
               value={termsUrl}
               onChange={(e) => setTermsUrl(e.target.value)}
@@ -70,16 +84,18 @@ export function WholesaleTermsPanel() {
 
         <div className="space-y-1">
           <Label>Contenido de los términos</Label>
-          <RichTextEditor
-            content={termsContent}
-            onChange={setTermsContent}
-          />
+          <RichTextEditor content={termsContent} onChange={setTermsContent} />
         </div>
       </div>
 
       <div className="flex items-center justify-between pt-4 border-t border-white/40">
-        <Button type="button" variant="outline" onClick={() => setShowPreview((v) => !v)}>
-          <Eye size={14} /> {showPreview ? "Ocultar vista previa" : "Vista previa"}
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => setShowPreview((v) => !v)}
+        >
+          <Eye size={14} />{" "}
+          {showPreview ? "Ocultar vista previa" : "Vista previa"}
         </Button>
         <Button onClick={() => void handleSave()} disabled={saving}>
           <Save size={14} /> {saving ? "Guardando..." : "Guardar Términos"}
@@ -88,15 +104,24 @@ export function WholesaleTermsPanel() {
 
       {showPreview && (
         <div className="bg-white border border-vous-border rounded-2xl p-6">
-          <p className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary mb-3">Vista previa en landing</p>
+          <p className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary mb-3">
+            Vista previa en landing
+          </p>
           {termsUrl && (
-            <a href={termsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm text-vous-gold hover:underline mb-4">
+            <a
+              href={termsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-sm text-vous-gold hover:underline mb-4"
+            >
               <Link2 size={12} /> Ver documento completo
             </a>
           )}
           <div
             className="prose prose-sm max-w-none text-vous-text-secondary font-sans leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: termsContent || "<p>Sin contenido configurado.</p>" }}
+            dangerouslySetInnerHTML={{
+              __html: termsContent || "<p>Sin contenido configurado.</p>",
+            }}
           />
         </div>
       )}

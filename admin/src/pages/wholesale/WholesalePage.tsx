@@ -12,9 +12,14 @@ export function WholesalePage() {
   const { requests, loading, error, review } = useWholesale();
   const [reviewLoading, setReviewLoading] = useState<string | null>(null);
   const [reviewNote, setReviewNote] = useState("");
-  const [activeTab, setActiveTab] = useState<"requests" | "rules" | "terms">("requests");
+  const [activeTab, setActiveTab] = useState<"requests" | "rules" | "terms">(
+    "requests",
+  );
 
-  async function handleReview(req: WholesaleRequest, status: "approved" | "rejected") {
+  async function handleReview(
+    req: WholesaleRequest,
+    status: "approved" | "rejected",
+  ) {
     setReviewLoading(req.id);
     try {
       await review({

@@ -1,7 +1,10 @@
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import type { SiteConfigRepository } from "@/domain/repositories/site-config.repository";
-import type { SiteConfig, UpdateSiteConfigInput } from "@/domain/entities/site-config.entity";
+import type {
+  SiteConfig,
+  UpdateSiteConfigInput,
+} from "@/domain/entities/site-config.entity";
 
 const DOC_ID = "general";
 const COLLECTION = "settings";
@@ -35,20 +38,37 @@ function mapDoc(data: Record<string, unknown>): SiteConfig {
     address: (data.address as string) ?? "",
     city: (data.city as string) ?? "",
     googleMapsUrl: (data.googleMapsUrl as string) ?? "",
-    instagram: (data.instagram as SiteConfig["instagram"]) ?? { url: "", active: false },
+    instagram: (data.instagram as SiteConfig["instagram"]) ?? {
+      url: "",
+      active: false,
+    },
     tiktok: (data.tiktok as SiteConfig["tiktok"]) ?? { url: "", active: false },
-    ubicacion: (data.ubicacion as SiteConfig["ubicacion"]) ?? { url: "", active: false },
+    ubicacion: (data.ubicacion as SiteConfig["ubicacion"]) ?? {
+      url: "",
+      active: false,
+    },
     shippingPolicy: (data.shippingPolicy as string) ?? "",
     returnPolicy: (data.returnPolicy as string) ?? "",
     termsOfService: (data.termsOfService as string) ?? "",
     schedule: (data.schedule as SiteConfig["schedule"]) ?? [],
-    extendedSchedules: (data.extendedSchedules as SiteConfig["extendedSchedules"]) ?? [],
-    departmentLinks: (data.departmentLinks as SiteConfig["departmentLinks"]) ?? [],
-    otherCountryLinks: (data.otherCountryLinks as SiteConfig["otherCountryLinks"]) ?? [],
-    fashionTrends: (data.fashionTrends as SiteConfig["fashionTrends"]) ?? { ...DEFAULT_CONTENT_SECTION },
-    vousNews: (data.vousNews as SiteConfig["vousNews"]) ?? { ...DEFAULT_CONTENT_SECTION },
-    newPosts: (data.newPosts as SiteConfig["newPosts"]) ?? { ...DEFAULT_CONTENT_SECTION },
-    feedback: (data.feedback as SiteConfig["feedback"]) ?? { ...DEFAULT_FEEDBACK_SECTION },
+    extendedSchedules:
+      (data.extendedSchedules as SiteConfig["extendedSchedules"]) ?? [],
+    departmentLinks:
+      (data.departmentLinks as SiteConfig["departmentLinks"]) ?? [],
+    otherCountryLinks:
+      (data.otherCountryLinks as SiteConfig["otherCountryLinks"]) ?? [],
+    fashionTrends: (data.fashionTrends as SiteConfig["fashionTrends"]) ?? {
+      ...DEFAULT_CONTENT_SECTION,
+    },
+    vousNews: (data.vousNews as SiteConfig["vousNews"]) ?? {
+      ...DEFAULT_CONTENT_SECTION,
+    },
+    newPosts: (data.newPosts as SiteConfig["newPosts"]) ?? {
+      ...DEFAULT_CONTENT_SECTION,
+    },
+    feedback: (data.feedback as SiteConfig["feedback"]) ?? {
+      ...DEFAULT_FEEDBACK_SECTION,
+    },
     updatedAt:
       (data.updatedAt as { toDate?: () => Date })?.toDate?.().toISOString() ??
       new Date().toISOString(),
@@ -66,7 +86,7 @@ export const firestoreSiteConfigRepository: SiteConfigRepository = {
     await setDoc(
       doc(db, COLLECTION, DOC_ID),
       { ...input, updatedAt: serverTimestamp() },
-      { merge: true }
+      { merge: true },
     );
   },
 };

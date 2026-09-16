@@ -1,5 +1,13 @@
 import { useState, useEffect } from "react";
-import type { SiteConfig, UpdateSiteConfigInput, ScheduleItem, ExtendedSchedule, DepartmentLink, ContentSection, FeedbackSection } from "@/domain/entities/site-config.entity";
+import type {
+  SiteConfig,
+  UpdateSiteConfigInput,
+  ScheduleItem,
+  ExtendedSchedule,
+  DepartmentLink,
+  ContentSection,
+  FeedbackSection,
+} from "@/domain/entities/site-config.entity";
 import { DEFAULT_SCHEDULE, DEFAULT_EXTENDED, emptySchedule } from "./constants";
 
 export function useSettingsForm(config: SiteConfig | null) {
@@ -22,23 +30,44 @@ export function useSettingsForm(config: SiteConfig | null) {
   const [returnPolicy, setReturnPolicy] = useState("");
   const [termsOfService, setTermsOfService] = useState("");
   const [schedule, setSchedule] = useState<ScheduleItem[]>(DEFAULT_SCHEDULE);
-  const [extendedSchedules, setExtendedSchedules] = useState<ExtendedSchedule[]>(
-    DEFAULT_EXTENDED.map(emptySchedule)
-  );
+  const [extendedSchedules, setExtendedSchedules] = useState<
+    ExtendedSchedule[]
+  >(DEFAULT_EXTENDED.map(emptySchedule));
   const [departmentLinks, setDepartmentLinks] = useState<DepartmentLink[]>([]);
-  const [otherCountryLinks, setOtherCountryLinks] = useState<DepartmentLink[]>([]);
+  const [otherCountryLinks, setOtherCountryLinks] = useState<DepartmentLink[]>(
+    [],
+  );
 
   const [fashionTrends, setFashionTrends] = useState<ContentSection>({
-    isActive: false, title: "", subtitle: "", content: "", imageUrl: "", linkUrl: "",
+    isActive: false,
+    title: "",
+    subtitle: "",
+    content: "",
+    imageUrl: "",
+    linkUrl: "",
   });
   const [vousNews, setVousNews] = useState<ContentSection>({
-    isActive: false, title: "", subtitle: "", content: "", imageUrl: "", linkUrl: "",
+    isActive: false,
+    title: "",
+    subtitle: "",
+    content: "",
+    imageUrl: "",
+    linkUrl: "",
   });
   const [newPosts, setNewPosts] = useState<ContentSection>({
-    isActive: false, title: "", subtitle: "", content: "", imageUrl: "", linkUrl: "",
+    isActive: false,
+    title: "",
+    subtitle: "",
+    content: "",
+    imageUrl: "",
+    linkUrl: "",
   });
   const [feedback, setFeedback] = useState<FeedbackSection>({
-    isActive: false, title: "", subtitle: "", successMessage: "Gracias por tu mensaje. Lo hemos recibido correctamente.", emailRecipient: "",
+    isActive: false,
+    title: "",
+    subtitle: "",
+    successMessage: "Gracias por tu mensaje. Lo hemos recibido correctamente.",
+    emailRecipient: "",
   });
 
   /* eslint-disable react-hooks/set-state-in-effect */
@@ -66,14 +95,54 @@ export function useSettingsForm(config: SiteConfig | null) {
     setExtendedSchedules(
       config.extendedSchedules?.length
         ? config.extendedSchedules
-        : DEFAULT_EXTENDED.map(emptySchedule)
+        : DEFAULT_EXTENDED.map(emptySchedule),
     );
-    setDepartmentLinks(config.departmentLinks?.length ? config.departmentLinks : []);
-    setOtherCountryLinks(config.otherCountryLinks?.length ? config.otherCountryLinks : []);
-    setFashionTrends(config.fashionTrends ?? { isActive: false, title: "", subtitle: "", content: "", imageUrl: "", linkUrl: "" });
-    setVousNews(config.vousNews ?? { isActive: false, title: "", subtitle: "", content: "", imageUrl: "", linkUrl: "" });
-    setNewPosts(config.newPosts ?? { isActive: false, title: "", subtitle: "", content: "", imageUrl: "", linkUrl: "" });
-    setFeedback(config.feedback ?? { isActive: false, title: "", subtitle: "", successMessage: "Gracias por tu mensaje. Lo hemos recibido correctamente.", emailRecipient: "" });
+    setDepartmentLinks(
+      config.departmentLinks?.length ? config.departmentLinks : [],
+    );
+    setOtherCountryLinks(
+      config.otherCountryLinks?.length ? config.otherCountryLinks : [],
+    );
+    setFashionTrends(
+      config.fashionTrends ?? {
+        isActive: false,
+        title: "",
+        subtitle: "",
+        content: "",
+        imageUrl: "",
+        linkUrl: "",
+      },
+    );
+    setVousNews(
+      config.vousNews ?? {
+        isActive: false,
+        title: "",
+        subtitle: "",
+        content: "",
+        imageUrl: "",
+        linkUrl: "",
+      },
+    );
+    setNewPosts(
+      config.newPosts ?? {
+        isActive: false,
+        title: "",
+        subtitle: "",
+        content: "",
+        imageUrl: "",
+        linkUrl: "",
+      },
+    );
+    setFeedback(
+      config.feedback ?? {
+        isActive: false,
+        title: "",
+        subtitle: "",
+        successMessage:
+          "Gracias por tu mensaje. Lo hemos recibido correctamente.",
+        emailRecipient: "",
+      },
+    );
   }, [config]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
@@ -109,29 +178,58 @@ export function useSettingsForm(config: SiteConfig | null) {
   }
 
   return {
-    logoUrl, setLogoUrl,
-    storeName, setStoreName,
-    tagline, setTagline,
-    whatsappNumber, setWhatsappNumber,
-    whatsappMessage, setWhatsappMessage,
-    email, setEmail,
-    address, setAddress,
-    city, setCity,
-    googleMapsUrl, setGoogleMapsUrl,
-    instagramUrl, setInstagramUrl, instagramActive, setInstagramActive,
-    tiktokUrl, setTiktokUrl, tiktokActive, setTiktokActive,
-    ubicacionUrl, setUbicacionUrl, ubicacionActive, setUbicacionActive,
-    shippingPolicy, setShippingPolicy,
-    returnPolicy, setReturnPolicy,
-    termsOfService, setTermsOfService,
-    schedule, setSchedule,
-    extendedSchedules, setExtendedSchedules,
-    departmentLinks, setDepartmentLinks,
-    otherCountryLinks, setOtherCountryLinks,
-    fashionTrends, setFashionTrends,
-    vousNews, setVousNews,
-    newPosts, setNewPosts,
-    feedback, setFeedback,
+    logoUrl,
+    setLogoUrl,
+    storeName,
+    setStoreName,
+    tagline,
+    setTagline,
+    whatsappNumber,
+    setWhatsappNumber,
+    whatsappMessage,
+    setWhatsappMessage,
+    email,
+    setEmail,
+    address,
+    setAddress,
+    city,
+    setCity,
+    googleMapsUrl,
+    setGoogleMapsUrl,
+    instagramUrl,
+    setInstagramUrl,
+    instagramActive,
+    setInstagramActive,
+    tiktokUrl,
+    setTiktokUrl,
+    tiktokActive,
+    setTiktokActive,
+    ubicacionUrl,
+    setUbicacionUrl,
+    ubicacionActive,
+    setUbicacionActive,
+    shippingPolicy,
+    setShippingPolicy,
+    returnPolicy,
+    setReturnPolicy,
+    termsOfService,
+    setTermsOfService,
+    schedule,
+    setSchedule,
+    extendedSchedules,
+    setExtendedSchedules,
+    departmentLinks,
+    setDepartmentLinks,
+    otherCountryLinks,
+    setOtherCountryLinks,
+    fashionTrends,
+    setFashionTrends,
+    vousNews,
+    setVousNews,
+    newPosts,
+    setNewPosts,
+    feedback,
+    setFeedback,
     toInput,
   };
 }

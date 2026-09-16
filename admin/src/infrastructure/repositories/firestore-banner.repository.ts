@@ -12,7 +12,11 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import type { BannerRepository } from "@/domain/repositories/banner.repository";
-import type { Banner, CreateBannerInput, UpdateBannerInput } from "@/domain/entities/banner.entity";
+import type {
+  Banner,
+  CreateBannerInput,
+  UpdateBannerInput,
+} from "@/domain/entities/banner.entity";
 
 function mapDoc(id: string, data: Record<string, unknown>): Banner {
   return {
@@ -38,7 +42,9 @@ export const firestoreBannerRepository: BannerRepository = {
   async findAll(): Promise<Banner[]> {
     const q = query(collection(db, "banners"), orderBy("order", "asc"));
     const snap = await getDocs(q);
-    return snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>));
+    return snap.docs.map((d) =>
+      mapDoc(d.id, d.data() as Record<string, unknown>),
+    );
   },
 
   async findById(id: string): Promise<Banner | null> {

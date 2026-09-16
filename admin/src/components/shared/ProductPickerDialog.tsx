@@ -1,6 +1,11 @@
 import { useState, useMemo } from "react";
 import { Search, X, Check } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { Product } from "@/domain/entities/product.entity";
@@ -33,7 +38,8 @@ export function ProductPickerDialog({
     const q = search.toLowerCase();
     return allProducts.filter(
       (p) =>
-        p.name.toLowerCase().includes(q) || p.categoryName.toLowerCase().includes(q)
+        p.name.toLowerCase().includes(q) ||
+        p.categoryName.toLowerCase().includes(q),
     );
   }, [allProducts, search]);
 
@@ -65,7 +71,9 @@ export function ProductPickerDialog({
         </DialogHeader>
 
         <div className="flex items-center justify-between text-[11px] font-nav text-vous-text-secondary px-0 pb-1">
-          <span>{selected.length} seleccionados (máx. {MAX_PRODUCTS})</span>
+          <span>
+            {selected.length} seleccionados (máx. {MAX_PRODUCTS})
+          </span>
           {selected.length > 0 && (
             <button
               type="button"
@@ -121,7 +129,13 @@ export function ProductPickerDialog({
                         : "border-vous-border"
                     }`}
                   >
-                    {isSelected && <Check size={12} strokeWidth={3} className="text-vous-text" />}
+                    {isSelected && (
+                      <Check
+                        size={12}
+                        strokeWidth={3}
+                        className="text-vous-text"
+                      />
+                    )}
                   </div>
                   <div className="w-10 h-10 shrink-0 bg-white/90 overflow-hidden">
                     {product.images?.[0] ? (
@@ -150,7 +164,12 @@ export function ProductPickerDialog({
         </div>
 
         <div className="flex gap-3 pt-3 border-t border-white/40">
-          <Button type="button" variant="outline" onClick={onClose} className="flex-1">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onClose}
+            className="flex-1"
+          >
             Cancelar
           </Button>
           <Button onClick={handleSave} disabled={saving} className="flex-1">

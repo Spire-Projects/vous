@@ -32,7 +32,13 @@ function validateFile(file: File): string | null {
   return null;
 }
 
-export function ImagePicker({ value, onChange, folder = "vous/uploads", label = "Subir imagen", aspect = "video" }: ImagePickerProps) {
+export function ImagePicker({
+  value,
+  onChange,
+  folder = "vous/uploads",
+  label = "Subir imagen",
+  aspect = "video",
+}: ImagePickerProps) {
   const [uploading, setUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -52,7 +58,9 @@ export function ImagePicker({ value, onChange, folder = "vous/uploads", label = 
         const url = await uploadImageToCloudinary(file, folder);
         onChange(url);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Error al subir la imagen.");
+        setError(
+          err instanceof Error ? err.message : "Error al subir la imagen.",
+        );
       } finally {
         setUploading(false);
       }
@@ -115,8 +123,14 @@ export function ImagePicker({ value, onChange, folder = "vous/uploads", label = 
         className="hidden"
       />
       {value ? (
-        <div className={`relative w-full max-w-sm overflow-hidden border border-vous-border rounded-2xl ${ASPECT_CLASSES[aspect] ?? "aspect-video"} ${aspect === "logo" ? "bg-vous-surface flex items-center justify-center p-2" : ""}`}>
-          <img src={value} alt="Preview" className={`${aspect === "logo" ? "max-w-full max-h-full object-contain" : "w-full h-full object-cover"}`} />
+        <div
+          className={`relative w-full max-w-sm overflow-hidden border border-vous-border rounded-2xl ${ASPECT_CLASSES[aspect] ?? "aspect-video"} ${aspect === "logo" ? "bg-vous-surface flex items-center justify-center p-2" : ""}`}
+        >
+          <img
+            src={value}
+            alt="Preview"
+            className={`${aspect === "logo" ? "max-w-full max-h-full object-contain" : "w-full h-full object-cover"}`}
+          />
           <Button
             type="button"
             variant="danger"
@@ -154,15 +168,14 @@ export function ImagePicker({ value, onChange, folder = "vous/uploads", label = 
               )}
               <span>{isDragging ? "Soltá la imagen aquí" : label}</span>
               <span className="normal-case text-[10px] tracking-normal text-vous-text-muted max-w-full leading-tight">
-                Formatos: {ACCEPTED_LABEL}. Tamaño máximo: {MAX_FILE_SIZE_MB} MB.
+                Formatos: {ACCEPTED_LABEL}. Tamaño máximo: {MAX_FILE_SIZE_MB}{" "}
+                MB.
               </span>
             </>
           )}
         </div>
       )}
-      {error && (
-        <p className="text-red-600 text-xs">{error}</p>
-      )}
+      {error && <p className="text-red-600 text-xs">{error}</p>}
     </div>
   );
 }

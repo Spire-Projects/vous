@@ -21,7 +21,10 @@ interface Props {
 export function AttributeEditor({ value, onChange, suggestions }: Props) {
   const [customKey, setCustomKey] = useState("");
 
-  const suggestionList = suggestions && suggestions.length > 0 ? suggestions : DEFAULT_SUGGESTED_KEYS;
+  const suggestionList =
+    suggestions && suggestions.length > 0
+      ? suggestions
+      : DEFAULT_SUGGESTED_KEYS;
   const entries = Object.entries(value);
   const unusedSuggestions = suggestionList.filter((k) => !(k in value));
 

@@ -2,15 +2,21 @@ import { Label } from "@/components/ui/label";
 import { RichTextEditor } from "@/components/blog/RichTextEditor";
 
 interface PoliciesTabProps {
-  shippingPolicy: string; setShippingPolicy: (v: string) => void;
-  returnPolicy: string; setReturnPolicy: (v: string) => void;
-  termsOfService: string; setTermsOfService: (v: string) => void;
+  shippingPolicy: string;
+  setShippingPolicy: (v: string) => void;
+  returnPolicy: string;
+  setReturnPolicy: (v: string) => void;
+  termsOfService: string;
+  setTermsOfService: (v: string) => void;
 }
 
 export function PoliciesTab({
-  shippingPolicy, setShippingPolicy,
-  returnPolicy, setReturnPolicy,
-  termsOfService, setTermsOfService,
+  shippingPolicy,
+  setShippingPolicy,
+  returnPolicy,
+  setReturnPolicy,
+  termsOfService,
+  setTermsOfService,
 }: PoliciesTabProps) {
   return (
     <div className="space-y-6">
@@ -18,7 +24,10 @@ export function PoliciesTab({
       <div className="space-y-4">
         <div className="space-y-1">
           <Label>Política de Envíos</Label>
-          <RichTextEditor content={shippingPolicy} onChange={setShippingPolicy} />
+          <RichTextEditor
+            content={shippingPolicy}
+            onChange={setShippingPolicy}
+          />
         </div>
         <div className="space-y-1">
           <Label>Política de Devoluciones</Label>
@@ -26,7 +35,10 @@ export function PoliciesTab({
         </div>
         <div className="space-y-1">
           <Label>Términos y Condiciones</Label>
-          <RichTextEditor content={termsOfService} onChange={setTermsOfService} />
+          <RichTextEditor
+            content={termsOfService}
+            onChange={setTermsOfService}
+          />
         </div>
       </div>
     </div>

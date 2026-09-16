@@ -1,4 +1,7 @@
-import type { WholesaleRules, UpdateWholesaleRulesInput } from "@/domain/entities/wholesale-rules.entity";
+import type {
+  WholesaleRules,
+  UpdateWholesaleRulesInput,
+} from "@/domain/entities/wholesale-rules.entity";
 
 export interface WholesaleRulesRepository {
   get(): Promise<WholesaleRules>;

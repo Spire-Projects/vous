@@ -12,7 +12,12 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import type { BlogPostRepository } from "@/domain/repositories/blog-post.repository";
-import type { BlogPost, BlogPostStatus, CreateBlogPostInput, UpdateBlogPostInput } from "@/domain/entities/blog-post.entity";
+import type {
+  BlogPost,
+  BlogPostStatus,
+  CreateBlogPostInput,
+  UpdateBlogPostInput,
+} from "@/domain/entities/blog-post.entity";
 
 function mapDoc(id: string, data: Record<string, unknown>): BlogPost {
   return {
@@ -28,8 +33,13 @@ function mapDoc(id: string, data: Record<string, unknown>): BlogPost {
     featured: (data.featured as boolean) ?? false,
     authorId: (data.authorId as string) ?? "",
     authorName: (data.authorName as string) ?? "",
-    createdAt: (data.createdAt as { toDate?: () => Date })?.toDate?.()?.toISOString() ?? new Date().toISOString(),
-    publishedAt: (data.publishedAt as { toDate?: () => Date } | null)?.toDate?.()?.toISOString() ?? null,
+    createdAt:
+      (data.createdAt as { toDate?: () => Date })?.toDate?.()?.toISOString() ??
+      new Date().toISOString(),
+    publishedAt:
+      (data.publishedAt as { toDate?: () => Date } | null)
+        ?.toDate?.()
+        ?.toISOString() ?? null,
     seoTitle: data.seoTitle as string | undefined,
     seoDescription: data.seoDescription as string | undefined,
   };
@@ -39,7 +49,9 @@ export const firestoreBlogPostRepository: BlogPostRepository = {
   async findAll(): Promise<BlogPost[]> {
     const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
     const snap = await getDocs(q);
-    return snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>));
+    return snap.docs.map((d) =>
+      mapDoc(d.id, d.data() as Record<string, unknown>),
+    );
   },
 
   async findById(id: string): Promise<BlogPost | null> {

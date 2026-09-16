@@ -1,4 +1,7 @@
-import type { WholesaleRequest, ReviewWholesaleInput } from "@/domain/entities/wholesale.entity";
+import type {
+  WholesaleRequest,
+  ReviewWholesaleInput,
+} from "@/domain/entities/wholesale.entity";
 
 export interface WholesaleRepository {
   findAll(): Promise<WholesaleRequest[]>;

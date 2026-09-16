@@ -1,4 +1,8 @@
-import type { FAQ, CreateFAQInput, UpdateFAQInput } from "@/domain/entities/faq.entity";
+import type {
+  FAQ,
+  CreateFAQInput,
+  UpdateFAQInput,
+} from "@/domain/entities/faq.entity";
 
 export interface FAQRepository {
   findAll(): Promise<FAQ[]>;

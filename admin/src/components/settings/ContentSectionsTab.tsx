@@ -4,13 +4,20 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RichTextEditor } from "@/components/blog/RichTextEditor";
-import type { ContentSection, FeedbackSection } from "@/domain/entities/site-config.entity";
+import type {
+  ContentSection,
+  FeedbackSection,
+} from "@/domain/entities/site-config.entity";
 
 interface ContentSectionsTabProps {
-  fashionTrends: ContentSection; setFashionTrends: (v: ContentSection) => void;
-  vousNews: ContentSection; setVousNews: (v: ContentSection) => void;
-  newPosts: ContentSection; setNewPosts: (v: ContentSection) => void;
-  feedback: FeedbackSection; setFeedback: (v: FeedbackSection) => void;
+  fashionTrends: ContentSection;
+  setFashionTrends: (v: ContentSection) => void;
+  vousNews: ContentSection;
+  setVousNews: (v: ContentSection) => void;
+  newPosts: ContentSection;
+  setNewPosts: (v: ContentSection) => void;
+  feedback: FeedbackSection;
+  setFeedback: (v: FeedbackSection) => void;
 }
 
 function SectionCard({
@@ -42,16 +49,23 @@ function SectionCard({
 }
 
 export function ContentSectionsTab({
-  fashionTrends, setFashionTrends,
-  vousNews, setVousNews,
-  newPosts, setNewPosts,
-  feedback, setFeedback,
+  fashionTrends,
+  setFashionTrends,
+  vousNews,
+  setVousNews,
+  newPosts,
+  setNewPosts,
+  feedback,
+  setFeedback,
 }: ContentSectionsTabProps) {
   return (
     <div className="space-y-6">
-      <h2 className="font-serif text-xl text-vous-text">Secciones de Contenido</h2>
+      <h2 className="font-serif text-xl text-vous-text">
+        Secciones de Contenido
+      </h2>
       <p className="text-sm text-vous-text-secondary font-sans">
-        Activa y configura las secciones adicionales que aparecen en la landing page.
+        Activa y configura las secciones adicionales que aparecen en la landing
+        page.
       </p>
 
       <div className="space-y-4">
@@ -61,15 +75,24 @@ export function ContentSectionsTab({
             <Checkbox
               id="fashion-trends-active"
               checked={fashionTrends.isActive}
-              onCheckedChange={(v) => setFashionTrends({ ...fashionTrends, isActive: v === true })}
+              onCheckedChange={(v) =>
+                setFashionTrends({ ...fashionTrends, isActive: v === true })
+              }
             />
-            <Label htmlFor="fashion-trends-active" className="text-sm font-sans">Mostrar sección en la landing</Label>
+            <Label
+              htmlFor="fashion-trends-active"
+              className="text-sm font-sans"
+            >
+              Mostrar sección en la landing
+            </Label>
           </div>
           <div className="space-y-1">
             <Label>Título</Label>
             <Input
               value={fashionTrends.title}
-              onChange={(e) => setFashionTrends({ ...fashionTrends, title: e.target.value })}
+              onChange={(e) =>
+                setFashionTrends({ ...fashionTrends, title: e.target.value })
+              }
               placeholder="Ej: Tendencias Primavera 2026"
             />
           </div>
@@ -77,7 +100,9 @@ export function ContentSectionsTab({
             <Label>Subtítulo</Label>
             <Input
               value={fashionTrends.subtitle}
-              onChange={(e) => setFashionTrends({ ...fashionTrends, subtitle: e.target.value })}
+              onChange={(e) =>
+                setFashionTrends({ ...fashionTrends, subtitle: e.target.value })
+              }
               placeholder="Ej: Las prendas que marcan esta temporada"
             />
           </div>
@@ -85,14 +110,18 @@ export function ContentSectionsTab({
             <Label>Contenido</Label>
             <RichTextEditor
               content={fashionTrends.content}
-              onChange={(v) => setFashionTrends({ ...fashionTrends, content: v })}
+              onChange={(v) =>
+                setFashionTrends({ ...fashionTrends, content: v })
+              }
             />
           </div>
           <div className="space-y-1">
             <Label>URL de imagen principal</Label>
             <Input
               value={fashionTrends.imageUrl ?? ""}
-              onChange={(e) => setFashionTrends({ ...fashionTrends, imageUrl: e.target.value })}
+              onChange={(e) =>
+                setFashionTrends({ ...fashionTrends, imageUrl: e.target.value })
+              }
               placeholder="https://..."
             />
           </div>
@@ -100,7 +129,9 @@ export function ContentSectionsTab({
             <Label>Link externo (opcional)</Label>
             <Input
               value={fashionTrends.linkUrl ?? ""}
-              onChange={(e) => setFashionTrends({ ...fashionTrends, linkUrl: e.target.value })}
+              onChange={(e) =>
+                setFashionTrends({ ...fashionTrends, linkUrl: e.target.value })
+              }
               placeholder="https://..."
             />
           </div>
@@ -112,15 +143,21 @@ export function ContentSectionsTab({
             <Checkbox
               id="vous-news-active"
               checked={vousNews.isActive}
-              onCheckedChange={(v) => setVousNews({ ...vousNews, isActive: v === true })}
+              onCheckedChange={(v) =>
+                setVousNews({ ...vousNews, isActive: v === true })
+              }
             />
-            <Label htmlFor="vous-news-active" className="text-sm font-sans">Mostrar sección en la landing</Label>
+            <Label htmlFor="vous-news-active" className="text-sm font-sans">
+              Mostrar sección en la landing
+            </Label>
           </div>
           <div className="space-y-1">
             <Label>Título</Label>
             <Input
               value={vousNews.title}
-              onChange={(e) => setVousNews({ ...vousNews, title: e.target.value })}
+              onChange={(e) =>
+                setVousNews({ ...vousNews, title: e.target.value })
+              }
               placeholder="Ej: VOUS News"
             />
           </div>
@@ -128,7 +165,9 @@ export function ContentSectionsTab({
             <Label>Subtítulo</Label>
             <Input
               value={vousNews.subtitle}
-              onChange={(e) => setVousNews({ ...vousNews, subtitle: e.target.value })}
+              onChange={(e) =>
+                setVousNews({ ...vousNews, subtitle: e.target.value })
+              }
               placeholder="Ej: Tu revista digital de moda urbana"
             />
           </div>
@@ -143,7 +182,9 @@ export function ContentSectionsTab({
             <Label>URL de imagen principal</Label>
             <Input
               value={vousNews.imageUrl ?? ""}
-              onChange={(e) => setVousNews({ ...vousNews, imageUrl: e.target.value })}
+              onChange={(e) =>
+                setVousNews({ ...vousNews, imageUrl: e.target.value })
+              }
               placeholder="https://..."
             />
           </div>
@@ -151,7 +192,9 @@ export function ContentSectionsTab({
             <Label>Link externo (opcional)</Label>
             <Input
               value={vousNews.linkUrl ?? ""}
-              onChange={(e) => setVousNews({ ...vousNews, linkUrl: e.target.value })}
+              onChange={(e) =>
+                setVousNews({ ...vousNews, linkUrl: e.target.value })
+              }
               placeholder="https://..."
             />
           </div>
@@ -163,15 +206,21 @@ export function ContentSectionsTab({
             <Checkbox
               id="new-posts-active"
               checked={newPosts.isActive}
-              onCheckedChange={(v) => setNewPosts({ ...newPosts, isActive: v === true })}
+              onCheckedChange={(v) =>
+                setNewPosts({ ...newPosts, isActive: v === true })
+              }
             />
-            <Label htmlFor="new-posts-active" className="text-sm font-sans">Mostrar sección en la landing</Label>
+            <Label htmlFor="new-posts-active" className="text-sm font-sans">
+              Mostrar sección en la landing
+            </Label>
           </div>
           <div className="space-y-1">
             <Label>Título</Label>
             <Input
               value={newPosts.title}
-              onChange={(e) => setNewPosts({ ...newPosts, title: e.target.value })}
+              onChange={(e) =>
+                setNewPosts({ ...newPosts, title: e.target.value })
+              }
               placeholder="Ej: Últimos posts"
             />
           </div>
@@ -179,7 +228,9 @@ export function ContentSectionsTab({
             <Label>Subtítulo</Label>
             <Input
               value={newPosts.subtitle}
-              onChange={(e) => setNewPosts({ ...newPosts, subtitle: e.target.value })}
+              onChange={(e) =>
+                setNewPosts({ ...newPosts, subtitle: e.target.value })
+              }
               placeholder="Ej: Nuestros nuevos videos en redes sociales"
             />
           </div>
@@ -194,7 +245,9 @@ export function ContentSectionsTab({
             <Label>URL de imagen principal</Label>
             <Input
               value={newPosts.imageUrl ?? ""}
-              onChange={(e) => setNewPosts({ ...newPosts, imageUrl: e.target.value })}
+              onChange={(e) =>
+                setNewPosts({ ...newPosts, imageUrl: e.target.value })
+              }
               placeholder="https://..."
             />
           </div>
@@ -202,7 +255,9 @@ export function ContentSectionsTab({
             <Label>Link externo (opcional)</Label>
             <Input
               value={newPosts.linkUrl ?? ""}
-              onChange={(e) => setNewPosts({ ...newPosts, linkUrl: e.target.value })}
+              onChange={(e) =>
+                setNewPosts({ ...newPosts, linkUrl: e.target.value })
+              }
               placeholder="https://..."
             />
           </div>
@@ -214,15 +269,21 @@ export function ContentSectionsTab({
             <Checkbox
               id="feedback-active"
               checked={feedback.isActive}
-              onCheckedChange={(v) => setFeedback({ ...feedback, isActive: v === true })}
+              onCheckedChange={(v) =>
+                setFeedback({ ...feedback, isActive: v === true })
+              }
             />
-            <Label htmlFor="feedback-active" className="text-sm font-sans">Mostrar sección en la landing</Label>
+            <Label htmlFor="feedback-active" className="text-sm font-sans">
+              Mostrar sección en la landing
+            </Label>
           </div>
           <div className="space-y-1">
             <Label>Título</Label>
             <Input
               value={feedback.title}
-              onChange={(e) => setFeedback({ ...feedback, title: e.target.value })}
+              onChange={(e) =>
+                setFeedback({ ...feedback, title: e.target.value })
+              }
               placeholder="Ej: Quejas o Recomendaciones"
             />
           </div>
@@ -230,7 +291,9 @@ export function ContentSectionsTab({
             <Label>Subtítulo</Label>
             <Input
               value={feedback.subtitle}
-              onChange={(e) => setFeedback({ ...feedback, subtitle: e.target.value })}
+              onChange={(e) =>
+                setFeedback({ ...feedback, subtitle: e.target.value })
+              }
               placeholder="Ej: Queremos escucharte"
             />
           </div>
@@ -238,7 +301,9 @@ export function ContentSectionsTab({
             <Label>Mensaje de confirmación</Label>
             <Input
               value={feedback.successMessage}
-              onChange={(e) => setFeedback({ ...feedback, successMessage: e.target.value })}
+              onChange={(e) =>
+                setFeedback({ ...feedback, successMessage: e.target.value })
+              }
               placeholder="Gracias por tu mensaje..."
             />
           </div>
@@ -246,7 +311,9 @@ export function ContentSectionsTab({
             <Label>Email destinatario</Label>
             <Input
               value={feedback.emailRecipient}
-              onChange={(e) => setFeedback({ ...feedback, emailRecipient: e.target.value })}
+              onChange={(e) =>
+                setFeedback({ ...feedback, emailRecipient: e.target.value })
+              }
               placeholder="soporte@vous.bo"
               type="email"
             />

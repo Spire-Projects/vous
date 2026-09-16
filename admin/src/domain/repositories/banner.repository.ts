@@ -1,4 +1,8 @@
-import type { Banner, CreateBannerInput, UpdateBannerInput } from "@/domain/entities/banner.entity";
+import type {
+  Banner,
+  CreateBannerInput,
+  UpdateBannerInput,
+} from "@/domain/entities/banner.entity";
 
 export interface BannerRepository {
   findAll(): Promise<Banner[]>;

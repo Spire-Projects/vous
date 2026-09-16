@@ -6,7 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useSiteConfig } from "@/hooks/useSiteConfig";
 
-const LANDING_URL = (import.meta.env?.VITE_LANDING_URL as string | undefined) ?? "http://localhost:3000";
+const LANDING_URL =
+  (import.meta.env?.VITE_LANDING_URL as string | undefined) ??
+  "http://localhost:3000";
 
 const FOOTER_LINKS = [
   {
@@ -22,7 +24,10 @@ const FOOTER_LINKS = [
     title: "Legal",
     links: [
       { href: `${LANDING_URL}/politica-de-envios`, label: "Envíos" },
-      { href: `${LANDING_URL}/politica-de-devoluciones`, label: "Devoluciones" },
+      {
+        href: `${LANDING_URL}/politica-de-devoluciones`,
+        label: "Devoluciones",
+      },
       { href: `${LANDING_URL}/terminos`, label: "Términos" },
     ],
   },
@@ -142,7 +147,9 @@ export function LoginPage() {
                     type="button"
                     onClick={() => setShowPassword((v) => !v)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-vous-text-secondary hover:text-vous-text transition-colors"
-                    aria-label={showPassword ? "Ocultar contraseña" : "Ver contraseña"}
+                    aria-label={
+                      showPassword ? "Ocultar contraseña" : "Ver contraseña"
+                    }
                   >
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
@@ -155,11 +162,7 @@ export function LoginPage() {
                 </div>
               )}
 
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full h-11"
-              >
+              <Button type="submit" disabled={loading} className="w-full h-11">
                 {loading ? (
                   <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (

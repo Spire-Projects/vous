@@ -1,4 +1,8 @@
-import type { StyleGuide, CreateStyleGuideInput, UpdateStyleGuideInput } from "@/domain/entities/style-guide.entity";
+import type {
+  StyleGuide,
+  CreateStyleGuideInput,
+  UpdateStyleGuideInput,
+} from "@/domain/entities/style-guide.entity";
 
 export interface StyleGuideRepository {
   findAll(): Promise<StyleGuide[]>;

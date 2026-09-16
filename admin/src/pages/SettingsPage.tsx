@@ -5,8 +5,15 @@ import { Button } from "@/components/ui/button";
 import { useSiteConfig } from "@/hooks/useSiteConfig";
 import { usePaymentConfig } from "@/hooks/usePaymentConfig";
 import {
-  BrandTab, ContactTab, SocialTab, PoliciesTab, ScheduleTab, PaymentTab,
-  ContentSectionsTab, useSettingsForm, TABS,
+  BrandTab,
+  ContactTab,
+  SocialTab,
+  PoliciesTab,
+  ScheduleTab,
+  PaymentTab,
+  ContentSectionsTab,
+  useSettingsForm,
+  TABS,
 } from "@/components/settings";
 import type { TabId } from "@/components/settings";
 
@@ -30,7 +37,10 @@ export function SettingsPage() {
   if (loading) {
     return (
       <div className="w-full px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
-        <PageHeader title="Configuración del Sistema" subtitle="Gestiona la identidad visual y operativa de VOUS." />
+        <PageHeader
+          title="Configuración del Sistema"
+          subtitle="Gestiona la identidad visual y operativa de VOUS."
+        />
         <div className="flex items-center justify-center py-20">
           <Loader2 size={24} className="animate-spin text-vous-gold" />
         </div>
@@ -45,7 +55,11 @@ export function SettingsPage() {
         subtitle="Gestiona la identidad visual y operativa de VOUS."
         action={
           <Button onClick={handleSave} disabled={saving} className="shrink-0">
-            {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} strokeWidth={2} />}
+            {saving ? (
+              <Loader2 size={14} className="animate-spin" />
+            ) : (
+              <Save size={14} strokeWidth={2} />
+            )}
             {saving ? "Guardando..." : "Guardar Cambios"}
           </Button>
         }

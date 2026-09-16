@@ -21,7 +21,12 @@ interface VariantAddFormProps {
   onCancel: () => void;
 }
 
-export function VariantAddForm({ colors, sizes, onAdd, onCancel }: VariantAddFormProps) {
+export function VariantAddForm({
+  colors,
+  sizes,
+  onAdd,
+  onCancel,
+}: VariantAddFormProps) {
   const [selColor, setSelColor] = useState("");
   const [selSize, setSelSize] = useState("");
   const [selStock, setSelStock] = useState(0);
@@ -58,7 +63,9 @@ export function VariantAddForm({ colors, sizes, onAdd, onCancel }: VariantAddFor
 
   return (
     <div className="border border-vous-border p-3 space-y-3 bg-white/90/20">
-      <p className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">Nueva variante</p>
+      <p className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">
+        Nueva variante
+      </p>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {colors.length > 0 && (
           <div className="space-y-1">
@@ -71,7 +78,10 @@ export function VariantAddForm({ colors, sizes, onAdd, onCancel }: VariantAddFor
                 {colors.map((c) => (
                   <SelectItem key={c.name} value={c.name}>
                     <span className="inline-flex items-center gap-1.5">
-                      <span className="w-3 h-3 rounded-full border" style={{ background: c.hex }} />
+                      <span
+                        className="w-3 h-3 rounded-full border"
+                        style={{ background: c.hex }}
+                      />
                       {c.name}
                     </span>
                   </SelectItem>
@@ -88,18 +98,35 @@ export function VariantAddForm({ colors, sizes, onAdd, onCancel }: VariantAddFor
                 <SelectValue placeholder="Seleccionar" />
               </SelectTrigger>
               <SelectContent>
-                {sizes.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+                {sizes.map((s) => (
+                  <SelectItem key={s} value={s}>
+                    {s}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
         )}
         <div className="space-y-1">
           <Label className="text-[10px]">Stock</Label>
-          <Input type="number" min={0} value={selStock} onChange={(e) => setSelStock(Math.max(0, Number(e.target.value) || 0))} className="h-8 text-[11px]" />
+          <Input
+            type="number"
+            min={0}
+            value={selStock}
+            onChange={(e) =>
+              setSelStock(Math.max(0, Number(e.target.value) || 0))
+            }
+            className="h-8 text-[11px]"
+          />
         </div>
         <div className="space-y-1">
           <Label className="text-[10px]">SKU (opcional)</Label>
-          <Input value={selSku} onChange={(e) => setSelSku(e.target.value)} placeholder="ABC-001" className="h-8 text-[11px]" />
+          <Input
+            value={selSku}
+            onChange={(e) => setSelSku(e.target.value)}
+            placeholder="ABC-001"
+            className="h-8 text-[11px]"
+          />
         </div>
       </div>
 
@@ -109,7 +136,10 @@ export function VariantAddForm({ colors, sizes, onAdd, onCancel }: VariantAddFor
         {images.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {images.map((img, i) => (
-              <div key={i} className="relative w-14 h-14 border border-vous-border rounded overflow-hidden">
+              <div
+                key={i}
+                className="relative w-14 h-14 border border-vous-border rounded overflow-hidden"
+              >
                 <img src={img} alt="" className="w-full h-full object-cover" />
                 <button
                   type="button"
@@ -132,10 +162,17 @@ export function VariantAddForm({ colors, sizes, onAdd, onCancel }: VariantAddFor
       </div>
 
       <div className="flex gap-2">
-        <Button type="button" size="sm" onClick={handleAdd} disabled={!selColor.trim() && !selSize.trim()}>
+        <Button
+          type="button"
+          size="sm"
+          onClick={handleAdd}
+          disabled={!selColor.trim() && !selSize.trim()}
+        >
           <Plus size={12} /> Guardar
         </Button>
-        <Button type="button" variant="ghost" size="sm" onClick={onCancel}>Cancelar</Button>
+        <Button type="button" variant="ghost" size="sm" onClick={onCancel}>
+          Cancelar
+        </Button>
       </div>
     </div>
   );

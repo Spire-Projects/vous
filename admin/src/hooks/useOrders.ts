@@ -3,7 +3,10 @@ import { firestoreOrderRepository } from "@/infrastructure";
 import { updateOrderStatus } from "@/application/use-cases/order/update-order-status";
 import { cancelOrderRestoreStock } from "@/application/use-cases/order/cancel-order-restore-stock";
 import { updateAdminNotes } from "@/application/use-cases/order/update-admin-notes";
-import type { Order, UpdateOrderStatusInput } from "@/domain/entities/order.entity";
+import type {
+  Order,
+  UpdateOrderStatusInput,
+} from "@/domain/entities/order.entity";
 
 /**
  * Real-time orders hook backed by Firestore onSnapshot.
@@ -41,12 +44,19 @@ export function useOrders() {
     async (orderId: string, note: string) => {
       await cancelOrderRestoreStock(firestoreOrderRepository, orderId, note);
     },
-    []
+    [],
   );
 
   const updateNotes = useCallback(async (orderId: string, notes: string) => {
     await updateAdminNotes(firestoreOrderRepository, orderId, notes);
   }, []);
 
-  return { orders, loading, error, changeStatus, cancelWithStockRestore, updateNotes };
+  return {
+    orders,
+    loading,
+    error,
+    changeStatus,
+    cancelWithStockRestore,
+    updateNotes,
+  };
 }

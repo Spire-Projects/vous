@@ -14,7 +14,12 @@ import {
 } from "@/components/ui/table";
 import { WholesaleDetailDialog } from "./WholesaleDetailDialog";
 import type { WholesaleRequest } from "@/domain/entities/wholesale.entity";
-import { STATUS_VARIANT, STATUS_LABEL, HOW_FOUND_LABELS, formatDate } from "./types";
+import {
+  STATUS_VARIANT,
+  STATUS_LABEL,
+  HOW_FOUND_LABELS,
+  formatDate,
+} from "./types";
 import type { FilterTab } from "./types";
 import { FILTER_TABS } from "./types";
 
@@ -56,11 +61,11 @@ export function WholesaleRequestsTab({
 
   const pending = useMemo(
     () => requests.filter((r) => r.status === "pending").length,
-    [requests]
+    [requests],
   );
   const approved = useMemo(
     () => requests.filter((r) => r.status === "approved").length,
-    [requests]
+    [requests],
   );
 
   return (
@@ -82,7 +87,10 @@ export function WholesaleRequestsTab({
       <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden">
         <div className="p-4 border-b border-white/40 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
           <div className="relative flex-1 max-w-xs">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-vous-text-secondary" />
+            <Search
+              size={14}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-vous-text-secondary"
+            />
             <Input
               placeholder="Buscar nombre, depto, teléfono..."
               value={search}
@@ -117,10 +125,15 @@ export function WholesaleRequestsTab({
           <>
             <div className="block md:hidden divide-y divide-white/30">
               {filtered.map((req) => (
-                <div key={req.id} className="p-4 hover:bg-amber-50/30 transition-colors space-y-3">
+                <div
+                  key={req.id}
+                  className="p-4 hover:bg-amber-50/30 transition-colors space-y-3"
+                >
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Negocio</p>
+                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                        Negocio
+                      </p>
                       <p className="font-nav text-[13px] font-semibold text-vous-text">
                         {req.businessName || req.contactName}
                       </p>
@@ -131,23 +144,41 @@ export function WholesaleRequestsTab({
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Solicitante</p>
-                      <p className="text-[13px] font-sans text-vous-text font-medium">{req.contactName}</p>
-                      <p className="text-[11px] text-vous-text-secondary font-sans">CI: {req.carnetIdentidad ?? "—"}</p>
+                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                        Solicitante
+                      </p>
+                      <p className="text-[13px] font-sans text-vous-text font-medium">
+                        {req.contactName}
+                      </p>
+                      <p className="text-[11px] text-vous-text-secondary font-sans">
+                        CI: {req.carnetIdentidad ?? "—"}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Teléfono</p>
-                      <p className="text-[12px] font-sans text-vous-text-secondary">{req.phone}</p>
+                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                        Teléfono
+                      </p>
+                      <p className="text-[12px] font-sans text-vous-text-secondary">
+                        {req.phone}
+                      </p>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Fecha</p>
-                      <p className="text-[12px] font-sans text-vous-text-secondary">{formatDate(req.createdAt)}</p>
+                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                        Fecha
+                      </p>
+                      <p className="text-[12px] font-sans text-vous-text-secondary">
+                        {formatDate(req.createdAt)}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Departamento</p>
-                      <p className="text-[12px] font-sans text-vous-text-secondary">{req.department}</p>
+                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                        Departamento
+                      </p>
+                      <p className="text-[12px] font-sans text-vous-text-secondary">
+                        {req.department}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 pt-1 border-t border-white/30">
@@ -198,11 +229,17 @@ export function WholesaleRequestsTab({
               <Table>
                 <TableHeader>
                   <TableRow>
-                    {["Solicitante", "Teléfono", "Departamento", "Cómo nos conoció", "Fecha", "Estado", "Acciones"].map(
-                      (h) => (
-                        <TableHead key={h}>{h}</TableHead>
-                      )
-                    )}
+                    {[
+                      "Solicitante",
+                      "Teléfono",
+                      "Departamento",
+                      "Cómo nos conoció",
+                      "Fecha",
+                      "Estado",
+                      "Acciones",
+                    ].map((h) => (
+                      <TableHead key={h}>{h}</TableHead>
+                    ))}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -223,7 +260,9 @@ export function WholesaleRequestsTab({
                         {req.department}
                       </TableCell>
                       <TableCell className="text-[12px] font-sans text-vous-text-secondary">
-                        {HOW_FOUND_LABELS[req.howFound ?? ""] ?? req.howFound ?? "—"}
+                        {HOW_FOUND_LABELS[req.howFound ?? ""] ??
+                          req.howFound ??
+                          "—"}
                       </TableCell>
                       <TableCell className="text-[12px] font-sans text-vous-text-secondary">
                         {formatDate(req.createdAt)}

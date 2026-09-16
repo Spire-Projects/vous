@@ -73,7 +73,11 @@ export function HeroSection() {
         <HeroBannerSlide key={banner.id} banner={banner} />
       </AnimatePresence>
 
-      <Link href={bannerHref} className="absolute inset-0 z-0" aria-label={banner.title || "Ver catálogo"} />
+      <Link
+        href={bannerHref}
+        className="absolute inset-0 z-0"
+        aria-label={banner.title || "Ver catálogo"}
+      />
 
       <HeroBannerOverlay banner={banner} bannerHref={bannerHref} />
 

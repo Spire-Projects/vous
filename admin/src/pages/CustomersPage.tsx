@@ -1,15 +1,32 @@
 import { useState } from "react";
-import { Search, Users, UserCheck, ToggleLeft, ToggleRight, Eye, Filter } from "lucide-react";
+import {
+  Search,
+  Users,
+  UserCheck,
+  ToggleLeft,
+  ToggleRight,
+  Eye,
+  Filter,
+} from "lucide-react";
 import { PageHeader } from "../components/ui/PageHeader";
 import { StatCard } from "../components/ui/StatCard";
 import { Badge, type BadgeProps } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
-  Table, TableHeader, TableBody, TableRow, TableHead, TableCell,
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
 } from "@/components/ui/table";
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { useCustomers } from "@/hooks";
 import type { Customer, CustomerRole } from "@/domain/entities/user.entity";
@@ -36,8 +53,12 @@ const roleLabelMap: Record<CustomerRole, string> = {
 function formatDate(value: unknown): string {
   if (!value) return "—";
   if (typeof value === "object" && value !== null && "seconds" in value) {
-    return new Date((value as { seconds: number }).seconds * 1000).toLocaleDateString("es-ES", {
-      day: "2-digit", month: "short", year: "numeric",
+    return new Date(
+      (value as { seconds: number }).seconds * 1000,
+    ).toLocaleDateString("es-ES", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
     });
   }
   return "—";
@@ -65,7 +86,9 @@ export function CustomersPage() {
   });
 
   const totalActive = customers.filter((c) => c.isActive).length;
-  const totalWholesale = customers.filter((c) => c.role === "wholesaler").length;
+  const totalWholesale = customers.filter(
+    (c) => c.role === "wholesaler",
+  ).length;
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6">
@@ -95,7 +118,10 @@ export function CustomersPage() {
       <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden">
         <div className="p-4 border-b border-white/40 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
           <div className="relative flex-1 max-w-xs">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-vous-text-secondary" />
+            <Search
+              size={14}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-vous-text-secondary"
+            />
             <Input
               placeholder="Buscar por nombre, correo o teléfono…"
               value={search}
@@ -132,32 +158,48 @@ export function CustomersPage() {
               {filtered.map((customer) => (
                 <div key={customer.id} className="p-4 space-y-3">
                   <div>
-                    <p className="text-[13px] font-sans text-vous-text font-medium">{customer.name}</p>
-                    <p className="text-[11px] text-vous-text-secondary">{customer.email}</p>
+                    <p className="text-[13px] font-sans text-vous-text font-medium">
+                      {customer.name}
+                    </p>
+                    <p className="text-[11px] text-vous-text-secondary">
+                      {customer.email}
+                    </p>
                   </div>
 
                   <div>
-                    <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Teléfono</p>
-                    <p className="text-[12px] font-sans text-vous-text-secondary">{customer.phone ?? "—"}</p>
+                    <p className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                      Teléfono
+                    </p>
+                    <p className="text-[12px] font-sans text-vous-text-secondary">
+                      {customer.phone ?? "—"}
+                    </p>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Tipo</p>
+                    <p className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                      Tipo
+                    </p>
                     <Badge variant={roleVariantMap[customer.role]}>
                       {roleLabelMap[customer.role]}
                     </Badge>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Estado</p>
+                    <p className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                      Estado
+                    </p>
                     <Badge variant={customer.isActive ? "active" : "inactive"}>
                       {customer.isActive ? "Activo" : "Inactivo"}
                     </Badge>
                   </div>
 
                   <div>
-                    <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Registro</p>
-                    <p className="text-[12px] font-sans text-vous-text-secondary">{formatDate(customer.createdAt)}</p>
+                    <p className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                      Registro
+                    </p>
+                    <p className="text-[12px] font-sans text-vous-text-secondary">
+                      {formatDate(customer.createdAt)}
+                    </p>
                   </div>
 
                   <div className="flex items-center gap-3 pt-1">
@@ -169,13 +211,21 @@ export function CustomersPage() {
                       <Eye size={16} strokeWidth={1.5} />
                     </button>
                     <button
-                      title={customer.isActive ? "Desactivar cuenta" : "Activar cuenta"}
-                      onClick={() => void toggleActive(customer.uid, customer.isActive)}
+                      title={
+                        customer.isActive
+                          ? "Desactivar cuenta"
+                          : "Activar cuenta"
+                      }
+                      onClick={() =>
+                        void toggleActive(customer.uid, customer.isActive)
+                      }
                       className={`transition-colors ${customer.isActive ? "text-green-600 hover:text-red-700" : "text-vous-text-secondary hover:text-green-700"}`}
                     >
-                      {customer.isActive
-                        ? <ToggleRight size={18} strokeWidth={1.5} />
-                        : <ToggleLeft size={18} strokeWidth={1.5} />}
+                      {customer.isActive ? (
+                        <ToggleRight size={18} strokeWidth={1.5} />
+                      ) : (
+                        <ToggleLeft size={18} strokeWidth={1.5} />
+                      )}
                     </button>
                   </div>
                 </div>
@@ -183,7 +233,9 @@ export function CustomersPage() {
 
               {filtered.length === 0 && (
                 <div className="py-12 text-center text-vous-text-secondary text-sm font-nav">
-                  {search ? "No se encontraron clientes con ese filtro." : "No hay clientes registrados."}
+                  {search
+                    ? "No se encontraron clientes con ese filtro."
+                    : "No hay clientes registrados."}
                 </div>
               )}
             </div>
@@ -192,7 +244,14 @@ export function CustomersPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    {["Cliente", "Teléfono", "Tipo", "Estado", "Registro", "Acciones"].map((h) => (
+                    {[
+                      "Cliente",
+                      "Teléfono",
+                      "Tipo",
+                      "Estado",
+                      "Registro",
+                      "Acciones",
+                    ].map((h) => (
                       <TableHead key={h}>{h}</TableHead>
                     ))}
                   </TableRow>
@@ -201,8 +260,12 @@ export function CustomersPage() {
                   {filtered.map((customer) => (
                     <TableRow key={customer.id}>
                       <TableCell>
-                        <p className="text-[13px] font-sans text-vous-text font-medium">{customer.name}</p>
-                        <p className="text-[11px] text-vous-text-secondary">{customer.email}</p>
+                        <p className="text-[13px] font-sans text-vous-text font-medium">
+                          {customer.name}
+                        </p>
+                        <p className="text-[11px] text-vous-text-secondary">
+                          {customer.email}
+                        </p>
                       </TableCell>
 
                       <TableCell className="text-[12px] font-sans text-vous-text-secondary">
@@ -216,7 +279,9 @@ export function CustomersPage() {
                       </TableCell>
 
                       <TableCell>
-                        <Badge variant={customer.isActive ? "active" : "inactive"}>
+                        <Badge
+                          variant={customer.isActive ? "active" : "inactive"}
+                        >
                           {customer.isActive ? "Activo" : "Inactivo"}
                         </Badge>
                       </TableCell>
@@ -235,13 +300,21 @@ export function CustomersPage() {
                             <Eye size={16} strokeWidth={1.5} />
                           </button>
                           <button
-                            title={customer.isActive ? "Desactivar cuenta" : "Activar cuenta"}
-                            onClick={() => void toggleActive(customer.uid, customer.isActive)}
+                            title={
+                              customer.isActive
+                                ? "Desactivar cuenta"
+                                : "Activar cuenta"
+                            }
+                            onClick={() =>
+                              void toggleActive(customer.uid, customer.isActive)
+                            }
                             className={`transition-colors ${customer.isActive ? "text-green-600 hover:text-red-700" : "text-vous-text-secondary hover:text-green-700"}`}
                           >
-                            {customer.isActive
-                              ? <ToggleRight size={18} strokeWidth={1.5} />
-                              : <ToggleLeft size={18} strokeWidth={1.5} />}
+                            {customer.isActive ? (
+                              <ToggleRight size={18} strokeWidth={1.5} />
+                            ) : (
+                              <ToggleLeft size={18} strokeWidth={1.5} />
+                            )}
                           </button>
                         </div>
                       </TableCell>
@@ -250,8 +323,13 @@ export function CustomersPage() {
 
                   {filtered.length === 0 && (
                     <TableRow>
-                      <TableCell colSpan={6} className="py-12 text-center text-vous-text-secondary text-sm font-nav">
-                        {search ? "No se encontraron clientes con ese filtro." : "No hay clientes registrados."}
+                      <TableCell
+                        colSpan={6}
+                        className="py-12 text-center text-vous-text-secondary text-sm font-nav"
+                      >
+                        {search
+                          ? "No se encontraron clientes con ese filtro."
+                          : "No hay clientes registrados."}
                       </TableCell>
                     </TableRow>
                   )}
@@ -270,7 +348,12 @@ export function CustomersPage() {
         )}
       </div>
 
-      <Dialog open={!!selected} onOpenChange={(open: boolean) => { if (!open) setSelected(null); }}>
+      <Dialog
+        open={!!selected}
+        onOpenChange={(open: boolean) => {
+          if (!open) setSelected(null);
+        }}
+      >
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>{selected?.name}</DialogTitle>
@@ -281,22 +364,36 @@ export function CustomersPage() {
             <div className="space-y-4 pt-2">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm">
                 <div>
-                  <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">Teléfono</p>
-                  <p className="font-sans text-vous-text">{selected.phone ?? "—"}</p>
+                  <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">
+                    Teléfono
+                  </p>
+                  <p className="font-sans text-vous-text">
+                    {selected.phone ?? "—"}
+                  </p>
                 </div>
                 <div>
-                  <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">Tipo de Cuenta</p>
-                  <Badge variant={roleVariantMap[selected.role]}>{roleLabelMap[selected.role]}</Badge>
+                  <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">
+                    Tipo de Cuenta
+                  </p>
+                  <Badge variant={roleVariantMap[selected.role]}>
+                    {roleLabelMap[selected.role]}
+                  </Badge>
                 </div>
                 <div>
-                  <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">Estado</p>
+                  <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">
+                    Estado
+                  </p>
                   <Badge variant={selected.isActive ? "active" : "inactive"}>
                     {selected.isActive ? "Activo" : "Inactivo"}
                   </Badge>
                 </div>
                 <div>
-                  <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">Registro</p>
-                  <p className="font-sans text-vous-text">{formatDate(selected.createdAt)}</p>
+                  <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">
+                    Registro
+                  </p>
+                  <p className="font-sans text-vous-text">
+                    {formatDate(selected.createdAt)}
+                  </p>
                 </div>
               </div>
 
@@ -306,13 +403,19 @@ export function CustomersPage() {
                   variant={selected.isActive ? "outline" : "gold"}
                   onClick={() => {
                     void toggleActive(selected.uid, selected.isActive);
-                    setSelected((prev) => prev ? { ...prev, isActive: !prev.isActive } : null);
+                    setSelected((prev) =>
+                      prev ? { ...prev, isActive: !prev.isActive } : null,
+                    );
                   }}
                 >
                   {selected.isActive ? (
-                    <><ToggleLeft size={14} /> Desactivar cuenta</>
+                    <>
+                      <ToggleLeft size={14} /> Desactivar cuenta
+                    </>
                   ) : (
-                    <><ToggleRight size={14} /> Activar cuenta</>
+                    <>
+                      <ToggleRight size={14} /> Activar cuenta
+                    </>
                   )}
                 </Button>
               </div>

@@ -1,6 +1,17 @@
-import { collection, getDocs, doc, getDoc, updateDoc, query, orderBy } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  updateDoc,
+  query,
+  orderBy,
+} from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import type { CustomerRepository, AdminUserRepository } from "@/domain/repositories/user.repository";
+import type {
+  CustomerRepository,
+  AdminUserRepository,
+} from "@/domain/repositories/user.repository";
 import type { Customer, AdminUser } from "@/domain/entities/user.entity";
 
 export const firestoreCustomerRepository: CustomerRepository = {

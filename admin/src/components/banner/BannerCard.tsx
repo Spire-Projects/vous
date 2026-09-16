@@ -1,6 +1,6 @@
-import { GripVertical, Pencil, Trash2, Eye, EyeOff, Maximize2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { GripVertical, Maximize2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { BannerRowActions } from "./BannerRowActions";
 import type { Banner } from "@/domain/entities/banner.entity";
 
 interface BannerCardProps {
@@ -32,7 +32,11 @@ export function BannerCard({
             title="Ver imagen"
           >
             {banner.imageUrl ? (
-              <img src={banner.imageUrl} alt={banner.title} className="w-full h-full object-cover" />
+              <img
+                src={banner.imageUrl}
+                alt={banner.title}
+                className="w-full h-full object-cover"
+              />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-muted-foreground text-[9px] font-nav">
                 Sin foto
@@ -45,30 +49,44 @@ export function BannerCard({
 
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5 flex-wrap">
-              <p className="font-nav text-[13px] font-semibold text-foreground truncate">{banner.title}</p>
+              <p className="font-nav text-[13px] font-semibold text-foreground truncate">
+                {banner.title}
+              </p>
               {index === 0 && (
                 <span className="text-[9px] font-nav uppercase tracking-wider text-vous-gold-dark font-bold bg-amber-50 px-1.5 py-0.5 rounded">
                   Hero
                 </span>
               )}
             </div>
-            <p className="text-[11px] text-muted-foreground line-clamp-1">{banner.subtitle || "—"}</p>
+            <p className="text-[11px] text-muted-foreground line-clamp-1">
+              {banner.subtitle || "—"}
+            </p>
           </div>
         </div>
 
         <div className="flex flex-col items-end gap-1 shrink-0">
-          <Badge variant={banner.active ? "active" : "inactive"} className="text-[9px] uppercase">
+          <Badge
+            variant={banner.active ? "active" : "inactive"}
+            className="text-[9px] uppercase"
+          >
             {banner.active ? "Activo" : "Inactivo"}
           </Badge>
-          <span className="text-[10px] font-nav text-muted-foreground">#{index + 1}</span>
+          <span className="text-[10px] font-nav text-muted-foreground">
+            #{index + 1}
+          </span>
         </div>
       </div>
 
       <div className="flex items-center justify-between gap-2 text-xs border-t border-border/50 pt-2">
         <div className="min-w-0 flex-1">
-          <p className="text-[10px] uppercase font-nav text-muted-foreground">Redirección</p>
+          <p className="text-[10px] uppercase font-nav text-muted-foreground">
+            Redirección
+          </p>
           <p className="text-[11px] font-mono text-foreground truncate">
-            {banner.ctaText || "Ver Todo"} → {banner.categorySlug ? `cat: ${banner.categorySlug}` : banner.ctaUrl}
+            {banner.ctaText || "Ver Todo"} →{" "}
+            {banner.categorySlug
+              ? `cat: ${banner.categorySlug}`
+              : banner.ctaUrl}
           </p>
         </div>
         <Badge
@@ -84,16 +102,13 @@ export function BannerCard({
           <GripVertical size={12} className="text-muted-foreground" />
           Orden de carrusel
         </span>
-        <div className="flex items-center gap-1">
-          <Button variant="ghost" size="icon-sm" onClick={() => onPreview(banner)} title="Vista previa">
-            <Maximize2 size={13} />
-          </Button>
-          <Button variant="ghost" size="icon-sm" onClick={() => onToggleActive(banner.id, banner.active)} title={banner.active ? "Desactivar" : "Activar"}>
-            {banner.active ? <EyeOff size={14} /> : <Eye size={14} />}
-          </Button>
-          <Button variant="ghost" size="icon-sm" onClick={() => onEdit(banner)} title="Editar"><Pencil size={14} /></Button>
-          <Button variant="ghost" size="icon-sm" onClick={() => onDelete(banner.id)} className="text-red-600 hover:text-red-700" title="Eliminar"><Trash2 size={14} /></Button>
-        </div>
+        <BannerRowActions
+          banner={banner}
+          onPreview={onPreview}
+          onToggleActive={onToggleActive}
+          onEdit={onEdit}
+          onDelete={onDelete}
+        />
       </div>
     </div>
   );

@@ -5,13 +5,17 @@ import type { DepartmentLink } from "@/domain/entities/site-config.entity";
 import { EMPTY_DEPT_LINK } from "./constants";
 
 interface LocationsTabProps {
-  departmentLinks: DepartmentLink[]; setDepartmentLinks: (v: DepartmentLink[]) => void;
-  otherCountryLinks: DepartmentLink[]; setOtherCountryLinks: (v: DepartmentLink[]) => void;
+  departmentLinks: DepartmentLink[];
+  setDepartmentLinks: (v: DepartmentLink[]) => void;
+  otherCountryLinks: DepartmentLink[];
+  setOtherCountryLinks: (v: DepartmentLink[]) => void;
 }
 
 export function LocationsTab({
-  departmentLinks, setDepartmentLinks,
-  otherCountryLinks, setOtherCountryLinks,
+  departmentLinks,
+  setDepartmentLinks,
+  otherCountryLinks,
+  setOtherCountryLinks,
 }: LocationsTabProps) {
   function updateDept(idx: number, field: keyof DepartmentLink, value: string) {
     const next = [...departmentLinks];
@@ -27,7 +31,11 @@ export function LocationsTab({
     setDepartmentLinks(departmentLinks.filter((_, i) => i !== idx));
   }
 
-  function updateCountry(idx: number, field: keyof DepartmentLink, value: string) {
+  function updateCountry(
+    idx: number,
+    field: keyof DepartmentLink,
+    value: string,
+  ) {
     const next = [...otherCountryLinks];
     next[idx] = { ...next[idx], [field]: value };
     setOtherCountryLinks(next);
@@ -44,15 +52,23 @@ export function LocationsTab({
   return (
     <div className="space-y-8">
       <div className="space-y-6">
-        <h2 className="font-serif text-xl text-vous-text">Links por Departamento</h2>
+        <h2 className="font-serif text-xl text-vous-text">
+          Links por Departamento
+        </h2>
         <p className="font-sans text-sm text-vous-text-secondary">
-          Puntos oficiales de compras por menor. Cada link GPS se mostrará en la página Nosotros.
+          Puntos oficiales de compras por menor. Cada link GPS se mostrará en la
+          página Nosotros.
         </p>
         <div className="space-y-3">
           {departmentLinks.map((dept, idx) => (
-            <div key={idx} className="border border-vous-border p-3 space-y-2 rounded-2xl">
+            <div
+              key={idx}
+              className="border border-vous-border p-3 space-y-2 rounded-2xl"
+            >
               <div className="flex items-center justify-between gap-2">
-                <span className="font-nav text-[11px] uppercase tracking-wide text-vous-text">Departamento {idx + 1}</span>
+                <span className="font-nav text-[11px] uppercase tracking-wide text-vous-text">
+                  Departamento {idx + 1}
+                </span>
                 <button
                   type="button"
                   onClick={() => removeDept(idx)}
@@ -64,15 +80,31 @@ export function LocationsTab({
               <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                 <div className="space-y-1">
                   <Label>Nombre</Label>
-                  <Input value={dept.name} onChange={(e) => updateDept(idx, "name", e.target.value)} placeholder="Santa Cruz" />
+                  <Input
+                    value={dept.name}
+                    onChange={(e) => updateDept(idx, "name", e.target.value)}
+                    placeholder="Santa Cruz"
+                  />
                 </div>
                 <div className="space-y-1">
                   <Label>Google Maps URL</Label>
-                  <Input value={dept.googleMapsUrl} onChange={(e) => updateDept(idx, "googleMapsUrl", e.target.value)} placeholder="https://maps.app.goo.gl/..." />
+                  <Input
+                    value={dept.googleMapsUrl}
+                    onChange={(e) =>
+                      updateDept(idx, "googleMapsUrl", e.target.value)
+                    }
+                    placeholder="https://maps.app.goo.gl/..."
+                  />
                 </div>
                 <div className="space-y-1">
                   <Label>TikTok URL (opcional)</Label>
-                  <Input value={dept.tiktokUrl ?? ""} onChange={(e) => updateDept(idx, "tiktokUrl", e.target.value)} placeholder="https://vt.tiktok.com/..." />
+                  <Input
+                    value={dept.tiktokUrl ?? ""}
+                    onChange={(e) =>
+                      updateDept(idx, "tiktokUrl", e.target.value)
+                    }
+                    placeholder="https://vt.tiktok.com/..."
+                  />
                 </div>
               </div>
             </div>
@@ -84,15 +116,22 @@ export function LocationsTab({
       </div>
 
       <div className="space-y-6 border-t border-white/40 pt-8">
-        <h2 className="font-serif text-xl text-vous-text">Links Otros Países</h2>
+        <h2 className="font-serif text-xl text-vous-text">
+          Links Otros Países
+        </h2>
         <p className="font-sans text-sm text-vous-text-secondary">
           Distribuidores oficiales y venta por mayor al exterior.
         </p>
         <div className="space-y-3">
           {otherCountryLinks.map((link, idx) => (
-            <div key={idx} className="border border-vous-border p-3 space-y-2 rounded-2xl">
+            <div
+              key={idx}
+              className="border border-vous-border p-3 space-y-2 rounded-2xl"
+            >
               <div className="flex items-center justify-between gap-2">
-                <span className="font-nav text-[11px] uppercase tracking-wide text-vous-text">País {idx + 1}</span>
+                <span className="font-nav text-[11px] uppercase tracking-wide text-vous-text">
+                  País {idx + 1}
+                </span>
                 <button
                   type="button"
                   onClick={() => removeCountry(idx)}
@@ -104,15 +143,31 @@ export function LocationsTab({
               <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                 <div className="space-y-1">
                   <Label>Nombre</Label>
-                  <Input value={link.name} onChange={(e) => updateCountry(idx, "name", e.target.value)} placeholder="Argentina - Jujuy" />
+                  <Input
+                    value={link.name}
+                    onChange={(e) => updateCountry(idx, "name", e.target.value)}
+                    placeholder="Argentina - Jujuy"
+                  />
                 </div>
                 <div className="space-y-1">
                   <Label>Google Maps URL</Label>
-                  <Input value={link.googleMapsUrl} onChange={(e) => updateCountry(idx, "googleMapsUrl", e.target.value)} placeholder="https://maps.app.goo.gl/..." />
+                  <Input
+                    value={link.googleMapsUrl}
+                    onChange={(e) =>
+                      updateCountry(idx, "googleMapsUrl", e.target.value)
+                    }
+                    placeholder="https://maps.app.goo.gl/..."
+                  />
                 </div>
                 <div className="space-y-1">
                   <Label>TikTok URL (opcional)</Label>
-                  <Input value={link.tiktokUrl ?? ""} onChange={(e) => updateCountry(idx, "tiktokUrl", e.target.value)} placeholder="https://vt.tiktok.com/..." />
+                  <Input
+                    value={link.tiktokUrl ?? ""}
+                    onChange={(e) =>
+                      updateCountry(idx, "tiktokUrl", e.target.value)
+                    }
+                    placeholder="https://vt.tiktok.com/..."
+                  />
                 </div>
               </div>
             </div>

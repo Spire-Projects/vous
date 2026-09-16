@@ -26,7 +26,8 @@ export function BannerImageUploaders({
           Imágenes Responsive
         </p>
         <p className="font-sans text-[11px] text-black/50 leading-relaxed">
-          Sube una versión por dispositivo. Si no subes tablet o móvil, se usará la imagen de desktop.
+          Sube una versión por dispositivo. Si no subes tablet o móvil, se usará
+          la imagen de desktop.
         </p>
       </div>
 
@@ -46,7 +47,10 @@ export function BannerImageUploaders({
       <div className="space-y-1.5">
         <Label className="flex items-center gap-2">
           <Tablet size={13} className="text-black/60" />
-          Imagen Tablet <span className="text-black/40 font-sans text-[10px]">(opcional)</span>
+          Imagen Tablet{" "}
+          <span className="text-black/40 font-sans text-[10px]">
+            (opcional)
+          </span>
         </Label>
         <ImagePicker
           value={tabletImageUrl}
@@ -59,7 +63,10 @@ export function BannerImageUploaders({
       <div className="space-y-1.5">
         <Label className="flex items-center gap-2">
           <Smartphone size={13} className="text-black/60" />
-          Imagen Mobile <span className="text-black/40 font-sans text-[10px]">(opcional)</span>
+          Imagen Mobile{" "}
+          <span className="text-black/40 font-sans text-[10px]">
+            (opcional)
+          </span>
         </Label>
         <ImagePicker
           value={mobileImageUrl}

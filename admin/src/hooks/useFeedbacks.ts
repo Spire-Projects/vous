@@ -5,7 +5,12 @@ import { createFeedback } from "@/application/use-cases/feedback/create-feedback
 import { updateFeedback } from "@/application/use-cases/feedback/update-feedback";
 import { deleteFeedback } from "@/application/use-cases/feedback/delete-feedback";
 import { setFeedbackStatus } from "@/application/use-cases/feedback/set-feedback-status";
-import type { Feedback, CreateFeedbackInput, UpdateFeedbackInput, FeedbackStatus } from "@/domain/entities/feedback.entity";
+import type {
+  Feedback,
+  CreateFeedbackInput,
+  UpdateFeedbackInput,
+  FeedbackStatus,
+} from "@/domain/entities/feedback.entity";
 
 export function useFeedbacks() {
   const [items, setItems] = useState<Feedback[]>([]);
@@ -25,27 +30,50 @@ export function useFeedbacks() {
   }, []);
 
   // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { fetchItems(); }, [fetchItems]);
-
-  const create = useCallback(async (input: CreateFeedbackInput) => {
-    await createFeedback(firestoreFeedbackRepository, input);
-    await fetchItems();
+  useEffect(() => {
+    fetchItems();
   }, [fetchItems]);
 
-  const update = useCallback(async (id: string, input: UpdateFeedbackInput) => {
-    await updateFeedback(firestoreFeedbackRepository, id, input);
-    await fetchItems();
-  }, [fetchItems]);
+  const create = useCallback(
+    async (input: CreateFeedbackInput) => {
+      await createFeedback(firestoreFeedbackRepository, input);
+      await fetchItems();
+    },
+    [fetchItems],
+  );
 
-  const remove = useCallback(async (id: string) => {
-    await deleteFeedback(firestoreFeedbackRepository, id);
-    await fetchItems();
-  }, [fetchItems]);
+  const update = useCallback(
+    async (id: string, input: UpdateFeedbackInput) => {
+      await updateFeedback(firestoreFeedbackRepository, id, input);
+      await fetchItems();
+    },
+    [fetchItems],
+  );
 
-  const setStatus = useCallback(async (id: string, status: FeedbackStatus) => {
-    await setFeedbackStatus(firestoreFeedbackRepository, id, status);
-    await fetchItems();
-  }, [fetchItems]);
+  const remove = useCallback(
+    async (id: string) => {
+      await deleteFeedback(firestoreFeedbackRepository, id);
+      await fetchItems();
+    },
+    [fetchItems],
+  );
 
-  return { items, loading, error, refetch: fetchItems, create, update, remove, setStatus };
+  const setStatus = useCallback(
+    async (id: string, status: FeedbackStatus) => {
+      await setFeedbackStatus(firestoreFeedbackRepository, id, status);
+      await fetchItems();
+    },
+    [fetchItems],
+  );
+
+  return {
+    items,
+    loading,
+    error,
+    refetch: fetchItems,
+    create,
+    update,
+    remove,
+    setStatus,
+  };
 }

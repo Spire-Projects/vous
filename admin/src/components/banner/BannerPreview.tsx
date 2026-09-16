@@ -19,7 +19,8 @@ export function BannerPreview({
   const [device, setDevice] = useState<"desktop" | "mobile">("desktop");
 
   const displayTitle = title.trim() || "TÍTULO DEL BANNER";
-  const displaySubtitle = subtitle.trim() || "Subtítulo descriptivo de la colección o campaña.";
+  const displaySubtitle =
+    subtitle.trim() || "Subtítulo descriptivo de la colección o campaña.";
   const displayCta = ctaText.trim() || "VER TODO";
 
   return (
@@ -56,7 +57,9 @@ export function BannerPreview({
 
       <div
         className={`mx-auto transition-all duration-300 border border-vous-border overflow-hidden bg-vous-black relative ${
-          device === "mobile" ? "max-w-[320px] aspect-[4/5]" : "w-full aspect-[16/9]"
+          device === "mobile"
+            ? "max-w-[320px] aspect-[4/5]"
+            : "w-full aspect-[16/9]"
         }`}
       >
         {imageUrl ? (

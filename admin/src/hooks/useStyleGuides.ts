@@ -5,7 +5,11 @@ import { createStyleGuide } from "@/application/use-cases/style-guide/create-sty
 import { updateStyleGuide } from "@/application/use-cases/style-guide/update-style-guide";
 import { deleteStyleGuide } from "@/application/use-cases/style-guide/delete-style-guide";
 import { setStyleGuideActive } from "@/application/use-cases/style-guide/set-style-guide-active";
-import type { StyleGuide, CreateStyleGuideInput, UpdateStyleGuideInput } from "@/domain/entities/style-guide.entity";
+import type {
+  StyleGuide,
+  CreateStyleGuideInput,
+  UpdateStyleGuideInput,
+} from "@/domain/entities/style-guide.entity";
 
 export function useStyleGuides() {
   const [guides, setGuides] = useState<StyleGuide[]>([]);
@@ -25,27 +29,50 @@ export function useStyleGuides() {
   }, []);
 
   // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { fetchGuides(); }, [fetchGuides]);
-
-  const create = useCallback(async (input: CreateStyleGuideInput) => {
-    await createStyleGuide(firestoreStyleGuideRepository, input);
-    await fetchGuides();
+  useEffect(() => {
+    fetchGuides();
   }, [fetchGuides]);
 
-  const update = useCallback(async (id: string, input: UpdateStyleGuideInput) => {
-    await updateStyleGuide(firestoreStyleGuideRepository, id, input);
-    await fetchGuides();
-  }, [fetchGuides]);
+  const create = useCallback(
+    async (input: CreateStyleGuideInput) => {
+      await createStyleGuide(firestoreStyleGuideRepository, input);
+      await fetchGuides();
+    },
+    [fetchGuides],
+  );
 
-  const remove = useCallback(async (id: string) => {
-    await deleteStyleGuide(firestoreStyleGuideRepository, id);
-    await fetchGuides();
-  }, [fetchGuides]);
+  const update = useCallback(
+    async (id: string, input: UpdateStyleGuideInput) => {
+      await updateStyleGuide(firestoreStyleGuideRepository, id, input);
+      await fetchGuides();
+    },
+    [fetchGuides],
+  );
 
-  const toggleActive = useCallback(async (id: string, current: boolean) => {
-    await setStyleGuideActive(firestoreStyleGuideRepository, id, !current);
-    await fetchGuides();
-  }, [fetchGuides]);
+  const remove = useCallback(
+    async (id: string) => {
+      await deleteStyleGuide(firestoreStyleGuideRepository, id);
+      await fetchGuides();
+    },
+    [fetchGuides],
+  );
 
-  return { guides, loading, error, refetch: fetchGuides, create, update, remove, toggleActive };
+  const toggleActive = useCallback(
+    async (id: string, current: boolean) => {
+      await setStyleGuideActive(firestoreStyleGuideRepository, id, !current);
+      await fetchGuides();
+    },
+    [fetchGuides],
+  );
+
+  return {
+    guides,
+    loading,
+    error,
+    refetch: fetchGuides,
+    create,
+    update,
+    remove,
+    toggleActive,
+  };
 }

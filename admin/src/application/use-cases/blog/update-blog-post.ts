@@ -4,7 +4,7 @@ import type { UpdateBlogPostInput } from "@/domain/entities/blog-post.entity";
 export async function updateBlogPost(
   repo: BlogPostRepository,
   id: string,
-  input: UpdateBlogPostInput
+  input: UpdateBlogPostInput,
 ): Promise<void> {
   return repo.update(id, input);
 }
