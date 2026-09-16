@@ -12,6 +12,7 @@
   --color-vous-gray: #6b6b63;
   --color-vous-gray-light: #d4cfc6;
   --color-vous-gray-dark: #3d3d38;
+  --color-vous-border: #e8e5e1;
 
   /* Semánticos */
   --color-background: var(--color-vous-warm-white);

@@ -10,14 +10,14 @@ import { createOrder } from "@/application/use-cases/order/create-order";
 import { validateStock, type OutOfStockItem } from "@/application/use-cases/order/validate-stock";
 import { uploadPaymentProof } from "@/application/use-cases/order/upload-payment-proof";
 import { uploadFileToCloudinary } from "@/utils/cloudinary-upload";
-import type { ShippingInfo, CreateOrderInput } from "@/domain/entities/order.entity";
+import { validateShippingForm, buildCreateOrderInput } from "@/utils/checkout.utils";
 import type { ShippingForm } from "@/components/checkout/CheckoutFormStep";
 
 type Step = "form" | "payment" | "success";
 
 export function useCheckout() {
   const router = useRouter();
-  const { items, clearCart } = useCart();
+  const { items, clearCart, removeItem, updateQuantity } = useCart();
   const { user, userProfile } = useAuth();
 
   const [step, setStep] = useState<Step>("form");
@@ -40,20 +40,16 @@ export function useCheckout() {
 
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
 
-  function validate(): string | null {
-    if (!form.fullName.trim()) return "El nombre completo es requerido.";
-    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      return "Ingresa un correo electrónico válido.";
-    if (!form.phone.trim()) return "El número de celular es requerido.";
-    if (!form.department.trim()) return "El departamento es requerido.";
-    if (!form.city.trim()) return "La ciudad es requerida.";
-    if (!form.address.trim()) return "La dirección es requerida.";
-    if (items.length === 0) return "Tu carrito está vacío.";
-    return null;
+  function adjustStockToAvailable(outOfStockList: OutOfStockItem[]) {
+    outOfStockList.forEach((item) => {
+      if (item.available <= 0) removeItem(item.id);
+      else updateQuantity(item.id, item.available);
+    });
+    setStockErrors([]);
   }
 
   async function handleProceedToPayment() {
-    const err = validate();
+    const err = validateShippingForm(form, items.length);
     if (err) {
       setFormError(err);
       return;
@@ -73,39 +69,7 @@ export function useCheckout() {
       }
       setStockErrors([]);
 
-      const shippingInfo: ShippingInfo = {
-        fullName: form.fullName.trim(),
-        phone: form.phone.trim(),
-        department: form.department.trim(),
-        city: form.city.trim(),
-        address: form.address.trim(),
-        shippingType: "national",
-      };
-      const input: CreateOrderInput = {
-        customerId: user.uid,
-        customerSnapshot: {
-          name: form.fullName.trim(),
-          email: form.email.trim(),
-          phone: form.phone.trim(),
-          department: form.department.trim(),
-        },
-        items: items.map((item) => ({
-          productId: item.productId,
-          variantId: null,
-          productName: item.name,
-          variantDescription: [item.size, item.color].filter(Boolean).join(" / ") || undefined,
-          imageUrl: item.image,
-          unitPrice: item.price,
-          quantity: item.quantity,
-          subtotal: item.price * item.quantity,
-          isWholesalePrice: false,
-        })),
-        subtotal,
-        total: subtotal,
-        paymentMethod: "qr",
-        shippingInfo,
-        isWholesale: false,
-      };
+      const input = buildCreateOrderInput(user.uid, form, items, subtotal);
       const order = await createOrder(firestoreOrderRepository, input);
       setCreatedOrderId(order.id);
       setOrderNumber(order.orderNumber);
@@ -141,6 +105,7 @@ export function useCheckout() {
     setForm,
     formError,
     stockErrors,
+    setStockErrors,
     creatingOrder,
     orderNumber,
     proofFile,
@@ -149,5 +114,6 @@ export function useCheckout() {
     uploading,
     handleProceedToPayment,
     handleSubmitProof,
+    adjustStockToAvailable,
   };
 }

@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { Upload, CheckCircle, QrCode, Loader2, AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import type { PaymentConfig } from "@/domain/entities/payment-config.entity";
 
 interface CheckoutPaymentStepProps {
@@ -109,10 +110,13 @@ export function CheckoutPaymentStep({
             </div>
           )}
 
-          <button
+          <Button
+            type="button"
+            variant="default"
+            size="lg"
             onClick={onSubmitProof}
             disabled={uploading || !proofFile}
-            className="w-full font-nav text-[12px] font-semibold tracking-[0.15em] uppercase bg-vous-soft-black text-white py-4 hover:bg-vous-gray-dark transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full justify-center gap-2"
           >
             {uploading ? (
               <>
@@ -121,7 +125,7 @@ export function CheckoutPaymentStep({
             ) : (
               "Confirmar pago y finalizar pedido"
             )}
-          </button>
+          </Button>
         </div>
       </div>
     </section>
