@@ -56,17 +56,26 @@ export function BannersPage() {
         <StatCard label="Inactivos" value={String(banners.length - activeCount)} />
       </div>
 
-      <div className="bg-white border border-vous-border shadow-xs overflow-hidden">
+      <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden">
         {loading ? (
-          <div className="p-12 text-center text-vous-gray font-nav text-[11px] uppercase tracking-wider">
+          <div className="p-12 text-center text-vous-text-secondary font-nav text-[11px] uppercase tracking-wider">
             Cargando banners...
           </div>
         ) : banners.length === 0 ? (
-          <div className="p-12 text-center text-vous-gray font-sans text-sm">
+          <div className="p-12 text-center text-vous-text-secondary font-sans text-sm">
             No hay banners configurados. Crea el primero.
           </div>
         ) : (
-          <div className="divide-y divide-vous-border">
+          <div className="divide-y divide-white/30 overflow-x-auto">
+            <div className="hidden md:grid grid-cols-[36px_72px_1.5fr_1fr_60px_140px_120px] gap-4 px-4 py-2.5 bg-white/90 border-b border-white/40">
+              <span />
+              <span />
+              <span className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">Título</span>
+              <span className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">Subtítulo / CTA</span>
+              <span className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary text-center">Orden</span>
+              <span className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">Estado</span>
+              <span className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary text-right">Acciones</span>
+            </div>
             {banners.map((banner, idx) => (
               <BannerRowItem
                 key={banner.id}
@@ -85,26 +94,9 @@ export function BannersPage() {
         )}
       </div>
 
-      <BannerFormDialog
-        open={dialogOpen}
-        banner={editing}
-        onClose={() => setDialogOpen(false)}
-        onSave={handleSave}
-      />
-
-      <BannerPreviewDialog
-        open={!!previewBanner}
-        banner={previewBanner}
-        onClose={() => setPreviewBanner(null)}
-        onEdit={handleEdit}
-      />
-
-      <ConfirmDeleteDialog
-        open={!!confirmDelete}
-        title="¿Eliminar banner?"
-        onCancel={() => setConfirmDelete(null)}
-        onConfirm={() => confirmDelete && handleDelete(confirmDelete)}
-      />
+      <BannerFormDialog open={dialogOpen} banner={editing} onClose={() => setDialogOpen(false)} onSave={handleSave} />
+      <BannerPreviewDialog open={!!previewBanner} banner={previewBanner} onClose={() => setPreviewBanner(null)} onEdit={handleEdit} />
+      <ConfirmDeleteDialog open={!!confirmDelete} title="¿Eliminar banner?" onCancel={() => setConfirmDelete(null)} onConfirm={() => confirmDelete && handleDelete(confirmDelete)} />
     </div>
   );
 }

@@ -38,7 +38,7 @@ export function BannerPreviewDialog({
         </div>
 
         <div className="flex justify-between items-center pt-3 border-t border-vous-border">
-          <span className="text-[11px] text-vous-gray font-nav">
+          <span className="text-[11px] text-vous-text-secondary font-nav">
             Orden: #{banner.order + 1} · {banner.active ? "Activo" : "Inactivo"}
           </span>
           <div className="flex gap-2">

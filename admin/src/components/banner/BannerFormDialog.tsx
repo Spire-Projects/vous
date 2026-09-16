@@ -72,11 +72,11 @@ export function BannerFormDialog({ open, banner, onClose, onSave }: BannerFormDi
           <DialogTitle className="font-nav text-[13px] uppercase tracking-wider">
             {banner ? "Editar Banner" : "Nuevo Banner"}
           </DialogTitle>
-          <div className="flex items-center gap-1 bg-vous-cream p-1 rounded border border-vous-border">
-            <button type="button" onClick={() => setTab("form")} className={`flex items-center gap-1 px-2 py-1 text-[11px] font-nav rounded ${tab === "form" ? "bg-white text-vous-black shadow-xs" : "text-vous-gray"}`}>
+          <div className="flex items-center gap-1 bg-white/80 p-1 rounded border border-vous-border">
+            <button type="button" onClick={() => setTab("form")} className={`flex items-center gap-1 px-2 py-1 text-[11px] font-nav rounded ${tab === "form" ? "bg-white text-vous-text shadow-xs font-medium" : "text-vous-text-secondary"}`}>
               <Edit3 size={12} /> Edición
             </button>
-            <button type="button" onClick={() => setTab("preview")} className={`flex items-center gap-1 px-2 py-1 text-[11px] font-nav rounded ${tab === "preview" ? "bg-white text-vous-black shadow-xs" : "text-vous-gray"}`}>
+            <button type="button" onClick={() => setTab("preview")} className={`flex items-center gap-1 px-2 py-1 text-[11px] font-nav rounded ${tab === "preview" ? "bg-white text-vous-text shadow-xs font-medium" : "text-vous-text-secondary"}`}>
               <Eye size={12} /> Vista Previa
             </button>
           </div>
@@ -119,11 +119,11 @@ export function BannerFormDialog({ open, banner, onClose, onSave }: BannerFormDi
             <div className="flex items-center gap-6 pt-2 pb-1 border-t border-vous-border">
               <label className="flex items-center gap-2 cursor-pointer">
                 <Checkbox checked={ctaVisible} onCheckedChange={(v) => setCtaVisible(v === true)} />
-                <span className="font-nav text-[12px] text-vous-black">Mostrar botón CTA</span>
+                <span className="font-nav text-[12px] text-vous-text">Mostrar botón CTA</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <Checkbox checked={active} onCheckedChange={(v) => setActive(v === true)} />
-                <span className="font-nav text-[12px] text-vous-black">Banner activo</span>
+                <span className="font-nav text-[12px] text-vous-text">Banner activo</span>
               </label>
             </div>
             <div className="flex justify-end gap-3 pt-3 border-t border-vous-border">

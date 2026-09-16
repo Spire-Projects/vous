@@ -25,17 +25,17 @@ export function BannerPreview({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <span className="font-nav text-[10px] uppercase tracking-wider text-vous-gray">
+        <span className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">
           Vista previa en vivo
         </span>
-        <div className="flex items-center gap-1 bg-vous-cream p-0.5 rounded border border-vous-border">
+        <div className="flex items-center gap-1 bg-white/80 p-0.5 rounded border border-vous-border">
           <button
             type="button"
             onClick={() => setDevice("desktop")}
             className={`flex items-center gap-1.5 px-2 py-1 text-[11px] font-nav rounded transition-colors ${
               device === "desktop"
-                ? "bg-white text-vous-black shadow-xs font-medium"
-                : "text-vous-gray hover:text-vous-black"
+                ? "bg-white text-vous-text shadow-xs font-medium"
+                : "text-vous-text-secondary hover:text-vous-text"
             }`}
           >
             <Monitor size={12} /> Desktop
@@ -45,8 +45,8 @@ export function BannerPreview({
             onClick={() => setDevice("mobile")}
             className={`flex items-center gap-1.5 px-2 py-1 text-[11px] font-nav rounded transition-colors ${
               device === "mobile"
-                ? "bg-white text-vous-black shadow-xs font-medium"
-                : "text-vous-gray hover:text-vous-black"
+                ? "bg-white text-vous-text shadow-xs font-medium"
+                : "text-vous-text-secondary hover:text-vous-text"
             }`}
           >
             <Smartphone size={12} /> Mobile

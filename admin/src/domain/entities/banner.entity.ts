@@ -10,7 +10,7 @@ export interface Banner {
   subtitle: string;
   ctaText: string;
   ctaUrl: string;
-  ctaVisible?: boolean;
+  ctaVisible: boolean;
   categorySlug?: string;
   active: boolean;
   order: number;
