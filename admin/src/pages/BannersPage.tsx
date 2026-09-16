@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, GripVertical } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/button";
 import { StatCard } from "@/components/ui/StatCard";
@@ -56,14 +56,30 @@ export function BannersPage() {
         <StatCard label="Inactivos" value={String(banners.length - activeCount)} />
       </div>
 
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-vous-text-secondary px-1">
+        <p className="flex items-center gap-1.5 font-sans">
+          <GripVertical size={14} className="text-vous-text-muted shrink-0" />
+          <span>Arrastra los banners verticalmente para reordenar la secuencia del carrusel.</span>
+        </p>
+        <span className="font-nav text-[11px] text-vous-text-muted">
+          Posición #1 = Portada principal
+        </span>
+      </div>
+
       <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden">
         {loading ? (
           <div className="p-12 text-center text-vous-text-secondary font-nav text-[11px] uppercase tracking-wider">
             Cargando banners...
           </div>
         ) : banners.length === 0 ? (
-          <div className="p-12 text-center text-vous-text-secondary font-sans text-sm">
-            No hay banners configurados. Crea el primero.
+          <div className="p-12 text-center space-y-3">
+            <p className="text-vous-text-secondary font-sans text-sm">
+              No hay banners configurados para la tienda. Crea el primero.
+            </p>
+            <Button onClick={handleNew}>
+              <Plus size={14} strokeWidth={2} />
+              Crear primer banner
+            </Button>
           </div>
         ) : (
           <div className="divide-y divide-white/30 overflow-x-auto">

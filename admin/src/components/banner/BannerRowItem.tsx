@@ -80,11 +80,12 @@ export function BannerRowItem({
         </div>
 
         <div className="flex items-center justify-between pt-2 border-t border-white/40">
-          <span className="text-[11px] font-nav text-vous-text-secondary">Posición #{index + 1}</span>
+          <div className="flex items-center gap-1.5">
+            <span className="text-[11px] font-nav text-vous-text-secondary">Posición #{index + 1}</span>
+            {index === 0 && <span className="text-[9px] font-nav uppercase tracking-wider text-vous-gold-dark font-bold">Hero</span>}
+          </div>
           <div className="flex items-center gap-1">
-            <Button variant="ghost" size="icon-sm" onClick={() => onPreview(banner)} title="Vista previa">
-              <Maximize2 size={13} />
-            </Button>
+            <Button variant="ghost" size="icon-sm" onClick={() => onPreview(banner)} title="Vista previa"><Maximize2 size={13} /></Button>
             <Button variant="ghost" size="icon-sm" onClick={() => onToggleActive(banner.id, banner.active)} title={banner.active ? "Desactivar" : "Activar"}>
               {banner.active ? <EyeOff size={14} /> : <Eye size={14} />}
             </Button>
@@ -121,7 +122,10 @@ export function BannerRowItem({
           <p className="text-[10px] text-vous-text-muted font-nav truncate">CTA: {banner.ctaText || "Ver Todo"}</p>
         </div>
 
-        <span className="font-nav text-[13px] text-vous-text-secondary text-center">#{index + 1}</span>
+        <div className="text-center">
+          <span className="font-nav text-[13px] text-vous-text-secondary block">#{index + 1}</span>
+          {index === 0 && <span className="text-[8px] font-nav uppercase text-vous-gold-dark font-bold block">Hero</span>}
+        </div>
 
         <div className="flex items-center gap-1.5">
           <Badge variant={banner.active ? "active" : "inactive"} className="text-[9px] uppercase">
@@ -134,9 +138,7 @@ export function BannerRowItem({
 
         <div className="flex items-center justify-end gap-1">
           <Button variant="ghost" size="icon-sm" onClick={() => onPreview(banner)} title="Vista previa"><Maximize2 size={13} /></Button>
-          <Button variant="ghost" size="icon-sm" onClick={() => onToggleActive(banner.id, banner.active)} title={banner.active ? "Desactivar" : "Activar"}>
-            {banner.active ? <EyeOff size={14} /> : <Eye size={14} />}
-          </Button>
+          <Button variant="ghost" size="icon-sm" onClick={() => onToggleActive(banner.id, banner.active)} title={banner.active ? "Desactivar" : "Activar"}>{banner.active ? <EyeOff size={14} /> : <Eye size={14} />}</Button>
           <Button variant="ghost" size="icon-sm" onClick={() => onEdit(banner)} title="Editar"><Pencil size={14} /></Button>
           <Button variant="ghost" size="icon-sm" onClick={() => onDelete(banner.id)} className="text-red-600 hover:text-red-700" title="Eliminar"><Trash2 size={14} /></Button>
         </div>
