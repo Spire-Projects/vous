@@ -49,10 +49,15 @@ export function useBanners() {
   }, [fetchBanners]);
 
   const reorder = useCallback(async (items: Banner[]) => {
-    await Promise.all(
-      items.map((b, idx) => setBannerOrder(firestoreBannerRepository, b.id, idx))
-    );
-    await fetchBanners();
+    const updated = items.map((b, idx) => ({ ...b, order: idx }));
+    setBanners(updated);
+    try {
+      await Promise.all(
+        updated.map((b) => setBannerOrder(firestoreBannerRepository, b.id, b.order))
+      );
+    } finally {
+      await fetchBanners();
+    }
   }, [fetchBanners]);
 
   return { banners, loading, error, refetch: fetchBanners, create, update, remove, toggleActive, reorder };

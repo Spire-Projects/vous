@@ -24,6 +24,7 @@ function mapDoc(id: string, data: Record<string, unknown>): Banner {
     subtitle: (data.subtitle as string) ?? "",
     ctaText: (data.ctaText as string) ?? "",
     ctaUrl: (data.ctaUrl as string) ?? "",
+    ctaVisible: (data.ctaVisible as boolean) ?? true,
     categorySlug: data["categorySlug"] as string | undefined,
     active: (data.active as boolean) ?? true,
     order: (data.order as number) ?? 0,
