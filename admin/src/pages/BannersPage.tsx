@@ -8,6 +8,7 @@ import { BannerRowItem } from "@/components/banner/BannerRowItem";
 import { BannerCard } from "@/components/banner/BannerCard";
 import { BannerPreviewDialog } from "@/components/banner/BannerPreviewDialog";
 import { ConfirmDeleteDialog } from "@/components/shared/ConfirmDeleteDialog";
+import { EmptyState } from "@/components/shared/EmptyState";
 import { useBanners } from "@/hooks/useBanners";
 import type { Banner, CreateBannerInput } from "@/domain/entities/banner.entity";
 
@@ -48,12 +49,11 @@ export function BannersPage() {
       Cargando banners...
     </div>
   ) : banners.length === 0 ? (
-    <div className="p-8 text-center space-y-3 bg-white rounded-2xl border border-border">
-      <p className="text-muted-foreground text-sm font-sans">
-        No hay banners configurados para la tienda. Crea el primero.
-      </p>
-      <Button onClick={handleNew}><Plus size={14} /> Crear primer banner</Button>
-    </div>
+    <EmptyState
+      title="No hay banners configurados"
+      description="Crea tu primer banner promocional para el carrusel de la tienda."
+      action={<Button onClick={handleNew}><Plus size={14} /> Crear primer banner</Button>}
+    />
   ) : (
     <div className="flex flex-col gap-3">
       {banners.map((b, idx) => (
@@ -109,9 +109,12 @@ export function BannersPage() {
               <tr><td colSpan={7} className="p-12 text-center text-muted-foreground font-nav text-xs uppercase tracking-wider">Cargando banners...</td></tr>
             ) : banners.length === 0 ? (
               <tr>
-                <td colSpan={7} className="p-12 text-center">
-                  <p className="text-muted-foreground font-sans text-sm mb-3">No hay banners configurados para la tienda. Crea el primero.</p>
-                  <Button onClick={handleNew}><Plus size={14} /> Crear primer banner</Button>
+                <td colSpan={7} className="p-8">
+                  <EmptyState
+                    title="No hay banners configurados"
+                    description="Crea tu primer banner promocional para el carrusel de la tienda."
+                    action={<Button onClick={handleNew}><Plus size={14} /> Crear primer banner</Button>}
+                  />
                 </td>
               </tr>
             ) : (
