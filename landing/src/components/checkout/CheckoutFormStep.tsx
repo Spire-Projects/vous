@@ -1,6 +1,10 @@
 "use client";
 
-import { AlertCircle, Loader2 } from "lucide-react";
+import { AlertCircle, AlertTriangle, Loader2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import type { OutOfStockItem } from "@/application/use-cases/order/validate-stock";
 
 export interface ShippingForm {
@@ -19,6 +23,7 @@ interface CheckoutFormStepProps {
   submitting: boolean;
   onSubmit: () => void;
   stockErrors: OutOfStockItem[];
+  onOpenStockDialog?: () => void;
   wholesaleErrors?: string[];
 }
 
@@ -38,6 +43,7 @@ export function CheckoutFormStep({
   submitting,
   onSubmit,
   stockErrors,
+  onOpenStockDialog,
   wholesaleErrors,
 }: CheckoutFormStepProps) {
   return (
@@ -49,29 +55,50 @@ export function CheckoutFormStep({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {FIELDS.map(({ key, label, type, span }) => (
           <div key={key} className={span ? "md:col-span-2" : ""}>
-            <label className="block font-nav text-[10px] tracking-[0.15em] uppercase text-black/50 mb-1.5">
+            <Label htmlFor={key} className="mb-1.5">
               {label}
-            </label>
-            <input
+            </Label>
+            <Input
+              id={key}
               type={type}
               value={form[key]}
               onChange={(e) => onFieldChange(key, e.target.value)}
-              className="w-full border border-black/10 bg-transparent font-sans text-sm text-black px-3 py-2.5 outline-none focus:border-black transition-colors"
+              placeholder={`Ingresa tu ${label.toLowerCase()}`}
             />
           </div>
         ))}
       </div>
 
       {stockErrors.length > 0 && (
-        <div className="mt-4 p-4 bg-red-50 border border-red-200">
-          <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-red-600 mb-2">
-            Ítems sin stock suficiente
-          </p>
-          <ul className="space-y-1">
+        <div className="mt-6 p-4 bg-amber-50/80 border border-amber-200">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-center gap-2 text-amber-800 font-serif text-sm">
+              <AlertTriangle size={16} className="shrink-0 text-amber-700" />
+              <span>
+                Stock insuficiente en {stockErrors.length}{" "}
+                {stockErrors.length === 1 ? "producto" : "productos"}
+              </span>
+            </div>
+            {onOpenStockDialog && (
+              <button
+                type="button"
+                onClick={onOpenStockDialog}
+                className="font-nav text-[10px] tracking-[0.15em] uppercase font-semibold text-amber-800 hover:text-amber-950 underline shrink-0 cursor-pointer"
+              >
+                Resolver
+              </button>
+            )}
+          </div>
+          <ul className="mt-2.5 space-y-1.5 divide-y divide-amber-200/60 pt-1">
             {stockErrors.map((e) => (
-              <li key={e.productId} className="font-sans text-sm text-red-600">
-                <strong>{e.productName}</strong> — solicitado: {e.requested}, disponible:{" "}
-                {e.available}
+              <li
+                key={e.id}
+                className="pt-1.5 flex items-center justify-between text-xs font-sans text-amber-900"
+              >
+                <span className="truncate pr-2 font-medium">{e.productName}</span>
+                <Badge variant={e.available <= 0 ? "out_of_stock" : "warning"}>
+                  {e.available <= 0 ? "Agotado" : `${e.available} disp.`}
+                </Badge>
               </li>
             ))}
           </ul>
@@ -96,15 +123,18 @@ export function CheckoutFormStep({
 
       {formError && (
         <div className="mt-4 flex items-center gap-2 text-red-600 font-sans text-sm">
-          <AlertCircle size={14} />
-          {formError}
+          <AlertCircle size={14} className="shrink-0" />
+          <span>{formError}</span>
         </div>
       )}
 
-      <button
+      <Button
+        type="button"
+        variant="default"
+        size="lg"
         onClick={onSubmit}
         disabled={submitting}
-        className="mt-6 w-full font-nav text-[12px] font-semibold tracking-[0.15em] uppercase bg-black text-white py-4 hover:bg-black/80 transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className="mt-6 w-full justify-center"
       >
         {submitting ? (
           <>
@@ -113,7 +143,7 @@ export function CheckoutFormStep({
         ) : (
           "Continuar al pago"
         )}
-      </button>
+      </Button>
     </section>
   );
 }

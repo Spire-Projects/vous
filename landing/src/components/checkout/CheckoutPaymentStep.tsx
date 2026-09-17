@@ -1,17 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import {
-  Upload,
-  CheckCircle,
-  QrCode,
-  Loader2,
-  AlertCircle,
-  Building2,
-  User,
-  CreditCard,
-  Info,
-} from "lucide-react";
+import { Upload, CheckCircle, QrCode, Loader2, AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { PaymentBankDetails } from "./PaymentBankDetails";
 import type { PaymentConfig } from "@/domain/entities/payment-config.entity";
 
 interface CheckoutPaymentStepProps {
@@ -51,7 +43,6 @@ export function CheckoutPaymentStep({
       </h2>
 
       <div className="flex flex-col gap-8">
-        {/* QR image — centered, enorme */}
         <div className="flex justify-center">
           {loadingQR ? (
             <div className="w-80 h-80 md:w-96 md:h-96 bg-white border border-black/10 flex items-center justify-center">
@@ -71,42 +62,8 @@ export function CheckoutPaymentStep({
           )}
         </div>
 
-        {/* Bank details + instructions + upload */}
         <div className="space-y-4">
-          {/* Bank details */}
-          {paymentConfig &&
-            (paymentConfig.bankName ||
-              paymentConfig.accountHolder ||
-              paymentConfig.accountNumber) && (
-              <div className="bg-white border border-black/10 p-4 space-y-2">
-                {paymentConfig.bankName && (
-                  <div className="flex items-center gap-2 font-sans text-sm text-black">
-                    <Building2 size={15} strokeWidth={1.5} className="text-black shrink-0" />
-                    <span>{paymentConfig.bankName}</span>
-                  </div>
-                )}
-                {paymentConfig.accountHolder && (
-                  <div className="flex items-center gap-2 font-sans text-sm text-black">
-                    <User size={15} strokeWidth={1.5} className="text-black shrink-0" />
-                    <span>{paymentConfig.accountHolder}</span>
-                  </div>
-                )}
-                {paymentConfig.accountNumber && (
-                  <div className="flex items-center gap-2 font-sans text-sm text-black">
-                    <CreditCard size={15} strokeWidth={1.5} className="text-black shrink-0" />
-                    <span className="font-mono tracking-wide">{paymentConfig.accountNumber}</span>
-                  </div>
-                )}
-              </div>
-            )}
-
-          {/* Instructions */}
-          {paymentConfig?.instructions && (
-            <div className="flex items-start gap-2 font-sans text-xs text-black/50 bg-white/50 p-3 border border-black/10">
-              <Info size={14} strokeWidth={1.5} className="text-black shrink-0 mt-0.5" />
-              <span className="leading-relaxed">{paymentConfig.instructions}</span>
-            </div>
-          )}
+          {paymentConfig && <PaymentBankDetails paymentConfig={paymentConfig} />}
 
           <p className="font-sans text-sm text-black/50 leading-relaxed">
             Escanea el código QR desde tu aplicación bancaria y realiza la transferencia por el
@@ -152,10 +109,13 @@ export function CheckoutPaymentStep({
             </div>
           )}
 
-          <button
+          <Button
+            type="button"
+            variant="default"
+            size="lg"
             onClick={onSubmitProof}
             disabled={uploading || !proofFile}
-            className="w-full font-nav text-[12px] font-semibold tracking-[0.15em] uppercase bg-black text-white py-4 hover:bg-black/80 transition-colors disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full justify-center gap-2"
           >
             {uploading ? (
               <>
@@ -164,7 +124,7 @@ export function CheckoutPaymentStep({
             ) : (
               "Confirmar pago y finalizar pedido"
             )}
-          </button>
+          </Button>
         </div>
       </div>
     </section>

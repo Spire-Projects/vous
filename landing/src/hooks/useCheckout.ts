@@ -4,66 +4,56 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
+import { useCheckoutDiscount } from "@/hooks/useCheckoutDiscount";
+import { usePaymentProofUpload } from "@/hooks/usePaymentProofUpload";
 import { firestoreOrderRepository } from "@/infrastructure/repositories/firestore-order.repository";
 import { firestoreProductRepository } from "@/infrastructure/repositories/firestore-product.repository";
-import { firestoreDiscountRepository } from "@/infrastructure/repositories/firestore-discount.repository";
 import { firestoreWholesaleRulesRepository } from "@/infrastructure/repositories/firestore-wholesale-rules.repository";
 import { createOrder } from "@/application/use-cases/order/create-order";
 import { validateStock, type OutOfStockItem } from "@/application/use-cases/order/validate-stock";
-import { decrementVariantStock } from "@/application/use-cases/product/decrement-variant-stock";
-import { decrementStock } from "@/application/use-cases/product/decrement-stock";
-import { uploadPaymentProof } from "@/application/use-cases/order/upload-payment-proof";
-import { uploadFileToCloudinary } from "@/utils/cloudinary-upload";
-import { validateDiscountCode } from "@/application/use-cases/discount/validate-discount-code";
 import { validateWholesaleCheckout } from "@/application/use-cases/wholesale/validate-wholesale-checkout";
-import type { ShippingInfo, CreateOrderInput } from "@/domain/entities/order.entity";
+import {
+  validateShippingForm,
+  buildCreateOrderInput,
+  decrementOrderStock,
+  getInitialShippingForm,
+} from "@/utils/checkout.utils";
 import type { ShippingForm } from "@/components/checkout/CheckoutFormStep";
 
 type Step = "form" | "payment" | "success";
 
 export function useCheckout() {
   const router = useRouter();
-  const { items, clearCart } = useCart();
+  const { items, clearCart, removeItem, updateQuantity } = useCart();
   const { user, userProfile } = useAuth();
 
   const [step, setStep] = useState<Step>("form");
-  const [form, setForm] = useState<ShippingForm>({
-    fullName: userProfile?.name ?? "",
-    email: user?.email ?? "",
-    phone: userProfile?.phone ?? "",
-    department: userProfile?.departamento ?? "",
-    city: "",
-    address: "",
-  });
+  const [form, setForm] = useState<ShippingForm>(getInitialShippingForm(user, userProfile));
   const [formError, setFormError] = useState<string | null>(null);
   const [stockErrors, setStockErrors] = useState<OutOfStockItem[]>([]);
   const [createdOrderId, setCreatedOrderId] = useState<string | null>(null);
   const [creatingOrder, setCreatingOrder] = useState(false);
   const [orderNumber, setOrderNumber] = useState("");
-  const [proofFile, setProofFile] = useState<File | null>(null);
-  const [proofError, setProofError] = useState<string | null>(null);
-  const [uploading, setUploading] = useState(false);
-  const [discountCode, setDiscountCode] = useState("");
-  const [discountAmount, setDiscountAmount] = useState(0);
-  const [discountError, setDiscountError] = useState<string | null>(null);
   const [wholesaleErrors, setWholesaleErrors] = useState<string[]>([]);
 
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
 
-  function validate(): string | null {
-    if (!form.fullName.trim()) return "El nombre completo es requerido.";
-    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      return "Ingresa un correo electrónico válido.";
-    if (!form.phone.trim()) return "El número de celular es requerido.";
-    if (!form.department.trim()) return "El departamento es requerido.";
-    if (!form.city.trim()) return "La ciudad es requerida.";
-    if (!form.address.trim()) return "La dirección es requerida.";
-    if (items.length === 0) return "Tu carrito está vacío.";
-    return null;
+  const discount = useCheckoutDiscount(items, subtotal);
+  const proof = usePaymentProofUpload(createdOrderId, () => {
+    clearCart();
+    setStep("success");
+  });
+
+  function adjustStockToAvailable(outOfStockList: OutOfStockItem[]) {
+    outOfStockList.forEach((item) => {
+      if (item.available <= 0) removeItem(item.id);
+      else updateQuantity(item.id, item.available);
+    });
+    setStockErrors([]);
   }
 
   async function handleProceedToPayment() {
-    const err = validate();
+    const err = validateShippingForm(form, items.length);
     if (err) {
       setFormError(err);
       return;
@@ -76,12 +66,11 @@ export function useCheckout() {
 
     setCreatingOrder(true);
     try {
-      // Validate wholesale checkout rules
       const role = (userProfile?.role ?? "") as string;
       const isWholesaler = role === "wholesale" || role === "wholesaler";
       if (isWholesaler) {
         const whResult = await validateWholesaleCheckout(firestoreWholesaleRulesRepository, {
-          subtotal: subtotal - discountAmount,
+          subtotal: subtotal - discount.discountAmount,
           unitCount: items.reduce((s, i) => s + i.quantity, 0),
           userRole: "wholesale",
         });
@@ -99,56 +88,14 @@ export function useCheckout() {
       }
       setStockErrors([]);
 
-      const shippingInfo: ShippingInfo = {
-        fullName: form.fullName.trim(),
-        phone: form.phone.trim(),
-        department: form.department.trim(),
-        city: form.city.trim(),
-        address: form.address.trim(),
-        shippingType: "national",
-      };
-      const input: CreateOrderInput = {
-        customerId: user.uid,
-        customerSnapshot: {
-          name: form.fullName.trim(),
-          email: form.email.trim(),
-          phone: form.phone.trim(),
-          department: form.department.trim(),
-        },
-        items: items.map((item) => ({
-          productId: item.productId,
-          variantId: item.variantId ?? null,
-          productName: item.name,
-          variantDescription: [item.size, item.color].filter(Boolean).join(" / ") || undefined,
-          imageUrl: item.image,
-          unitPrice: item.price,
-          quantity: item.quantity,
-          subtotal: item.price * item.quantity,
-          isWholesalePrice: false,
-        })),
-        subtotal,
-        discountAmount: discountAmount > 0 ? discountAmount : undefined,
-        total: discountAmount > 0 ? subtotal - discountAmount : subtotal,
-        paymentMethod: "qr",
-        shippingInfo,
+      const input = buildCreateOrderInput(user.uid, form, items, subtotal, {
+        discountAmount: discount.discountAmount,
+        discountCode: discount.discountCode,
         isWholesale: isWholesaler,
-        discountCode: discountAmount > 0 ? discountCode : undefined,
-      };
+      });
       const order = await createOrder(firestoreOrderRepository, input);
 
-      // Decrement stock for variant items and non-variant items
-      await Promise.all(
-        items.map((i) =>
-          i.variantId
-            ? decrementVariantStock(
-                firestoreProductRepository,
-                i.productId,
-                i.variantId,
-                i.quantity
-              )
-            : decrementStock(firestoreProductRepository, i.productId, i.quantity)
-        )
-      );
+      await decrementOrderStock(firestoreProductRepository, items);
 
       setCreatedOrderId(order.id);
       setOrderNumber(order.orderNumber);
@@ -165,47 +112,6 @@ export function useCheckout() {
     }
   }
 
-  async function handleSubmitProof() {
-    if (!proofFile || !createdOrderId) return;
-    setUploading(true);
-    setProofError(null);
-    try {
-      const url = await uploadFileToCloudinary(proofFile, "vous/comprobantes");
-      await uploadPaymentProof(firestoreOrderRepository, createdOrderId, url);
-      clearCart();
-      setStep("success");
-    } catch (e) {
-      setProofError(e instanceof Error ? e.message : "Error al subir el comprobante.");
-    } finally {
-      setUploading(false);
-    }
-  }
-
-  async function handleApplyDiscount() {
-    if (!discountCode.trim()) return;
-    setDiscountError(null);
-    try {
-      const result = await validateDiscountCode(firestoreDiscountRepository, {
-        code: discountCode.trim(),
-        subtotal,
-        categoryIds: items.map((i) => i.categoryId).filter((id): id is string => !!id),
-        productIds: items.map((i) => i.productId),
-      });
-      if (result.valid) {
-        setDiscountAmount(result.discountAmount);
-        setDiscountError(null);
-      } else {
-        setDiscountAmount(0);
-        setDiscountError(result.error ?? "Código no válido");
-      }
-    } catch {
-      setDiscountError("Error al validar el código de descuento");
-      setDiscountAmount(0);
-    }
-  }
-
-  const finalTotal = subtotal - discountAmount;
-
   return {
     step,
     items,
@@ -214,20 +120,22 @@ export function useCheckout() {
     setForm,
     formError,
     stockErrors,
+    setStockErrors,
     creatingOrder,
     orderNumber,
-    proofFile,
-    setProofFile,
-    proofError,
-    uploading,
-    discountCode,
-    setDiscountCode,
-    discountAmount,
-    discountError,
+    proofFile: proof.proofFile,
+    setProofFile: proof.setProofFile,
+    proofError: proof.proofError,
+    uploading: proof.uploading,
+    discountCode: discount.discountCode,
+    setDiscountCode: discount.setDiscountCode,
+    discountAmount: discount.discountAmount,
+    discountError: discount.discountError,
     wholesaleErrors,
-    finalTotal,
+    finalTotal: subtotal - discount.discountAmount,
     handleProceedToPayment,
-    handleSubmitProof,
-    handleApplyDiscount,
+    handleSubmitProof: proof.handleSubmitProof,
+    adjustStockToAvailable,
+    handleApplyDiscount: discount.handleApplyDiscount,
   };
 }
