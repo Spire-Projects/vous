@@ -1,4 +1,8 @@
-import type { SocialPost, CreateSocialPostInput, UpdateSocialPostInput } from "@/domain/entities/social-post.entity";
+import type {
+  SocialPost,
+  CreateSocialPostInput,
+  UpdateSocialPostInput,
+} from "@/domain/entities/social-post.entity";
 
 export interface SocialPostRepository {
   findAll(): Promise<SocialPost[]>;

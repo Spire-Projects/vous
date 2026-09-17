@@ -41,8 +41,12 @@ export function TopProductsTable({ products }: TopProductsTableProps) {
                 </div>
               )}
               <div className="min-w-0 flex-1">
-                <span className="text-[10px] font-nav uppercase text-vous-text-secondary block">Producto</span>
-                <p className="font-sans text-sm text-vous-text">{p.productName}</p>
+                <span className="text-[10px] font-nav uppercase text-vous-text-secondary block">
+                  Producto
+                </span>
+                <p className="font-sans text-sm text-vous-text">
+                  {p.productName}
+                </p>
               </div>
               <span className="font-nav text-[11px] text-vous-gold shrink-0">
                 #{idx + 1}
@@ -50,12 +54,20 @@ export function TopProductsTable({ products }: TopProductsTableProps) {
             </div>
             <div className="flex gap-6">
               <div>
-                <span className="text-[10px] font-nav uppercase text-vous-text-secondary block">Unidades</span>
-                <p className="font-sans text-sm text-vous-text-secondary">{p.unitsSold}</p>
+                <span className="text-[10px] font-nav uppercase text-vous-text-secondary block">
+                  Unidades
+                </span>
+                <p className="font-sans text-sm text-vous-text-secondary">
+                  {p.unitsSold}
+                </p>
               </div>
               <div>
-                <span className="text-[10px] font-nav uppercase text-vous-text-secondary block">Ingresos</span>
-                <p className="font-nav text-sm text-vous-text">{formatCurrency(p.revenue)}</p>
+                <span className="text-[10px] font-nav uppercase text-vous-text-secondary block">
+                  Ingresos
+                </span>
+                <p className="font-nav text-sm text-vous-text">
+                  {formatCurrency(p.revenue)}
+                </p>
               </div>
             </div>
           </div>
@@ -90,7 +102,10 @@ export function TopProductsTable({ products }: TopProductsTableProps) {
                       />
                     ) : (
                       <div className="w-8 h-8 bg-vous-gray-light/30 flex items-center justify-center">
-                        <Package size={12} className="text-vous-text-secondary" />
+                        <Package
+                          size={12}
+                          className="text-vous-text-secondary"
+                        />
                       </div>
                     )}
                     <span className="font-sans text-sm text-vous-text">

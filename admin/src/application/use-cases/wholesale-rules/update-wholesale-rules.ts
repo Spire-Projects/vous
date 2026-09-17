@@ -3,7 +3,7 @@ import type { UpdateWholesaleRulesInput } from "@/domain/entities/wholesale-rule
 
 export async function updateWholesaleRules(
   repo: WholesaleRulesRepository,
-  input: UpdateWholesaleRulesInput
+  input: UpdateWholesaleRulesInput,
 ): Promise<void> {
   return repo.update(input);
 }

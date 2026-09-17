@@ -1,4 +1,8 @@
-import type { Feedback, CreateFeedbackInput, UpdateFeedbackInput } from "@/domain/entities/feedback.entity";
+import type {
+  Feedback,
+  CreateFeedbackInput,
+  UpdateFeedbackInput,
+} from "@/domain/entities/feedback.entity";
 
 export interface FeedbackRepository {
   findAll(): Promise<Feedback[]>;

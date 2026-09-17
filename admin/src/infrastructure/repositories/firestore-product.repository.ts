@@ -1,12 +1,26 @@
 import {
-  collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc,
-  query, orderBy, where, serverTimestamp, writeBatch,
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  query,
+  orderBy,
+  where,
+  serverTimestamp,
+  writeBatch,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import type { ProductRepository } from "@/domain/repositories/product.repository";
 import type {
-  Product, CreateProductInput, UpdateProductInput,
-  ProductVariant, CreateVariantInput, UpdateVariantInput,
+  Product,
+  CreateProductInput,
+  UpdateProductInput,
+  ProductVariant,
+  CreateVariantInput,
+  UpdateVariantInput,
 } from "@/domain/entities/product.entity";
 
 function mapDoc(id: string, data: Record<string, unknown>): Product {
@@ -72,7 +86,9 @@ export const firestoreProductRepository: ProductRepository = {
   async findAll(): Promise<Product[]> {
     const q = query(collection(db, "products"), orderBy("sortOrder", "asc"));
     const snap = await getDocs(q);
-    return snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>));
+    return snap.docs.map((d) =>
+      mapDoc(d.id, d.data() as Record<string, unknown>),
+    );
   },
 
   async findById(id: string): Promise<Product | null> {
@@ -82,14 +98,20 @@ export const firestoreProductRepository: ProductRepository = {
   },
 
   async findByCategoryId(categoryId: string): Promise<Product[]> {
-    const q = query(collection(db, "products"), where("categoryId", "==", categoryId), orderBy("sortOrder", "asc"));
+    const q = query(
+      collection(db, "products"),
+      where("categoryId", "==", categoryId),
+      orderBy("sortOrder", "asc"),
+    );
     const snap = await getDocs(q);
-    return snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>));
+    return snap.docs.map((d) =>
+      mapDoc(d.id, d.data() as Record<string, unknown>),
+    );
   },
 
   async create(input: CreateProductInput): Promise<Product> {
     const payload = Object.fromEntries(
-      Object.entries({ ...input }).filter(([, v]) => v !== undefined)
+      Object.entries({ ...input }).filter(([, v]) => v !== undefined),
     );
     const docRef = await addDoc(collection(db, "products"), {
       ...payload,
@@ -102,32 +124,48 @@ export const firestoreProductRepository: ProductRepository = {
 
   async update(id: string, input: UpdateProductInput): Promise<void> {
     const payload = Object.fromEntries(
-      Object.entries({ ...input }).filter(([, v]) => v !== undefined)
+      Object.entries({ ...input }).filter(([, v]) => v !== undefined),
     );
-    await updateDoc(doc(db, "products", id), { ...payload, updatedAt: serverTimestamp() });
+    await updateDoc(doc(db, "products", id), {
+      ...payload,
+      updatedAt: serverTimestamp(),
+    });
   },
 
   async setActive(id: string, isActive: boolean): Promise<void> {
-    await updateDoc(doc(db, "products", id), { isActive, updatedAt: serverTimestamp() });
+    await updateDoc(doc(db, "products", id), {
+      isActive,
+      updatedAt: serverTimestamp(),
+    });
   },
 
-  async setFlags(id: string, flags: import("@/domain/repositories/product.repository").ProductFlags): Promise<void> {
+  async setFlags(
+    id: string,
+    flags: import("@/domain/repositories/product.repository").ProductFlags,
+  ): Promise<void> {
     const payload = Object.fromEntries(
-      Object.entries(flags).filter(([, v]) => v !== undefined)
+      Object.entries(flags).filter(([, v]) => v !== undefined),
     );
-    await updateDoc(doc(db, "products", id), { ...payload, updatedAt: serverTimestamp() });
+    await updateDoc(doc(db, "products", id), {
+      ...payload,
+      updatedAt: serverTimestamp(),
+    });
   },
 
   async applyDiscount(
     id: string,
     isDiscounted: boolean,
-    discountPercentage?: number
+    discountPercentage?: number,
   ): Promise<void> {
     const product = await this.findById(id);
     if (!product) return;
-    const discountedPrice = isDiscounted && discountPercentage
-      ? Math.max(Math.round(product.price * (1 - discountPercentage / 100)), 1)
-      : undefined;
+    const discountedPrice =
+      isDiscounted && discountPercentage
+        ? Math.max(
+            Math.round(product.price * (1 - discountPercentage / 100)),
+            1,
+          )
+        : undefined;
     await updateDoc(doc(db, "products", id), {
       isDiscounted,
       discountPercentage: isDiscounted ? (discountPercentage ?? 0) : 0,
@@ -139,7 +177,7 @@ export const firestoreProductRepository: ProductRepository = {
   async applyCategoryDiscount(
     categoryId: string,
     isDiscounted: boolean,
-    discountPercentage?: number
+    discountPercentage?: number,
   ): Promise<void> {
     const products = await this.findByCategoryId(categoryId);
     for (const p of products) {
@@ -153,27 +191,45 @@ export const firestoreProductRepository: ProductRepository = {
   },
 
   async findVariants(productId: string): Promise<ProductVariant[]> {
-    const q = query(collection(db, "products", productId, "variants"), orderBy("createdAt", "asc"));
+    const q = query(
+      collection(db, "products", productId, "variants"),
+      orderBy("createdAt", "asc"),
+    );
     const snap = await getDocs(q);
-    return snap.docs.map((d) => mapVariant(d.id, d.data() as Record<string, unknown>));
+    return snap.docs.map((d) =>
+      mapVariant(d.id, d.data() as Record<string, unknown>),
+    );
   },
 
-  async createVariant(productId: string, input: CreateVariantInput): Promise<ProductVariant> {
-    const payload = Object.fromEntries(Object.entries({ ...input }).filter(([, v]) => v !== undefined));
-    const docRef = await addDoc(collection(db, "products", productId, "variants"), {
-      ...payload,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
-    });
+  async createVariant(
+    productId: string,
+    input: CreateVariantInput,
+  ): Promise<ProductVariant> {
+    const payload = Object.fromEntries(
+      Object.entries({ ...input }).filter(([, v]) => v !== undefined),
+    );
+    const docRef = await addDoc(
+      collection(db, "products", productId, "variants"),
+      {
+        ...payload,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      },
+    );
     const snap = await getDoc(docRef);
     return mapVariant(snap.id, snap.data() as Record<string, unknown>);
   },
 
-  async createVariantsBatch(productId: string, inputs: CreateVariantInput[]): Promise<void> {
+  async createVariantsBatch(
+    productId: string,
+    inputs: CreateVariantInput[],
+  ): Promise<void> {
     const batch = writeBatch(db);
     const col = collection(db, "products", productId, "variants");
     for (const input of inputs) {
-      const payload = Object.fromEntries(Object.entries({ ...input }).filter(([, v]) => v !== undefined));
+      const payload = Object.fromEntries(
+        Object.entries({ ...input }).filter(([, v]) => v !== undefined),
+      );
       const docRef = doc(col);
       batch.set(docRef, {
         ...payload,
@@ -184,8 +240,14 @@ export const firestoreProductRepository: ProductRepository = {
     await batch.commit();
   },
 
-  async updateVariant(productId: string, variantId: string, input: UpdateVariantInput): Promise<void> {
-    const payload = Object.fromEntries(Object.entries({ ...input }).filter(([, v]) => v !== undefined));
+  async updateVariant(
+    productId: string,
+    variantId: string,
+    input: UpdateVariantInput,
+  ): Promise<void> {
+    const payload = Object.fromEntries(
+      Object.entries({ ...input }).filter(([, v]) => v !== undefined),
+    );
     await updateDoc(doc(db, "products", productId, "variants", variantId), {
       ...payload,
       updatedAt: serverTimestamp(),

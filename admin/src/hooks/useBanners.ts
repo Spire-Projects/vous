@@ -6,7 +6,11 @@ import { updateBanner } from "@/application/use-cases/banner/update-banner";
 import { deleteBanner } from "@/application/use-cases/banner/delete-banner";
 import { setBannerActive } from "@/application/use-cases/banner/set-banner-active";
 import { setBannerOrder } from "@/application/use-cases/banner/set-banner-order";
-import type { Banner, CreateBannerInput, UpdateBannerInput } from "@/domain/entities/banner.entity";
+import type {
+  Banner,
+  CreateBannerInput,
+  UpdateBannerInput,
+} from "@/domain/entities/banner.entity";
 
 export function useBanners() {
   const [banners, setBanners] = useState<Banner[]>([]);
@@ -25,35 +29,69 @@ export function useBanners() {
     }
   }, []);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { fetchBanners(); }, [fetchBanners]);
-
-  const create = useCallback(async (input: CreateBannerInput) => {
-    await createBanner(firestoreBannerRepository, input);
-    await fetchBanners();
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchBanners();
   }, [fetchBanners]);
 
-  const update = useCallback(async (id: string, input: UpdateBannerInput) => {
-    await updateBanner(firestoreBannerRepository, id, input);
-    await fetchBanners();
-  }, [fetchBanners]);
+  const create = useCallback(
+    async (input: CreateBannerInput) => {
+      await createBanner(firestoreBannerRepository, input);
+      await fetchBanners();
+    },
+    [fetchBanners],
+  );
 
-  const remove = useCallback(async (id: string) => {
-    await deleteBanner(firestoreBannerRepository, id);
-    await fetchBanners();
-  }, [fetchBanners]);
+  const update = useCallback(
+    async (id: string, input: UpdateBannerInput) => {
+      await updateBanner(firestoreBannerRepository, id, input);
+      await fetchBanners();
+    },
+    [fetchBanners],
+  );
 
-  const toggleActive = useCallback(async (id: string, current: boolean) => {
-    await setBannerActive(firestoreBannerRepository, id, !current);
-    await fetchBanners();
-  }, [fetchBanners]);
+  const remove = useCallback(
+    async (id: string) => {
+      await deleteBanner(firestoreBannerRepository, id);
+      await fetchBanners();
+    },
+    [fetchBanners],
+  );
 
-  const reorder = useCallback(async (items: Banner[]) => {
-    await Promise.all(
-      items.map((b, idx) => setBannerOrder(firestoreBannerRepository, b.id, idx))
-    );
-    await fetchBanners();
-  }, [fetchBanners]);
+  const toggleActive = useCallback(
+    async (id: string, current: boolean) => {
+      await setBannerActive(firestoreBannerRepository, id, !current);
+      await fetchBanners();
+    },
+    [fetchBanners],
+  );
 
-  return { banners, loading, error, refetch: fetchBanners, create, update, remove, toggleActive, reorder };
+  const reorder = useCallback(
+    async (items: Banner[]) => {
+      const updated = items.map((b, idx) => ({ ...b, order: idx }));
+      setBanners(updated);
+      try {
+        await Promise.all(
+          updated.map((b) =>
+            setBannerOrder(firestoreBannerRepository, b.id, b.order),
+          ),
+        );
+      } finally {
+        await fetchBanners();
+      }
+    },
+    [fetchBanners],
+  );
+
+  return {
+    banners,
+    loading,
+    error,
+    refetch: fetchBanners,
+    create,
+    update,
+    remove,
+    toggleActive,
+    reorder,
+  };
 }

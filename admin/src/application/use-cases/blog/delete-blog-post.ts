@@ -2,7 +2,7 @@ import type { BlogPostRepository } from "@/domain/repositories/blog-post.reposit
 
 export async function deleteBlogPost(
   repo: BlogPostRepository,
-  id: string
+  id: string,
 ): Promise<void> {
   return repo.delete(id);
 }

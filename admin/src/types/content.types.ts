@@ -14,7 +14,10 @@ export interface Banner extends BaseDocument {
   endDate?: AnyTimestamp;
 }
 
-export type CreateBannerPayload = Omit<Banner, "id" | "createdAt" | "updatedAt">;
+export type CreateBannerPayload = Omit<
+  Banner,
+  "id" | "createdAt" | "updatedAt"
+>;
 export type UpdateBannerPayload = Partial<CreateBannerPayload>;
 
 // ── Colección: faqs ─────────────────────────────────────────────────────────

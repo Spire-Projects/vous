@@ -18,7 +18,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         />
       )}
 
-      <AdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <AdminSidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
 
       <button
         className="fixed top-4 left-4 z-20 lg:hidden bg-vous-text text-white p-2.5 rounded-xl shadow-lg"

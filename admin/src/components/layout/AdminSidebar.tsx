@@ -1,8 +1,22 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import {
-  LayoutDashboard, ShoppingCart, Package, Users, Settings, Tag,
-  FileText, BarChart2, UserCog, Layers, LogOut, Image, X, Map,
-  Lightbulb, HelpCircle, Shirt,
+  LayoutDashboard,
+  ShoppingCart,
+  Package,
+  Users,
+  Settings,
+  Tag,
+  FileText,
+  BarChart2,
+  UserCog,
+  Layers,
+  LogOut,
+  Image,
+  X,
+  Map,
+  Lightbulb,
+  HelpCircle,
+  Shirt,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { useSiteConfig } from "../../hooks/useSiteConfig";
@@ -30,7 +44,13 @@ const NAV_BASE =
 const NAV_ACTIVE = `${NAV_BASE} bg-vous-gold/20 text-vous-gold shadow-lg shadow-amber-500/10`;
 const NAV_INACTIVE = `${NAV_BASE} text-white/50 hover:text-white hover:bg-white/5`;
 
-export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+export function AdminSidebar({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) {
   const { user, logout } = useAuth();
   const { config } = useSiteConfig();
   const navigate = useNavigate();
@@ -72,7 +92,9 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: ()
               className="h-9 w-auto object-contain brightness-0 invert"
             />
           ) : (
-            <p className="font-serif text-xl tracking-[0.15em] text-white">{storeName}</p>
+            <p className="font-serif text-xl tracking-[0.15em] text-white">
+              {storeName}
+            </p>
           )}
           <p className="text-[10px] font-nav tracking-[0.25em] uppercase text-vous-gold mt-2">
             Admin Portal
@@ -97,8 +119,6 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: ()
               </NavLink>
             </li>
           ))}
-
-
         </ul>
       </nav>
 
@@ -108,8 +128,12 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen: boolean; onClose: ()
             {user?.email?.[0]?.toUpperCase() ?? "A"}
           </div>
           <div className="overflow-hidden">
-            <p className="text-[11px] font-nav text-white tracking-wide truncate">{user?.email}</p>
-            <p className="text-[9px] uppercase tracking-[0.2em] text-vous-gold/80">{user?.role}</p>
+            <p className="text-[11px] font-nav text-white tracking-wide truncate">
+              {user?.email}
+            </p>
+            <p className="text-[9px] uppercase tracking-[0.2em] text-vous-gold/80">
+              {user?.role}
+            </p>
           </div>
         </div>
         <button

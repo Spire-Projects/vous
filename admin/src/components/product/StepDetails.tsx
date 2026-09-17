@@ -17,8 +17,18 @@ interface StepDetailsProps {
   attributes: Record<string, string>;
   badge: string;
   configMaterials: { id: string; name: string; isActive: boolean }[];
-  configAttributes: { id: string; name: string; label: string; isActive: boolean }[];
-  configBadges: { id: string; name: string; color: string; isActive: boolean }[];
+  configAttributes: {
+    id: string;
+    name: string;
+    label: string;
+    isActive: boolean;
+  }[];
+  configBadges: {
+    id: string;
+    name: string;
+    color: string;
+    isActive: boolean;
+  }[];
   onMaterialsChange: (v: string[]) => void;
   onAttributesChange: (v: Record<string, string>) => void;
   onBadgeChange: (v: string) => void;
@@ -61,7 +71,8 @@ export function StepDetails({
         Caracteristicas de la prenda
       </p>
       <p className="text-[11px] text-vous-text-secondary leading-relaxed mb-2">
-        Estos detalles ayudan al cliente a conocer mejor el producto. Selecciona de la configuracion global o agrega valores personalizados.
+        Estos detalles ayudan al cliente a conocer mejor el producto. Selecciona
+        de la configuracion global o agrega valores personalizados.
       </p>
 
       {/* Materials */}
@@ -97,7 +108,11 @@ export function StepDetails({
                 className="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-nav uppercase tracking-wide bg-white/90 border border-vous-border"
               >
                 {m}
-                <button type="button" onClick={() => toggleMaterial(m)} className="text-vous-text-secondary hover:text-vous-text ml-0.5">
+                <button
+                  type="button"
+                  onClick={() => toggleMaterial(m)}
+                  className="text-vous-text-secondary hover:text-vous-text ml-0.5"
+                >
                   <X size={11} />
                 </button>
               </span>
@@ -116,7 +131,13 @@ export function StepDetails({
               }
             }}
           />
-          <Button type="button" variant="outline" size="sm" className="h-8" onClick={addCustomMaterial}>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="h-8"
+            onClick={addCustomMaterial}
+          >
             <Plus size={12} /> Agregar
           </Button>
         </div>
@@ -128,7 +149,11 @@ export function StepDetails({
         <AttributeEditor value={attributes} onChange={onAttributesChange} />
         {configAttributes.filter((a) => a.isActive).length > 0 && (
           <p className="text-[10px] text-vous-text-secondary mt-1">
-            Atributos configurados: {configAttributes.filter((a) => a.isActive).map((a) => a.label).join(", ")}
+            Atributos configurados:{" "}
+            {configAttributes
+              .filter((a) => a.isActive)
+              .map((a) => a.label)
+              .join(", ")}
           </p>
         )}
       </div>
@@ -137,7 +162,10 @@ export function StepDetails({
       <div className="space-y-1">
         <Label>Etiqueta especial (Badge)</Label>
         {activeBadges.length > 0 ? (
-          <Select value={badge || "__none__"} onValueChange={(v) => onBadgeChange(v === "__none__" ? "" : v)}>
+          <Select
+            value={badge || "__none__"}
+            onValueChange={(v) => onBadgeChange(v === "__none__" ? "" : v)}
+          >
             <SelectTrigger className="w-full text-sm">
               <SelectValue placeholder="Seleccionar badge..." />
             </SelectTrigger>
@@ -163,7 +191,9 @@ export function StepDetails({
             placeholder="Nuevo, Sale, Exclusivo..."
           />
         )}
-        <p className="text-[10px] text-vous-text-secondary mt-1">Aparece como una etiqueta sobre la foto del producto.</p>
+        <p className="text-[10px] text-vous-text-secondary mt-1">
+          Aparece como una etiqueta sobre la foto del producto.
+        </p>
       </div>
     </section>
   );

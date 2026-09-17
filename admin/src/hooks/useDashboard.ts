@@ -37,7 +37,8 @@ export function useDashboard(): DashboardData {
     let b2b = 0;
 
     for (const order of orders) {
-      if (!order.createdAt || !COUNTABLE_STATUSES.includes(order.status)) continue;
+      if (!order.createdAt || !COUNTABLE_STATUSES.includes(order.status))
+        continue;
       if (new Date(order.createdAt) < from) continue;
       if (order.isWholesale) {
         b2b += order.total ?? 0;

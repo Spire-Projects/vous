@@ -1,11 +1,23 @@
 import {
-  collection, getDocs, doc, getDoc, addDoc, updateDoc, deleteDoc,
-  query, where, limit, serverTimestamp, orderBy,
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  query,
+  where,
+  limit,
+  serverTimestamp,
+  orderBy,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import type { DiscountRepository } from "@/domain/repositories/discount.repository";
 import type {
-  Discount, CreateDiscountInput, UpdateDiscountInput,
+  Discount,
+  CreateDiscountInput,
+  UpdateDiscountInput,
 } from "@/domain/entities/discount.entity";
 
 function mapDoc(id: string, data: Record<string, unknown>): Discount {
@@ -23,9 +35,11 @@ function mapDoc(id: string, data: Record<string, unknown>): Discount {
     categoryIds: (data.categoryIds as string[]) ?? undefined,
     productIds: (data.productIds as string[]) ?? undefined,
     startDate:
-      (data.startDate as { toDate?: () => Date })?.toDate?.().toISOString() ?? undefined,
+      (data.startDate as { toDate?: () => Date })?.toDate?.().toISOString() ??
+      undefined,
     endDate:
-      (data.endDate as { toDate?: () => Date })?.toDate?.().toISOString() ?? null,
+      (data.endDate as { toDate?: () => Date })?.toDate?.().toISOString() ??
+      null,
     createdAt:
       (data.createdAt as { toDate?: () => Date })?.toDate?.().toISOString() ??
       new Date().toISOString(),
@@ -39,7 +53,9 @@ export const firestoreDiscountRepository: DiscountRepository = {
   async findAll(): Promise<Discount[]> {
     const q = query(collection(db, "discounts"), orderBy("createdAt", "desc"));
     const snap = await getDocs(q);
-    return snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>));
+    return snap.docs.map((d) =>
+      mapDoc(d.id, d.data() as Record<string, unknown>),
+    );
   },
 
   async findById(id: string): Promise<Discount | null> {
@@ -52,7 +68,7 @@ export const firestoreDiscountRepository: DiscountRepository = {
     const q = query(
       collection(db, "discounts"),
       where("code", "==", code.toUpperCase()),
-      limit(1)
+      limit(1),
     );
     const snap = await getDocs(q);
     if (snap.empty) return null;
@@ -63,8 +79,8 @@ export const firestoreDiscountRepository: DiscountRepository = {
   async create(input: CreateDiscountInput): Promise<Discount> {
     const payload = Object.fromEntries(
       Object.entries({ ...input, code: input.code.toUpperCase() }).filter(
-        ([, v]) => v !== undefined
-      )
+        ([, v]) => v !== undefined,
+      ),
     );
     const docRef = await addDoc(collection(db, "discounts"), {
       ...payload,
@@ -81,7 +97,7 @@ export const firestoreDiscountRepository: DiscountRepository = {
       Object.entries({
         ...input,
         ...(input.code ? { code: input.code.toUpperCase() } : {}),
-      }).filter(([, v]) => v !== undefined)
+      }).filter(([, v]) => v !== undefined),
     );
     await updateDoc(doc(db, "discounts", id), {
       ...payload,

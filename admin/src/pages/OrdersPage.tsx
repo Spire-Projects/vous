@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Search, Receipt, TrendingUp, Clock, Filter, Calendar } from "lucide-react";
+import {
+  Search,
+  Receipt,
+  TrendingUp,
+  Clock,
+  Filter,
+  Calendar,
+} from "lucide-react";
 import { PageHeader } from "../components/ui/PageHeader";
 import { StatCard } from "../components/ui/StatCard";
 import { Badge, type BadgeProps } from "@/components/ui/badge";
@@ -31,7 +38,10 @@ const STATUS_BADGE: Record<OrderStatus, BadgeProps["variant"]> = {
 
 type DateFilter = "all" | "today" | "week" | "month";
 
-function passesDateFilter(createdAt: string | undefined, filter: DateFilter): boolean {
+function passesDateFilter(
+  createdAt: string | undefined,
+  filter: DateFilter,
+): boolean {
   if (filter === "all" || !createdAt) return true;
   const date = new Date(createdAt);
   const now = new Date();
@@ -43,7 +53,10 @@ function passesDateFilter(createdAt: string | undefined, filter: DateFilter): bo
     return date >= weekAgo;
   }
   if (filter === "month") {
-    return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+    return (
+      date.getMonth() === now.getMonth() &&
+      date.getFullYear() === now.getFullYear()
+    );
   }
   return true;
 }
@@ -68,8 +81,14 @@ const DATE_TABS: { label: string; value: DateFilter }[] = [
 ];
 
 export function OrdersPage() {
-  const { orders, loading, error, changeStatus, cancelWithStockRestore, updateNotes } =
-    useOrders();
+  const {
+    orders,
+    loading,
+    error,
+    changeStatus,
+    cancelWithStockRestore,
+    updateNotes,
+  } = useOrders();
 
   const [search, setSearch] = useState("");
   const [statusTab, setStatusTab] = useState<OrderStatus | "all">("all");
@@ -82,11 +101,17 @@ export function OrdersPage() {
   }).length;
 
   const inProgressCount = orders.filter((o) =>
-    ["payment_sent", "verifying_payment", "confirmed", "preparing", "shipped"].includes(o.status)
+    [
+      "payment_sent",
+      "verifying_payment",
+      "confirmed",
+      "preparing",
+      "shipped",
+    ].includes(o.status),
   ).length;
 
   const pendingPaymentCount = orders.filter(
-    (o) => o.status === "pending" || o.status === "payment_sent"
+    (o) => o.status === "pending" || o.status === "payment_sent",
   ).length;
 
   const filtered = orders.filter((o) => {
@@ -177,7 +202,9 @@ export function OrdersPage() {
             <span className="inline-block w-5 h-5 border-2 border-vous-border border-t-vous-gold rounded-full animate-spin" />
           </div>
         ) : error ? (
-          <p className="text-center py-12 font-sans text-sm text-red-600">{error}</p>
+          <p className="text-center py-12 font-sans text-sm text-red-600">
+            {error}
+          </p>
         ) : filtered.length === 0 ? (
           <p className="text-center py-12 font-sans text-sm text-vous-text-secondary">
             No hay pedidos que coincidan con los filtros.
@@ -188,7 +215,11 @@ export function OrdersPage() {
             <div className="block md:hidden divide-y divide-white/30">
               {filtered.map((order) => {
                 const dateStr = order.createdAt
-                  ? new Date(order.createdAt).toLocaleDateString("es-BO", { day: "2-digit", month: "short", year: "numeric" })
+                  ? new Date(order.createdAt).toLocaleDateString("es-BO", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })
                   : "—";
                 return (
                   <div
@@ -197,27 +228,48 @@ export function OrdersPage() {
                     onClick={() => setSelectedOrder(order)}
                   >
                     <div className="flex items-center justify-between mb-3">
-                      <span className="font-nav text-[13px] font-semibold text-vous-text">{order.orderNumber}</span>
+                      <span className="font-nav text-[13px] font-semibold text-vous-text">
+                        {order.orderNumber}
+                      </span>
                       <Badge variant={STATUS_BADGE[order.status]}>
                         {getOrderStatusLabel(order.status)}
                       </Badge>
                     </div>
                     <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-[12px]">
                       <div>
-                        <span className="text-[10px] font-nav uppercase text-vous-text-secondary">Cliente</span>
-                        <p className="text-vous-text font-medium mt-0.5">{order.customer.name}</p>
-                        <p className="text-vous-text-secondary text-[11px]">{order.customer.email}</p>
+                        <span className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                          Cliente
+                        </span>
+                        <p className="text-vous-text font-medium mt-0.5">
+                          {order.customer.name}
+                        </p>
+                        <p className="text-vous-text-secondary text-[11px]">
+                          {order.customer.email}
+                        </p>
                       </div>
                       <div>
-                        <span className="text-[10px] font-nav uppercase text-vous-text-secondary">Fecha</span>
+                        <span className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                          Fecha
+                        </span>
                         <p className="text-vous-text mt-0.5">{dateStr}</p>
                       </div>
                       <div>
-                        <span className="text-[10px] font-nav uppercase text-vous-text-secondary">Total</span>
-                        <p className="text-vous-text font-semibold mt-0.5">Bs. {order.total.toLocaleString("es-BO")}</p>
+                        <span className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                          Total
+                        </span>
+                        <p className="text-vous-text font-semibold mt-0.5">
+                          Bs. {order.total.toLocaleString("es-BO")}
+                        </p>
                       </div>
                       <div className="flex items-end justify-end">
-                        <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); setSelectedOrder(order); }}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedOrder(order);
+                          }}
+                        >
                           Ver detalle
                         </Button>
                       </div>
@@ -232,7 +284,14 @@ export function OrdersPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    {["Pedido", "Cliente", "Fecha", "Total", "Estado", "Acciones"].map((h) => (
+                    {[
+                      "Pedido",
+                      "Cliente",
+                      "Fecha",
+                      "Total",
+                      "Estado",
+                      "Acciones",
+                    ].map((h) => (
                       <TableHead key={h}>{h}</TableHead>
                     ))}
                   </TableRow>
@@ -244,20 +303,45 @@ export function OrdersPage() {
                       className="cursor-pointer hover:bg-amber-50/40 transition-colors"
                       onClick={() => setSelectedOrder(order)}
                     >
-                      <TableCell className="font-nav text-[12px] font-semibold">{order.orderNumber}</TableCell>
+                      <TableCell className="font-nav text-[12px] font-semibold">
+                        {order.orderNumber}
+                      </TableCell>
                       <TableCell>
-                        <p className="text-[13px] font-sans text-vous-text">{order.customer.name}</p>
-                        <p className="text-[11px] text-vous-text-secondary">{order.customer.email}</p>
+                        <p className="text-[13px] font-sans text-vous-text">
+                          {order.customer.name}
+                        </p>
+                        <p className="text-[11px] text-vous-text-secondary">
+                          {order.customer.email}
+                        </p>
                       </TableCell>
                       <TableCell className="text-[12px] font-sans text-vous-text-secondary">
                         {order.createdAt
-                          ? new Date(order.createdAt).toLocaleDateString("es-BO", { day: "2-digit", month: "short", year: "numeric" })
+                          ? new Date(order.createdAt).toLocaleDateString(
+                              "es-BO",
+                              {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                              },
+                            )
                           : "—"}
                       </TableCell>
-                      <TableCell className="font-nav text-[13px] font-semibold">Bs. {order.total.toLocaleString("es-BO")}</TableCell>
-                      <TableCell><Badge variant={STATUS_BADGE[order.status]}>{getOrderStatusLabel(order.status)}</Badge></TableCell>
+                      <TableCell className="font-nav text-[13px] font-semibold">
+                        Bs. {order.total.toLocaleString("es-BO")}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={STATUS_BADGE[order.status]}>
+                          {getOrderStatusLabel(order.status)}
+                        </Badge>
+                      </TableCell>
                       <TableCell onClick={(e) => e.stopPropagation()}>
-                        <Button variant="outline" size="sm" onClick={() => setSelectedOrder(order)}>Ver detalle</Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setSelectedOrder(order)}
+                        >
+                          Ver detalle
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}

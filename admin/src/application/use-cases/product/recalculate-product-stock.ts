@@ -2,7 +2,7 @@ import type { ProductRepository } from "@/domain/repositories/product.repository
 
 export async function recalculateProductStock(
   repo: ProductRepository,
-  productId: string
+  productId: string,
 ): Promise<void> {
   const variants = await repo.findVariants(productId);
   const totalStock = variants

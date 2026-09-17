@@ -1,11 +1,28 @@
 import {
-  collection, getDocs, doc, getDoc, updateDoc,
-  query, orderBy, where, limit as fsLimit, serverTimestamp,
-  onSnapshot, runTransaction, arrayUnion, increment,
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  updateDoc,
+  query,
+  orderBy,
+  where,
+  limit as fsLimit,
+  serverTimestamp,
+  onSnapshot,
+  runTransaction,
+  arrayUnion,
+  increment,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import type { OrderRepository } from "@/domain/repositories/order.repository";
-import type { Order, OrderItem, ShippingInfo, UpdateOrderStatusInput, StatusHistoryEntry } from "@/domain/entities/order.entity";
+import type {
+  Order,
+  OrderItem,
+  ShippingInfo,
+  UpdateOrderStatusInput,
+  StatusHistoryEntry,
+} from "@/domain/entities/order.entity";
 
 function toISO(ts: unknown): string {
   if (!ts) return new Date().toISOString();
@@ -16,12 +33,17 @@ function toISO(ts: unknown): string {
   return new Date().toISOString();
 }
 
-function mapOrder(d: { id: string; data: () => Record<string, unknown> }): Order {
+function mapOrder(d: {
+  id: string;
+  data: () => Record<string, unknown>;
+}): Order {
   const data = d.data();
   const snapshot = data["customerSnapshot"] as
     | { name?: string; email?: string; phone?: string; department?: string }
     | undefined;
-  const shippingRaw = data["shippingInfo"] as Record<string, unknown> | undefined;
+  const shippingRaw = data["shippingInfo"] as
+    | Record<string, unknown>
+    | undefined;
   const shipping: ShippingInfo | undefined = shippingRaw
     ? {
         fullName: (shippingRaw["fullName"] as string) ?? "",
@@ -29,7 +51,8 @@ function mapOrder(d: { id: string; data: () => Record<string, unknown> }): Order
         department: (shippingRaw["department"] as string) ?? "",
         city: (shippingRaw["city"] as string) ?? "",
         address: (shippingRaw["address"] as string) ?? "",
-        shippingType: (shippingRaw["shippingType"] as "local" | "national") ?? "local",
+        shippingType:
+          (shippingRaw["shippingType"] as "local" | "national") ?? "local",
         carrier: shippingRaw["carrier"] as string | undefined,
         trackingInfo: shippingRaw["trackingInfo"] as string | undefined,
       }
@@ -57,13 +80,13 @@ function mapOrder(d: { id: string; data: () => Record<string, unknown> }): Order
     discountCode: data["discountCode"] as string | undefined,
     carrierRef: data["carrierRef"] as string | undefined,
     adminNotes: data["adminNotes"] as string | undefined,
-    statusHistory: ((data["statusHistory"] as Array<Record<string, unknown>>) ?? []).map(
-      (e) => ({
-        status: e["status"] as StatusHistoryEntry["status"],
-        notes: e["notes"] as string | undefined,
-        timestamp: toISO(e["timestamp"]),
-      })
-    ),
+    statusHistory: (
+      (data["statusHistory"] as Array<Record<string, unknown>>) ?? []
+    ).map((e) => ({
+      status: e["status"] as StatusHistoryEntry["status"],
+      notes: e["notes"] as string | undefined,
+      timestamp: toISO(e["timestamp"]),
+    })),
     createdAt: toISO(data["createdAt"]),
     updatedAt: toISO(data["updatedAt"]),
   };
@@ -71,7 +94,11 @@ function mapOrder(d: { id: string; data: () => Record<string, unknown> }): Order
 
 function buildQuery(limitCount?: number) {
   return limitCount
-    ? query(collection(db, "orders"), orderBy("createdAt", "desc"), fsLimit(limitCount))
+    ? query(
+        collection(db, "orders"),
+        orderBy("createdAt", "desc"),
+        fsLimit(limitCount),
+      )
     : query(collection(db, "orders"), orderBy("createdAt", "desc"));
 }
 
@@ -93,9 +120,18 @@ export const firestoreOrderRepository: OrderRepository = {
     return snap.docs.map((d) => mapOrder({ id: d.id, data: d.data.bind(d) }));
   },
 
-  async updateStatus({ orderId, status, note }: UpdateOrderStatusInput): Promise<void> {
+  async updateStatus({
+    orderId,
+    status,
+    note,
+  }: UpdateOrderStatusInput): Promise<void> {
     const orderRef = doc(db, "orders", orderId);
-    const confirmedStatuses = ["confirmed", "preparing", "shipped", "delivered"];
+    const confirmedStatuses = [
+      "confirmed",
+      "preparing",
+      "shipped",
+      "delivered",
+    ];
     const pendingStatuses = ["pending", "payment_sent", "verifying_payment"];
 
     await runTransaction(db, async (transaction) => {
@@ -129,8 +165,10 @@ export const firestoreOrderRepository: OrderRepository = {
           const productRef = doc(db, "products", item.productId);
           const productSnap = await transaction.get(productRef);
           if (productSnap.exists()) {
-            const currentTotal = (productSnap.data()["totalSales"] as number) ?? 0;
-            const currentWeekly = (productSnap.data()["weeklySales"] as number) ?? 0;
+            const currentTotal =
+              (productSnap.data()["totalSales"] as number) ?? 0;
+            const currentWeekly =
+              (productSnap.data()["weeklySales"] as number) ?? 0;
             transaction.update(productRef, {
               totalSales: Math.max(0, currentTotal - item.quantity),
               weeklySales: Math.max(0, currentWeekly - item.quantity),
@@ -163,7 +201,9 @@ export const firestoreOrderRepository: OrderRepository = {
     return onSnapshot(
       buildQuery(limitCount),
       (snap) => {
-        onNext(snap.docs.map((d) => mapOrder({ id: d.id, data: d.data.bind(d) })));
+        onNext(
+          snap.docs.map((d) => mapOrder({ id: d.id, data: d.data.bind(d) })),
+        );
       },
       onError,
     );
@@ -183,9 +223,11 @@ export const firestoreOrderRepository: OrderRepository = {
       const stockRefs = items.map((item) =>
         item.variantId
           ? doc(db, "products", item.productId, "variants", item.variantId)
-          : doc(db, "products", item.productId)
+          : doc(db, "products", item.productId),
       );
-      const stockSnaps = await Promise.all(stockRefs.map((ref) => transaction.get(ref)));
+      const stockSnaps = await Promise.all(
+        stockRefs.map((ref) => transaction.get(ref)),
+      );
 
       stockSnaps.forEach((snap, i) => {
         if (snap.exists()) {

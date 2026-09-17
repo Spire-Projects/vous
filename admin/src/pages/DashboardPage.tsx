@@ -4,7 +4,12 @@ import { StatCard } from "../components/ui/StatCard";
 import { Card } from "@/components/ui/card";
 import { Badge, type BadgeProps } from "@/components/ui/badge";
 import {
-  Table, TableHeader, TableBody, TableRow, TableHead, TableCell,
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
 } from "@/components/ui/table";
 import { SalesChart } from "@/components/report/SalesChart";
 import { useDashboard } from "@/hooks/useDashboard";
@@ -34,7 +39,9 @@ export function DashboardPage() {
     <div className="p-4 sm:p-6 lg:p-8">
       <PageHeader
         title="Dashboard"
-        subtitle={report ? "Reporte de los últimos 7 días" : "Cargando métricas…"}
+        subtitle={
+          report ? "Reporte de los últimos 7 días" : "Cargando métricas…"
+        }
       />
 
       {error && (
@@ -158,23 +165,35 @@ export function DashboardPage() {
           {recentOrders.slice(0, 5).map((order) => (
             <div key={order.id} className="p-4">
               <div className="flex items-center justify-between mb-3">
-                <span className="font-nav text-[13px] font-semibold text-vous-text">{order.orderNumber}</span>
+                <span className="font-nav text-[13px] font-semibold text-vous-text">
+                  {order.orderNumber}
+                </span>
                 <Badge variant={statusVariant(order.status)}>
                   {getOrderStatusLabel(order.status as OrderStatus)}
                 </Badge>
               </div>
               <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-[12px]">
                 <div>
-                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary">Cliente</span>
+                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                    Cliente
+                  </span>
                   <p className="text-vous-text mt-0.5">{order.customer.name}</p>
                 </div>
                 <div>
-                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary">Fecha</span>
-                  <p className="text-vous-text mt-0.5">{formatDate(order.createdAt ?? "")}</p>
+                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                    Fecha
+                  </span>
+                  <p className="text-vous-text mt-0.5">
+                    {formatDate(order.createdAt ?? "")}
+                  </p>
                 </div>
                 <div className="col-span-2">
-                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary">Total</span>
-                  <p className="text-vous-text font-semibold mt-0.5">{formatCurrency(order.total)}</p>
+                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                    Total
+                  </span>
+                  <p className="text-vous-text font-semibold mt-0.5">
+                    {formatCurrency(order.total)}
+                  </p>
                 </div>
               </div>
             </div>
@@ -201,16 +220,31 @@ export function DashboardPage() {
             <TableBody>
               {recentOrders.slice(0, 5).map((order) => (
                 <TableRow key={order.id}>
-                  <TableCell className="font-nav text-[12px] font-semibold">{order.orderNumber}</TableCell>
-                  <TableCell className="text-[13px] font-sans text-vous-text">{order.customer.name}</TableCell>
-                  <TableCell className="text-[12px] font-sans text-vous-text-secondary">{formatDate(order.createdAt ?? "")}</TableCell>
-                  <TableCell className="font-nav text-[13px] font-semibold">{formatCurrency(order.total)}</TableCell>
-                  <TableCell><Badge variant={statusVariant(order.status)}>{getOrderStatusLabel(order.status as OrderStatus)}</Badge></TableCell>
+                  <TableCell className="font-nav text-[12px] font-semibold">
+                    {order.orderNumber}
+                  </TableCell>
+                  <TableCell className="text-[13px] font-sans text-vous-text">
+                    {order.customer.name}
+                  </TableCell>
+                  <TableCell className="text-[12px] font-sans text-vous-text-secondary">
+                    {formatDate(order.createdAt ?? "")}
+                  </TableCell>
+                  <TableCell className="font-nav text-[13px] font-semibold">
+                    {formatCurrency(order.total)}
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={statusVariant(order.status)}>
+                      {getOrderStatusLabel(order.status as OrderStatus)}
+                    </Badge>
+                  </TableCell>
                 </TableRow>
               ))}
               {recentOrders.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center text-vous-text-secondary py-8 font-sans text-sm">
+                  <TableCell
+                    colSpan={5}
+                    className="text-center text-vous-text-secondary py-8 font-sans text-sm"
+                  >
                     {loading ? "Cargando pedidos…" : "No hay pedidos recientes"}
                   </TableCell>
                 </TableRow>

@@ -60,14 +60,20 @@ export function WholesaleRulesPanel() {
   }
 
   if (error) {
-    return <div className="py-16 text-center"><p className="text-sm text-red-600 font-nav">{error}</p></div>;
+    return (
+      <div className="py-16 text-center">
+        <p className="text-sm text-red-600 font-nav">{error}</p>
+      </div>
+    );
   }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2 mb-4">
         <Settings size={16} className="text-vous-gold" />
-        <h3 className="font-nav text-[13px] uppercase tracking-wider text-vous-text">Configuración Comercial Mayorista</h3>
+        <h3 className="font-nav text-[13px] uppercase tracking-wider text-vous-text">
+          Configuración Comercial Mayorista
+        </h3>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -101,12 +107,24 @@ export function WholesaleRulesPanel() {
             />
           </div>
           <label className="flex items-center gap-2 cursor-pointer">
-            <Checkbox checked={allowSize} onCheckedChange={(c) => setAllowSize(Boolean(c))} id="wr-size" />
-            <Label htmlFor="wr-size" className="cursor-pointer">Permitir selección de talla individual</Label>
+            <Checkbox
+              checked={allowSize}
+              onCheckedChange={(c) => setAllowSize(Boolean(c))}
+              id="wr-size"
+            />
+            <Label htmlFor="wr-size" className="cursor-pointer">
+              Permitir selección de talla individual
+            </Label>
           </label>
           <label className="flex items-center gap-2 cursor-pointer">
-            <Checkbox checked={isActive} onCheckedChange={(c) => setIsActive(Boolean(c))} id="wr-active" />
-            <Label htmlFor="wr-active" className="cursor-pointer">Reglas activas</Label>
+            <Checkbox
+              checked={isActive}
+              onCheckedChange={(c) => setIsActive(Boolean(c))}
+              id="wr-active"
+            />
+            <Label htmlFor="wr-active" className="cursor-pointer">
+              Reglas activas
+            </Label>
           </label>
         </div>
 

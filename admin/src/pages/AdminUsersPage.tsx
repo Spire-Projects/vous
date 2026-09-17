@@ -1,6 +1,13 @@
 import { useState, useEffect, type FormEvent } from "react";
 import {
-  collection, getDocs, doc, setDoc, updateDoc, serverTimestamp, query, orderBy,
+  collection,
+  getDocs,
+  doc,
+  setDoc,
+  updateDoc,
+  serverTimestamp,
+  query,
+  orderBy,
 } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import { useAuth } from "../context/AuthContext";
@@ -9,12 +16,29 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
-  Table, TableHeader, TableBody, TableRow, TableHead, TableCell,
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
 } from "@/components/ui/table";
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
-import { UserPlus, Eye, EyeOff, ShieldCheck, Shield, ToggleLeft, ToggleRight } from "lucide-react";
+import {
+  UserPlus,
+  Eye,
+  EyeOff,
+  ShieldCheck,
+  Shield,
+  ToggleLeft,
+  ToggleRight,
+} from "lucide-react";
 import type { AdminRole } from "../context/AuthContext";
 
 interface AdminUserRow {
@@ -26,7 +50,10 @@ interface AdminUserRow {
   createdAt: { seconds: number } | null;
 }
 
-async function createAuthUser(email: string, password: string): Promise<string> {
+async function createAuthUser(
+  email: string,
+  password: string,
+): Promise<string> {
   const apiKey = import.meta.env.VITE_FIREBASE_API_KEY as string;
   const res = await fetch(
     `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`,
@@ -34,11 +61,16 @@ async function createAuthUser(email: string, password: string): Promise<string> 
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password, returnSecureToken: false }),
-    }
+    },
   );
-  const data = await res.json() as { localId?: string; error?: { message: string } };
+  const data = (await res.json()) as {
+    localId?: string;
+    error?: { message: string };
+  };
   if (!res.ok || data.error) {
-    throw new Error(data.error?.message ?? "Error al crear usuario en Firebase Auth.");
+    throw new Error(
+      data.error?.message ?? "Error al crear usuario en Firebase Auth.",
+    );
   }
   return data.localId!;
 }
@@ -62,7 +94,7 @@ export function AdminUsersPage() {
     setLoadingList(true);
     try {
       const snap = await getDocs(
-        query(collection(db, "adminUsers"), orderBy("createdAt", "desc"))
+        query(collection(db, "adminUsers"), orderBy("createdAt", "desc")),
       );
       setUsers(
         snap.docs.map((d) => {
@@ -75,7 +107,7 @@ export function AdminUsersPage() {
             isActive: data["isActive"] ?? true,
             createdAt: data["createdAt"] ?? null,
           };
-        })
+        }),
       );
     } finally {
       setLoadingList(false);
@@ -83,19 +115,25 @@ export function AdminUsersPage() {
   }
 
   // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { void loadUsers(); }, []);
+  useEffect(() => {
+    void loadUsers();
+  }, []);
 
   async function toggleActive(uid: string, current: boolean) {
     if (uid === currentUser?.uid) return;
     await updateDoc(doc(db, "adminUsers", uid), { isActive: !current });
     setUsers((prev) =>
-      prev.map((u) => (u.uid === uid ? { ...u, isActive: !current } : u))
+      prev.map((u) => (u.uid === uid ? { ...u, isActive: !current } : u)),
     );
   }
 
   function openModal() {
-    setName(""); setEmail(""); setPassword("");
-    setRole("admin"); setFormError(""); setShowPassword(false);
+    setName("");
+    setEmail("");
+    setPassword("");
+    setRole("admin");
+    setFormError("");
+    setShowPassword(false);
     setShowModal(true);
   }
 
@@ -159,13 +197,18 @@ export function AdminUsersPage() {
           </div>
         ) : users.length === 0 ? (
           <div className="py-16 text-center">
-            <p className="text-sm text-vous-text-secondary font-nav">No hay usuarios registrados.</p>
+            <p className="text-sm text-vous-text-secondary font-nav">
+              No hay usuarios registrados.
+            </p>
           </div>
         ) : (
           <>
             <div className="block md:hidden divide-y divide-white/30">
               {users.map((u) => (
-                <div key={u.uid} className="p-4 hover:bg-amber-50/30 transition-colors space-y-3">
+                <div
+                  key={u.uid}
+                  className="p-4 hover:bg-amber-50/30 transition-colors space-y-3"
+                >
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 bg-white/90 border border-vous-border flex items-center justify-center text-[11px] font-nav text-vous-text-secondary uppercase shrink-0">
                       {u.name.charAt(0)}
@@ -174,22 +217,36 @@ export function AdminUsersPage() {
                       <p className="font-sans text-vous-text font-medium">
                         {u.name}
                         {u.uid === currentUser?.uid && (
-                          <span className="ml-1.5 text-[10px] text-vous-gold font-nav">(tú)</span>
+                          <span className="ml-1.5 text-[10px] text-vous-gold font-nav">
+                            (tú)
+                          </span>
                         )}
                       </p>
-                      <p className="text-[11px] text-vous-text-secondary font-sans">{u.email}</p>
+                      <p className="text-[11px] text-vous-text-secondary font-sans">
+                        {u.email}
+                      </p>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Rol</p>
-                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-nav uppercase tracking-wider border ${u.role === "superadmin" ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-sky-50 text-sky-700 border-sky-200"}`}>
-                        {u.role === "superadmin" ? <ShieldCheck size={10} /> : <Shield size={10} />}
+                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                        Rol
+                      </p>
+                      <span
+                        className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-nav uppercase tracking-wider border ${u.role === "superadmin" ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-sky-50 text-sky-700 border-sky-200"}`}
+                      >
+                        {u.role === "superadmin" ? (
+                          <ShieldCheck size={10} />
+                        ) : (
+                          <Shield size={10} />
+                        )}
                         {u.role === "superadmin" ? "Superadmin" : "Admin"}
                       </span>
                     </div>
                     <div>
-                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Estado</p>
+                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                        Estado
+                      </p>
                       <Badge variant={u.isActive ? "active" : "inactive"}>
                         {u.isActive ? "Activo" : "Inactivo"}
                       </Badge>
@@ -199,10 +256,20 @@ export function AdminUsersPage() {
                     <button
                       onClick={() => toggleActive(u.uid, u.isActive)}
                       disabled={u.uid === currentUser?.uid}
-                      title={u.uid === currentUser?.uid ? "No puedes desactivar tu propia cuenta" : u.isActive ? "Desactivar" : "Activar"}
+                      title={
+                        u.uid === currentUser?.uid
+                          ? "No puedes desactivar tu propia cuenta"
+                          : u.isActive
+                            ? "Desactivar"
+                            : "Activar"
+                      }
                       className="text-vous-text-secondary hover:text-vous-text disabled:opacity-30 transition-colors"
                     >
-                      {u.isActive ? <ToggleRight size={20} className="text-green-600" /> : <ToggleLeft size={20} />}
+                      {u.isActive ? (
+                        <ToggleRight size={20} className="text-green-600" />
+                      ) : (
+                        <ToggleLeft size={20} />
+                      )}
                     </button>
                   </div>
                 </div>
@@ -213,9 +280,11 @@ export function AdminUsersPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    {["Nombre", "Correo", "Rol", "Estado", "Acciones"].map((h) => (
-                      <TableHead key={h}>{h}</TableHead>
-                    ))}
+                    {["Nombre", "Correo", "Rol", "Estado", "Acciones"].map(
+                      (h) => (
+                        <TableHead key={h}>{h}</TableHead>
+                      ),
+                    )}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -229,15 +298,25 @@ export function AdminUsersPage() {
                           <span className="font-sans text-vous-text">
                             {u.name}
                             {u.uid === currentUser?.uid && (
-                              <span className="ml-1.5 text-[10px] text-vous-gold font-nav">(tú)</span>
+                              <span className="ml-1.5 text-[10px] text-vous-gold font-nav">
+                                (tú)
+                              </span>
                             )}
                           </span>
                         </div>
                       </TableCell>
-                      <TableCell className="text-vous-text-secondary font-sans">{u.email}</TableCell>
+                      <TableCell className="text-vous-text-secondary font-sans">
+                        {u.email}
+                      </TableCell>
                       <TableCell>
-                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-nav uppercase tracking-wider border ${u.role === "superadmin" ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-sky-50 text-sky-700 border-sky-200"}`}>
-                          {u.role === "superadmin" ? <ShieldCheck size={10} /> : <Shield size={10} />}
+                        <span
+                          className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-nav uppercase tracking-wider border ${u.role === "superadmin" ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-sky-50 text-sky-700 border-sky-200"}`}
+                        >
+                          {u.role === "superadmin" ? (
+                            <ShieldCheck size={10} />
+                          ) : (
+                            <Shield size={10} />
+                          )}
                           {u.role === "superadmin" ? "Superadmin" : "Admin"}
                         </span>
                       </TableCell>
@@ -250,10 +329,20 @@ export function AdminUsersPage() {
                         <button
                           onClick={() => toggleActive(u.uid, u.isActive)}
                           disabled={u.uid === currentUser?.uid}
-                          title={u.uid === currentUser?.uid ? "No puedes desactivar tu propia cuenta" : u.isActive ? "Desactivar" : "Activar"}
+                          title={
+                            u.uid === currentUser?.uid
+                              ? "No puedes desactivar tu propia cuenta"
+                              : u.isActive
+                                ? "Desactivar"
+                                : "Activar"
+                          }
                           className="text-vous-text-secondary hover:text-vous-text disabled:opacity-30 transition-colors"
                         >
-                          {u.isActive ? <ToggleRight size={20} className="text-green-600" /> : <ToggleLeft size={20} />}
+                          {u.isActive ? (
+                            <ToggleRight size={20} className="text-green-600" />
+                          ) : (
+                            <ToggleLeft size={20} />
+                          )}
                         </button>
                       </TableCell>
                     </TableRow>
@@ -339,7 +428,11 @@ export function AdminUsersPage() {
                     className="flex-1"
                     onClick={() => setRole(r)}
                   >
-                    {r === "superadmin" ? <ShieldCheck size={12} /> : <Shield size={12} />}
+                    {r === "superadmin" ? (
+                      <ShieldCheck size={12} />
+                    ) : (
+                      <Shield size={12} />
+                    )}
                     {r === "superadmin" ? "Superadmin" : "Admin"}
                   </Button>
                 ))}
@@ -353,7 +446,12 @@ export function AdminUsersPage() {
             )}
 
             <div className="flex gap-3 pt-1">
-              <Button type="button" variant="outline" className="flex-1" onClick={() => setShowModal(false)}>
+              <Button
+                type="button"
+                variant="outline"
+                className="flex-1"
+                onClick={() => setShowModal(false)}
+              >
                 Cancelar
               </Button>
               <Button type="submit" disabled={formLoading} className="flex-1">

@@ -14,7 +14,11 @@ interface DepartmentLinkEditorProps {
   onChangeCountryLinks: (links: DepartmentLink[]) => void;
 }
 
-const EMPTY_LINK: DepartmentLink = { name: "", googleMapsUrl: "", tiktokUrl: "" };
+const EMPTY_LINK: DepartmentLink = {
+  name: "",
+  googleMapsUrl: "",
+  tiktokUrl: "",
+};
 
 function LinkRow({
   link,
@@ -26,7 +30,11 @@ function LinkRow({
   link: DepartmentLink;
   idx: number;
   onChange: (idx: number, field: keyof DepartmentLink, value: string) => void;
-  onChangeNumber: (idx: number, field: "lat" | "lng", value: number | undefined) => void;
+  onChangeNumber: (
+    idx: number,
+    field: "lat" | "lng",
+    value: number | undefined,
+  ) => void;
   onRemove: (idx: number) => void;
 }) {
   return (
@@ -78,7 +86,15 @@ function LinkRow({
               type="number"
               step="any"
               value={link.lat ?? ""}
-              onChange={(e) => onChangeNumber(idx, "lat", e.target.value === "" ? undefined : parseFloat(e.target.value))}
+              onChange={(e) =>
+                onChangeNumber(
+                  idx,
+                  "lat",
+                  e.target.value === ""
+                    ? undefined
+                    : parseFloat(e.target.value),
+                )
+              }
               placeholder="-17.78"
               className="text-xs"
             />
@@ -89,7 +105,15 @@ function LinkRow({
               type="number"
               step="any"
               value={link.lng ?? ""}
-              onChange={(e) => onChangeNumber(idx, "lng", e.target.value === "" ? undefined : parseFloat(e.target.value))}
+              onChange={(e) =>
+                onChangeNumber(
+                  idx,
+                  "lng",
+                  e.target.value === ""
+                    ? undefined
+                    : parseFloat(e.target.value),
+                )
+              }
               placeholder="-63.18"
               className="text-xs"
             />
@@ -108,17 +132,24 @@ export function DepartmentLinkEditor({
   onChangeDeptLinks,
   onChangeCountryLinks,
 }: DepartmentLinkEditorProps) {
-  const [activeTab, setActiveTab] = useState<"national" | "international">("national");
+  const [activeTab, setActiveTab] = useState<"national" | "international">(
+    "national",
+  );
 
   const deptLinks = selectedDept
     ? departmentLinks.filter(
-        (link) => link.name.toLowerCase().trim() === deptName.toLowerCase().trim()
+        (link) =>
+          link.name.toLowerCase().trim() === deptName.toLowerCase().trim(),
       )
     : [];
 
   function getGlobalIdx(idx: number): number | null {
     const indices = departmentLinks
-      .map((link, i) => (link.name.toLowerCase().trim() === deptName.toLowerCase().trim() ? i : -1))
+      .map((link, i) =>
+        link.name.toLowerCase().trim() === deptName.toLowerCase().trim()
+          ? i
+          : -1,
+      )
       .filter((i) => i !== -1);
     return indices[idx] ?? null;
   }
@@ -131,7 +162,11 @@ export function DepartmentLinkEditor({
     onChangeDeptLinks(next);
   }
 
-  function updateLinkNumber(idx: number, field: "lat" | "lng", value: number | undefined) {
+  function updateLinkNumber(
+    idx: number,
+    field: "lat" | "lng",
+    value: number | undefined,
+  ) {
     const gi = getGlobalIdx(idx);
     if (gi === null) return;
     const next = [...departmentLinks];
@@ -146,19 +181,28 @@ export function DepartmentLinkEditor({
 
   function removeDeptLink(idx: number) {
     const remaining = departmentLinks.filter(
-      (link) => link.name.toLowerCase().trim() !== deptName.toLowerCase().trim()
+      (link) =>
+        link.name.toLowerCase().trim() !== deptName.toLowerCase().trim(),
     );
     const targetLinks = deptLinks.filter((_, i) => i !== idx);
     onChangeDeptLinks([...remaining, ...targetLinks]);
   }
 
-  function updateCountryLink(idx: number, field: keyof DepartmentLink, value: string) {
+  function updateCountryLink(
+    idx: number,
+    field: keyof DepartmentLink,
+    value: string,
+  ) {
     const next = [...otherCountryLinks];
     next[idx] = { ...next[idx], [field]: value };
     onChangeCountryLinks(next);
   }
 
-  function updateCountryLinkNumber(idx: number, field: "lat" | "lng", value: number | undefined) {
+  function updateCountryLinkNumber(
+    idx: number,
+    field: "lat" | "lng",
+    value: number | undefined,
+  ) {
     const next = [...otherCountryLinks];
     next[idx] = { ...next[idx], [field]: value };
     onChangeCountryLinks(next);
@@ -206,7 +250,9 @@ export function DepartmentLinkEditor({
           {selectedDept ? (
             <>
               <div className="flex items-center justify-between">
-                <h3 className="font-serif text-lg text-vous-text">{deptName}</h3>
+                <h3 className="font-serif text-lg text-vous-text">
+                  {deptName}
+                </h3>
                 <span className="font-sans text-[11px] text-vous-text-secondary">
                   {deptLinks.length} punto{deptLinks.length !== 1 ? "s" : ""}
                 </span>
@@ -224,22 +270,34 @@ export function DepartmentLinkEditor({
                 ))}
                 {deptLinks.length === 0 && (
                   <p className="text-xs text-vous-text-muted text-center py-6 font-sans">
-                    No hay puntos configurados para este departamento. Agrega uno nuevo.
+                    No hay puntos configurados para este departamento. Agrega
+                    uno nuevo.
                   </p>
                 )}
               </div>
-              <Button type="button" variant="outline-gold" size="sm" onClick={addDeptLink} className="w-full text-xs">
+              <Button
+                type="button"
+                variant="outline-gold"
+                size="sm"
+                onClick={addDeptLink}
+                className="w-full text-xs"
+              >
                 <Plus size={13} /> Agregar punto en {deptName}
               </Button>
             </>
           ) : (
             <div className="text-center py-10">
-              <MapPin size={32} className="mx-auto text-vous-text-muted mb-3" strokeWidth={1} />
+              <MapPin
+                size={32}
+                className="mx-auto text-vous-text-muted mb-3"
+                strokeWidth={1}
+              />
               <p className="font-serif text-vous-text-secondary text-sm mb-1">
                 Selecciona un departamento
               </p>
               <p className="font-sans text-[11px] text-vous-text-muted">
-                Haz clic en un departamento del mapa para ver y gestionar sus puntos oficiales.
+                Haz clic en un departamento del mapa para ver y gestionar sus
+                puntos oficiales.
               </p>
             </div>
           )}
@@ -249,9 +307,12 @@ export function DepartmentLinkEditor({
       {activeTab === "international" && (
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="font-serif text-lg text-vous-text">Distribuidores Exterior</h3>
+            <h3 className="font-serif text-lg text-vous-text">
+              Distribuidores Exterior
+            </h3>
             <span className="font-sans text-[11px] text-vous-text-secondary">
-              {otherCountryLinks.length} distribuidor{otherCountryLinks.length !== 1 ? "es" : ""}
+              {otherCountryLinks.length} distribuidor
+              {otherCountryLinks.length !== 1 ? "es" : ""}
             </span>
           </div>
           <div className="space-y-2 max-h-[420px] overflow-y-auto pr-1">
@@ -271,7 +332,13 @@ export function DepartmentLinkEditor({
               </p>
             )}
           </div>
-          <Button type="button" variant="outline-gold" size="sm" onClick={addCountryLink} className="w-full text-xs">
+          <Button
+            type="button"
+            variant="outline-gold"
+            size="sm"
+            onClick={addCountryLink}
+            className="w-full text-xs"
+          >
             <Plus size={13} /> Agregar distribuidor internacional
           </Button>
         </div>

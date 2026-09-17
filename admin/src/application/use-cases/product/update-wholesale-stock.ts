@@ -6,7 +6,7 @@ import type { ProductRepository } from "@/domain/repositories/product.repository
 export async function updateWholesaleStock(
   repo: ProductRepository,
   productId: string,
-  stock: number
+  stock: number,
 ): Promise<void> {
   if (!Number.isFinite(stock) || stock < 0) {
     throw new Error("El stock mayorista debe ser un número positivo");

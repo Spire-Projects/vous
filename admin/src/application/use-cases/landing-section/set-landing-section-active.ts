@@ -3,7 +3,7 @@ import type { LandingSectionRepository } from "@/domain/repositories/landing-sec
 export async function setLandingSectionActive(
   repo: LandingSectionRepository,
   id: string,
-  active: boolean
+  active: boolean,
 ): Promise<void> {
   return repo.setActive(id, active);
 }

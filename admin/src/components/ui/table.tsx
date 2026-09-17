@@ -15,7 +15,11 @@ export const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <thead ref={ref} className={cn("border-b border-white/40", className)} {...props} />
+  <thead
+    ref={ref}
+    className={cn("border-b border-white/40", className)}
+    {...props}
+  />
 ));
 TableHeader.displayName = "TableHeader";
 
@@ -23,7 +27,14 @@ export const TableBody = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <tbody ref={ref} className={cn("divide-y divide-white/30 [&_tr:last-child]:border-0", className)} {...props} />
+  <tbody
+    ref={ref}
+    className={cn(
+      "divide-y divide-white/30 [&_tr:last-child]:border-0",
+      className,
+    )}
+    {...props}
+  />
 ));
 TableBody.displayName = "TableBody";
 
@@ -33,10 +44,7 @@ export const TableRow = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <tr
     ref={ref}
-    className={cn(
-      "hover:bg-amber-50/40 transition-colors",
-      className
-    )}
+    className={cn("hover:bg-amber-50/40 transition-colors", className)}
     {...props}
   />
 ));
@@ -50,7 +58,7 @@ export const TableHead = React.forwardRef<
     ref={ref}
     className={cn(
       "text-left text-[10px] font-nav uppercase tracking-[0.15em] text-vous-text-secondary px-4 py-3.5",
-      className
+      className,
     )}
     {...props}
   />

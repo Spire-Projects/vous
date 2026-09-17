@@ -2,23 +2,39 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { StatCard } from "@/components/ui/StatCard";
-import { Plus, Pencil, Trash2, GripVertical, Eye, EyeOff, Ruler, Inbox } from "lucide-react";
+import {
+  Plus,
+  Pencil,
+  Trash2,
+  GripVertical,
+  Eye,
+  EyeOff,
+  Ruler,
+  Inbox,
+} from "lucide-react";
 import { ConfigFormDialog, type ConfigFormField } from "./ConfigFormDialog";
 
-export interface ConfigCrudTabProps<T extends { id: string; name: string; sortOrder: number; isActive: boolean }> {
+export interface ConfigCrudTabProps<
+  T extends { id: string; name: string; sortOrder: number; isActive: boolean },
+> {
   title: string;
   subtitle?: string;
   items: T[];
   fields: ConfigFormField[];
   extraColumns?: { header: string; render: (item: T) => React.ReactNode }[];
   onCreate: (data: Record<string, string | boolean | number>) => void;
-  onUpdate: (id: string, data: Record<string, string | boolean | number>) => void;
+  onUpdate: (
+    id: string,
+    data: Record<string, string | boolean | number>,
+  ) => void;
   onRemove: (id: string) => void;
   onToggleActive: (id: string, active: boolean) => void;
   onReorder: (items: { id: string; sortOrder: number }[]) => void;
 }
 
-export function ConfigCrudTab<T extends { id: string; name: string; sortOrder: number; isActive: boolean }>({
+export function ConfigCrudTab<
+  T extends { id: string; name: string; sortOrder: number; isActive: boolean },
+>({
   title,
   subtitle,
   items,
@@ -55,7 +71,8 @@ export function ConfigCrudTab<T extends { id: string; name: string; sortOrder: n
   }
 
   async function handleDelete(item: T) {
-    if (!confirm(`¿Eliminar "${item.name}"? Esta acción no se puede deshacer.`)) return;
+    if (!confirm(`¿Eliminar "${item.name}"? Esta acción no se puede deshacer.`))
+      return;
     await onRemove(item.id);
   }
 
@@ -92,7 +109,10 @@ export function ConfigCrudTab<T extends { id: string; name: string; sortOrder: n
             </p>
           )}
         </div>
-        <Button onClick={openCreate} className="flex items-center gap-2 shrink-0 self-start sm:self-auto">
+        <Button
+          onClick={openCreate}
+          className="flex items-center gap-2 shrink-0 self-start sm:self-auto"
+        >
           <Plus size={14} strokeWidth={2.5} />
           <span className="hidden sm:inline">Agregar</span>
           <span className="sm:hidden">Nuevo</span>
@@ -101,9 +121,21 @@ export function ConfigCrudTab<T extends { id: string; name: string; sortOrder: n
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3 sm:gap-4">
-        <StatCard label="Total" value={String(items.length)} icon={<Ruler size={18} />} />
-        <StatCard label="Activos" value={String(activeCount)} icon={<Eye size={18} />} />
-        <StatCard label="Inactivos" value={String(items.length - activeCount)} icon={<EyeOff size={18} />} />
+        <StatCard
+          label="Total"
+          value={String(items.length)}
+          icon={<Ruler size={18} />}
+        />
+        <StatCard
+          label="Activos"
+          value={String(activeCount)}
+          icon={<Eye size={18} />}
+        />
+        <StatCard
+          label="Inactivos"
+          value={String(items.length - activeCount)}
+          icon={<EyeOff size={18} />}
+        />
       </div>
 
       {/* Mobile Cards */}
@@ -129,11 +161,17 @@ export function ConfigCrudTab<T extends { id: string; name: string; sortOrder: n
           >
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0 flex-1">
-                <p className="font-nav text-[13px] font-semibold text-vous-text truncate">{item.name}</p>
+                <p className="font-nav text-[13px] font-semibold text-vous-text truncate">
+                  {item.name}
+                </p>
                 {extraColumns?.map((col) => (
                   <div key={col.header} className="mt-1.5">
-                    <span className="text-[10px] font-nav uppercase text-vous-text-secondary/70">{col.header}</span>
-                    <div className="text-[12px] text-vous-text-secondary font-sans mt-0.5">{col.render(item)}</div>
+                    <span className="text-[10px] font-nav uppercase text-vous-text-secondary/70">
+                      {col.header}
+                    </span>
+                    <div className="text-[12px] text-vous-text-secondary font-sans mt-0.5">
+                      {col.render(item)}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -155,7 +193,11 @@ export function ConfigCrudTab<T extends { id: string; name: string; sortOrder: n
                 >
                   {item.isActive ? <EyeOff size={14} /> : <Eye size={14} />}
                 </Button>
-                <Button variant="ghost" size="icon-sm" onClick={() => openEdit(item)}>
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={() => openEdit(item)}
+                >
                   <Pencil size={14} />
                 </Button>
                 <Button
@@ -180,14 +222,23 @@ export function ConfigCrudTab<T extends { id: string; name: string; sortOrder: n
             style={{ gridTemplateColumns: gridTemplate }}
           >
             <span />
-            <span className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">Nombre</span>
+            <span className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">
+              Nombre
+            </span>
             {extraColumns?.map((col) => (
-              <span key={col.header} className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">
+              <span
+                key={col.header}
+                className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary"
+              >
                 {col.header}
               </span>
             ))}
-            <span className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary text-center">Orden</span>
-            <span className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary text-center">Estado</span>
+            <span className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary text-center">
+              Orden
+            </span>
+            <span className="font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary text-center">
+              Estado
+            </span>
             <span />
           </div>
 
@@ -201,14 +252,22 @@ export function ConfigCrudTab<T extends { id: string; name: string; sortOrder: n
               className="min-w-[600px] grid items-center px-4 py-3 border-b border-white/40 transition-colors hover:bg-amber-50/40"
               style={{ gridTemplateColumns: gridTemplate }}
             >
-              <GripVertical size={16} className="text-vous-text-secondary/40 cursor-grab shrink-0 hover:text-vous-text-secondary" />
+              <GripVertical
+                size={16}
+                className="text-vous-text-secondary/40 cursor-grab shrink-0 hover:text-vous-text-secondary"
+              />
 
               <div className="min-w-0 pr-2">
-                <p className="font-nav text-[13px] font-semibold text-vous-text truncate">{item.name}</p>
+                <p className="font-nav text-[13px] font-semibold text-vous-text truncate">
+                  {item.name}
+                </p>
               </div>
 
               {extraColumns?.map((col) => (
-                <div key={col.header} className="text-[12px] text-vous-text-secondary font-sans pr-2">
+                <div
+                  key={col.header}
+                  className="text-[12px] text-vous-text-secondary font-sans pr-2"
+                >
                   {col.render(item)}
                 </div>
               ))}
@@ -232,7 +291,11 @@ export function ConfigCrudTab<T extends { id: string; name: string; sortOrder: n
                 >
                   {item.isActive ? <EyeOff size={14} /> : <Eye size={14} />}
                 </Button>
-                <Button variant="ghost" size="icon-sm" onClick={() => openEdit(item)}>
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  onClick={() => openEdit(item)}
+                >
                   <Pencil size={14} />
                 </Button>
                 <Button

@@ -1,4 +1,8 @@
-import type { Influencer, CreateInfluencerInput, UpdateInfluencerInput } from "@/domain/entities/influencer.entity";
+import type {
+  Influencer,
+  CreateInfluencerInput,
+  UpdateInfluencerInput,
+} from "@/domain/entities/influencer.entity";
 
 export interface InfluencerRepository {
   getAll(): Promise<Influencer[]>;

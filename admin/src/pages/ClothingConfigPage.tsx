@@ -4,15 +4,43 @@ import { useClothingConfig } from "@/hooks/useClothingConfig";
 import { ConfigCrudTab } from "@/components/clothing-config";
 import type { ConfigFormField } from "@/components/clothing-config";
 import { Ruler, Palette, ListChecks, Tag } from "lucide-react";
-import type { ClothingAttribute, ClothingBadge } from "@/domain/entities/clothing-config.entity";
+import type {
+  ClothingAttribute,
+  ClothingBadge,
+} from "@/domain/entities/clothing-config.entity";
 
 type TabId = "sizes" | "materials" | "attributes" | "badges";
 
-const TABS: { id: TabId; label: string; icon: React.ElementType; description: string }[] = [
-  { id: "sizes", label: "Tallas", icon: Ruler, description: "XS, S, M, L, XL…" },
-  { id: "materials", label: "Materiales", icon: Palette, description: "Algodón, Lana…" },
-  { id: "attributes", label: "Atributos", icon: ListChecks, description: "Corte, tela…" },
-  { id: "badges", label: "Etiquetas", icon: Tag, description: "Badges especiales" },
+const TABS: {
+  id: TabId;
+  label: string;
+  icon: React.ElementType;
+  description: string;
+}[] = [
+  {
+    id: "sizes",
+    label: "Tallas",
+    icon: Ruler,
+    description: "XS, S, M, L, XL…",
+  },
+  {
+    id: "materials",
+    label: "Materiales",
+    icon: Palette,
+    description: "Algodón, Lana…",
+  },
+  {
+    id: "attributes",
+    label: "Atributos",
+    icon: ListChecks,
+    description: "Corte, tela…",
+  },
+  {
+    id: "badges",
+    label: "Etiquetas",
+    icon: Tag,
+    description: "Badges especiales",
+  },
 ];
 
 const SIZE_FIELDS: ConfigFormField[] = [
@@ -35,12 +63,28 @@ const BADGE_FIELDS: ConfigFormField[] = [
 
 export function ClothingConfigPage() {
   const {
-    sizes, materials, attributes, badges,
-    loading, error,
-    createSize, updateSize, removeSize, reorderSizes,
-    createMaterial, updateMaterial, removeMaterial, reorderMaterials,
-    createAttribute, updateAttribute, removeAttribute, reorderAttributes,
-    createBadge, updateBadge, removeBadge, reorderBadges,
+    sizes,
+    materials,
+    attributes,
+    badges,
+    loading,
+    error,
+    createSize,
+    updateSize,
+    removeSize,
+    reorderSizes,
+    createMaterial,
+    updateMaterial,
+    removeMaterial,
+    reorderMaterials,
+    createAttribute,
+    updateAttribute,
+    removeAttribute,
+    reorderAttributes,
+    createBadge,
+    updateBadge,
+    removeBadge,
+    reorderBadges,
   } = useClothingConfig();
 
   const [activeTab, setActiveTab] = useState<TabId>("sizes");
@@ -52,10 +96,22 @@ export function ClothingConfigPage() {
   }, []);
 
   const counts = {
-    sizes: { total: sizes.length, active: sizes.filter((i) => i.isActive).length },
-    materials: { total: materials.length, active: materials.filter((i) => i.isActive).length },
-    attributes: { total: attributes.length, active: attributes.filter((i) => i.isActive).length },
-    badges: { total: badges.length, active: badges.filter((i) => i.isActive).length },
+    sizes: {
+      total: sizes.length,
+      active: sizes.filter((i) => i.isActive).length,
+    },
+    materials: {
+      total: materials.length,
+      active: materials.filter((i) => i.isActive).length,
+    },
+    attributes: {
+      total: attributes.length,
+      active: attributes.filter((i) => i.isActive).length,
+    },
+    badges: {
+      total: badges.length,
+      active: badges.filter((i) => i.isActive).length,
+    },
   };
 
   if (loading) {
@@ -110,7 +166,9 @@ export function ClothingConfigPage() {
               }`}
             >
               <div className="flex items-start justify-between">
-                <div className={`p-2.5 rounded-xl transition-colors ${isActive ? "bg-vous-gold/15 text-vous-gold" : "bg-black/5 text-vous-text-secondary group-hover:bg-black/10"}`}>
+                <div
+                  className={`p-2.5 rounded-xl transition-colors ${isActive ? "bg-vous-gold/15 text-vous-gold" : "bg-black/5 text-vous-text-secondary group-hover:bg-black/10"}`}
+                >
                   <Icon size={20} strokeWidth={1.5} />
                 </div>
                 {isActive && (
@@ -120,11 +178,14 @@ export function ClothingConfigPage() {
                 )}
               </div>
               <div className="mt-3">
-                <p className={`font-nav text-sm font-semibold tracking-wide ${isActive ? "text-vous-text" : "text-vous-text-secondary group-hover:text-vous-text"}`}>
+                <p
+                  className={`font-nav text-sm font-semibold tracking-wide ${isActive ? "text-vous-text" : "text-vous-text-secondary group-hover:text-vous-text"}`}
+                >
                   {label}
                 </p>
                 <p className="text-[11px] text-vous-text-secondary mt-0.5 font-sans">
-                  {count} {count === 1 ? "registro" : "registros"} · {description}
+                  {count} {count === 1 ? "registro" : "registros"} ·{" "}
+                  {description}
                 </p>
               </div>
               {isActive && (
@@ -142,18 +203,28 @@ export function ClothingConfigPage() {
             subtitle="Escribe cada talla y presiona Enter. Si el producto no tiene tallas, deja este campo vacío."
             items={sizes}
             fields={SIZE_FIELDS}
-            onCreate={(data) => createSize({
-              name: String(data.name),
-              sortOrder: Number(data.sortOrder),
-              isActive: !!data.isActive,
-            })}
-            onUpdate={(id, data) => updateSize(id, {
-              name: data.name !== undefined ? String(data.name) : undefined,
-              sortOrder: data.sortOrder !== undefined ? Number(data.sortOrder) : undefined,
-              isActive: data.isActive !== undefined ? !!data.isActive : undefined,
-            })}
+            onCreate={(data) =>
+              createSize({
+                name: String(data.name),
+                sortOrder: Number(data.sortOrder),
+                isActive: !!data.isActive,
+              })
+            }
+            onUpdate={(id, data) =>
+              updateSize(id, {
+                name: data.name !== undefined ? String(data.name) : undefined,
+                sortOrder:
+                  data.sortOrder !== undefined
+                    ? Number(data.sortOrder)
+                    : undefined,
+                isActive:
+                  data.isActive !== undefined ? !!data.isActive : undefined,
+              })
+            }
             onRemove={removeSize}
-            onToggleActive={(id, active) => updateSize(id, { isActive: active })}
+            onToggleActive={(id, active) =>
+              updateSize(id, { isActive: active })
+            }
             onReorder={reorderSizes}
           />
         )}
@@ -164,18 +235,28 @@ export function ClothingConfigPage() {
             subtitle="Algodón, Lana, Poliéster… Define los materiales disponibles para los productos."
             items={materials}
             fields={MATERIAL_FIELDS}
-            onCreate={(data) => createMaterial({
-              name: String(data.name),
-              sortOrder: Number(data.sortOrder),
-              isActive: !!data.isActive,
-            })}
-            onUpdate={(id, data) => updateMaterial(id, {
-              name: data.name !== undefined ? String(data.name) : undefined,
-              sortOrder: data.sortOrder !== undefined ? Number(data.sortOrder) : undefined,
-              isActive: data.isActive !== undefined ? !!data.isActive : undefined,
-            })}
+            onCreate={(data) =>
+              createMaterial({
+                name: String(data.name),
+                sortOrder: Number(data.sortOrder),
+                isActive: !!data.isActive,
+              })
+            }
+            onUpdate={(id, data) =>
+              updateMaterial(id, {
+                name: data.name !== undefined ? String(data.name) : undefined,
+                sortOrder:
+                  data.sortOrder !== undefined
+                    ? Number(data.sortOrder)
+                    : undefined,
+                isActive:
+                  data.isActive !== undefined ? !!data.isActive : undefined,
+              })
+            }
             onRemove={removeMaterial}
-            onToggleActive={(id, active) => updateMaterial(id, { isActive: active })}
+            onToggleActive={(id, active) =>
+              updateMaterial(id, { isActive: active })
+            }
             onReorder={reorderMaterials}
           />
         )}
@@ -189,20 +270,31 @@ export function ClothingConfigPage() {
             extraColumns={[
               { header: "Etiqueta visible", render: (item) => item.label },
             ]}
-            onCreate={(data) => createAttribute({
-              name: String(data.name),
-              label: String(data.label),
-              sortOrder: Number(data.sortOrder),
-              isActive: !!data.isActive,
-            })}
-            onUpdate={(id, data) => updateAttribute(id, {
-              name: data.name !== undefined ? String(data.name) : undefined,
-              label: data.label !== undefined ? String(data.label) : undefined,
-              sortOrder: data.sortOrder !== undefined ? Number(data.sortOrder) : undefined,
-              isActive: data.isActive !== undefined ? !!data.isActive : undefined,
-            })}
+            onCreate={(data) =>
+              createAttribute({
+                name: String(data.name),
+                label: String(data.label),
+                sortOrder: Number(data.sortOrder),
+                isActive: !!data.isActive,
+              })
+            }
+            onUpdate={(id, data) =>
+              updateAttribute(id, {
+                name: data.name !== undefined ? String(data.name) : undefined,
+                label:
+                  data.label !== undefined ? String(data.label) : undefined,
+                sortOrder:
+                  data.sortOrder !== undefined
+                    ? Number(data.sortOrder)
+                    : undefined,
+                isActive:
+                  data.isActive !== undefined ? !!data.isActive : undefined,
+              })
+            }
             onRemove={removeAttribute}
-            onToggleActive={(id, active) => updateAttribute(id, { isActive: active })}
+            onToggleActive={(id, active) =>
+              updateAttribute(id, { isActive: active })
+            }
             onReorder={reorderAttributes}
           />
         )}
@@ -234,20 +326,31 @@ export function ClothingConfigPage() {
                 ),
               },
             ]}
-            onCreate={(data) => createBadge({
-              name: String(data.name),
-              color: String(data.color),
-              sortOrder: Number(data.sortOrder),
-              isActive: !!data.isActive,
-            })}
-            onUpdate={(id, data) => updateBadge(id, {
-              name: data.name !== undefined ? String(data.name) : undefined,
-              color: data.color !== undefined ? String(data.color) : undefined,
-              sortOrder: data.sortOrder !== undefined ? Number(data.sortOrder) : undefined,
-              isActive: data.isActive !== undefined ? !!data.isActive : undefined,
-            })}
+            onCreate={(data) =>
+              createBadge({
+                name: String(data.name),
+                color: String(data.color),
+                sortOrder: Number(data.sortOrder),
+                isActive: !!data.isActive,
+              })
+            }
+            onUpdate={(id, data) =>
+              updateBadge(id, {
+                name: data.name !== undefined ? String(data.name) : undefined,
+                color:
+                  data.color !== undefined ? String(data.color) : undefined,
+                sortOrder:
+                  data.sortOrder !== undefined
+                    ? Number(data.sortOrder)
+                    : undefined,
+                isActive:
+                  data.isActive !== undefined ? !!data.isActive : undefined,
+              })
+            }
             onRemove={removeBadge}
-            onToggleActive={(id, active) => updateBadge(id, { isActive: active })}
+            onToggleActive={(id, active) =>
+              updateBadge(id, { isActive: active })
+            }
             onReorder={reorderBadges}
           />
         )}

@@ -4,7 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { ReportPeriod, DateRange } from "@/domain/entities/report.entity";
 
-const PERIOD_TABS: { label: string; value: ReportPeriod; icon: typeof Clock }[] = [
+const PERIOD_TABS: {
+  label: string;
+  value: ReportPeriod;
+  icon: typeof Clock;
+}[] = [
   { label: "Hoy", value: "today", icon: Clock },
   { label: "Últimos 7 días", value: "last_7_days", icon: Calendar },
   { label: "Últimos 30 días", value: "last_30_days", icon: CalendarDays },

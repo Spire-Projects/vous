@@ -4,7 +4,11 @@ import { getAllInfluencers } from "@/application/use-cases/influencer/get-all-in
 import { createInfluencer } from "@/application/use-cases/influencer/create-influencer";
 import { updateInfluencer } from "@/application/use-cases/influencer/update-influencer";
 import { deleteInfluencer } from "@/application/use-cases/influencer/delete-influencer";
-import type { Influencer, CreateInfluencerInput, UpdateInfluencerInput } from "@/domain/entities/influencer.entity";
+import type {
+  Influencer,
+  CreateInfluencerInput,
+  UpdateInfluencerInput,
+} from "@/domain/entities/influencer.entity";
 
 export function useInfluencers() {
   const [influencers, setInfluencers] = useState<Influencer[]>([]);
@@ -25,43 +29,67 @@ export function useInfluencers() {
   }, []);
 
   // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { fetchAll(); }, [fetchAll]);
-
-  const create = useCallback(async (input: CreateInfluencerInput) => {
-    setSaving(true);
-    try {
-      await createInfluencer(firestoreInfluencerRepository, input);
-      await fetchAll();
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Error al crear influencer");
-    } finally {
-      setSaving(false);
-    }
+  useEffect(() => {
+    fetchAll();
   }, [fetchAll]);
 
-  const update = useCallback(async (id: string, input: UpdateInfluencerInput) => {
-    setSaving(true);
-    try {
-      await updateInfluencer(firestoreInfluencerRepository, id, input);
-      await fetchAll();
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Error al actualizar influencer");
-    } finally {
-      setSaving(false);
-    }
-  }, [fetchAll]);
+  const create = useCallback(
+    async (input: CreateInfluencerInput) => {
+      setSaving(true);
+      try {
+        await createInfluencer(firestoreInfluencerRepository, input);
+        await fetchAll();
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Error al crear influencer");
+      } finally {
+        setSaving(false);
+      }
+    },
+    [fetchAll],
+  );
 
-  const remove = useCallback(async (id: string) => {
-    setSaving(true);
-    try {
-      await deleteInfluencer(firestoreInfluencerRepository, id);
-      await fetchAll();
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Error al eliminar influencer");
-    } finally {
-      setSaving(false);
-    }
-  }, [fetchAll]);
+  const update = useCallback(
+    async (id: string, input: UpdateInfluencerInput) => {
+      setSaving(true);
+      try {
+        await updateInfluencer(firestoreInfluencerRepository, id, input);
+        await fetchAll();
+      } catch (e) {
+        setError(
+          e instanceof Error ? e.message : "Error al actualizar influencer",
+        );
+      } finally {
+        setSaving(false);
+      }
+    },
+    [fetchAll],
+  );
 
-  return { influencers, loading, error, saving, refetch: fetchAll, create, update, remove };
+  const remove = useCallback(
+    async (id: string) => {
+      setSaving(true);
+      try {
+        await deleteInfluencer(firestoreInfluencerRepository, id);
+        await fetchAll();
+      } catch (e) {
+        setError(
+          e instanceof Error ? e.message : "Error al eliminar influencer",
+        );
+      } finally {
+        setSaving(false);
+      }
+    },
+    [fetchAll],
+  );
+
+  return {
+    influencers,
+    loading,
+    error,
+    saving,
+    refetch: fetchAll,
+    create,
+    update,
+    remove,
+  };
 }
