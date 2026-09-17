@@ -4,18 +4,19 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useBanners } from "@/hooks/useBanners";
+import { proxyCldUrl } from "@/utils/proxyCldUrl";
+import type { Banner } from "@/domain/entities/banner.entity";
 
-const FALLBACK_BANNERS = [
+const FALLBACK_BANNERS: Banner[] = [
   {
     id: "fallback",
     imageUrl: "",
-    title: "TÚ NOS\nINSPIRAS",
-    subtitle:
-      "La perfección nunca nos inspiró. Nos inspira lo real. VOUS nace para quienes rompen moldes y crean su propia esencia.",
-    ctaText: "VER TODO",
+    title: "VOUS",
+    subtitle: "",
+    ctaText: "Ver Todo",
     ctaUrl: "/catalogo",
+    categorySlug: undefined,
     active: true,
     order: 0,
     createdAt: new Date().toISOString(),
@@ -29,6 +30,10 @@ export function HeroSection() {
   const activeBanners = banners.length > 0 ? banners : FALLBACK_BANNERS;
   const banner = activeBanners[current];
 
+  const bannerHref = banner.categorySlug
+    ? `/catalogo?categoria=${banner.categorySlug}`
+    : banner.ctaUrl || "/catalogo";
+
   const next = useCallback(() => {
     setCurrent((i) => (i + 1) % activeBanners.length);
   }, [activeBanners.length]);
@@ -37,7 +42,6 @@ export function HeroSection() {
     setCurrent((i) => (i - 1 + activeBanners.length) % activeBanners.length);
   }, [activeBanners.length]);
 
-  // Auto-advance every 6s when multiple banners
   useEffect(() => {
     if (activeBanners.length <= 1) return;
     const timer = setInterval(next, 6000);
@@ -46,128 +50,124 @@ export function HeroSection() {
 
   if (loading) {
     return (
-      <section className="bg-vous-soft-black min-h-[92vh] flex items-center justify-center">
-        <span className="inline-block w-6 h-6 border-2 border-vous-gold/30 border-t-vous-gold rounded-full animate-spin" />
+      <section className="bg-black min-h-[92vh] flex items-center justify-center">
+        <span className="inline-block w-6 h-6 border-2 border-black/30 border-t-black rounded-full animate-spin" />
       </section>
     );
   }
 
+  const desktopSrc = banner.imageUrl ? proxyCldUrl(banner.imageUrl) : "";
+  const tabletSrc = banner.tabletImageUrl ? proxyCldUrl(banner.tabletImageUrl) : desktopSrc;
+  const mobileSrc = banner.mobileImageUrl ? proxyCldUrl(banner.mobileImageUrl) : tabletSrc;
+
+  // When only the desktop image is set, the same image must adapt to mobile/tablet
+  // WITHOUT cropping. We use different aspect ratios per breakpoint via a CSS
+  // class and keep object-fit:cover with tuned object-position to preserve the
+  // subject composition. When a dedicated mobile/tablet image exists, the
+  // <picture> source tags pick it instead.
+  const onlyDesktop = !banner.tabletImageUrl && !banner.mobileImageUrl;
+
   return (
-    <section className="bg-vous-soft-black min-h-[92vh] flex flex-col md:flex-row overflow-hidden relative">
-      {/* Left — text content */}
-      <div className="flex flex-col justify-center px-8 md:px-16 lg:px-24 py-20 md:py-0 md:w-1/2 z-10">
-        <span className="font-nav text-[11px] font-semibold tracking-[0.25em] text-vous-gold uppercase border border-vous-gold/40 px-4 py-1.5 self-start mb-8">
-          ESTILO | AUTENTICIDAD | EXCLUSIVIDAD
-        </span>
+    <section className="relative w-full bg-black overflow-hidden vous-hero-aspect">
+      <style>{`
+        .vous-hero-aspect {
+          aspect-ratio: 3 / 4;
+          min-height: 60vh;
+        }
+        @media (min-width: 641px) and (max-width: 1024px) {
+          .vous-hero-aspect {
+            aspect-ratio: 4 / 3;
+            min-height: 70vh;
+          }
+        }
+        @media (min-width: 1025px) {
+          .vous-hero-aspect {
+            aspect-ratio: 16 / 9;
+            min-height: 80vh;
+          }
+        }
+      `}</style>
 
-        <AnimatePresence mode="wait">
-          <motion.h1
-            key={banner.id + "-title"}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.4 }}
-            className="font-serif text-[clamp(3rem,6vw,5.5rem)] font-bold text-white leading-[1.0] tracking-[-0.02em] mb-6 whitespace-pre-line"
-          >
-            {banner.title}
-          </motion.h1>
-        </AnimatePresence>
-
-        <AnimatePresence mode="wait">
-          <motion.p
-            key={banner.id + "-subtitle"}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.4, delay: 0.05 }}
-            className="font-sans text-base text-white/70 max-w-sm mb-10 leading-relaxed"
-          >
-            {banner.subtitle}
-          </motion.p>
-        </AnimatePresence>
-
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={banner.id + "-cta"}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
-            className="flex items-center gap-4 flex-wrap"
-          >
-            <Button variant="gold" size="default" asChild>
-              <Link href={banner.ctaUrl || "/catalogo"}>{banner.ctaText || "VER TODO"}</Link>
-            </Button>
-            <Button variant="outline-white" size="default" asChild>
-              <Link href="/catalogo">EXPLORAR</Link>
-            </Button>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Dots + Arrows */}
-        {activeBanners.length > 1 && (
-          <div className="flex items-center gap-4 mt-10">
-            <button
-              onClick={prev}
-              className="text-white/50 hover:text-vous-gold transition-colors"
-              aria-label="Anterior"
-            >
-              <ChevronLeft size={20} strokeWidth={1.5} />
-            </button>
-            <div className="flex items-center gap-2">
-              {activeBanners.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrent(idx)}
-                  className={`w-2 h-2 rounded-full transition-colors ${
-                    idx === current ? "bg-vous-gold" : "bg-white/30 hover:bg-white/50"
-                  }`}
-                  aria-label={`Ir al banner ${idx + 1}`}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={banner.id + "-img"}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8 }}
+          className="absolute inset-0"
+        >
+          <Link href={bannerHref} className="absolute inset-0 block" aria-label="Ver catálogo">
+            {desktopSrc ? (
+              <picture>
+                {banner.mobileImageUrl && <source media="(max-width: 640px)" srcSet={mobileSrc} />}
+                {banner.tabletImageUrl && <source media="(max-width: 1024px)" srcSet={tabletSrc} />}
+                <img
+                  src={desktopSrc}
+                  alt={banner.title}
+                  className="absolute inset-0 w-full h-full object-cover vous-hero-img"
                 />
-              ))}
-            </div>
-            <button
-              onClick={next}
-              className="text-white/50 hover:text-vous-gold transition-colors"
-              aria-label="Siguiente"
-            >
-              <ChevronRight size={20} strokeWidth={1.5} />
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* Right — image */}
-      <div className="relative md:w-1/2 min-h-[50vw] md:min-h-0">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={banner.id + "-img"}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="absolute inset-0"
-          >
-            {banner.imageUrl ? (
-              <img
-                src={banner.imageUrl}
-                alt={banner.title}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
+              </picture>
             ) : (
-              <div className="absolute inset-0 bg-gradient-to-br from-[#3d2e15] via-[#2a2015] to-[#0d0d0b]" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#3d3d38] via-[#2a2a28] to-[#0a0a0a]" />
             )}
-            <div className="absolute inset-0 bg-gradient-to-t from-vous-soft-black/60 via-transparent to-transparent" />
-            <div
-              className="absolute inset-0 opacity-10 mix-blend-overlay"
-              style={{
-                backgroundImage:
-                  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E\")",
-              }}
+          </Link>
+
+          {desktopSrc && (
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+          )}
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Tuned object-position per breakpoint, so the desktop image doesn't
+          crop the subject when used on mobile/tablet. */}
+      {onlyDesktop && (
+        <style>{`
+          .vous-hero-img { object-position: center 25%; }
+          @media (min-width: 641px) and (max-width: 1024px) {
+            .vous-hero-img { object-position: center 30%; }
+          }
+          @media (min-width: 1025px) {
+            .vous-hero-img { object-position: center center; }
+          }
+        `}</style>
+      )}
+
+      {/* Arrows */}
+      {activeBanners.length > 1 && (
+        <>
+          <button
+            onClick={prev}
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center text-white/40 hover:text-white transition-colors"
+            aria-label="Anterior"
+          >
+            <ChevronLeft size={24} strokeWidth={1} />
+          </button>
+          <button
+            onClick={next}
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center text-white/40 hover:text-white transition-colors"
+            aria-label="Siguiente"
+          >
+            <ChevronRight size={24} strokeWidth={1} />
+          </button>
+        </>
+      )}
+
+      {/* Dots */}
+      {activeBanners.length > 1 && (
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
+          {activeBanners.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrent(idx)}
+              className={`h-[2px] rounded-full transition-all duration-300 ${
+                idx === current ? "w-8 bg-white" : "w-3 bg-white/30 hover:bg-white/50"
+              }`}
+              aria-label={`Ir al banner ${idx + 1}`}
             />
-          </motion.div>
-        </AnimatePresence>
-      </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

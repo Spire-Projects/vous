@@ -1,5 +1,12 @@
 // Barrel export — agrega aquí los exports de helpers y funciones utilitarias
-// Ejemplo: export { formatCurrency } from './formatCurrency';
+
+export { calculateFinalPrice } from "./calculate-price";
+export type {
+  ProductForPricing,
+  CategoryDiscount,
+  PricingOptions,
+  PricingResult,
+} from "./calculate-price";
 
 /**
  * Formatea un valor numérico como precio en COP.

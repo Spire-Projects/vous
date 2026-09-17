@@ -2,9 +2,18 @@ import { useEffect, useState, useCallback } from "react";
 import { firestoreProductRepository } from "@/infrastructure";
 import { getProducts } from "@/application/use-cases/product/get-products";
 import { createProduct } from "@/application/use-cases/product/create-product";
+import { createVariantsBatch } from "@/application/use-cases/product/create-variants-batch";
 import { updateProduct } from "@/application/use-cases/product/update-product";
 import { setProductActive } from "@/application/use-cases/product/set-product-active";
-import type { Product, CreateProductInput, UpdateProductInput } from "@/domain/entities/product.entity";
+import { deleteProduct } from "@/application/use-cases/product/delete-product";
+import { setProductFlags } from "@/application/use-cases/product/set-product-flags";
+import { applyProductDiscount } from "@/application/use-cases/product/apply-product-discount";
+import { applyCategoryDiscount } from "@/application/use-cases/product/apply-category-discount";
+import { updateWholesaleStock } from "@/application/use-cases/product/update-wholesale-stock";
+import { setProductOrder } from "@/application/use-cases/product/set-product-order";
+import { recalculateProductStock } from "@/application/use-cases/product/recalculate-product-stock";
+import type { Product, CreateProductInput, UpdateProductInput, CreateVariantInput } from "@/domain/entities/product.entity";
+import type { ProductFlags } from "@/domain/repositories/product.repository";
 
 export function useProducts() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -31,6 +40,23 @@ export function useProducts() {
     await fetchProducts();
   }, [fetchProducts]);
 
+  const createWithVariants = useCallback(async (input: CreateProductInput, variants: CreateVariantInput[]) => {
+    const product = await createProduct(firestoreProductRepository, input);
+    if (variants.length > 0) {
+      await createVariantsBatch(firestoreProductRepository, product.id, variants);
+      await recalculateProductStock(firestoreProductRepository, product.id);
+    }
+    await fetchProducts();
+  }, [fetchProducts]);
+
+  const addVariants = useCallback(async (productId: string, variants: CreateVariantInput[]) => {
+    if (variants.length > 0) {
+      await createVariantsBatch(firestoreProductRepository, productId, variants);
+      await recalculateProductStock(firestoreProductRepository, productId);
+    }
+    await fetchProducts();
+  }, [fetchProducts]);
+
   const update = useCallback(async (id: string, input: UpdateProductInput) => {
     await updateProduct(firestoreProductRepository, id, input);
     await fetchProducts();
@@ -41,5 +67,35 @@ export function useProducts() {
     await fetchProducts();
   }, [fetchProducts]);
 
-  return { products, loading, error, refetch: fetchProducts, create, update, toggleActive };
+  const remove = useCallback(async (id: string) => {
+    await deleteProduct(firestoreProductRepository, id);
+    await fetchProducts();
+  }, [fetchProducts]);
+
+  const setFlags = useCallback(async (id: string, flags: ProductFlags) => {
+    await setProductFlags(firestoreProductRepository, id, flags);
+    await fetchProducts();
+  }, [fetchProducts]);
+
+  const applyDiscount = useCallback(async (id: string, isDiscounted: boolean, discountPercentage?: number) => {
+    await applyProductDiscount(firestoreProductRepository, id, isDiscounted, discountPercentage);
+    await fetchProducts();
+  }, [fetchProducts]);
+
+  const applyCatDiscount = useCallback(async (categoryId: string, isDiscounted: boolean, discountPercentage?: number) => {
+    await applyCategoryDiscount(firestoreProductRepository, categoryId, isDiscounted, discountPercentage);
+    await fetchProducts();
+  }, [fetchProducts]);
+
+  const adjustWholesaleStock = useCallback(async (id: string, stock: number) => {
+    await updateWholesaleStock(firestoreProductRepository, id, stock);
+    await fetchProducts();
+  }, [fetchProducts]);
+
+  const reorder = useCallback(async (items: { id: string; sortOrder: number }[]) => {
+    await setProductOrder(firestoreProductRepository, items);
+    await fetchProducts();
+  }, [fetchProducts]);
+
+  return { products, loading, error, refetch: fetchProducts, create, createWithVariants, addVariants, update, toggleActive, remove, setFlags, applyDiscount, applyCatDiscount, adjustWholesaleStock, reorder };
 }

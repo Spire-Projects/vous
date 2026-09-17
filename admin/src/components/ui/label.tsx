@@ -2,10 +2,6 @@ import * as React from "react";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { cn } from "@/lib/utils";
 
-/**
- * Cast: @radix-ui/react-label omits className/children from types in React 19.
- * Type-level workaround — no runtime impact.
- */
 type LabelRef = React.ForwardRefExoticComponent<
   React.PropsWithChildren<React.LabelHTMLAttributes<HTMLLabelElement>> &
     React.RefAttributes<HTMLLabelElement>
@@ -19,7 +15,7 @@ export const Label = React.forwardRef<
   <_Label
     ref={ref}
     className={cn(
-      "block text-[10px] font-nav uppercase tracking-[0.15em] text-vous-gray mb-1.5",
+      "block text-[10px] font-nav uppercase tracking-[0.15em] text-vous-text-secondary mb-1.5",
       className
     )}
     {...props}

@@ -8,15 +8,17 @@ import { DashboardPage } from "./pages/DashboardPage";
 import { OrdersPage } from "./pages/OrdersPage";
 import { InventoryPage } from "./pages/InventoryPage";
 import { CategoriesPage } from "./pages/CategoriesPage";
-import { CustomersPage } from "./pages/CustomersPage";
 import { WholesalePage } from "./pages/WholesalePage";
-import { BlogPage } from "./pages/BlogPage";
-import { FaqPage } from "./pages/FaqPage";
+import { ContentPage } from "./pages/ContentPage";
+import { SupportPage } from "./pages/SupportPage";
 import { DiscountsPage } from "./pages/DiscountsPage";
 import { ReportsPage } from "./pages/ReportsPage";
 import { SettingsPage } from "./pages/SettingsPage";
-import { BannersPage } from "./pages/BannersPage";
-import { AdminUsersPage } from "./pages/AdminUsersPage";
+import { LandingPage } from "./pages/LandingPage";
+import { MapaPage } from "./pages/MapaPage";
+import { AsesoriaPage } from "./pages/AsesoriaPage";
+import { UsersPage } from "./pages/UsersPage";
+import { ClothingConfigPage } from "./pages/ClothingConfigPage";
 
 function AdminRoutes() {
   return (
@@ -27,22 +29,17 @@ function AdminRoutes() {
           <Route path="pedidos" element={<OrdersPage />} />
           <Route path="inventario" element={<InventoryPage />} />
           <Route path="categorias" element={<CategoriesPage />} />
-          <Route path="clientes" element={<CustomersPage />} />
+          <Route path="usuarios" element={<UsersPage />} />
           <Route path="mayoristas" element={<WholesalePage />} />
-          <Route path="blog" element={<BlogPage />} />
-          <Route path="faq" element={<FaqPage />} />
-          <Route path="banners" element={<BannersPage />} />
+          <Route path="soporte" element={<SupportPage />} />
+          <Route path="contenido" element={<ContentPage />} />
+          <Route path="asesoria" element={<AsesoriaPage />} />
+          <Route path="landing" element={<LandingPage />} />
           <Route path="descuentos" element={<DiscountsPage />} />
           <Route path="reportes" element={<ReportsPage />} />
           <Route path="configuracion" element={<SettingsPage />} />
-          <Route
-            path="usuarios"
-            element={
-              <ProtectedRoute requiredRole="superadmin">
-                <AdminUsersPage />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="ropa" element={<ClothingConfigPage />} />
+          <Route path="mapa" element={<MapaPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AdminLayout>

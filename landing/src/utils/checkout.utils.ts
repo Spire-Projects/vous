@@ -1,6 +1,33 @@
 import type { CreateOrderInput, ShippingInfo } from "@/domain/entities/order.entity";
 import type { CartItem } from "@/types/cart.types";
 import type { ShippingForm } from "@/components/checkout/CheckoutFormStep";
+import type { ProductRepository } from "@/domain/repositories/product.repository";
+import { decrementVariantStock } from "@/application/use-cases/product/decrement-variant-stock";
+import { decrementStock } from "@/application/use-cases/product/decrement-stock";
+
+export interface BuildOrderOptions {
+  discountAmount?: number;
+  discountCode?: string;
+  isWholesale?: boolean;
+}
+
+export function getInitialShippingForm(
+  user?: { email?: string | null } | null,
+  profile?: {
+    name?: string | null;
+    phone?: string | null;
+    departamento?: string | null;
+  } | null
+): ShippingForm {
+  return {
+    fullName: profile?.name ?? "",
+    email: user?.email ?? "",
+    phone: profile?.phone ?? "",
+    department: profile?.departamento ?? "",
+    city: "",
+    address: "",
+  };
+}
 
 export function validateShippingForm(f: ShippingForm, count: number): string | null {
   if (!f.fullName.trim()) return "El nombre completo es requerido.";
@@ -18,8 +45,13 @@ export function buildCreateOrderInput(
   userId: string,
   form: ShippingForm,
   items: CartItem[],
-  subtotal: number
+  subtotal: number,
+  options?: BuildOrderOptions
 ): CreateOrderInput {
+  const discountAmount = options?.discountAmount ?? 0;
+  const isWholesale = options?.isWholesale ?? false;
+  const discountCode = options?.discountCode;
+
   const shippingInfo: ShippingInfo = {
     fullName: form.fullName.trim(),
     phone: form.phone.trim(),
@@ -39,7 +71,7 @@ export function buildCreateOrderInput(
     },
     items: items.map((item) => ({
       productId: item.productId,
-      variantId: null,
+      variantId: item.variantId ?? null,
       productName: item.name,
       variantDescription: [item.size, item.color].filter(Boolean).join(" / ") || undefined,
       imageUrl: item.image,
@@ -49,9 +81,21 @@ export function buildCreateOrderInput(
       isWholesalePrice: false,
     })),
     subtotal,
-    total: subtotal,
+    discountAmount: discountAmount > 0 ? discountAmount : undefined,
+    total: discountAmount > 0 ? subtotal - discountAmount : subtotal,
     paymentMethod: "qr",
     shippingInfo,
-    isWholesale: false,
+    isWholesale,
+    discountCode: discountAmount > 0 ? discountCode : undefined,
   };
+}
+
+export async function decrementOrderStock(repo: ProductRepository, items: CartItem[]) {
+  return Promise.all(
+    items.map((i) =>
+      i.variantId
+        ? decrementVariantStock(repo, i.productId, i.variantId, i.quantity)
+        : decrementStock(repo, i.productId, i.quantity)
+    )
+  );
 }

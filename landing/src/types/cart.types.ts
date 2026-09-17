@@ -1,12 +1,14 @@
 export interface CartItem {
   id: string;
   productId: string;
+  variantId?: string;
   name: string;
   price: number;
   quantity: number;
   image: string;
   size?: string;
   color?: string;
+  categoryId?: string;
 }
 
 export interface CartState {

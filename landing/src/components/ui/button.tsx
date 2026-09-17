@@ -8,13 +8,11 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-vous-soft-black text-white hover:bg-vous-gray-dark",
-        gold: "bg-vous-gold text-vous-soft-black hover:bg-vous-gold-light",
-        outline: "border border-vous-gray-light text-vous-soft-black hover:border-vous-soft-black",
-        "outline-white":
-          "border border-white/40 text-white hover:border-vous-gold hover:text-vous-gold",
-        ghost:
-          "text-vous-soft-black hover:text-vous-gold border-b border-vous-soft-black hover:border-vous-gold pb-0.5",
+        default: "bg-black text-white hover:bg-black/80",
+        gold: "bg-black text-white hover:bg-black/80",
+        outline: "border border-black/10 text-black hover:border-black",
+        "outline-white": "border border-white/40 text-white hover:border-black hover:text-black",
+        ghost: "text-black hover:text-black",
       },
       size: {
         default: "px-8 py-3.5",

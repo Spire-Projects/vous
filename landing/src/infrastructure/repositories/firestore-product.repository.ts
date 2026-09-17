@@ -1,7 +1,17 @@
 import { getFirebaseDb } from "@/lib/firebase";
-import { collection, getDocs, doc, getDoc, query, where, limit } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  query,
+  where,
+  limit,
+  runTransaction,
+  serverTimestamp,
+} from "firebase/firestore";
 import type { ProductRepository } from "@/domain/repositories/product.repository";
-import type { Product } from "@/domain/entities/product.entity";
+import type { Product, ProductVariant } from "@/domain/entities/product.entity";
 
 function mapDoc(id: string, data: Record<string, unknown>): Product {
   return {
@@ -11,21 +21,30 @@ function mapDoc(id: string, data: Record<string, unknown>): Product {
     description: (data.description as string) ?? "",
     detail: (data.detail as string) ?? "",
     price: (data.price as number) ?? 0,
+    wholesalePrice: (data.wholesalePrice as number) ?? undefined,
     categoryId: (data.categoryId as string) ?? "",
     categoryName: (data.categoryName as string) ?? "",
     badge: (data.badge as string) ?? undefined,
     images: (data.images as string[]) ?? [],
     sizes: (data.sizes as string[]) ?? [],
-    colors: (data.colors as { hex: string; name: string }[]) ?? [],
+    colors: (data.colors as { hex: string; name: string; images?: string[] }[]) ?? [],
     materials: (data.materials as string[]) ?? [],
     hasVariants: (data.hasVariants as boolean) ?? false,
     isActive: (data.isActive as boolean) ?? true,
     isFeatured: (data.isFeatured as boolean) ?? false,
+    isPreorder: (data.isPreorder as boolean) ?? false,
+    isSpecialCollection: (data.isSpecialCollection as boolean) ?? false,
+    isBestseller: (data.isBestseller as boolean) ?? false,
     isDiscounted: (data.isDiscounted as boolean) ?? false,
     discountPercentage: (data.discountPercentage as number) ?? undefined,
+    wholesaleOnly: (data.wholesaleOnly as boolean) ?? undefined,
+    wholesaleStock: (data.wholesaleStock as number) ?? undefined,
     stock: (data.stock as number) ?? 0,
     sortOrder: (data.sortOrder as number) ?? 0,
+    attributes: (data.attributes as Record<string, string>) ?? {},
     tags: (data.tags as string[]) ?? undefined,
+    totalSales: (data.totalSales as number) ?? 0,
+    weeklySales: (data.weeklySales as number) ?? 0,
     createdAt:
       (data.createdAt as { toDate?: () => Date })?.toDate?.().toISOString() ??
       new Date().toISOString(),
@@ -40,7 +59,7 @@ export const firestoreProductRepository: ProductRepository = {
     const snap = await getDocs(collection(getFirebaseDb(), "products"));
     return snap.docs
       .map((d) => mapDoc(d.id, d.data() as Record<string, unknown>))
-      .filter((p) => p.isActive);
+      .filter((p) => p.isActive && (p.stock > 0 || p.hasVariants));
   },
 
   async findBySlug(slug: string): Promise<Product | null> {
@@ -64,6 +83,60 @@ export const firestoreProductRepository: ProductRepository = {
       where("isActive", "==", true)
     );
     const snap = await getDocs(q);
-    return snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>));
+    return snap.docs
+      .map((d) => mapDoc(d.id, d.data() as Record<string, unknown>))
+      .filter((p) => p.stock > 0 || p.hasVariants);
+  },
+
+  async findVariants(productId: string): Promise<ProductVariant[]> {
+    const snap = await getDocs(collection(getFirebaseDb(), "products", productId, "variants"));
+    return snap.docs
+      .map((d) => {
+        const data = d.data() as Record<string, unknown>;
+        return {
+          id: d.id,
+          sku: (data.sku as string) ?? undefined,
+          color: (data.color as string | null) ?? null,
+          colorHex: (data.colorHex as string | null) ?? null,
+          size: (data.size as string | null) ?? null,
+          stock: (data.stock as number) ?? 0,
+          isActive: (data.isActive as boolean) ?? true,
+          images: (data.images as string[]) ?? undefined,
+        } satisfies ProductVariant;
+      })
+      .filter((v) => v.isActive);
+  },
+
+  async decrementVariantStock(
+    productId: string,
+    variantId: string,
+    quantity: number
+  ): Promise<void> {
+    const db = getFirebaseDb();
+    const variantRef = doc(db, "products", productId, "variants", variantId);
+    await runTransaction(db, async (tx) => {
+      const snap = await tx.get(variantRef);
+      if (!snap.exists()) throw new Error("Variante no encontrada");
+      const current = (snap.data().stock as number) ?? 0;
+      if (current < quantity) throw new Error(`Stock insuficiente. Disponible: ${current}`);
+      tx.update(variantRef, { stock: current - quantity });
+    });
+  },
+
+  async decrementStock(productId: string, quantity: number): Promise<void> {
+    const db = getFirebaseDb();
+    const productRef = doc(db, "products", productId);
+    await runTransaction(db, async (tx) => {
+      const snap = await tx.get(productRef);
+      if (!snap.exists()) throw new Error("Producto no encontrado");
+      const current = (snap.data().stock as number) ?? 0;
+      if (current < quantity) throw new Error(`Stock insuficiente. Disponible: ${current}`);
+      const newStock = current - quantity;
+      tx.update(productRef, {
+        stock: newStock,
+        isActive: newStock > 0,
+        updatedAt: serverTimestamp(),
+      });
+    });
   },
 };

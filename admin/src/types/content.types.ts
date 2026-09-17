@@ -1,7 +1,5 @@
 import type { BaseDocument, AnyTimestamp } from "./base.types";
 
-// ── Colección: banners ──────────────────────────────────────────────────────
-
 export interface Banner extends BaseDocument {
   title?: string;
   subtitle?: string;

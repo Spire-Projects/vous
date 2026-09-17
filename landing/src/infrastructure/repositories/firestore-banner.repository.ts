@@ -7,10 +7,13 @@ function mapDoc(id: string, data: Record<string, unknown>): Banner {
   return {
     id,
     imageUrl: (data.imageUrl as string) ?? "",
+    mobileImageUrl: data["mobileImageUrl"] as string | undefined,
+    tabletImageUrl: data["tabletImageUrl"] as string | undefined,
     title: (data.title as string) ?? "",
     subtitle: (data.subtitle as string) ?? "",
     ctaText: (data.ctaText as string) ?? "",
     ctaUrl: (data.ctaUrl as string) ?? "",
+    categorySlug: data["categorySlug"] as string | undefined,
     active: (data.active as boolean) ?? true,
     order: (data.order as number) ?? 0,
     createdAt:

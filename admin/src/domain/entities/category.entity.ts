@@ -5,6 +5,7 @@ export interface Category {
   description?: string;
   image?: string;
   banner?: string;
+  images: string[];
   isActive: boolean;
   sortOrder: number;
   createdAt: string;
@@ -17,6 +18,7 @@ export interface CreateCategoryInput {
   description?: string;
   image?: string;
   banner?: string;
+  images: string[];
   isActive: boolean;
   sortOrder: number;
 }

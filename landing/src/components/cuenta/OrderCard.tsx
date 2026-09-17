@@ -20,30 +20,30 @@ export function OrderCard({ order, onViewDetail }: OrderCardProps) {
   return (
     <button
       onClick={() => onViewDetail(order)}
-      className="w-full text-left border border-vous-gray-light/40 p-4 sm:p-5 flex gap-4 hover:border-vous-gold transition-colors group"
+      className="w-full text-left border border-black/10 p-4 sm:p-5 flex gap-4 hover:border-black transition-colors group"
     >
       {/* Product thumbnail */}
       {firstItem?.imageUrl ? (
         <img
           src={firstItem.imageUrl}
           alt={firstItem.productName}
-          className="w-16 h-20 object-cover shrink-0 border border-vous-gray-light/30"
+          className="w-16 h-20 object-cover shrink-0 border border-black/10"
         />
       ) : (
-        <div className="w-16 h-20 shrink-0 bg-vous-soft-black/10" />
+        <div className="w-16 h-20 shrink-0 bg-black/10" />
       )}
 
       {/* Info */}
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-3 flex-wrap">
           <div className="min-w-0">
-            <p className="font-nav text-[10px] tracking-[0.18em] uppercase text-vous-gray">
+            <p className="font-nav text-[10px] tracking-[0.18em] uppercase text-black/50">
               {order.orderNumber}
             </p>
-            <p className="font-serif text-sm text-vous-soft-black mt-0.5 truncate">
+            <p className="font-serif text-sm text-black mt-0.5 truncate">
               {firstItem?.productName ?? "Pedido"}
               {extraItems > 0 && (
-                <span className="font-sans text-xs text-vous-gray"> +{extraItems} más</span>
+                <span className="font-sans text-xs text-black/50"> +{extraItems} más</span>
               )}
             </p>
           </div>
@@ -52,14 +52,14 @@ export function OrderCard({ order, onViewDetail }: OrderCardProps) {
 
         <div className="flex items-end justify-between mt-3 gap-2">
           <div>
-            <p className="font-sans text-xs text-vous-gray">{createdDate}</p>
-            <p className="font-serif text-base text-vous-soft-black mt-0.5">
+            <p className="font-sans text-xs text-black/50">{createdDate}</p>
+            <p className="font-serif text-base text-black mt-0.5">
               Bs. {order.total.toLocaleString("es-BO")}
             </p>
           </div>
           <ChevronRight
             size={16}
-            className="text-vous-gray group-hover:text-vous-gold transition-colors shrink-0"
+            className="text-black/50 group-hover:text-black transition-colors shrink-0"
           />
         </div>
       </div>

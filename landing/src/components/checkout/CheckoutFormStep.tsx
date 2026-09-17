@@ -24,6 +24,7 @@ interface CheckoutFormStepProps {
   onSubmit: () => void;
   stockErrors: OutOfStockItem[];
   onOpenStockDialog?: () => void;
+  wholesaleErrors?: string[];
 }
 
 const FIELDS = [
@@ -43,10 +44,11 @@ export function CheckoutFormStep({
   onSubmit,
   stockErrors,
   onOpenStockDialog,
+  wholesaleErrors,
 }: CheckoutFormStepProps) {
   return (
     <section>
-      <h2 className="font-nav text-[11px] font-semibold tracking-[0.25em] uppercase text-vous-gold mb-6">
+      <h2 className="font-nav text-[11px] font-semibold tracking-[0.25em] uppercase text-black mb-6">
         Información de Envío
       </h2>
 
@@ -97,6 +99,22 @@ export function CheckoutFormStep({
                 <Badge variant={e.available <= 0 ? "out_of_stock" : "warning"}>
                   {e.available <= 0 ? "Agotado" : `${e.available} disp.`}
                 </Badge>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {wholesaleErrors && wholesaleErrors.length > 0 && (
+        <div className="mt-4 p-4 bg-red-50 border border-red-200">
+          <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-red-600 mb-2">
+            Requisitos para compra mayorista
+          </p>
+          <ul className="space-y-1">
+            {wholesaleErrors.map((err, i) => (
+              <li key={i} className="font-sans text-sm text-red-600 flex items-start gap-1">
+                <AlertCircle size={13} className="mt-0.5 shrink-0" />
+                {err}
               </li>
             ))}
           </ul>

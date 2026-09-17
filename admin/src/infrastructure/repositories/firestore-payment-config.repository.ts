@@ -13,6 +13,10 @@ export const firestorePaymentConfigRepository: PaymentConfigRepository = {
     const data = snap.data() as Record<string, unknown>;
     return {
       qrImageUrl: (data["qrImageUrl"] as string) ?? "",
+      bankName: (data["bankName"] as string) ?? "",
+      accountHolder: (data["accountHolder"] as string) ?? "",
+      accountNumber: (data["accountNumber"] as string) ?? "",
+      instructions: (data["instructions"] as string) ?? "",
       updatedAt:
         (data["updatedAt"] as { toDate?: () => Date })?.toDate?.().toISOString() ??
         new Date().toISOString(),

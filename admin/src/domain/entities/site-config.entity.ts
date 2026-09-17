@@ -11,6 +11,37 @@ export interface ScheduleItem {
   hours: string;
 }
 
+export interface ExtendedSchedule {
+  title: string;
+  days: ScheduleItem[];
+}
+
+export interface DepartmentLink {
+  name: string;
+  googleMapsUrl: string;
+  tiktokUrl?: string;
+  lat?: number;
+  lng?: number;
+}
+
+export interface ContentSection {
+  isActive: boolean;
+  title: string;
+  subtitle: string;
+  content: string;
+  imageUrl?: string;
+  images?: string[];
+  linkUrl?: string;
+}
+
+export interface FeedbackSection {
+  isActive: boolean;
+  title: string;
+  subtitle: string;
+  successMessage: string;
+  emailRecipient: string;
+}
+
 export interface SiteConfig {
   id: string;
   logoUrl: string;
@@ -23,11 +54,19 @@ export interface SiteConfig {
   city: string;
   instagram: SocialNetwork;
   tiktok: SocialNetwork;
-  facebook: SocialNetwork;
-  pinterest: SocialNetwork;
+  ubicacion: SocialNetwork;
+  googleMapsUrl: string;
   shippingPolicy: string;
   returnPolicy: string;
+  termsOfService: string;
   schedule: ScheduleItem[];
+  extendedSchedules: ExtendedSchedule[];
+  departmentLinks: DepartmentLink[];
+  otherCountryLinks: DepartmentLink[];
+  fashionTrends: ContentSection;
+  vousNews: ContentSection;
+  newPosts: ContentSection;
+  feedback: FeedbackSection;
   updatedAt: string;
 }
 
@@ -40,11 +79,19 @@ export interface UpdateSiteConfigInput {
   email?: string;
   address?: string;
   city?: string;
+  googleMapsUrl?: string;
   instagram?: SocialNetwork;
   tiktok?: SocialNetwork;
-  facebook?: SocialNetwork;
-  pinterest?: SocialNetwork;
+  ubicacion?: SocialNetwork;
   shippingPolicy?: string;
   returnPolicy?: string;
+  termsOfService?: string;
   schedule?: ScheduleItem[];
+  extendedSchedules?: ExtendedSchedule[];
+  departmentLinks?: DepartmentLink[];
+  otherCountryLinks?: DepartmentLink[];
+  fashionTrends?: ContentSection;
+  vousNews?: ContentSection;
+  newPosts?: ContentSection;
+  feedback?: FeedbackSection;
 }

@@ -2,21 +2,26 @@
 
 import { useEffect, useState } from "react";
 import { firestoreProductRepository } from "@/infrastructure/repositories/firestore-product.repository";
-import { getProducts } from "@/application/use-cases/product/get-products";
-import { getProductsByCategory } from "@/application/use-cases/product/get-products-by-category";
+import { getVisibleProducts } from "@/application/use-cases/product/get-visible-products";
+import { getVisibleProductsByCategory } from "@/application/use-cases/product/get-visible-products-by-category";
+import { useAuthContext } from "@/context/AuthContext";
 import type { Product } from "@/domain/entities/product.entity";
 
 export function useProducts() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { isWholesaler } = useAuthContext();
 
   useEffect(() => {
-    getProducts(firestoreProductRepository)
+    getVisibleProducts(firestoreProductRepository, isWholesaler)
       .then(setProducts)
-      .catch(() => setError("Error al cargar los productos"))
+      .catch((err) => {
+        console.error("[useProducts] Error cargando productos:", err);
+        setError("Error al cargar los productos");
+      })
       .finally(() => setLoading(false));
-  }, []);
+  }, [isWholesaler]);
 
   return { products, loading, error };
 }
@@ -25,6 +30,7 @@ export function useProductsByCategory(categoryId: string) {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { isWholesaler } = useAuthContext();
 
   useEffect(() => {
     if (!categoryId) {
@@ -35,11 +41,14 @@ export function useProductsByCategory(categoryId: string) {
       return;
     }
     setLoading(true);
-    getProductsByCategory(firestoreProductRepository, categoryId)
+    getVisibleProductsByCategory(firestoreProductRepository, categoryId, isWholesaler)
       .then(setProducts)
-      .catch(() => setError("Error al cargar los productos"))
+      .catch((err) => {
+        console.error("[useProductsByCategory] Error cargando productos:", err);
+        setError("Error al cargar los productos");
+      })
       .finally(() => setLoading(false));
-  }, [categoryId]);
+  }, [categoryId, isWholesaler]);
 
   return { products, loading, error };
 }

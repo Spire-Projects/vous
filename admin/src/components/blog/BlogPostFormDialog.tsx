@@ -82,7 +82,7 @@ export function BlogPostFormDialog({ open, post, onClose, onSave }: BlogPostForm
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-1 col-span-2">
               <Label>Título *</Label>
               <Input required value={title} onChange={(e) => handleTitleChange(e.target.value)} placeholder="El título del artículo..." />
@@ -111,7 +111,7 @@ export function BlogPostFormDialog({ open, post, onClose, onSave }: BlogPostForm
             <Label>Contenido *</Label>
             <RichTextEditor content={content} onChange={setContent} />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-1">
               <Label>Etiquetas (separadas por coma)</Label>
               <Input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="moda, editorial, tendencias" />

@@ -57,7 +57,7 @@ const DialogOverlay = React.forwardRef<
   <_Overlay
     ref={ref}
     className={cn(
-      "fixed inset-0 z-50 bg-vous-soft-black/40 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "fixed inset-0 z-50 bg-black/40 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className
     )}
     {...props}
@@ -106,7 +106,7 @@ const DialogContent = React.forwardRef<
       {...props}
     >
       {children}
-      <_Close className="absolute right-4 top-4 text-vous-gray hover:text-vous-soft-black transition-colors">
+      <_Close className="absolute right-4 top-4 text-black/50 hover:text-black transition-colors">
         <X size={16} />
         <span className="sr-only">Cerrar</span>
       </_Close>
@@ -122,11 +122,7 @@ DialogHeader.displayName = "DialogHeader";
 
 const DialogTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(
   ({ className, ...props }, ref) => (
-    <_Title
-      ref={ref}
-      className={cn("font-serif text-xl text-vous-soft-black", className)}
-      {...props}
-    />
+    <_Title ref={ref} className={cn("font-serif text-xl text-black", className)} {...props} />
   )
 );
 DialogTitle.displayName = "DialogTitle";
@@ -135,11 +131,7 @@ const DialogDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <_Description
-    ref={ref}
-    className={cn("font-sans text-sm text-vous-gray", className)}
-    {...props}
-  />
+  <_Description ref={ref} className={cn("font-sans text-sm text-black/50", className)} {...props} />
 ));
 DialogDescription.displayName = "DialogDescription";
 

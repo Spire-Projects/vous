@@ -1,11 +1,11 @@
 import {
   collection, getDocs, doc, getDoc, updateDoc,
   query, orderBy, where, limit as fsLimit, serverTimestamp,
-  onSnapshot, runTransaction,
+  onSnapshot, runTransaction, arrayUnion, increment,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import type { OrderRepository } from "@/domain/repositories/order.repository";
-import type { Order, OrderItem, ShippingInfo, UpdateOrderStatusInput } from "@/domain/entities/order.entity";
+import type { Order, OrderItem, ShippingInfo, UpdateOrderStatusInput, StatusHistoryEntry } from "@/domain/entities/order.entity";
 
 function toISO(ts: unknown): string {
   if (!ts) return new Date().toISOString();
@@ -57,6 +57,13 @@ function mapOrder(d: { id: string; data: () => Record<string, unknown> }): Order
     discountCode: data["discountCode"] as string | undefined,
     carrierRef: data["carrierRef"] as string | undefined,
     adminNotes: data["adminNotes"] as string | undefined,
+    statusHistory: ((data["statusHistory"] as Array<Record<string, unknown>>) ?? []).map(
+      (e) => ({
+        status: e["status"] as StatusHistoryEntry["status"],
+        notes: e["notes"] as string | undefined,
+        timestamp: toISO(e["timestamp"]),
+      })
+    ),
     createdAt: toISO(data["createdAt"]),
     updatedAt: toISO(data["updatedAt"]),
   };
@@ -86,10 +93,66 @@ export const firestoreOrderRepository: OrderRepository = {
     return snap.docs.map((d) => mapOrder({ id: d.id, data: d.data.bind(d) }));
   },
 
-  async updateStatus({ orderId, status, adminNotes }: UpdateOrderStatusInput): Promise<void> {
-    const updates: Record<string, unknown> = { status, updatedAt: serverTimestamp() };
-    if (adminNotes !== undefined) updates["adminNotes"] = adminNotes;
-    await updateDoc(doc(db, "orders", orderId), updates);
+  async updateStatus({ orderId, status, note }: UpdateOrderStatusInput): Promise<void> {
+    const orderRef = doc(db, "orders", orderId);
+    const confirmedStatuses = ["confirmed", "preparing", "shipped", "delivered"];
+    const pendingStatuses = ["pending", "payment_sent", "verifying_payment"];
+
+    await runTransaction(db, async (transaction) => {
+      const orderSnap = await transaction.get(orderRef);
+      if (!orderSnap.exists()) throw new Error("Pedido no encontrado");
+
+      const currentStatus = orderSnap.data()["status"] as Order["status"];
+      const items = (orderSnap.data()["items"] ?? []) as OrderItem[];
+
+      const isNowConfirmed = confirmedStatuses.includes(status);
+      const wasPending = pendingStatuses.includes(currentStatus);
+
+      // Incrementar contadores solo al pasar de pendiente a confirmado
+      if (isNowConfirmed && wasPending) {
+        for (const item of items) {
+          const productRef = doc(db, "products", item.productId);
+          const productSnap = await transaction.get(productRef);
+          if (productSnap.exists()) {
+            transaction.update(productRef, {
+              totalSales: increment(item.quantity),
+              weeklySales: increment(item.quantity),
+              updatedAt: serverTimestamp(),
+            });
+          }
+        }
+      }
+
+      // Si se cancela un pedido confirmado, restar contadores
+      if (status === "cancelled" && !pendingStatuses.includes(currentStatus)) {
+        for (const item of items) {
+          const productRef = doc(db, "products", item.productId);
+          const productSnap = await transaction.get(productRef);
+          if (productSnap.exists()) {
+            const currentTotal = (productSnap.data()["totalSales"] as number) ?? 0;
+            const currentWeekly = (productSnap.data()["weeklySales"] as number) ?? 0;
+            transaction.update(productRef, {
+              totalSales: Math.max(0, currentTotal - item.quantity),
+              weeklySales: Math.max(0, currentWeekly - item.quantity),
+              updatedAt: serverTimestamp(),
+            });
+          }
+        }
+      }
+
+      const entry: StatusHistoryEntry = {
+        status,
+        notes: note,
+        timestamp: new Date().toISOString(),
+      };
+
+      transaction.update(orderRef, {
+        status,
+        ...(note ? { adminNotes: note } : {}),
+        statusHistory: arrayUnion(entry),
+        updatedAt: serverTimestamp(),
+      });
+    });
   },
 
   subscribeAll(
@@ -106,10 +169,9 @@ export const firestoreOrderRepository: OrderRepository = {
     );
   },
 
-  async cancelAndRestoreStock(orderId: string, adminNotes?: string): Promise<void> {
+  async cancelAndRestoreStock(orderId: string, note: string): Promise<void> {
     const orderRef = doc(db, "orders", orderId);
     await runTransaction(db, async (transaction) => {
-      // ── All reads first ─────────────────────────────────────────────────
       const orderSnap = await transaction.get(orderRef);
       if (!orderSnap.exists()) throw new Error("Pedido no encontrado");
 
@@ -118,8 +180,6 @@ export const firestoreOrderRepository: OrderRepository = {
         variantId?: string;
         quantity: number;
       }>;
-      // Stock lives in the variant doc when variantId is present,
-      // or in the product doc itself for products without variants.
       const stockRefs = items.map((item) =>
         item.variantId
           ? doc(db, "products", item.productId, "variants", item.variantId)
@@ -127,7 +187,6 @@ export const firestoreOrderRepository: OrderRepository = {
       );
       const stockSnaps = await Promise.all(stockRefs.map((ref) => transaction.get(ref)));
 
-      // ── All writes ───────────────────────────────────────────────────────
       stockSnaps.forEach((snap, i) => {
         if (snap.exists()) {
           transaction.update(stockRefs[i], {
@@ -137,12 +196,18 @@ export const firestoreOrderRepository: OrderRepository = {
         }
       });
 
-      const orderUpdates: Record<string, unknown> = {
+      const cancelEntry: StatusHistoryEntry = {
         status: "cancelled",
-        updatedAt: serverTimestamp(),
+        notes: note,
+        timestamp: new Date().toISOString(),
       };
-      if (adminNotes !== undefined) orderUpdates["adminNotes"] = adminNotes;
-      transaction.update(orderRef, orderUpdates);
+
+      transaction.update(orderRef, {
+        status: "cancelled",
+        adminNotes: note,
+        statusHistory: arrayUnion(cancelEntry),
+        updatedAt: serverTimestamp(),
+      });
     });
   },
 

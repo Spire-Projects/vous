@@ -16,6 +16,7 @@ function mapDoc(id: string, data: Record<string, unknown>): Category {
     description: data.description as string | undefined,
     image: data.image as string | undefined,
     banner: data.banner as string | undefined,
+    images: (data.images as string[]) ?? [],
     isActive: (data.isActive as boolean) ?? true,
     sortOrder: (data.sortOrder as number) ?? 0,
     createdAt: tsToIso(data.createdAt),

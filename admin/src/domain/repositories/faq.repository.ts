@@ -7,4 +7,5 @@ export interface FAQRepository {
   update(id: string, input: UpdateFAQInput): Promise<void>;
   delete(id: string): Promise<void>;
   setActive(id: string, isActive: boolean): Promise<void>;
+  updateOrder(items: { id: string; order: number }[]): Promise<void>;
 }

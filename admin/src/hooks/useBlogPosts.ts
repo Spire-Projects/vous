@@ -28,15 +28,24 @@ export function useBlogPosts() {
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { fetchPosts(); }, [fetchPosts]);
 
+  const ensureOnlyOneFeatured = useCallback(async (currentId?: string) => {
+    const other = posts.find((p) => p.featured && p.id !== currentId);
+    if (other) {
+      await setPostFeatured(firestoreBlogPostRepository, other.id, false);
+    }
+  }, [posts]);
+
   const create = useCallback(async (input: CreateBlogPostInput) => {
+    if (input.featured) await ensureOnlyOneFeatured();
     await createBlogPost(firestoreBlogPostRepository, input);
     await fetchPosts();
-  }, [fetchPosts]);
+  }, [fetchPosts, ensureOnlyOneFeatured]);
 
   const update = useCallback(async (id: string, input: UpdateBlogPostInput) => {
+    if (input.featured) await ensureOnlyOneFeatured(id);
     await updateBlogPost(firestoreBlogPostRepository, id, input);
     await fetchPosts();
-  }, [fetchPosts]);
+  }, [fetchPosts, ensureOnlyOneFeatured]);
 
   const remove = useCallback(async (id: string) => {
     await deleteBlogPost(firestoreBlogPostRepository, id);
@@ -50,9 +59,11 @@ export function useBlogPosts() {
   }, [fetchPosts]);
 
   const toggleFeatured = useCallback(async (id: string, current: boolean) => {
-    await setPostFeatured(firestoreBlogPostRepository, id, !current);
+    const next = !current;
+    if (next) await ensureOnlyOneFeatured(id);
+    await setPostFeatured(firestoreBlogPostRepository, id, next);
     await fetchPosts();
-  }, [fetchPosts]);
+  }, [fetchPosts, ensureOnlyOneFeatured]);
 
   return { posts, loading, error, refetch: fetchPosts, create, update, remove, toggleStatus, toggleFeatured };
 }

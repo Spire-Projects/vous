@@ -10,6 +10,6 @@ export interface OrderRepository {
     onError?: (error: Error) => void,
     limit?: number,
   ): () => void;
-  cancelAndRestoreStock(orderId: string, adminNotes?: string): Promise<void>;
+  cancelAndRestoreStock(orderId: string, note: string): Promise<void>;
   updateNotes(orderId: string, notes: string): Promise<void>;
 }

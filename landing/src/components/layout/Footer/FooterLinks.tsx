@@ -7,15 +7,17 @@ const FOOTER_SECTIONS = [
       { href: "/", label: "Inicio" },
       { href: "/catalogo", label: "Catálogo" },
       { href: "/categorias", label: "Categorías" },
-      { href: "/revista", label: "Blog de Moda" },
+      { href: "/nosotros", label: "Nosotros" },
+      { href: "/asesoria-de-moda", label: "Asesoría de Moda" },
+      { href: "/recomendaciones", label: "Recomendaciones" },
+      { href: "/revista", label: "Vous News" },
     ],
   },
   {
     title: "Ayuda",
     links: [
-      { href: "/contacto", label: "Contacto" },
-      { href: "/preguntas-frecuentes", label: "Preguntas Frecuentes" },
       { href: "/politica-de-envios", label: "Política de Envíos" },
+      { href: "/politica-de-devoluciones", label: "Política de Devoluciones" },
       { href: "/terminos", label: "Términos y Condiciones" },
     ],
   },
@@ -30,10 +32,10 @@ const FOOTER_SECTIONS = [
 
 export function FooterLinks() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-8 lg:gap-16">
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-8 lg:gap-12">
       {FOOTER_SECTIONS.map(({ title, links }) => (
         <div key={title}>
-          <h3 className="font-sans text-[11px] font-semibold tracking-[0.2em] text-vous-gold uppercase mb-4">
+          <h3 className="font-sans text-[11px] font-semibold tracking-[0.2em] text-white/40 uppercase mb-4">
             {title}
           </h3>
           <ul className="space-y-2.5">
@@ -41,7 +43,7 @@ export function FooterLinks() {
               <li key={href}>
                 <Link
                   href={href}
-                  className="font-sans text-sm text-vous-gray-light hover:text-white transition-colors duration-200"
+                  className="font-sans text-sm text-white/50 hover:text-white transition-colors duration-300"
                 >
                   {label}
                 </Link>
