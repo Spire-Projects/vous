@@ -29,8 +29,10 @@ export function useVariants(productId: string | null) {
     }
   }, [productId]);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { fetchVariants(); }, [fetchVariants]);
+   
+  useEffect(() => {
+    fetchVariants();
+  }, [fetchVariants]);
 
   const create = useCallback(
     async (input: CreateVariantInput) => {
@@ -39,17 +41,22 @@ export function useVariants(productId: string | null) {
       await recalculateProductStock(firestoreProductRepository, productId);
       await fetchVariants();
     },
-    [productId, fetchVariants]
+    [productId, fetchVariants],
   );
 
   const update = useCallback(
     async (variantId: string, input: UpdateVariantInput) => {
       if (!productId) return;
-      await updateVariant(firestoreProductRepository, productId, variantId, input);
+      await updateVariant(
+        firestoreProductRepository,
+        productId,
+        variantId,
+        input,
+      );
       await recalculateProductStock(firestoreProductRepository, productId);
       await fetchVariants();
     },
-    [productId, fetchVariants]
+    [productId, fetchVariants],
   );
 
   const remove = useCallback(
@@ -59,8 +66,16 @@ export function useVariants(productId: string | null) {
       await recalculateProductStock(firestoreProductRepository, productId);
       await fetchVariants();
     },
-    [productId, fetchVariants]
+    [productId, fetchVariants],
   );
 
-  return { variants, loading, error, create, update, remove, refetch: fetchVariants };
+  return {
+    variants,
+    loading,
+    error,
+    create,
+    update,
+    remove,
+    refetch: fetchVariants,
+  };
 }

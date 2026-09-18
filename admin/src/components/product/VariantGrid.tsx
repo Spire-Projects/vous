@@ -17,7 +17,10 @@ export interface VariantData {
   sku: string;
 }
 
-function generateCombinations(colors: ColorItem[], sizes: string[]): VariantRow[] {
+function generateCombinations(
+  colors: ColorItem[],
+  sizes: string[],
+): VariantRow[] {
   if (colors.length === 0 && sizes.length === 0) return [];
   const cList = colors.length > 0 ? colors : [{ hex: "#000000", name: "" }];
   const sList = sizes.length > 0 ? sizes : [""];
@@ -37,8 +40,16 @@ interface VariantGridProps {
   onChange: (key: string, data: VariantData) => void;
 }
 
-export function VariantGrid({ colors, sizes, variants, onChange }: VariantGridProps) {
-  const rows = useMemo(() => generateCombinations(colors, sizes), [colors, sizes]);
+export function VariantGrid({
+  colors,
+  sizes,
+  variants,
+  onChange,
+}: VariantGridProps) {
+  const rows = useMemo(
+    () => generateCombinations(colors, sizes),
+    [colors, sizes],
+  );
 
   if (rows.length === 0) return null;
 
@@ -56,29 +67,57 @@ export function VariantGrid({ colors, sizes, variants, onChange }: VariantGridPr
         <table className="w-full text-[12px]">
           <thead>
             <tr className="border-b border-white/40 bg-white/90/50">
-              {hasColors && <th className="text-left px-3 py-1.5 font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">Color</th>}
-              {hasSizes && <th className="text-left px-3 py-1.5 font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">Talla</th>}
-              <th className="text-left px-3 py-1.5 font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary w-24">Stock</th>
-              <th className="text-left px-3 py-1.5 font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary w-36">SKU</th>
+              {hasColors && (
+                <th className="text-left px-3 py-1.5 font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">
+                  Color
+                </th>
+              )}
+              {hasSizes && (
+                <th className="text-left px-3 py-1.5 font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary">
+                  Talla
+                </th>
+              )}
+              <th className="text-left px-3 py-1.5 font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary w-24">
+                Stock
+              </th>
+              <th className="text-left px-3 py-1.5 font-nav text-[10px] uppercase tracking-wider text-vous-text-secondary w-36">
+                SKU
+              </th>
             </tr>
           </thead>
           <tbody>
             {rows.map((row, i) => {
               const key = `${row.color}::${row.size}`;
-              const v = variants[key] ?? { color: row.color || null, colorHex: row.colorHex || null, size: row.size || null, stock: 0, sku: "" };
+              const v = variants[key] ?? {
+                color: row.color || null,
+                colorHex: row.colorHex || null,
+                size: row.size || null,
+                stock: 0,
+                sku: "",
+              };
               return (
-                <tr key={i} className="border-b border-white/40 hover:bg-amber-50/30">
+                <tr
+                  key={i}
+                  className="border-b border-white/40 hover:bg-amber-50/30"
+                >
                   {hasColors && (
                     <td className="px-3 py-1">
                       <span className="inline-flex items-center gap-1.5">
-                        <span className="w-3.5 h-3.5 rounded-full border border-vous-border shrink-0" style={{ background: row.colorHex }} />
-                        <span className="text-[11px] font-nav uppercase">{row.color}</span>
+                        <span
+                          className="w-3.5 h-3.5 rounded-full border border-vous-border shrink-0"
+                          style={{ background: row.colorHex }}
+                        />
+                        <span className="text-[11px] font-nav uppercase">
+                          {row.color}
+                        </span>
                       </span>
                     </td>
                   )}
                   {hasSizes && (
                     <td className="px-3 py-1">
-                      <span className="text-[11px] font-nav uppercase">{row.size}</span>
+                      <span className="text-[11px] font-nav uppercase">
+                        {row.size}
+                      </span>
                     </td>
                   )}
                   <td className="px-3 py-1">
@@ -86,14 +125,21 @@ export function VariantGrid({ colors, sizes, variants, onChange }: VariantGridPr
                       type="number"
                       min={0}
                       value={v.stock}
-                      onChange={(e) => onChange(key, { ...v, stock: Math.max(0, Number(e.target.value) || 0) })}
+                      onChange={(e) =>
+                        onChange(key, {
+                          ...v,
+                          stock: Math.max(0, Number(e.target.value) || 0),
+                        })
+                      }
                       className="h-7 text-[11px] w-full"
                     />
                   </td>
                   <td className="px-3 py-1">
                     <Input
                       value={v.sku}
-                      onChange={(e) => onChange(key, { ...v, sku: e.target.value })}
+                      onChange={(e) =>
+                        onChange(key, { ...v, sku: e.target.value })
+                      }
                       placeholder="opcional"
                       className="h-7 text-[11px] w-full"
                     />
@@ -105,7 +151,9 @@ export function VariantGrid({ colors, sizes, variants, onChange }: VariantGridPr
         </table>
       </div>
       <div className="px-3 py-2 border-t border-white/40 bg-white/90/30 flex items-center gap-2">
-        <Label className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary shrink-0">Stock global:</Label>
+        <Label className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary shrink-0">
+          Stock global:
+        </Label>
         <Input
           type="number"
           min={0}
@@ -114,11 +162,20 @@ export function VariantGrid({ colors, sizes, variants, onChange }: VariantGridPr
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               e.preventDefault();
-              const val = Math.max(0, Number((e.target as HTMLInputElement).value) || 0);
+              const val = Math.max(
+                0,
+                Number((e.target as HTMLInputElement).value) || 0,
+              );
               const updated: Record<string, VariantData> = {};
               for (const row of rows) {
                 const key = `${row.color}::${row.size}`;
-                const existing = variants[key] ?? { color: row.color || null, colorHex: row.colorHex || null, size: row.size || null, stock: 0, sku: "" };
+                const existing = variants[key] ?? {
+                  color: row.color || null,
+                  colorHex: row.colorHex || null,
+                  size: row.size || null,
+                  stock: 0,
+                  sku: "",
+                };
                 updated[key] = { ...existing, stock: val };
               }
               Object.entries(updated).forEach(([k, d]) => onChange(k, d));

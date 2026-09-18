@@ -12,9 +12,14 @@ export function WholesalePage() {
   const { requests, loading, error, review } = useWholesale();
   const [reviewLoading, setReviewLoading] = useState<string | null>(null);
   const [reviewNote, setReviewNote] = useState("");
-  const [activeTab, setActiveTab] = useState<"requests" | "rules" | "terms">("requests");
+  const [activeTab, setActiveTab] = useState<"requests" | "rules" | "terms">(
+    "requests",
+  );
 
-  async function handleReview(req: WholesaleRequest, status: "approved" | "rejected") {
+  async function handleReview(
+    req: WholesaleRequest,
+    status: "approved" | "rejected",
+  ) {
     setReviewLoading(req.id);
     try {
       await review({
@@ -29,39 +34,40 @@ export function WholesalePage() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 shadow-xs p-5 sm:p-8 min-h-[calc(100vh-7rem)] space-y-6">
       <PageHeader
+        category="Personas"
         title="Mayoristas"
-        subtitle="Gestión de distribuidores VOUS — solicitudes, configuración comercial y términos de conducta."
+        subtitle="Gestión de distribuidores — solicitudes, configuración comercial y términos de conducta."
       />
 
-      <div className="flex gap-1 border-b border-white/40 pb-1">
+      <div className="flex flex-wrap items-center gap-2 p-1 bg-slate-100/80 rounded-xl w-fit">
         <button
           onClick={() => setActiveTab("requests")}
-          className={`inline-flex items-center gap-1.5 px-4 py-2.5 text-[11px] sm:text-sm font-sans border-b-2 transition-colors -mb-[1px] rounded-t-lg ${
+          className={`px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all cursor-pointer ${
             activeTab === "requests"
-              ? "border-vous-gold text-vous-gold font-semibold bg-amber-50/60"
-              : "border-transparent text-vous-text-secondary hover:text-vous-text hover:bg-white/40"
+              ? "bg-white text-slate-900 font-semibold shadow-xs"
+              : "text-slate-600 hover:text-slate-900"
           }`}
         >
           Solicitudes
         </button>
         <button
           onClick={() => setActiveTab("rules")}
-          className={`inline-flex items-center gap-1.5 px-4 py-2.5 text-[11px] sm:text-sm font-sans border-b-2 transition-colors -mb-[1px] rounded-t-lg ${
+          className={`px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all cursor-pointer ${
             activeTab === "rules"
-              ? "border-vous-gold text-vous-gold font-semibold bg-amber-50/60"
-              : "border-transparent text-vous-text-secondary hover:text-vous-text hover:bg-white/40"
+              ? "bg-white text-slate-900 font-semibold shadow-xs"
+              : "text-slate-600 hover:text-slate-900"
           }`}
         >
           Configuración Comercial
         </button>
         <button
           onClick={() => setActiveTab("terms")}
-          className={`inline-flex items-center gap-1.5 px-4 py-2.5 text-[11px] sm:text-sm font-sans border-b-2 transition-colors -mb-[1px] rounded-t-lg ${
+          className={`px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all cursor-pointer ${
             activeTab === "terms"
-              ? "border-vous-gold text-vous-gold font-semibold bg-amber-50/60"
-              : "border-transparent text-vous-text-secondary hover:text-vous-text hover:bg-white/40"
+              ? "bg-white text-slate-900 font-semibold shadow-xs"
+              : "text-slate-600 hover:text-slate-900"
           }`}
         >
           Términos para Mayoristas
@@ -69,12 +75,12 @@ export function WholesalePage() {
       </div>
 
       {activeTab === "rules" && (
-        <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden p-6">
+        <div className="bg-white border border-slate-200/80 rounded-2xl shadow-xs overflow-hidden p-6">
           <WholesaleRulesPanel />
         </div>
       )}
       {activeTab === "terms" && (
-        <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden p-6">
+        <div className="bg-white border border-slate-200/80 rounded-2xl shadow-xs overflow-hidden p-6">
           <WholesaleTermsPanel />
         </div>
       )}

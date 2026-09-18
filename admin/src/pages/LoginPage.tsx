@@ -6,7 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useSiteConfig } from "@/hooks/useSiteConfig";
 
-const LANDING_URL = (import.meta.env?.VITE_LANDING_URL as string | undefined) ?? "http://localhost:3000";
+const LANDING_URL =
+  (import.meta.env?.VITE_LANDING_URL as string | undefined) ??
+  "http://localhost:3000";
 
 const FOOTER_LINKS = [
   {
@@ -22,7 +24,10 @@ const FOOTER_LINKS = [
     title: "Legal",
     links: [
       { href: `${LANDING_URL}/politica-de-envios`, label: "Envíos" },
-      { href: `${LANDING_URL}/politica-de-devoluciones`, label: "Devoluciones" },
+      {
+        href: `${LANDING_URL}/politica-de-devoluciones`,
+        label: "Devoluciones",
+      },
       { href: `${LANDING_URL}/terminos`, label: "Términos" },
     ],
   },
@@ -82,108 +87,107 @@ export function LoginPage() {
   const logoUrl = config?.logoUrl;
 
   return (
-    <div className="min-h-screen bg-vous-bg flex flex-col">
-      <div className="flex-1 flex items-center justify-center p-4">
-        <div className="w-full max-w-sm">
-          {/* Header — Logo */}
-          <div className="text-center mb-10">
-            {logoUrl ? (
-              <img
-                src={logoUrl}
-                alt={storeName}
-                className="h-10 w-auto object-contain mx-auto"
+    <div className="min-h-screen bg-[#F4F6FB] flex flex-col justify-center items-center p-4">
+      <div className="w-full max-w-sm">
+        {/* Header — Logo */}
+        <div className="text-center mb-8">
+          {logoUrl ? (
+            <img
+              src={logoUrl}
+              alt={storeName}
+              className="h-10 w-auto object-contain mx-auto mb-3"
+            />
+          ) : (
+            <div className="w-12 h-12 rounded-2xl bg-[#0D0D0C] text-[#C9A84C] flex items-center justify-center mx-auto mb-3 shadow-md">
+              <LogIn size={24} />
+            </div>
+          )}
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+            {storeName}
+          </h1>
+          <p className="text-xs text-slate-500 font-medium mt-1">
+            Panel de administración & gestión
+          </p>
+        </div>
+
+        {/* Card */}
+        <div className="bg-white border border-slate-200/80 rounded-2xl sm:rounded-3xl shadow-sm p-6 sm:p-8">
+          <h2 className="text-lg font-bold text-slate-900 mb-6">
+            Iniciar Sesión
+          </h2>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">
+                Correo Electrónico
+              </label>
+              <Input
+                type="email"
+                required
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="admin@vous.com"
               />
-            ) : (
-              <h1 className="font-serif text-4xl font-medium text-vous-text tracking-widest">
-                {storeName}
-              </h1>
-            )}
-            <p className="text-[11px] font-nav uppercase tracking-[0.2em] text-vous-gold mt-2">
-              Admin Portal
-            </p>
-          </div>
+            </div>
 
-          {/* Card */}
-          <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden p-6 sm:p-8">
-            <h2 className="font-serif text-xl text-vous-text mb-6">
-              Iniciar Sesión
-            </h2>
-
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div>
-                <label className="block text-[10px] font-nav uppercase tracking-[0.15em] text-vous-text-secondary mb-1.5">
-                  Correo Electrónico
-                </label>
+            <div>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">
+                Contraseña
+              </label>
+              <div className="relative">
                 <Input
-                  type="email"
+                  type={showPassword ? "text" : "password"}
                   required
-                  autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@vous.com"
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="pr-10"
+                  placeholder="••••••••"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
+                  aria-label={
+                    showPassword ? "Ocultar contraseña" : "Ver contraseña"
+                  }
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
               </div>
+            </div>
 
-              <div>
-                <label className="block text-[10px] font-nav uppercase tracking-[0.15em] text-vous-text-secondary mb-1.5">
-                  Contraseña
-                </label>
-                <div className="relative">
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    required
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="pr-10"
-                    placeholder="••••••••"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword((v) => !v)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-vous-text-secondary hover:text-vous-text transition-colors"
-                    aria-label={showPassword ? "Ocultar contraseña" : "Ver contraseña"}
-                  >
-                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                  </button>
-                </div>
+            {error && (
+              <div className="border border-rose-200 bg-rose-50 px-3 py-2 rounded-xl">
+                <p className="text-xs text-rose-600 font-medium">{error}</p>
               </div>
+            )}
 
-              {error && (
-                <div className="border border-red-200 bg-red-50 px-3 py-2">
-                  <p className="text-xs text-red-600 font-sans">{error}</p>
-                </div>
+            <Button type="submit" disabled={loading} className="w-full h-11 text-sm font-semibold mt-2">
+              {loading ? (
+                <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : (
+                <LogIn size={16} />
               )}
+              {loading ? "Autenticando..." : "Ingresar al Panel"}
+            </Button>
+          </form>
+        </div>
 
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full h-11"
-              >
-                {loading ? (
-                  <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <LogIn size={14} />
-                )}
-                {loading ? "Autenticando..." : "Ingresar"}
-              </Button>
-            </form>
-          </div>
-
-          {/* First-time setup link */}
-          <div className="mt-6 text-center">
-            <p className="text-[11px] text-vous-text-secondary/70 font-nav">
-              ¿Primera vez?{" "}
-              <Link
-                to="/register"
-                className="text-vous-gold hover:underline transition-colors"
-              >
-                Configurar panel
-              </Link>
+        {/* First-time setup link */}
+        <div className="mt-6 text-center">
+          <p className="text-xs text-slate-500">
+            ¿Primera vez?{" "}
+            <Link
+              to="/register"
+              className="text-slate-900 font-semibold hover:text-[#C9A84C] transition-colors"
+            >
+              Configurar cuenta
+            </Link>
             </p>
           </div>
         </div>
-      </div>
 
       {/* Footer — Platform Links */}
       <footer className="border-t border-white/40 bg-white/90 backdrop-blur-lg">

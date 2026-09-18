@@ -43,7 +43,9 @@ export function RecentOrdersTable({ orders }: RecentOrdersTableProps) {
           <div key={o.id} className="p-4 space-y-2">
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-[10px] font-nav uppercase text-vous-text-secondary block">Pedido</span>
+                <span className="text-[10px] font-nav uppercase text-vous-text-secondary block">
+                  Pedido
+                </span>
                 <span className="font-nav text-[13px] font-semibold text-vous-text">
                   {o.orderNumber}
                 </span>
@@ -54,20 +56,26 @@ export function RecentOrdersTable({ orders }: RecentOrdersTableProps) {
             </div>
             <div className="flex gap-6">
               <div>
-                <span className="text-[10px] font-nav uppercase text-vous-text-secondary block">Fecha</span>
+                <span className="text-[10px] font-nav uppercase text-vous-text-secondary block">
+                  Fecha
+                </span>
                 <p className="font-sans text-xs text-vous-text-secondary">
                   {o.createdAt ? formatDate(o.createdAt) : "—"}
                 </p>
               </div>
               <div>
-                <span className="text-[10px] font-nav uppercase text-vous-text-secondary block">Total</span>
+                <span className="text-[10px] font-nav uppercase text-vous-text-secondary block">
+                  Total
+                </span>
                 <p className="font-nav text-sm text-vous-text">
                   {formatCurrency(o.total)}
                 </p>
               </div>
             </div>
             <div>
-              <span className="text-[10px] font-nav uppercase text-vous-text-secondary block">Cliente</span>
+              <span className="text-[10px] font-nav uppercase text-vous-text-secondary block">
+                Cliente
+              </span>
               <p className="font-sans text-sm text-vous-text-secondary">
                 {o.customerName}
               </p>

@@ -31,7 +31,10 @@ interface ClothingColorChipsProps {
   onChange: (colors: string[]) => void;
 }
 
-export function ClothingColorChips({ selected, onChange }: ClothingColorChipsProps) {
+export function ClothingColorChips({
+  selected,
+  onChange,
+}: ClothingColorChipsProps) {
   const toggle = (name: string) => {
     if (selected.includes(name)) {
       onChange(selected.filter((c) => c !== name));
@@ -53,7 +56,7 @@ export function ClothingColorChips({ selected, onChange }: ClothingColorChipsPro
               "inline-flex items-center gap-1.5 px-2.5 py-1.5 text-[11px] font-nav uppercase tracking-wide border rounded-lg transition-all",
               isActive
                 ? "bg-black text-white border-black"
-                : "bg-white/80 text-vous-text border-vous-border hover:border-black/40"
+                : "bg-white/80 text-vous-text border-vous-border hover:border-black/40",
             )}
             title={c.name}
           >
@@ -95,14 +98,16 @@ export function SkinTonePicker({ value, onChange }: SkinTonePickerProps) {
             onClick={() => onChange(tone.hex)}
             className={clsx(
               "group flex flex-col items-center gap-1.5 transition-all",
-              value === tone.hex ? "scale-110" : "hover:scale-105"
+              value === tone.hex ? "scale-110" : "hover:scale-105",
             )}
             title={tone.name}
           >
             <span
               className={clsx(
                 "w-10 h-10 rounded-full border-2 transition-colors",
-                value === tone.hex ? "border-black" : "border-transparent group-hover:border-black/30"
+                value === tone.hex
+                  ? "border-black"
+                  : "border-transparent group-hover:border-black/30",
               )}
               style={{ backgroundColor: tone.hex }}
             />
@@ -113,7 +118,9 @@ export function SkinTonePicker({ value, onChange }: SkinTonePickerProps) {
         ))}
       </div>
       <div className="flex items-center gap-2">
-        <span className="text-[10px] font-nav uppercase text-vous-text-secondary">Custom HEX</span>
+        <span className="text-[10px] font-nav uppercase text-vous-text-secondary">
+          Custom HEX
+        </span>
         <input
           type="color"
           value={value || "#E8BEAC"}
@@ -182,7 +189,7 @@ export function CutStyleChips({ selected, onChange }: CutStyleChipsProps) {
               "px-3 py-1.5 text-[11px] font-nav uppercase tracking-wide border rounded-lg transition-all",
               isActive
                 ? "bg-black text-white border-black"
-                : "bg-white/80 text-vous-text border-vous-border hover:border-black/40"
+                : "bg-white/80 text-vous-text border-vous-border hover:border-black/40",
             )}
           >
             {cut}
@@ -193,7 +200,13 @@ export function CutStyleChips({ selected, onChange }: CutStyleChipsProps) {
   );
 }
 
-export function SelectedChips({ items, onRemove }: { items: string[]; onRemove: (item: string) => void }) {
+export function SelectedChips({
+  items,
+  onRemove,
+}: {
+  items: string[];
+  onRemove: (item: string) => void;
+}) {
   if (items.length === 0) return null;
   return (
     <div className="flex flex-wrap gap-1.5">
@@ -203,7 +216,11 @@ export function SelectedChips({ items, onRemove }: { items: string[]; onRemove: 
           className="inline-flex items-center gap-1 px-2 py-1 text-[10px] font-nav uppercase tracking-wide bg-black text-white rounded-lg"
         >
           {item}
-          <button type="button" onClick={() => onRemove(item)} className="hover:text-red-300">
+          <button
+            type="button"
+            onClick={() => onRemove(item)}
+            className="hover:text-red-300"
+          >
             <X size={10} />
           </button>
         </span>

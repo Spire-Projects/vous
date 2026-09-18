@@ -30,40 +30,70 @@ export function useLandingSections() {
     }
   }, []);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { fetchSections(); }, [fetchSections]);
-
-  const create = useCallback(async (input: CreateLandingSectionInput) => {
-    await createLandingSection(firestoreLandingSectionRepository, input);
-    await fetchSections();
+   
+  useEffect(() => {
+    fetchSections();
   }, [fetchSections]);
 
-  const update = useCallback(async (id: string, input: UpdateLandingSectionInput) => {
-    await updateLandingSection(firestoreLandingSectionRepository, id, input);
-    await fetchSections();
-  }, [fetchSections]);
+  const create = useCallback(
+    async (input: CreateLandingSectionInput) => {
+      await createLandingSection(firestoreLandingSectionRepository, input);
+      await fetchSections();
+    },
+    [fetchSections],
+  );
 
-  const remove = useCallback(async (id: string) => {
-    await deleteLandingSection(firestoreLandingSectionRepository, id);
-    await fetchSections();
-  }, [fetchSections]);
+  const update = useCallback(
+    async (id: string, input: UpdateLandingSectionInput) => {
+      await updateLandingSection(firestoreLandingSectionRepository, id, input);
+      await fetchSections();
+    },
+    [fetchSections],
+  );
 
-  const toggleActive = useCallback(async (id: string, current: boolean) => {
-    await setLandingSectionActive(firestoreLandingSectionRepository, id, !current);
-    await fetchSections();
-  }, [fetchSections]);
+  const remove = useCallback(
+    async (id: string) => {
+      await deleteLandingSection(firestoreLandingSectionRepository, id);
+      await fetchSections();
+    },
+    [fetchSections],
+  );
 
-  const reorder = useCallback(async (items: LandingSection[]) => {
-    await Promise.all(
-      items.map((s, idx) => setLandingSectionOrder(firestoreLandingSectionRepository, s.id, idx))
-    );
-    await fetchSections();
-  }, [fetchSections]);
+  const toggleActive = useCallback(
+    async (id: string, current: boolean) => {
+      await setLandingSectionActive(
+        firestoreLandingSectionRepository,
+        id,
+        !current,
+      );
+      await fetchSections();
+    },
+    [fetchSections],
+  );
 
-  const updateProducts = useCallback(async (id: string, productIds: string[]) => {
-    await setLandingSectionProducts(firestoreLandingSectionRepository, id, productIds);
-    await fetchSections();
-  }, [fetchSections]);
+  const reorder = useCallback(
+    async (items: LandingSection[]) => {
+      await Promise.all(
+        items.map((s, idx) =>
+          setLandingSectionOrder(firestoreLandingSectionRepository, s.id, idx),
+        ),
+      );
+      await fetchSections();
+    },
+    [fetchSections],
+  );
+
+  const updateProducts = useCallback(
+    async (id: string, productIds: string[]) => {
+      await setLandingSectionProducts(
+        firestoreLandingSectionRepository,
+        id,
+        productIds,
+      );
+      await fetchSections();
+    },
+    [fetchSections],
+  );
 
   return {
     sections,

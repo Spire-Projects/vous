@@ -4,7 +4,7 @@ import type { BlogPostStatus } from "@/domain/entities/blog-post.entity";
 export async function setBlogPostStatus(
   repo: BlogPostRepository,
   id: string,
-  status: BlogPostStatus
+  status: BlogPostStatus,
 ): Promise<void> {
   return repo.setStatus(id, status);
 }

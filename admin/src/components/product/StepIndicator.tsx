@@ -7,15 +7,22 @@ interface StepIndicatorProps {
   stepErrors?: Record<number, string[]>;
 }
 
-export function StepIndicator({ steps, current, onChange, stepErrors }: StepIndicatorProps) {
+export function StepIndicator({
+  steps,
+  current,
+  onChange,
+  stepErrors,
+}: StepIndicatorProps) {
   return (
     <div className="flex items-center gap-0.5 mb-4">
       {steps.map((s, i) => {
         const isCurrent = i === current;
         const isPast = i < current;
-        const hasError = stepErrors && stepErrors[i] && stepErrors[i].length > 0;
+        const hasError =
+          stepErrors && stepErrors[i] && stepErrors[i].length > 0;
 
-        let baseClasses = "flex-1 flex items-center justify-center gap-1 py-1.5 text-[9px] font-nav uppercase tracking-wider border transition-colors ";
+        let baseClasses =
+          "flex-1 flex items-center justify-center gap-1 py-1.5 text-[9px] font-nav uppercase tracking-wider border transition-colors ";
         if (isCurrent) {
           baseClasses += "bg-vous-black text-vous-white border-vous-black";
         } else if (hasError) {
@@ -23,7 +30,8 @@ export function StepIndicator({ steps, current, onChange, stepErrors }: StepIndi
         } else if (isPast) {
           baseClasses += "bg-white/90 text-vous-text border-vous-border";
         } else {
-          baseClasses += "bg-vous-surface text-vous-text-secondary border-vous-border";
+          baseClasses +=
+            "bg-vous-surface text-vous-text-secondary border-vous-border";
         }
 
         return (

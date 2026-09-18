@@ -1,20 +1,40 @@
 import { useState } from "react";
 import {
-  HelpCircle, MessageSquare, Plus, Pencil, Trash2, Eye, EyeOff, GripVertical,
-  Search, CheckCircle, AlertCircle, Clock,
+  HelpCircle,
+  MessageSquare,
+  Plus,
+  Pencil,
+  Trash2,
+  Eye,
+  EyeOff,
+  GripVertical,
+  Search,
+  CheckCircle,
+  AlertCircle,
+  Clock,
 } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { StatCard } from "@/components/ui/StatCard";
 import { Input } from "@/components/ui/input";
-import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from "@/components/ui/table";
 import { ConfirmDeleteDialog } from "@/components/shared/ConfirmDeleteDialog";
 import { FaqFormDialog } from "@/components/faq/FaqFormDialog";
 import { useFAQs } from "@/hooks/useFaqs";
 import { useFeedbacks } from "@/hooks/useFeedbacks";
 import type { FAQ, CreateFAQInput } from "@/domain/entities/faq.entity";
-import type { Feedback, FeedbackStatus } from "@/domain/entities/feedback.entity";
+import type {
+  Feedback,
+  FeedbackStatus,
+} from "@/domain/entities/feedback.entity";
 
 type SupportTab = "faq" | "feedback";
 
@@ -24,11 +44,12 @@ const STATUS_LABELS: Record<FeedbackStatus, string> = {
   resolved: "Resuelto",
 };
 
-const STATUS_BADGE: Record<FeedbackStatus, "active" | "inactive" | "outline"> = {
-  pending: "outline",
-  reviewed: "active",
-  resolved: "inactive",
-};
+const STATUS_BADGE: Record<FeedbackStatus, "active" | "inactive" | "outline"> =
+  {
+    pending: "outline",
+    reviewed: "active",
+    resolved: "inactive",
+  };
 
 const TYPE_LABELS: Record<Feedback["type"], string> = {
   queja: "Queja",
@@ -39,33 +60,34 @@ export function SupportPage() {
   const [activeTab, setActiveTab] = useState<SupportTab>("faq");
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 shadow-xs p-5 sm:p-8 min-h-[calc(100vh-7rem)] space-y-6">
       <PageHeader
-        title="Soporte"
+        category="Soporte"
+        title="Centro de Soporte"
         subtitle="Comunicación con el cliente: FAQs de salida y feedback de entrada."
       />
 
-      <div className="flex gap-1 border-b border-white/40 pb-1">
+      <div className="flex flex-wrap items-center gap-2 p-1 bg-slate-100/80 rounded-xl w-fit">
         <button
           onClick={() => setActiveTab("faq")}
-          className={`inline-flex items-center gap-1.5 px-4 py-2.5 text-[11px] sm:text-sm font-sans border-b-2 transition-colors -mb-[1px] rounded-t-lg ${
+          className={`inline-flex items-center gap-2 px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all cursor-pointer ${
             activeTab === "faq"
-              ? "border-vous-gold text-vous-gold font-semibold bg-amber-50/60"
-              : "border-transparent text-vous-text-secondary hover:text-vous-text hover:bg-white/40"
+              ? "bg-white text-slate-900 font-semibold shadow-xs"
+              : "text-slate-600 hover:text-slate-900"
           }`}
         >
-          <HelpCircle size={14} strokeWidth={1.5} />
+          <HelpCircle size={15} strokeWidth={2} />
           Preguntas Frecuentes
         </button>
         <button
           onClick={() => setActiveTab("feedback")}
-          className={`inline-flex items-center gap-1.5 px-4 py-2.5 text-[11px] sm:text-sm font-sans border-b-2 transition-colors -mb-[1px] rounded-t-lg ${
+          className={`inline-flex items-center gap-2 px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all cursor-pointer ${
             activeTab === "feedback"
-              ? "border-vous-gold text-vous-gold font-semibold bg-amber-50/60"
-              : "border-transparent text-vous-text-secondary hover:text-vous-text hover:bg-white/40"
+              ? "bg-white text-slate-900 font-semibold shadow-xs"
+              : "text-slate-600 hover:text-slate-900"
           }`}
         >
-          <MessageSquare size={14} strokeWidth={1.5} />
+          <MessageSquare size={15} strokeWidth={2} />
           Quejas o Recomendaciones
         </button>
       </div>
@@ -79,7 +101,8 @@ export function SupportPage() {
 /* ── FAQ Tab ─────────────────────────────────────────────────────────────── */
 
 function FaqTab() {
-  const { faqs, loading, create, update, remove, toggleActive, reorder } = useFAQs();
+  const { faqs, loading, create, update, remove, toggleActive, reorder } =
+    useFAQs();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<FAQ | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
@@ -87,8 +110,14 @@ function FaqTab() {
 
   const activeCount = faqs.filter((f) => f.isActive).length;
 
-  function handleNew() { setEditing(null); setDialogOpen(true); }
-  function handleEdit(faq: FAQ) { setEditing(faq); setDialogOpen(true); }
+  function handleNew() {
+    setEditing(null);
+    setDialogOpen(true);
+  }
+  function handleEdit(faq: FAQ) {
+    setEditing(faq);
+    setDialogOpen(true);
+  }
 
   async function handleSave(data: CreateFAQInput) {
     if (editing) await update(editing.id, data);
@@ -115,10 +144,14 @@ function FaqTab() {
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 flex-1">
           <StatCard label="Total" value={String(faqs.length)} />
           <StatCard label="Activas" value={String(activeCount)} />
-          <StatCard label="Inactivas" value={String(faqs.length - activeCount)} />
+          <StatCard
+            label="Inactivas"
+            value={String(faqs.length - activeCount)}
+          />
         </div>
         <Button onClick={handleNew} className="ml-4 shrink-0">
-          <Plus size={14} strokeWidth={2} />Nueva pregunta
+          <Plus size={14} strokeWidth={2} />
+          Nueva pregunta
         </Button>
       </div>
 
@@ -142,31 +175,61 @@ function FaqTab() {
                 onDrop={() => handleDrop(idx)}
                 className={`flex items-start gap-3 p-4 hover:bg-amber-50/30 transition-colors ${dragIdx === idx ? "opacity-40" : ""}`}
               >
-                <GripVertical size={16} className="text-vous-text-muted mt-0.5 shrink-0 cursor-grab" />
+                <GripVertical
+                  size={16}
+                  className="text-vous-text-muted mt-0.5 shrink-0 cursor-grab"
+                />
                 <div className="flex-1 min-w-0">
-                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary block md:hidden">Pregunta</span>
+                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary block md:hidden">
+                    Pregunta
+                  </span>
                   <div className="flex items-center gap-2 mb-1">
-                    <p className="font-nav text-[13px] font-semibold text-vous-text">{faq.question}</p>
-                    <Badge variant={faq.isActive ? "active" : "inactive"} className="font-nav text-[10px] uppercase tracking-wide">
+                    <p className="font-nav text-[13px] font-semibold text-vous-text">
+                      {faq.question}
+                    </p>
+                    <Badge
+                      variant={faq.isActive ? "active" : "inactive"}
+                      className="font-nav text-[10px] uppercase tracking-wide"
+                    >
                       {faq.isActive ? "Activa" : "Inactiva"}
                     </Badge>
                   </div>
-                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary block md:hidden">Respuesta</span>
+                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary block md:hidden">
+                    Respuesta
+                  </span>
                   <div
                     className="text-[12px] text-vous-text-secondary font-sans line-clamp-2 faq-answer-preview [&_strong]:font-semibold [&_em]:italic [&_p]:inline [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_li]:my-0"
                     dangerouslySetInnerHTML={{ __html: faq.answer }}
                   />
-                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary block md:hidden mt-1">Orden</span>
-                  <p className="text-[10px] text-vous-text-muted font-nav mt-1">Orden: {faq.order}</p>
+                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary block md:hidden mt-1">
+                    Orden
+                  </span>
+                  <p className="text-[10px] text-vous-text-muted font-nav mt-1">
+                    Orden: {faq.order}
+                  </p>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
-                  <Button variant="ghost" size="icon-sm" onClick={() => toggleActive(faq.id, faq.isActive)} title={faq.isActive ? "Desactivar" : "Activar"}>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    onClick={() => toggleActive(faq.id, faq.isActive)}
+                    title={faq.isActive ? "Desactivar" : "Activar"}
+                  >
                     {faq.isActive ? <EyeOff size={14} /> : <Eye size={14} />}
                   </Button>
-                  <Button variant="ghost" size="icon-sm" onClick={() => handleEdit(faq)}>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    onClick={() => handleEdit(faq)}
+                  >
                     <Pencil size={14} />
                   </Button>
-                  <Button variant="ghost" size="icon-sm" onClick={() => setConfirmDelete(faq.id)} className="text-red-600 hover:text-red-700">
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    onClick={() => setConfirmDelete(faq.id)}
+                    className="text-red-600 hover:text-red-700"
+                  >
                     <Trash2 size={14} />
                   </Button>
                 </div>
@@ -176,7 +239,12 @@ function FaqTab() {
         )}
       </div>
 
-      <FaqFormDialog open={dialogOpen} faq={editing} onClose={() => setDialogOpen(false)} onSave={handleSave} />
+      <FaqFormDialog
+        open={dialogOpen}
+        faq={editing}
+        onClose={() => setDialogOpen(false)}
+        onSave={handleSave}
+      />
 
       <ConfirmDeleteDialog
         open={!!confirmDelete}
@@ -223,122 +291,244 @@ function FeedbackTab() {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        <StatCard label="Total" value={String(items.length)} icon={<MessageSquare size={16} />} />
-        <StatCard label="Pendientes" value={String(pending)} icon={<Clock size={16} />} />
-        <StatCard label="Revisados" value={String(reviewed)} icon={<AlertCircle size={16} />} />
-        <StatCard label="Resueltos" value={String(resolved)} icon={<CheckCircle size={16} />} />
+        <StatCard
+          label="Total"
+          value={String(items.length)}
+          icon={<MessageSquare size={16} />}
+        />
+        <StatCard
+          label="Pendientes"
+          value={String(pending)}
+          icon={<Clock size={16} />}
+        />
+        <StatCard
+          label="Revisados"
+          value={String(reviewed)}
+          icon={<AlertCircle size={16} />}
+        />
+        <StatCard
+          label="Resueltos"
+          value={String(resolved)}
+          icon={<CheckCircle size={16} />}
+        />
       </div>
 
       <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden">
         <div className="p-4 border-b border-white/40">
           <div className="relative max-w-xs">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-vous-text-secondary" />
-            <Input placeholder="Buscar feedback..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
+            <Search
+              size={14}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-vous-text-secondary"
+            />
+            <Input
+              placeholder="Buscar feedback..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-9"
+            />
           </div>
         </div>
 
         {loading ? (
-          <div className="p-12 text-center text-vous-text-secondary font-nav text-[11px] uppercase tracking-wider">Cargando feedback...</div>
+          <div className="p-12 text-center text-vous-text-secondary font-nav text-[11px] uppercase tracking-wider">
+            Cargando feedback...
+          </div>
         ) : (
           <>
             <div className="block md:hidden divide-y divide-white/30">
               {filtered.length === 0 ? (
-                <div className="p-12 text-center text-vous-text-secondary font-nav text-[11px] uppercase tracking-wider">No hay feedback registrado.</div>
-              ) : filtered.map((f) => (
-                <div key={f.id} className="p-4 space-y-3">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Usuario</p>
-                      <p className="font-nav text-[13px] font-semibold text-vous-text">{f.userName}</p>
-                      <p className="text-[11px] text-vous-text-secondary font-sans">{f.userEmail}</p>
-                    </div>
-                    <Badge variant={STATUS_BADGE[f.status]} className="font-nav text-[10px] uppercase tracking-wide">
-                      {STATUS_LABELS[f.status]}
-                    </Badge>
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Tipo</p>
-                    <p className="text-[12px] font-sans text-vous-text-secondary">{TYPE_LABELS[f.type]}</p>
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-nav uppercase text-vous-text-secondary">Mensaje</p>
-                    <p className="text-[12px] font-sans text-vous-text-secondary line-clamp-3">{f.message}</p>
-                  </div>
-                  <div className="flex items-center gap-1 pt-1 border-t border-white/30">
-                    <Button variant="ghost" size="icon-sm" onClick={() => setEditingStatus(f.id)} title="Cambiar estado">
-                      <Pencil size={14} />
-                    </Button>
-                    <Button variant="ghost" size="icon-sm" onClick={() => setConfirmDelete(f.id)} className="text-red-600 hover:text-red-700">
-                      <Trash2 size={14} />
-                    </Button>
-                  </div>
-                  {editingStatus === f.id && (
-                    <div className="flex gap-2 pt-1">
-                      {(["pending", "reviewed", "resolved"] as FeedbackStatus[]).map((s) => (
-                        <Button key={s} variant="outline" size="sm" onClick={() => handleStatusChange(f.id, s)}>
-                          {STATUS_LABELS[s]}
-                        </Button>
-                      ))}
-                    </div>
-                  )}
+                <div className="p-12 text-center text-vous-text-secondary font-nav text-[11px] uppercase tracking-wider">
+                  No hay feedback registrado.
                 </div>
-              ))}
+              ) : (
+                filtered.map((f) => (
+                  <div key={f.id} className="p-4 space-y-3">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <p className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                          Usuario
+                        </p>
+                        <p className="font-nav text-[13px] font-semibold text-vous-text">
+                          {f.userName}
+                        </p>
+                        <p className="text-[11px] text-vous-text-secondary font-sans">
+                          {f.userEmail}
+                        </p>
+                      </div>
+                      <Badge
+                        variant={STATUS_BADGE[f.status]}
+                        className="font-nav text-[10px] uppercase tracking-wide"
+                      >
+                        {STATUS_LABELS[f.status]}
+                      </Badge>
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                        Tipo
+                      </p>
+                      <p className="text-[12px] font-sans text-vous-text-secondary">
+                        {TYPE_LABELS[f.type]}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                        Mensaje
+                      </p>
+                      <p className="text-[12px] font-sans text-vous-text-secondary line-clamp-3">
+                        {f.message}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1 pt-1 border-t border-white/30">
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        onClick={() => setEditingStatus(f.id)}
+                        title="Cambiar estado"
+                      >
+                        <Pencil size={14} />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        onClick={() => setConfirmDelete(f.id)}
+                        className="text-red-600 hover:text-red-700"
+                      >
+                        <Trash2 size={14} />
+                      </Button>
+                    </div>
+                    {editingStatus === f.id && (
+                      <div className="flex gap-2 pt-1">
+                        {(
+                          [
+                            "pending",
+                            "reviewed",
+                            "resolved",
+                          ] as FeedbackStatus[]
+                        ).map((s) => (
+                          <Button
+                            key={s}
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleStatusChange(f.id, s)}
+                          >
+                            {STATUS_LABELS[s]}
+                          </Button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))
+              )}
             </div>
 
             <div className="hidden md:block">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    {["Usuario", "Tipo", "Mensaje", "Estado", "Fecha", ""].map((h) => <TableHead key={h}>{h}</TableHead>)}
+                    {["Usuario", "Tipo", "Mensaje", "Estado", "Fecha", ""].map(
+                      (h) => (
+                        <TableHead key={h}>{h}</TableHead>
+                      ),
+                    )}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filtered.length === 0 ? (
-                    <TableRow><TableCell colSpan={6} className="text-center text-vous-text-secondary py-10">No hay feedback registrado.</TableCell></TableRow>
-                  ) : filtered.map((f) => (
-                    <TableRow key={f.id}>
-                      <TableCell>
-                        <p className="font-nav text-[13px] font-semibold text-vous-text">{f.userName}</p>
-                        <p className="text-[11px] text-vous-text-secondary font-sans">{f.userEmail}</p>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline" className="font-nav text-[10px] uppercase tracking-wide">
-                          {TYPE_LABELS[f.type]}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <p className="text-[12px] font-sans text-vous-text-secondary line-clamp-2">{f.message}</p>
-                      </TableCell>
-                      <TableCell>
-                        {editingStatus === f.id ? (
-                          <div className="flex gap-1">
-                            {(["pending", "reviewed", "resolved"] as FeedbackStatus[]).map((s) => (
-                              <Button key={s} variant="outline" size="sm" onClick={() => handleStatusChange(f.id, s)}>
-                                {STATUS_LABELS[s]}
-                              </Button>
-                            ))}
-                          </div>
-                        ) : (
-                          <Badge variant={STATUS_BADGE[f.status]} className="font-nav text-[10px] uppercase tracking-wide">
-                            {STATUS_LABELS[f.status]}
-                          </Badge>
-                        )}
-                      </TableCell>
-                      <TableCell className="text-[12px] font-sans text-vous-text-secondary whitespace-nowrap">
-                        {new Date(f.createdAt).toLocaleDateString("es-BO", { day: "2-digit", month: "short", year: "numeric" })}
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          <Button variant="ghost" size="icon-sm" onClick={() => setEditingStatus(editingStatus === f.id ? null : f.id)} title="Cambiar estado">
-                            <Pencil size={14} />
-                          </Button>
-                          <Button variant="ghost" size="icon-sm" onClick={() => setConfirmDelete(f.id)} className="text-red-600 hover:text-red-700">
-                            <Trash2 size={14} />
-                          </Button>
-                        </div>
+                    <TableRow>
+                      <TableCell
+                        colSpan={6}
+                        className="text-center text-vous-text-secondary py-10"
+                      >
+                        No hay feedback registrado.
                       </TableCell>
                     </TableRow>
-                  ))}
+                  ) : (
+                    filtered.map((f) => (
+                      <TableRow key={f.id}>
+                        <TableCell>
+                          <p className="font-nav text-[13px] font-semibold text-vous-text">
+                            {f.userName}
+                          </p>
+                          <p className="text-[11px] text-vous-text-secondary font-sans">
+                            {f.userEmail}
+                          </p>
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            variant="outline"
+                            className="font-nav text-[10px] uppercase tracking-wide"
+                          >
+                            {TYPE_LABELS[f.type]}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <p className="text-[12px] font-sans text-vous-text-secondary line-clamp-2">
+                            {f.message}
+                          </p>
+                        </TableCell>
+                        <TableCell>
+                          {editingStatus === f.id ? (
+                            <div className="flex gap-1">
+                              {(
+                                [
+                                  "pending",
+                                  "reviewed",
+                                  "resolved",
+                                ] as FeedbackStatus[]
+                              ).map((s) => (
+                                <Button
+                                  key={s}
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleStatusChange(f.id, s)}
+                                >
+                                  {STATUS_LABELS[s]}
+                                </Button>
+                              ))}
+                            </div>
+                          ) : (
+                            <Badge
+                              variant={STATUS_BADGE[f.status]}
+                              className="font-nav text-[10px] uppercase tracking-wide"
+                            >
+                              {STATUS_LABELS[f.status]}
+                            </Badge>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-[12px] font-sans text-vous-text-secondary whitespace-nowrap">
+                          {new Date(f.createdAt).toLocaleDateString("es-BO", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Button
+                              variant="ghost"
+                              size="icon-sm"
+                              onClick={() =>
+                                setEditingStatus(
+                                  editingStatus === f.id ? null : f.id,
+                                )
+                              }
+                              title="Cambiar estado"
+                            >
+                              <Pencil size={14} />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon-sm"
+                              onClick={() => setConfirmDelete(f.id)}
+                              className="text-red-600 hover:text-red-700"
+                            >
+                              <Trash2 size={14} />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
                 </TableBody>
               </Table>
             </div>

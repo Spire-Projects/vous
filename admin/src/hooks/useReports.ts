@@ -24,9 +24,7 @@ export function useReports() {
         );
         setReport(data);
       } catch (e) {
-        setError(
-          e instanceof Error ? e.message : "Error al generar reporte",
-        );
+        setError(e instanceof Error ? e.message : "Error al generar reporte");
       } finally {
         setLoading(false);
       }
@@ -48,9 +46,7 @@ export function useReports() {
         if (!cancelled) setReport(data);
       } catch (e) {
         if (!cancelled)
-          setError(
-            e instanceof Error ? e.message : "Error al generar reporte",
-          );
+          setError(e instanceof Error ? e.message : "Error al generar reporte");
       } finally {
         if (!cancelled) setLoading(false);
       }

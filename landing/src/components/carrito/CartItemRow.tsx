@@ -2,6 +2,7 @@
 
 import { X, Minus, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 interface CartItemProps {
   name: string;
@@ -9,6 +10,7 @@ interface CartItemProps {
   price: string;
   qty: number;
   imageUrl?: string;
+  stockWarning?: { available: number };
   onRemove: () => void;
   onQty: (delta: number) => void;
 }
@@ -19,6 +21,7 @@ export function CartItemRow({
   price,
   qty,
   imageUrl,
+  stockWarning,
   onRemove,
   onQty,
 }: CartItemProps) {
@@ -36,8 +39,15 @@ export function CartItemRow({
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2">
           <div>
-            <h3 className="font-serif text-lg text-black leading-tight">{name}</h3>
-            <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-black/50 mt-1">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h3 className="font-serif text-lg text-vous-soft-black leading-tight">{name}</h3>
+              {stockWarning && (
+                <Badge variant={stockWarning.available <= 0 ? "out_of_stock" : "warning"}>
+                  {stockWarning.available <= 0 ? "Agotado" : `Solo ${stockWarning.available} disp.`}
+                </Badge>
+              )}
+            </div>
+            <p className="font-nav text-[10px] tracking-[0.15em] uppercase text-vous-gray mt-1">
               {variant}
             </p>
           </div>

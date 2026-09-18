@@ -10,6 +10,7 @@ export interface Banner {
   subtitle: string;
   ctaText: string;
   ctaUrl: string;
+  ctaVisible: boolean;
   categorySlug?: string;
   active: boolean;
   order: number;
@@ -24,6 +25,7 @@ export interface CreateBannerInput {
   subtitle: string;
   ctaText: string;
   ctaUrl: string;
+  ctaVisible?: boolean;
   categorySlug?: string;
   active: boolean;
   order: number;

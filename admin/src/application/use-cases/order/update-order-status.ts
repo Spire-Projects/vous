@@ -3,7 +3,7 @@ import type { UpdateOrderStatusInput } from "@/domain/entities/order.entity";
 
 export async function updateOrderStatus(
   repo: OrderRepository,
-  input: UpdateOrderStatusInput
+  input: UpdateOrderStatusInput,
 ): Promise<void> {
   return repo.updateStatus(input);
 }

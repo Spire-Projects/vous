@@ -10,33 +10,34 @@ export function AsesoriaPage() {
   const [activeTab, setActiveTab] = useState<AsesoriaTab>("moda");
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 shadow-xs p-5 sm:p-8 min-h-[calc(100vh-7rem)] space-y-6">
       <PageHeader
-        title="Asesoría"
+        category="Personas"
+        title="Asesoría & Estilo"
         subtitle="Asesoría de moda y guías de estilo para clientes."
       />
 
-      <div className="flex gap-1 border-b border-white/40 pb-1">
+      <div className="flex flex-wrap items-center gap-2 p-1 bg-slate-100/80 rounded-xl w-fit">
         <button
           onClick={() => setActiveTab("moda")}
-          className={`inline-flex items-center gap-1.5 px-4 py-2.5 text-[11px] sm:text-sm font-sans border-b-2 transition-colors -mb-[1px] rounded-t-lg ${
+          className={`inline-flex items-center gap-2 px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all cursor-pointer ${
             activeTab === "moda"
-              ? "border-vous-gold text-vous-gold font-semibold bg-amber-50/60"
-              : "border-transparent text-vous-text-secondary hover:text-vous-text hover:bg-white/40"
+              ? "bg-white text-slate-900 font-semibold shadow-xs"
+              : "text-slate-600 hover:text-slate-900"
           }`}
         >
-          <Lightbulb size={14} strokeWidth={1.5} />
+          <Lightbulb size={15} strokeWidth={2} />
           Asesoría de Moda
         </button>
         <button
           onClick={() => setActiveTab("guias")}
-          className={`inline-flex items-center gap-1.5 px-4 py-2.5 text-[11px] sm:text-sm font-sans border-b-2 transition-colors -mb-[1px] rounded-t-lg ${
+          className={`inline-flex items-center gap-2 px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all cursor-pointer ${
             activeTab === "guias"
-              ? "border-vous-gold text-vous-gold font-semibold bg-amber-50/60"
-              : "border-transparent text-vous-text-secondary hover:text-vous-text hover:bg-white/40"
+              ? "bg-white text-slate-900 font-semibold shadow-xs"
+              : "text-slate-600 hover:text-slate-900"
           }`}
         >
-          <Sparkles size={14} strokeWidth={1.5} />
+          <Sparkles size={15} strokeWidth={2} />
           Guías de Estilo
         </button>
       </div>

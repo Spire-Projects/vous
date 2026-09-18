@@ -1,7 +1,21 @@
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, serverTimestamp, query, orderBy } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  serverTimestamp,
+  query,
+  orderBy,
+} from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import type { InfluencerRepository } from "@/domain/repositories/influencer.repository";
-import type { Influencer, CreateInfluencerInput, UpdateInfluencerInput } from "@/domain/entities/influencer.entity";
+import type {
+  Influencer,
+  CreateInfluencerInput,
+  UpdateInfluencerInput,
+} from "@/domain/entities/influencer.entity";
 
 const COLLECTION = "influencers";
 
@@ -21,7 +35,9 @@ export const firestoreInfluencerRepository: InfluencerRepository = {
   async getAll(): Promise<Influencer[]> {
     const q = query(collection(db, COLLECTION), orderBy("order", "asc"));
     const snap = await getDocs(q);
-    return snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>));
+    return snap.docs.map((d) =>
+      mapDoc(d.id, d.data() as Record<string, unknown>),
+    );
   },
 
   async create(input: CreateInfluencerInput): Promise<Influencer> {

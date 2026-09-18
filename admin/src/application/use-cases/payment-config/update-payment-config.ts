@@ -3,7 +3,7 @@ import type { UpdatePaymentConfigInput } from "@/domain/entities/payment-config.
 
 export async function updatePaymentConfig(
   repo: PaymentConfigRepository,
-  input: UpdatePaymentConfigInput
+  input: UpdatePaymentConfigInput,
 ): Promise<void> {
   return repo.update(input);
 }

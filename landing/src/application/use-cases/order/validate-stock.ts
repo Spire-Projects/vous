@@ -2,61 +2,74 @@ import type { ProductRepository } from "@/domain/repositories/product.repository
 import type { CartItem } from "@/types/cart.types";
 
 export interface OutOfStockItem {
+  id: string;
   productId: string;
   productName: string;
+  variantDescription?: string;
   requested: number;
   available: number;
 }
 
 /**
  * Checks stock availability for all cart items.
- * If the item has a variantId, checks the variant's stock.
- * Otherwise falls back to the product-level stock.
+ * Supports both variant-level stock and product-level stock with cumulative allocation.
  * Returns items with insufficient stock (empty array = all OK).
  */
 export async function validateStock(
   repo: ProductRepository,
   items: CartItem[]
 ): Promise<OutOfStockItem[]> {
-  const variantItems = items.filter((i) => i.variantId);
-  const simpleItems = items.filter((i) => !i.variantId);
+  if (items.length === 0) return [];
 
-  // Fetch variants once per unique product to avoid N+1 Firestore reads
-  const uniqueProductIds = [...new Set(variantItems.map((i) => i.productId))];
-  const variantsByProductId = new Map<string, Awaited<ReturnType<typeof repo.findVariants>>>();
-  await Promise.all(
-    uniqueProductIds.map(async (productId) => {
-      variantsByProductId.set(productId, await repo.findVariants(productId));
-    })
+  // Fetch unique products and variants once to avoid N+1 queries
+  const uniqueProductIds = [...new Set(items.map((i) => i.productId))];
+  const products = await Promise.all(
+    uniqueProductIds.map(async (id) => ({
+      id,
+      product: await repo.findById(id),
+      variants: await repo.findVariants(id),
+    }))
   );
+  const productMap = new Map(products.map((p) => [p.id, p]));
 
-  const results = await Promise.all([
-    ...variantItems.map(async (item): Promise<OutOfStockItem | null> => {
-      const variants = variantsByProductId.get(item.productId) ?? [];
-      const variant = variants.find((v) => v.id === item.variantId);
-      if (!variant || variant.stock < item.quantity) {
-        return {
-          productId: item.productId,
-          productName: item.name,
-          requested: item.quantity,
-          available: variant?.stock ?? 0,
-        };
-      }
-      return null;
-    }),
-    ...simpleItems.map(async (item): Promise<OutOfStockItem | null> => {
-      const product = await repo.findById(item.productId);
-      if (!product || product.stock < item.quantity) {
-        return {
-          productId: item.productId,
-          productName: item.name,
-          requested: item.quantity,
-          available: product?.stock ?? 0,
-        };
-      }
-      return null;
-    }),
-  ]);
+  const outOfStock: OutOfStockItem[] = [];
+  const allocatedStock = new Map<string, number>();
 
-  return results.filter((r): r is OutOfStockItem => r !== null);
+  for (const item of items) {
+    const entry = productMap.get(item.productId);
+    const product = entry?.product;
+    const isProductActive = product ? product.isActive : false;
+
+    let totalAvailable = 0;
+    const stockKey = item.variantId ? `var_${item.variantId}` : `prod_${item.productId}`;
+
+    if (item.variantId) {
+      const variant = entry?.variants.find((v) => v.id === item.variantId);
+      totalAvailable = variant && isProductActive ? Math.max(0, variant.stock) : 0;
+    } else {
+      totalAvailable = product && isProductActive ? Math.max(0, product.stock) : 0;
+    }
+
+    const currentlyAllocated = allocatedStock.get(stockKey) ?? 0;
+    const availableForThisItem = Math.max(0, totalAvailable - currentlyAllocated);
+
+    if (availableForThisItem < item.quantity) {
+      const variantParts = [item.size, item.color].filter(Boolean);
+      outOfStock.push({
+        id: item.id,
+        productId: item.productId,
+        productName: item.name,
+        variantDescription: variantParts.length > 0 ? variantParts.join(" / ") : undefined,
+        requested: item.quantity,
+        available: availableForThisItem,
+      });
+    }
+
+    allocatedStock.set(
+      stockKey,
+      currentlyAllocated + Math.min(item.quantity, availableForThisItem)
+    );
+  }
+
+  return outOfStock;
 }

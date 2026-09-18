@@ -1,6 +1,10 @@
 import { useState, useMemo } from "react";
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,11 +47,14 @@ export function ConfigFormDialog<T extends Record<string, unknown>>({
         initial[f.key] = f.type === "color" ? "#000000" : "";
       }
     }
-    initial["isActive"] = editing ? (editing.isActive as boolean) ?? true : true;
+    initial["isActive"] = editing
+      ? ((editing.isActive as boolean) ?? true)
+      : true;
     return initial;
   }, [editing, fields]);
 
-  const [form, setForm] = useState<Record<string, string | boolean | number>>(initialForm);
+  const [form, setForm] =
+    useState<Record<string, string | boolean | number>>(initialForm);
 
   // Reset form when open/editing changes via key on DialogContent
   const dialogKey = open ? (editing ? String(editing.id) : "new") : "closed";
@@ -61,22 +68,37 @@ export function ConfigFormDialog<T extends Record<string, unknown>>({
   }
 
   return (
-    <Dialog open={open} onOpenChange={(o) => { if (!o) onClose(); }}>
+    <Dialog
+      open={open}
+      onOpenChange={(o) => {
+        if (!o) onClose();
+      }}
+    >
       <DialogContent key={dialogKey} className="max-w-md">
         <DialogHeader>
-          <DialogTitle>{editing ? `Editar ${title}` : `Nueva ${title}`}</DialogTitle>
+          <DialogTitle>
+            {editing ? `Editar ${title}` : `Nueva ${title}`}
+          </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           {fields.map((field) => (
             <div key={field.key} className="space-y-1.5">
-              <Label htmlFor={field.key} className="font-nav text-[11px] uppercase tracking-wider">
+              <Label
+                htmlFor={field.key}
+                className="font-nav text-[11px] uppercase tracking-wider"
+              >
                 {field.label}
               </Label>
               {field.type === "text" && (
                 <Input
                   id={field.key}
                   value={String(form[field.key] ?? "")}
-                  onChange={(e) => setForm((prev) => ({ ...prev, [field.key]: e.target.value }))}
+                  onChange={(e) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      [field.key]: e.target.value,
+                    }))
+                  }
                   required={field.required}
                   className="font-sans"
                 />
@@ -87,7 +109,12 @@ export function ConfigFormDialog<T extends Record<string, unknown>>({
                     id={field.key}
                     type="color"
                     value={String(form[field.key] ?? "#000000")}
-                    onChange={(e) => setForm((prev) => ({ ...prev, [field.key]: e.target.value }))}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        [field.key]: e.target.value,
+                      }))
+                    }
                     className="w-10 h-10 rounded-lg border border-vous-border cursor-pointer"
                   />
                   <span className="text-xs font-mono text-vous-text-secondary">
@@ -102,15 +129,25 @@ export function ConfigFormDialog<T extends Record<string, unknown>>({
             <Checkbox
               id="isActive"
               checked={!!form["isActive"]}
-              onCheckedChange={(checked) => setForm((prev) => ({ ...prev, isActive: checked === true }))}
+              onCheckedChange={(checked) =>
+                setForm((prev) => ({ ...prev, isActive: checked === true }))
+              }
             />
-            <Label htmlFor="isActive" className="font-nav text-[11px] uppercase tracking-wider cursor-pointer">
+            <Label
+              htmlFor="isActive"
+              className="font-nav text-[11px] uppercase tracking-wider cursor-pointer"
+            >
               Activo
             </Label>
           </div>
 
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose} disabled={saving}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClose}
+              disabled={saving}
+            >
               Cancelar
             </Button>
             <Button type="submit" disabled={saving}>

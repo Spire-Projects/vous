@@ -25,7 +25,7 @@ export function AsesoriaModaTab() {
 
   useEffect(() => {
     if (config?.fashionTrends) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+       
       setForm(config.fashionTrends);
     }
   }, [config]);
@@ -46,7 +46,11 @@ export function AsesoriaModaTab() {
     <>
       <div className="flex justify-end mb-6">
         <Button onClick={handleSave} disabled={saving}>
-          {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} strokeWidth={2} />}
+          {saving ? (
+            <Loader2 size={14} className="animate-spin" />
+          ) : (
+            <Save size={14} strokeWidth={2} />
+          )}
           {saving ? "Guardando..." : "Guardar Cambios"}
         </Button>
       </div>
@@ -58,12 +62,21 @@ export function AsesoriaModaTab() {
             <Checkbox
               id="asesoria-active"
               checked={form.isActive}
-              onCheckedChange={(v) => setForm((f) => ({ ...f, isActive: v === true }))}
+              onCheckedChange={(v) =>
+                setForm((f) => ({ ...f, isActive: v === true }))
+              }
             />
-            <Label htmlFor="asesoria-active" className="text-sm font-sans cursor-pointer">
+            <Label
+              htmlFor="asesoria-active"
+              className="text-sm font-sans cursor-pointer"
+            >
               Mostrar sección "Asesoría de Moda" en la landing
             </Label>
-            {form.isActive ? <Eye size={14} className="ml-auto text-emerald-600" /> : <EyeOff size={14} className="ml-auto text-vous-text-muted" />}
+            {form.isActive ? (
+              <Eye size={14} className="ml-auto text-emerald-600" />
+            ) : (
+              <EyeOff size={14} className="ml-auto text-vous-text-muted" />
+            )}
           </div>
 
           <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 p-5 sm:p-8 space-y-6">
@@ -71,7 +84,9 @@ export function AsesoriaModaTab() {
               <Label>Título</Label>
               <Input
                 value={form.title}
-                onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, title: e.target.value }))
+                }
                 placeholder="Ej: Asesoría de Moda VOUS"
               />
             </div>
@@ -80,7 +95,9 @@ export function AsesoriaModaTab() {
               <Label>Subtítulo</Label>
               <Input
                 value={form.subtitle}
-                onChange={(e) => setForm((f) => ({ ...f, subtitle: e.target.value }))}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, subtitle: e.target.value }))
+                }
                 placeholder="Ej: Encuentra el estilo perfecto para vos"
               />
             </div>
@@ -118,7 +135,9 @@ export function AsesoriaModaTab() {
               <Label>Link externo (opcional)</Label>
               <Input
                 value={form.linkUrl ?? ""}
-                onChange={(e) => setForm((f) => ({ ...f, linkUrl: e.target.value }))}
+                onChange={(e) =>
+                  setForm((f) => ({ ...f, linkUrl: e.target.value }))
+                }
                 placeholder="https://..."
               />
             </div>
@@ -145,12 +164,19 @@ export function AsesoriaModaTab() {
             <div className="p-6">
               {form.imageUrl && (
                 <div className="w-full aspect-video rounded-xl overflow-hidden mb-4 bg-neutral-100">
-                  <img src={form.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                  <img
+                    src={form.imageUrl}
+                    alt="Preview"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               )}
               <div
                 className="prose prose-sm max-w-none text-black/60 font-sans leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: form.content || "<p>El contenido aparecerá aquí...</p>" }}
+                dangerouslySetInnerHTML={{
+                  __html:
+                    form.content || "<p>El contenido aparecerá aquí...</p>",
+                }}
               />
               {form.linkUrl && (
                 <div className="mt-4">
@@ -162,15 +188,21 @@ export function AsesoriaModaTab() {
             </div>
             {!form.isActive && (
               <div className="absolute inset-0 bg-white/70 backdrop-blur-sm flex items-center justify-center rounded-2xl">
-                <span className="font-nav text-[11px] uppercase tracking-wider text-vous-text-secondary">Sección inactiva</span>
+                <span className="font-nav text-[11px] uppercase tracking-wider text-vous-text-secondary">
+                  Sección inactiva
+                </span>
               </div>
             )}
           </div>
 
           <div className="bg-amber-50/60 border border-amber-200 rounded-xl p-4">
-            <p className="text-[11px] font-nav uppercase tracking-wider text-amber-700 mb-1">Nota</p>
+            <p className="text-[11px] font-nav uppercase tracking-wider text-amber-700 mb-1">
+              Nota
+            </p>
             <p className="text-sm text-vous-text-secondary font-sans">
-              La página de Asesoría de Moda en el landing también muestra automáticamente las guías de estilo configuradas en "Guías de Estilo" (tonos de piel y tipos de cuerpo).
+              La página de Asesoría de Moda en el landing también muestra
+              automáticamente las guías de estilo configuradas en "Guías de
+              Estilo" (tonos de piel y tipos de cuerpo).
             </p>
           </div>
         </div>

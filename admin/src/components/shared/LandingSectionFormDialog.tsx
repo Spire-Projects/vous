@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -34,7 +39,9 @@ export function LandingSectionFormDialog({
   onSave,
 }: LandingSectionFormDialogProps) {
   const [name, setName] = useState(section?.name ?? "");
-  const [type, setType] = useState<LandingSectionType>(section?.type ?? "featured");
+  const [type, setType] = useState<LandingSectionType>(
+    section?.type ?? "featured",
+  );
   const [customType, setCustomType] = useState(section?.customType ?? "");
   const [isCustom, setIsCustom] = useState(!!section?.customType);
   const [active, setActive] = useState(section?.active ?? true);
@@ -82,13 +89,18 @@ export function LandingSectionFormDialog({
           </div>
 
           <div className="space-y-1.5">
-            <Label className="font-nav text-[11px] uppercase tracking-wider">Tipo</Label>
+            <Label className="font-nav text-[11px] uppercase tracking-wider">
+              Tipo
+            </Label>
             <div className="grid grid-cols-1 gap-2">
               {SECTION_TYPES.map((t) => (
                 <button
                   key={t}
                   type="button"
-                  onClick={() => { setType(t); setIsCustom(false); }}
+                  onClick={() => {
+                    setType(t);
+                    setIsCustom(false);
+                  }}
                   className={`flex items-center gap-2 px-3 py-2 border text-left text-[12px] font-sans transition-colors ${
                     type === t && !isCustom
                       ? "border-vous-gold bg-vous-gold/10 text-vous-text"
@@ -110,7 +122,9 @@ export function LandingSectionFormDialog({
                     : "border-vous-border text-vous-text-secondary hover:border-vous-gold/50"
                 }`}
               >
-                <span className={`w-2 h-2 rounded-full shrink-0 ${isCustom ? "bg-vous-gold" : "bg-vous-gray-light"}`} />
+                <span
+                  className={`w-2 h-2 rounded-full shrink-0 ${isCustom ? "bg-vous-gold" : "bg-vous-gray-light"}`}
+                />
                 Personalizado
               </button>
             </div>
@@ -143,11 +157,20 @@ export function LandingSectionFormDialog({
           </div>
 
           <div className="flex gap-3 pt-1">
-            <Button type="button" variant="outline" onClick={onClose} className="flex-1">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClose}
+              className="flex-1"
+            >
               Cancelar
             </Button>
             <Button type="submit" disabled={saving} className="flex-1">
-              {saving ? "Guardando…" : section ? "Guardar cambios" : "Crear sección"}
+              {saving
+                ? "Guardando…"
+                : section
+                  ? "Guardar cambios"
+                  : "Crear sección"}
             </Button>
           </div>
         </form>

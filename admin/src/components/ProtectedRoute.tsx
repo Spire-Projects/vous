@@ -7,13 +7,18 @@ interface ProtectedRouteProps {
   requiredRole?: "superadmin";
 }
 
-export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) {
+export function ProtectedRoute({
+  children,
+  requiredRole,
+}: ProtectedRouteProps) {
   const { user, loading } = useAuth();
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-vous-bg">
-        <p className="text-[11px] font-nav uppercase tracking-[0.2em] text-vous-text-secondary">Cargando...</p>
+        <p className="text-[11px] font-nav uppercase tracking-[0.2em] text-vous-text-secondary">
+          Cargando...
+        </p>
       </div>
     );
   }
@@ -26,8 +31,12 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
     return (
       <div className="min-h-screen flex items-center justify-center bg-vous-bg">
         <div className="text-center">
-          <p className="font-serif text-2xl text-vous-text mb-2">Acceso Denegado</p>
-          <p className="text-sm text-vous-text-secondary font-sans">No tienes permisos para acceder a esta sección.</p>
+          <p className="font-serif text-2xl text-vous-text mb-2">
+            Acceso Denegado
+          </p>
+          <p className="text-sm text-vous-text-secondary font-sans">
+            No tienes permisos para acceder a esta sección.
+          </p>
         </div>
       </div>
     );

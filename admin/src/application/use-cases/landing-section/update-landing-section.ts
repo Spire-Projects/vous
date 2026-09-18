@@ -4,7 +4,7 @@ import type { UpdateLandingSectionInput } from "@/domain/entities/landing-sectio
 export async function updateLandingSection(
   repo: LandingSectionRepository,
   id: string,
-  input: UpdateLandingSectionInput
+  input: UpdateLandingSectionInput,
 ): Promise<void> {
   return repo.update(id, input);
 }

@@ -6,7 +6,12 @@ import { updateBlogPost } from "@/application/use-cases/blog/update-blog-post";
 import { deleteBlogPost } from "@/application/use-cases/blog/delete-blog-post";
 import { setBlogPostStatus } from "@/application/use-cases/blog/set-post-status";
 import { setPostFeatured } from "@/application/use-cases/blog/set-post-featured";
-import type { BlogPost, CreateBlogPostInput, UpdateBlogPostInput, BlogPostStatus } from "@/domain/entities/blog-post.entity";
+import type {
+  BlogPost,
+  CreateBlogPostInput,
+  UpdateBlogPostInput,
+  BlogPostStatus,
+} from "@/domain/entities/blog-post.entity";
 
 export function useBlogPosts() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -25,45 +30,76 @@ export function useBlogPosts() {
     }
   }, []);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { fetchPosts(); }, [fetchPosts]);
-
-  const ensureOnlyOneFeatured = useCallback(async (currentId?: string) => {
-    const other = posts.find((p) => p.featured && p.id !== currentId);
-    if (other) {
-      await setPostFeatured(firestoreBlogPostRepository, other.id, false);
-    }
-  }, [posts]);
-
-  const create = useCallback(async (input: CreateBlogPostInput) => {
-    if (input.featured) await ensureOnlyOneFeatured();
-    await createBlogPost(firestoreBlogPostRepository, input);
-    await fetchPosts();
-  }, [fetchPosts, ensureOnlyOneFeatured]);
-
-  const update = useCallback(async (id: string, input: UpdateBlogPostInput) => {
-    if (input.featured) await ensureOnlyOneFeatured(id);
-    await updateBlogPost(firestoreBlogPostRepository, id, input);
-    await fetchPosts();
-  }, [fetchPosts, ensureOnlyOneFeatured]);
-
-  const remove = useCallback(async (id: string) => {
-    await deleteBlogPost(firestoreBlogPostRepository, id);
-    await fetchPosts();
+   
+  useEffect(() => {
+    fetchPosts();
   }, [fetchPosts]);
 
-  const toggleStatus = useCallback(async (id: string, current: BlogPostStatus) => {
-    const next: BlogPostStatus = current === "published" ? "draft" : "published";
-    await setBlogPostStatus(firestoreBlogPostRepository, id, next);
-    await fetchPosts();
-  }, [fetchPosts]);
+  const ensureOnlyOneFeatured = useCallback(
+    async (currentId?: string) => {
+      const other = posts.find((p) => p.featured && p.id !== currentId);
+      if (other) {
+        await setPostFeatured(firestoreBlogPostRepository, other.id, false);
+      }
+    },
+    [posts],
+  );
 
-  const toggleFeatured = useCallback(async (id: string, current: boolean) => {
-    const next = !current;
-    if (next) await ensureOnlyOneFeatured(id);
-    await setPostFeatured(firestoreBlogPostRepository, id, next);
-    await fetchPosts();
-  }, [fetchPosts, ensureOnlyOneFeatured]);
+  const create = useCallback(
+    async (input: CreateBlogPostInput) => {
+      if (input.featured) await ensureOnlyOneFeatured();
+      await createBlogPost(firestoreBlogPostRepository, input);
+      await fetchPosts();
+    },
+    [fetchPosts, ensureOnlyOneFeatured],
+  );
 
-  return { posts, loading, error, refetch: fetchPosts, create, update, remove, toggleStatus, toggleFeatured };
+  const update = useCallback(
+    async (id: string, input: UpdateBlogPostInput) => {
+      if (input.featured) await ensureOnlyOneFeatured(id);
+      await updateBlogPost(firestoreBlogPostRepository, id, input);
+      await fetchPosts();
+    },
+    [fetchPosts, ensureOnlyOneFeatured],
+  );
+
+  const remove = useCallback(
+    async (id: string) => {
+      await deleteBlogPost(firestoreBlogPostRepository, id);
+      await fetchPosts();
+    },
+    [fetchPosts],
+  );
+
+  const toggleStatus = useCallback(
+    async (id: string, current: BlogPostStatus) => {
+      const next: BlogPostStatus =
+        current === "published" ? "draft" : "published";
+      await setBlogPostStatus(firestoreBlogPostRepository, id, next);
+      await fetchPosts();
+    },
+    [fetchPosts],
+  );
+
+  const toggleFeatured = useCallback(
+    async (id: string, current: boolean) => {
+      const next = !current;
+      if (next) await ensureOnlyOneFeatured(id);
+      await setPostFeatured(firestoreBlogPostRepository, id, next);
+      await fetchPosts();
+    },
+    [fetchPosts, ensureOnlyOneFeatured],
+  );
+
+  return {
+    posts,
+    loading,
+    error,
+    refetch: fetchPosts,
+    create,
+    update,
+    remove,
+    toggleStatus,
+    toggleFeatured,
+  };
 }

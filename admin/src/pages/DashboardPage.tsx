@@ -4,7 +4,12 @@ import { StatCard } from "../components/ui/StatCard";
 import { Card } from "@/components/ui/card";
 import { Badge, type BadgeProps } from "@/components/ui/badge";
 import {
-  Table, TableHeader, TableBody, TableRow, TableHead, TableCell,
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
 } from "@/components/ui/table";
 import { SalesChart } from "@/components/report/SalesChart";
 import { useDashboard } from "@/hooks/useDashboard";
@@ -31,19 +36,22 @@ export function DashboardPage() {
   const summary = report?.summary;
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 shadow-xs p-5 sm:p-8 min-h-[calc(100vh-7rem)]">
       <PageHeader
-        title="Dashboard"
-        subtitle={report ? "Reporte de los últimos 7 días" : "Cargando métricas…"}
+        category="Principal"
+        title="Dashboard General"
+        subtitle={
+          report ? "Métricas en tiempo real, resumen de ventas y estado de operaciones." : "Cargando métricas…"
+        }
       />
 
       {error && (
-        <div className="mb-8 p-4 bg-red-50 border border-red-200 text-red-700 text-sm font-sans">
+        <div className="mb-6 p-4 bg-rose-50 border border-rose-200 text-rose-700 text-sm rounded-xl">
           {error}
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
         <StatCard
           label="Ventas Totales"
           value={formatCurrency(summary?.totalRevenue ?? 0)}
@@ -80,60 +88,60 @@ export function DashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
         <Card className="lg:col-span-2 p-6">
-          <h2 className="text-[10px] font-nav uppercase tracking-[0.2em] text-vous-text-secondary mb-5">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-5">
             Ingresos y Pedidos
           </h2>
           {report?.salesChart ? (
             <SalesChart data={report.salesChart} />
           ) : (
-            <div className="h-72 flex items-center justify-center text-vous-text-muted font-sans text-sm">
+            <div className="h-72 flex items-center justify-center text-slate-400 font-sans text-sm">
               {loading ? "Cargando…" : "Sin datos disponibles"}
             </div>
           )}
         </Card>
 
         <Card className="p-6">
-          <h2 className="text-[10px] font-nav uppercase tracking-[0.2em] text-vous-text-secondary mb-5">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">
             Desglose de Ingresos
           </h2>
-          <p className="font-serif text-4xl text-vous-text tracking-tight">
+          <p className="text-3xl font-bold text-slate-900 tracking-tight">
             {formatCurrency(revenueBreakdown.total)}
           </p>
-          <p className="text-[11px] text-vous-text-muted font-nav tracking-wide mt-1 mb-6">
+          <p className="text-xs text-slate-400 mt-1 mb-6">
             Últimos 30 días
           </p>
           <div className="space-y-5">
             <div>
-              <div className="flex justify-between text-[11px] font-nav tracking-wide mb-1.5">
-                <span className="text-vous-text">Ventas Directas</span>
-                <span className="text-vous-text-secondary">
+              <div className="flex justify-between text-xs font-medium mb-1.5">
+                <span className="text-slate-800">Ventas Directas</span>
+                <span className="text-slate-500">
                   {formatCurrency(revenueBreakdown.b2c)}
                 </span>
               </div>
-              <div className="h-1.5 bg-vous-border/40">
+              <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-vous-text transition-all duration-700"
+                  className="h-full bg-slate-900 rounded-full transition-all duration-700"
                   style={{ width: `${revenueBreakdown.b2cPct}%` }}
                 />
               </div>
-              <p className="text-[10px] text-vous-text-muted mt-1">
+              <p className="text-[10px] text-slate-400 mt-1 font-semibold">
                 {revenueBreakdown.b2cPct}%
               </p>
             </div>
             <div>
-              <div className="flex justify-between text-[11px] font-nav tracking-wide mb-1.5">
-                <span className="text-vous-text">Mayoristas</span>
-                <span className="text-vous-text-secondary">
+              <div className="flex justify-between text-xs font-medium mb-1.5">
+                <span className="text-slate-800">Mayoristas</span>
+                <span className="text-slate-500">
                   {formatCurrency(revenueBreakdown.b2b)}
                 </span>
               </div>
-              <div className="h-1.5 bg-vous-border/40">
+              <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-vous-gold transition-all duration-700"
+                  className="h-full bg-[#C9A84C] rounded-full transition-all duration-700"
                   style={{ width: `${revenueBreakdown.b2bPct}%` }}
                 />
               </div>
-              <p className="text-[10px] text-vous-text-muted mt-1">
+              <p className="text-[10px] text-slate-400 mt-1 font-semibold">
                 {revenueBreakdown.b2bPct}%
               </p>
             </div>
@@ -143,12 +151,12 @@ export function DashboardPage() {
 
       <Card className="p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-[10px] font-nav uppercase tracking-[0.2em] text-vous-text-secondary">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500">
             Pedidos Recientes
           </h2>
           <a
             href="/pedidos"
-            className="text-[10px] font-nav uppercase tracking-wider text-vous-gold hover:text-vous-gold-bright transition-colors"
+            className="text-xs font-semibold text-slate-900 hover:text-[#C9A84C] transition-colors"
           >
             Ver todos →
           </a>
@@ -158,23 +166,35 @@ export function DashboardPage() {
           {recentOrders.slice(0, 5).map((order) => (
             <div key={order.id} className="p-4">
               <div className="flex items-center justify-between mb-3">
-                <span className="font-nav text-[13px] font-semibold text-vous-text">{order.orderNumber}</span>
+                <span className="font-nav text-[13px] font-semibold text-vous-text">
+                  {order.orderNumber}
+                </span>
                 <Badge variant={statusVariant(order.status)}>
                   {getOrderStatusLabel(order.status as OrderStatus)}
                 </Badge>
               </div>
               <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-[12px]">
                 <div>
-                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary">Cliente</span>
+                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                    Cliente
+                  </span>
                   <p className="text-vous-text mt-0.5">{order.customer.name}</p>
                 </div>
                 <div>
-                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary">Fecha</span>
-                  <p className="text-vous-text mt-0.5">{formatDate(order.createdAt ?? "")}</p>
+                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                    Fecha
+                  </span>
+                  <p className="text-vous-text mt-0.5">
+                    {formatDate(order.createdAt ?? "")}
+                  </p>
                 </div>
                 <div className="col-span-2">
-                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary">Total</span>
-                  <p className="text-vous-text font-semibold mt-0.5">{formatCurrency(order.total)}</p>
+                  <span className="text-[10px] font-nav uppercase text-vous-text-secondary">
+                    Total
+                  </span>
+                  <p className="text-vous-text font-semibold mt-0.5">
+                    {formatCurrency(order.total)}
+                  </p>
                 </div>
               </div>
             </div>
@@ -201,16 +221,31 @@ export function DashboardPage() {
             <TableBody>
               {recentOrders.slice(0, 5).map((order) => (
                 <TableRow key={order.id}>
-                  <TableCell className="font-nav text-[12px] font-semibold">{order.orderNumber}</TableCell>
-                  <TableCell className="text-[13px] font-sans text-vous-text">{order.customer.name}</TableCell>
-                  <TableCell className="text-[12px] font-sans text-vous-text-secondary">{formatDate(order.createdAt ?? "")}</TableCell>
-                  <TableCell className="font-nav text-[13px] font-semibold">{formatCurrency(order.total)}</TableCell>
-                  <TableCell><Badge variant={statusVariant(order.status)}>{getOrderStatusLabel(order.status as OrderStatus)}</Badge></TableCell>
+                  <TableCell className="font-nav text-[12px] font-semibold">
+                    {order.orderNumber}
+                  </TableCell>
+                  <TableCell className="text-[13px] font-sans text-vous-text">
+                    {order.customer.name}
+                  </TableCell>
+                  <TableCell className="text-[12px] font-sans text-vous-text-secondary">
+                    {formatDate(order.createdAt ?? "")}
+                  </TableCell>
+                  <TableCell className="font-nav text-[13px] font-semibold">
+                    {formatCurrency(order.total)}
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={statusVariant(order.status)}>
+                      {getOrderStatusLabel(order.status as OrderStatus)}
+                    </Badge>
+                  </TableCell>
                 </TableRow>
               ))}
               {recentOrders.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center text-vous-text-secondary py-8 font-sans text-sm">
+                  <TableCell
+                    colSpan={5}
+                    className="text-center text-vous-text-secondary py-8 font-sans text-sm"
+                  >
                     {loading ? "Cargando pedidos…" : "No hay pedidos recientes"}
                   </TableCell>
                 </TableRow>

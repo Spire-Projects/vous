@@ -1,7 +1,13 @@
 import { useEffect, useState, useCallback } from "react";
 import { firestoreWholesaleRepository } from "@/infrastructure";
-import { getWholesaleRequests, reviewWholesaleRequest } from "@/application/use-cases/wholesale/manage-wholesale";
-import type { WholesaleRequest, ReviewWholesaleInput } from "@/domain/entities/wholesale.entity";
+import {
+  getWholesaleRequests,
+  reviewWholesaleRequest,
+} from "@/application/use-cases/wholesale/manage-wholesale";
+import type {
+  WholesaleRequest,
+  ReviewWholesaleInput,
+} from "@/domain/entities/wholesale.entity";
 
 export function useWholesale() {
   const [requests, setRequests] = useState<WholesaleRequest[]>([]);
@@ -20,13 +26,18 @@ export function useWholesale() {
     }
   }, []);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { fetchRequests(); }, [fetchRequests]);
-
-  const review = useCallback(async (input: ReviewWholesaleInput) => {
-    await reviewWholesaleRequest(firestoreWholesaleRepository, input);
-    await fetchRequests();
+   
+  useEffect(() => {
+    fetchRequests();
   }, [fetchRequests]);
+
+  const review = useCallback(
+    async (input: ReviewWholesaleInput) => {
+      await reviewWholesaleRequest(firestoreWholesaleRepository, input);
+      await fetchRequests();
+    },
+    [fetchRequests],
+  );
 
   return { requests, loading, error, refetch: fetchRequests, review };
 }

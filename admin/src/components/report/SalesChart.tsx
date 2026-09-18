@@ -45,7 +45,9 @@ export function SalesChart({ data }: SalesChartProps) {
           />
           <Tooltip
             formatter={(value, name) => [
-              name === "revenue" ? formatCurrency(Number(value)) : `${value} pedidos`,
+              name === "revenue"
+                ? formatCurrency(Number(value))
+                : `${value} pedidos`,
               name === "revenue" ? "Ingresos" : "Pedidos",
             ]}
             contentStyle={{
