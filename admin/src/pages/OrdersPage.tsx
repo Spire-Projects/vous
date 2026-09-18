@@ -4,8 +4,11 @@ import {
   Receipt,
   TrendingUp,
   Clock,
-  Filter,
-  Calendar,
+  Zap,
+  Plus,
+  FileText,
+  ExternalLink,
+  CheckCircle2,
 } from "lucide-react";
 import { PageHeader } from "../components/ui/PageHeader";
 import { StatCard } from "../components/ui/StatCard";
@@ -62,14 +65,11 @@ function passesDateFilter(
 }
 
 const STATUS_TABS: { label: string; value: OrderStatus | "all" }[] = [
-  { label: "Todos", value: "all" },
+  { label: "Todas las etapas", value: "all" },
   { label: "Pendiente", value: "pending" },
-  { label: "Pago Enviado", value: "payment_sent" },
-  { label: "Verificando", value: "verifying_payment" },
-  { label: "Confirmado", value: "confirmed" },
-  { label: "Preparando", value: "preparing" },
-  { label: "Enviado", value: "shipped" },
-  { label: "Entregado", value: "delivered" },
+  { label: "En Préstamo", value: "preparing" },
+  { label: "En Cobro", value: "verifying_payment" },
+  { label: "Venta Cerrada", value: "delivered" },
   { label: "Cancelado", value: "cancelled" },
 ];
 
@@ -127,228 +127,250 @@ export function OrdersPage() {
   });
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 shadow-xs p-5 sm:p-8 min-h-[calc(100vh-7rem)]">
+      {/* Page Header */}
       <PageHeader
-        title="Gestión de Pedidos"
-        subtitle="Listado en tiempo real con actualización automática."
+        category="Gestión"
+        title="Procesos de Venta"
+        subtitle="Gestiona préstamos pedagógicos, entregas en escuelas, cobros y ventas sueltas."
+        action={
+          <div className="flex items-center gap-2.5">
+            <Button
+              variant="secondary"
+              size="default"
+              onClick={() => {
+                const first = orders[0];
+                if (first) setSelectedOrder(first);
+              }}
+              className="gap-2"
+            >
+              <Zap size={14} className="text-amber-500 fill-amber-500" />
+              <span>Venta Suelta</span>
+            </Button>
+            <Button
+              variant="default"
+              size="default"
+              onClick={() => {
+                const first = orders[0];
+                if (first) setSelectedOrder(first);
+              }}
+              className="gap-2"
+            >
+              <Plus size={15} strokeWidth={2.5} />
+              <span>Nuevo Préstamo</span>
+            </Button>
+          </div>
+        }
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      {/* Metric Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         <StatCard
           label="Nuevos Hoy"
           value={todayCount.toString()}
-          icon={<TrendingUp size={24} strokeWidth={1} />}
+          icon={<TrendingUp size={22} strokeWidth={2} />}
         />
         <StatCard
           label="En Proceso"
           value={inProgressCount.toString()}
-          icon={<Receipt size={24} strokeWidth={1} />}
+          icon={<Receipt size={22} strokeWidth={2} />}
         />
         <StatCard
           label="Pendientes Pago"
           value={pendingPaymentCount.toString()}
-          icon={<Clock size={24} strokeWidth={1} />}
+          icon={<Clock size={22} strokeWidth={2} />}
         />
       </div>
 
-      <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden">
-        <div className="p-4 border-b border-white/40 flex flex-col gap-3">
-          <div className="flex items-center gap-3">
-            <div className="relative flex-1 max-w-xs">
-              <Search
-                size={14}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-vous-text-secondary"
-              />
-              <Input
-                placeholder="Buscar pedido o cliente…"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="pl-9"
-              />
-            </div>
-          </div>
+      {/* Filter Toolbar */}
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-100">
+        <div className="relative flex-1 max-w-sm">
+          <Search
+            size={15}
+            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
+          />
+          <Input
+            placeholder="Buscar por código, notas, profesor..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-10"
+          />
+        </div>
 
-          <div className="flex flex-wrap gap-1">
-            {STATUS_TABS.map((tab) => (
-              <Button
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Status filter pill tabs */}
+          <div className="flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl">
+            {STATUS_TABS.slice(0, 4).map((tab) => (
+              <button
                 key={tab.value}
-                size="sm"
-                variant={statusTab === tab.value ? "default" : "outline"}
                 onClick={() => setStatusTab(tab.value)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                  statusTab === tab.value
+                    ? "bg-white text-slate-900 shadow-xs font-semibold"
+                    : "text-slate-500 hover:text-slate-900"
+                }`}
               >
-                <Filter size={12} />
                 {tab.label}
-              </Button>
+              </button>
             ))}
           </div>
 
-          <div className="flex flex-wrap gap-1">
+          {/* Date filter pill tabs */}
+          <div className="flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl">
             {DATE_TABS.map((tab) => (
-              <Button
+              <button
                 key={tab.value}
-                size="sm"
-                variant={dateFilter === tab.value ? "default" : "outline"}
                 onClick={() => setDateFilter(tab.value)}
+                className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
+                  dateFilter === tab.value
+                    ? "bg-white text-slate-900 shadow-xs font-semibold"
+                    : "text-slate-500 hover:text-slate-900"
+                }`}
               >
-                <Calendar size={12} />
                 {tab.label}
-              </Button>
+              </button>
             ))}
           </div>
         </div>
+      </div>
 
+      {/* Table Container */}
+      <div className="rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs">
         {loading ? (
-          <div className="flex items-center justify-center py-16">
-            <span className="inline-block w-5 h-5 border-2 border-vous-border border-t-vous-gold rounded-full animate-spin" />
+          <div className="flex items-center justify-center py-20">
+            <span className="inline-block w-6 h-6 border-2 border-slate-200 border-t-[#C9A84C] rounded-full animate-spin" />
           </div>
         ) : error ? (
-          <p className="text-center py-12 font-sans text-sm text-red-600">
+          <p className="text-center py-12 font-sans text-sm text-rose-600">
             {error}
           </p>
         ) : filtered.length === 0 ? (
-          <p className="text-center py-12 font-sans text-sm text-vous-text-secondary">
-            No hay pedidos que coincidan con los filtros.
+          <p className="text-center py-16 text-sm text-slate-400 font-medium">
+            No hay procesos de venta que coincidan con los filtros.
           </p>
         ) : (
-          <>
-            {/* ── Mobile: cards ───────────────────────────────────────── */}
-            <div className="block md:hidden divide-y divide-white/30">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-44">CÓDIGO</TableHead>
+                <TableHead>ESCUELA / DOCENTE</TableHead>
+                <TableHead>ETAPA</TableHead>
+                <TableHead>TOTAL / SALDO</TableHead>
+                <TableHead>PAGO</TableHead>
+                <TableHead className="text-right">ACCIONES</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {filtered.map((order) => {
-                const dateStr = order.createdAt
-                  ? new Date(order.createdAt).toLocaleDateString("es-BO", {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    })
-                  : "—";
+                const isPaid =
+                  order.status === "delivered" || order.status === "confirmed";
+                const isPartial =
+                  order.status === "payment_sent" ||
+                  order.status === "verifying_payment";
+                const isDelivered = order.status === "delivered";
+
                 return (
-                  <div
+                  <TableRow
                     key={order.id}
-                    className="p-4 hover:bg-amber-50/30 transition-colors cursor-pointer"
+                    className="cursor-pointer hover:bg-slate-50/80 transition-colors"
                     onClick={() => setSelectedOrder(order)}
                   >
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="font-nav text-[13px] font-semibold text-vous-text">
+                    {/* CÓDIGO */}
+                    <TableCell>
+                      <p className="font-bold text-slate-900 text-sm tracking-tight">
                         {order.orderNumber}
-                      </span>
+                      </p>
+                      <p className="text-xs text-slate-400 font-normal mt-0.5">
+                        {order.isWholesale
+                          ? "Venta Mayorista"
+                          : "Proceso Estándar"}
+                      </p>
+                    </TableCell>
+
+                    {/* ESCUELA / DOCENTE */}
+                    <TableCell>
+                      <p className="font-bold text-slate-800 text-sm">
+                        {order.customer.name}
+                      </p>
+                      <p className="text-xs text-slate-500 font-normal mt-0.5">
+                        {order.customer.phone || order.customer.email}
+                      </p>
+                    </TableCell>
+
+                    {/* ETAPA */}
+                    <TableCell>
                       <Badge variant={STATUS_BADGE[order.status]}>
+                        {isDelivered && (
+                          <CheckCircle2 size={11} className="shrink-0 text-emerald-600" />
+                        )}
                         {getOrderStatusLabel(order.status)}
                       </Badge>
-                    </div>
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-[12px]">
-                      <div>
-                        <span className="text-[10px] font-nav uppercase text-vous-text-secondary">
-                          Cliente
+                    </TableCell>
+
+                    {/* TOTAL / SALDO */}
+                    <TableCell>
+                      <p className="font-bold text-slate-900 text-sm">
+                        Bs. {order.total.toLocaleString("es-BO", { minimumFractionDigits: 2 })}
+                      </p>
+                      <p className="text-xs text-slate-400 mt-0.5">
+                        Cobrado: Bs.{" "}
+                        {isPaid
+                          ? order.total.toLocaleString("es-BO", { minimumFractionDigits: 2 })
+                          : "0.00"}{" "}
+                        {!isPaid && (
+                          <span className="text-rose-600 font-semibold">
+                            (Debe: {order.total.toLocaleString("es-BO", { minimumFractionDigits: 2 })})
+                          </span>
+                        )}
+                      </p>
+                    </TableCell>
+
+                    {/* PAGO */}
+                    <TableCell>
+                      {isPaid ? (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/80">
+                          Pagado 100%
                         </span>
-                        <p className="text-vous-text font-medium mt-0.5">
-                          {order.customer.name}
-                        </p>
-                        <p className="text-vous-text-secondary text-[11px]">
-                          {order.customer.email}
-                        </p>
-                      </div>
-                      <div>
-                        <span className="text-[10px] font-nav uppercase text-vous-text-secondary">
-                          Fecha
+                      ) : isPartial ? (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200/80">
+                          Pago Parcial
                         </span>
-                        <p className="text-vous-text mt-0.5">{dateStr}</p>
-                      </div>
-                      <div>
-                        <span className="text-[10px] font-nav uppercase text-vous-text-secondary">
-                          Total
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200/80">
+                          Pendiente
                         </span>
-                        <p className="text-vous-text font-semibold mt-0.5">
-                          Bs. {order.total.toLocaleString("es-BO")}
-                        </p>
-                      </div>
-                      <div className="flex items-end justify-end">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedOrder(order);
-                          }}
+                      )}
+                    </TableCell>
+
+                    {/* ACCIONES */}
+                    <TableCell
+                      className="text-right"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <div className="flex items-center justify-end gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedOrder(order)}
+                          title="Ver nota / proceso"
+                          className="p-2 text-slate-400 hover:text-slate-900 hover:bg-[#C9A84C]/10 hover:border-[#C9A84C]/30 border border-slate-200/80 rounded-xl transition-colors cursor-pointer"
                         >
-                          Ver detalle
-                        </Button>
+                          <FileText size={15} />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedOrder(order)}
+                          title="Ver detalle completo"
+                          className="p-2 text-slate-400 hover:text-slate-900 hover:bg-[#C9A84C]/10 hover:border-[#C9A84C]/30 border border-slate-200/80 rounded-xl transition-colors cursor-pointer"
+                        >
+                          <ExternalLink size={15} />
+                        </button>
                       </div>
-                    </div>
-                  </div>
+                    </TableCell>
+                  </TableRow>
                 );
               })}
-            </div>
-
-            {/* ── Desktop: table ──────────────────────────────────────── */}
-            <div className="hidden md:block">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    {[
-                      "Pedido",
-                      "Cliente",
-                      "Fecha",
-                      "Total",
-                      "Estado",
-                      "Acciones",
-                    ].map((h) => (
-                      <TableHead key={h}>{h}</TableHead>
-                    ))}
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filtered.map((order) => (
-                    <TableRow
-                      key={order.id}
-                      className="cursor-pointer hover:bg-amber-50/40 transition-colors"
-                      onClick={() => setSelectedOrder(order)}
-                    >
-                      <TableCell className="font-nav text-[12px] font-semibold">
-                        {order.orderNumber}
-                      </TableCell>
-                      <TableCell>
-                        <p className="text-[13px] font-sans text-vous-text">
-                          {order.customer.name}
-                        </p>
-                        <p className="text-[11px] text-vous-text-secondary">
-                          {order.customer.email}
-                        </p>
-                      </TableCell>
-                      <TableCell className="text-[12px] font-sans text-vous-text-secondary">
-                        {order.createdAt
-                          ? new Date(order.createdAt).toLocaleDateString(
-                              "es-BO",
-                              {
-                                day: "2-digit",
-                                month: "short",
-                                year: "numeric",
-                              },
-                            )
-                          : "—"}
-                      </TableCell>
-                      <TableCell className="font-nav text-[13px] font-semibold">
-                        Bs. {order.total.toLocaleString("es-BO")}
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={STATUS_BADGE[order.status]}>
-                          {getOrderStatusLabel(order.status)}
-                        </Badge>
-                      </TableCell>
-                      <TableCell onClick={(e) => e.stopPropagation()}>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setSelectedOrder(order)}
-                        >
-                          Ver detalle
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </>
+            </TableBody>
+          </Table>
         )}
       </div>
 

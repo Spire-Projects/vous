@@ -17,10 +17,11 @@ export function ReportsPage() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 shadow-xs p-5 sm:p-8 min-h-[calc(100vh-7rem)] space-y-6">
       <PageHeader
+        category="Reportes"
         title="Reportes y Estadísticas"
-        subtitle="Monitorea el rendimiento comercial de VOUS con métricas actualizadas."
+        subtitle="Monitorea el rendimiento comercial con métricas actualizadas."
       />
 
       <ReportDateFilter

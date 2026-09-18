@@ -76,13 +76,14 @@ export function CategoriesPage() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 shadow-xs p-5 sm:p-8 min-h-[calc(100vh-7rem)] space-y-6">
       <PageHeader
+        category="Catálogo"
         title="Categorías"
-        subtitle="Organiza la taxonomía del catálogo VOUS."
+        subtitle="Organiza la taxonomía y colecciones del catálogo."
         action={
           <Button onClick={openCreate} className="flex items-center gap-2">
-            <Plus size={14} /> Nueva categoría
+            <Plus size={15} strokeWidth={2.5} /> Nueva categoría
           </Button>
         }
       />

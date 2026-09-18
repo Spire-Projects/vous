@@ -64,20 +64,23 @@ function LogoHeader({
   storeName: string;
 }) {
   return (
-    <div className="text-center mb-10">
+    <div className="text-center mb-8">
       {logoUrl ? (
         <img
           src={logoUrl}
           alt={storeName}
-          className="h-10 w-auto object-contain mx-auto"
+          className="h-10 w-auto object-contain mx-auto mb-3"
         />
       ) : (
-        <h1 className="font-serif text-4xl font-medium text-vous-text tracking-widest">
-          {storeName}
-        </h1>
+        <div className="w-12 h-12 rounded-2xl bg-[#0D0D0C] text-[#C9A84C] flex items-center justify-center mx-auto mb-3 shadow-md">
+          <ShieldCheck size={24} />
+        </div>
       )}
-      <p className="text-[11px] font-nav uppercase tracking-[0.2em] text-vous-gold mt-2">
-        Admin Portal
+      <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+        {storeName}
+      </h1>
+      <p className="text-xs text-slate-500 font-medium mt-1">
+        Configuración del sistema
       </p>
     </div>
   );
@@ -242,55 +245,51 @@ export function RegisterPage() {
   if (setupState === "checking") {
     return (
       <div className="min-h-screen bg-vous-bg flex items-center justify-center">
-        <span className="inline-block w-5 h-5 border-2 border-vous-gold/30 border-t-vous-gold rounded-full animate-spin" />
+        <span className="inline-block w-6 h-6 border-2 border-slate-200 border-t-[#C9A84C] rounded-full animate-spin" />
       </div>
     );
   }
 
   if (setupState === "unavailable") {
     return (
-      <div className="min-h-screen bg-vous-bg flex flex-col">
-        <div className="flex-1 flex items-center justify-center p-4">
-          <div className="w-full max-w-sm text-center">
-            <LogoHeader logoUrl={logoUrl} storeName={storeName} />
-            <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden p-6 sm:p-8">
-              <div className="flex justify-center mb-4">
-                <AlertTriangle size={32} className="text-amber-600" />
-              </div>
-              <h2 className="font-serif text-xl text-vous-text mb-3">
-                Configuración no disponible
-              </h2>
-              <p className="text-sm text-vous-text-secondary font-sans leading-relaxed mb-6">
-                El panel ya está configurado. Si necesitas acceso, contacta al
-                administrador principal de VOUS.
-              </p>
-              <Button asChild className="w-full h-11">
-                <Link to="/login">Ir al inicio de sesión</Link>
-              </Button>
+      <div className="min-h-screen bg-[#F4F6FB] flex flex-col justify-center items-center p-4">
+        <div className="w-full max-w-sm text-center">
+          <LogoHeader logoUrl={logoUrl} storeName={storeName} />
+          <div className="bg-white border border-slate-200/80 rounded-2xl sm:rounded-3xl shadow-sm p-6 sm:p-8">
+            <div className="flex justify-center mb-4">
+              <AlertTriangle size={32} className="text-amber-500" />
             </div>
+            <h2 className="text-xl font-bold text-slate-900 mb-2">
+              Configuración no disponible
+            </h2>
+            <p className="text-xs text-slate-500 font-sans leading-relaxed mb-6">
+              El panel ya está configurado. Si necesitas acceso, contacta al
+              administrador principal.
+            </p>
+            <Button asChild className="w-full h-11 text-sm font-semibold">
+              <Link to="/login">Ir al inicio de sesión</Link>
+            </Button>
           </div>
         </div>
-        <FooterLinks storeName={storeName} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-vous-bg flex flex-col">
-      <div className="flex-1 flex items-center justify-center p-4">
-        <div className="w-full max-w-sm">
-          <LogoHeader logoUrl={logoUrl} storeName={storeName} />
+    <div className="min-h-screen bg-[#F4F6FB] flex flex-col justify-center items-center p-4">
+      <div className="w-full max-w-sm">
+        <LogoHeader logoUrl={logoUrl} storeName={storeName} />
 
-          <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden p-8">
-            <div className="flex items-center gap-2 mb-1">
-              <ShieldCheck size={18} className="text-vous-gold" />
-              <h2 className="font-serif text-xl text-vous-text">
-                Configuración Inicial
-              </h2>
-            </div>
-            <p className="text-[11px] text-vous-text-secondary font-nav mb-6">
-              Crea la cuenta de superadministrador
-            </p>
+        <div className="bg-white border border-slate-200/80 rounded-2xl sm:rounded-3xl shadow-sm p-6 sm:p-8">
+          <div className="flex items-center gap-2 mb-1">
+            <ShieldCheck size={20} className="text-[#C9A84C]" />
+            <h2 className="text-xl font-bold text-slate-900">
+              Configuración Inicial
+            </h2>
+          </div>
+          <p className="text-xs text-slate-500 mb-6 font-medium">
+            Crea la cuenta de superadministrador
+          </p>
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
@@ -404,7 +403,6 @@ export function RegisterPage() {
             </Link>
           </p>
         </div>
-      </div>
 
       <FooterLinks storeName={storeName} />
     </div>

@@ -125,34 +125,35 @@ export function UsersPage() {
   const [activeTab, setActiveTab] = useState<UserTab>("clients");
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 shadow-xs p-5 sm:p-8 min-h-[calc(100vh-7rem)] space-y-6">
       <PageHeader
+        category="Personas"
         title="Usuarios"
         subtitle="Gestiona clientes y administradores del sistema."
       />
 
       {/* Tabs */}
-      <div className="flex gap-1 border-b border-white/40 pb-1">
+      <div className="flex items-center gap-2 p-1 bg-slate-100/80 rounded-xl w-fit">
         <button
           onClick={() => setActiveTab("clients")}
-          className={`inline-flex items-center gap-1.5 px-4 py-2.5 text-[11px] sm:text-sm font-sans border-b-2 transition-colors -mb-[1px] rounded-t-lg ${
+          className={`inline-flex items-center gap-2 px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all cursor-pointer ${
             activeTab === "clients"
-              ? "border-vous-gold text-vous-gold font-semibold bg-amber-50/60"
-              : "border-transparent text-vous-text-secondary hover:text-vous-text hover:bg-white/40"
+              ? "bg-white text-slate-900 font-semibold shadow-xs"
+              : "text-slate-600 hover:text-slate-900"
           }`}
         >
-          <Users size={14} strokeWidth={1.5} />
+          <Users size={15} strokeWidth={2} />
           Clientes
         </button>
         <button
           onClick={() => setActiveTab("admins")}
-          className={`inline-flex items-center gap-1.5 px-4 py-2.5 text-[11px] sm:text-sm font-sans border-b-2 transition-colors -mb-[1px] rounded-t-lg ${
+          className={`inline-flex items-center gap-2 px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all cursor-pointer ${
             activeTab === "admins"
-              ? "border-vous-gold text-vous-gold font-semibold bg-amber-50/60"
-              : "border-transparent text-vous-text-secondary hover:text-vous-text hover:bg-white/40"
+              ? "bg-white text-slate-900 font-semibold shadow-xs"
+              : "text-slate-600 hover:text-slate-900"
           }`}
         >
-          <Shield size={14} strokeWidth={1.5} />
+          <Shield size={15} strokeWidth={2} />
           Administradores
         </button>
       </div>

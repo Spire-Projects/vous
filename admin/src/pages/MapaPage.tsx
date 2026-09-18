@@ -59,21 +59,23 @@ export function MapaPage() {
 
   if (loading) {
     return (
-      <div className="w-full px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+      <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 shadow-xs p-5 sm:p-8 min-h-[calc(100vh-7rem)]">
         <PageHeader
+          category="Sistema"
           title="Mapa de Puntos Oficiales"
           subtitle="Gestiona los puntos de venta y distribuidores en Bolivia."
         />
         <div className="flex items-center justify-center py-20">
-          <Loader2 size={24} className="animate-spin text-vous-gold" />
+          <Loader2 size={24} className="animate-spin text-[#C9A84C]" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8 py-6 lg:py-8 space-y-6">
+    <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 shadow-xs p-5 sm:p-8 min-h-[calc(100vh-7rem)] space-y-6">
       <PageHeader
+        category="Sistema"
         title="Mapa de Puntos Oficiales"
         subtitle="Haz clic en un departamento para ver las tiendas. Todos los puntos están marcados en el mapa."
         action={

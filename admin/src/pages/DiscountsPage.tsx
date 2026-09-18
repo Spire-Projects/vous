@@ -164,19 +164,20 @@ export function DiscountsPage() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 shadow-xs p-5 sm:p-8 min-h-[calc(100vh-7rem)] space-y-6">
       <PageHeader
+        category="Gestión"
         title="Descuentos y Cupones"
         subtitle="Configura promociones y códigos de descuento."
         action={
-          <Button onClick={openNew}>
-            <Plus size={14} strokeWidth={2} />
-            Nuevo Cupón
+          <Button onClick={openNew} className="gap-2">
+            <Plus size={15} strokeWidth={2.5} />
+            <span>Nuevo Cupón</span>
           </Button>
         }
       />
 
-      <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden">
+      <div className="rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
         <div className="p-4 border-b border-white/40 flex items-center gap-3">
           <div className="relative flex-1 max-w-xs">
             <Search

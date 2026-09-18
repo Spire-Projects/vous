@@ -110,7 +110,7 @@ export function InventoryPage() {
       .findVariants(preview.id)
       .then((data) => setPreviewVariants(data))
       .catch(() => setPreviewVariants([]));
-  }, [preview?.id]);
+  }, [preview]);
 
   async function toggleExpand(productId: string) {
     setExpandedIds((prev) => {
@@ -174,46 +174,48 @@ export function InventoryPage() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 shadow-xs p-5 sm:p-8 min-h-[calc(100vh-7rem)]">
       <PageHeader
+        category="Catálogo"
         title="Inventario de Productos"
-        subtitle="Gestione su catálogo con precisión editorial."
+        subtitle="Gestione su catálogo de productos, variantes, stock y precios."
         action={
-          <div className="flex flex-wrap gap-2">
+          <div className="flex items-center gap-2.5 flex-wrap">
             <Button
               variant="outline"
               onClick={() => setCategoryDiscountOpen(true)}
               title="Descuento por categoría"
+              className="gap-2"
             >
               <Layers size={14} strokeWidth={2} />
-              Descuento Cat.
+              <span>Descuento Cat.</span>
             </Button>
-            <Button onClick={handleNew}>
-              <Plus size={14} strokeWidth={2} />
-              Añadir Producto
+            <Button onClick={handleNew} className="gap-2">
+              <Plus size={15} strokeWidth={2.5} />
+              <span>Añadir Producto</span>
             </Button>
           </div>
         }
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         <StatCard label="Total Productos" value={String(products.length)} />
         <StatCard label="Activos" value={String(activeCount)} />
         <StatCard label="Stock Crítico" value={String(lowStockCount)} />
       </div>
 
-      <div className="bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl shadow-xl shadow-black/5 overflow-hidden">
-        <div className="p-4 border-b border-white/40 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
-          <div className="relative flex-1 max-w-xs">
+      <div className="rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+        <div className="p-4 border-b border-slate-100 flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between bg-white">
+          <div className="relative flex-1 max-w-sm">
             <Search
-              size={14}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-vous-text-secondary"
+              size={15}
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
             />
             <Input
               placeholder="Buscar producto..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-9"
+              className="pl-10"
             />
           </div>
           <Button
@@ -375,7 +377,7 @@ export function InventoryPage() {
                       </span>
                     )}
                     {product.isSpecialCollection && (
-                      <span className="text-[10px] font-nav text-purple-600 uppercase">
+                      <span className="text-[10px] font-nav text-[#C9A84C] font-semibold uppercase">
                         Col. Especial
                       </span>
                     )}
@@ -785,7 +787,7 @@ export function InventoryPage() {
                               </span>
                             )}
                             {product.isSpecialCollection && (
-                              <span className="text-[10px] font-nav text-purple-600 uppercase">
+                              <span className="text-[10px] font-nav text-[#C9A84C] font-semibold uppercase">
                                 Col. Especial
                               </span>
                             )}
@@ -1238,7 +1240,7 @@ export function InventoryPage() {
                       </span>
                     )}
                     {preview.isSpecialCollection && (
-                      <span className="text-[10px] font-nav text-purple-600 uppercase">
+                      <span className="text-[10px] font-nav text-[#C9A84C] font-semibold uppercase">
                         Colección Especial
                       </span>
                     )}

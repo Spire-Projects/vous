@@ -128,7 +128,7 @@ export function ProductFlagsDialog({
                 onCheckedChange={(c) => setSpecialCollection(Boolean(c))}
                 id="pf-spec"
               />
-              <Sparkles size={14} className="text-purple-600" />
+              <Sparkles size={14} className="text-[#C9A84C]" />
               <span className="font-sans text-[13px] text-vous-text">
                 Colección Especial
               </span>

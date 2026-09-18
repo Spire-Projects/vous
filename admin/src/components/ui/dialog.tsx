@@ -77,13 +77,13 @@ const DialogContent = React.forwardRef<
     <_Content
       ref={ref}
       className={cn(
-        "fixed left-[50%] top-[50%] z-50 w-full max-w-lg translate-x-[-50%] translate-y-[-50%] bg-white border border-white/60 rounded-2xl p-6 shadow-2xl shadow-black/10 animate-scale-in max-h-[90vh] overflow-y-auto",
+        "fixed left-[50%] top-[50%] z-50 w-full max-w-lg translate-x-[-50%] translate-y-[-50%] bg-white border border-slate-200/80 rounded-2xl p-6 shadow-2xl animate-scale-in max-h-[90vh] overflow-y-auto",
         className,
       )}
       {...props}
     >
       {children}
-      <_Close className="absolute right-4 top-4 text-vous-text-secondary hover:text-vous-text transition-colors">
+      <_Close className="absolute right-4 top-4 text-slate-400 hover:text-slate-700 transition-colors p-1 rounded-lg hover:bg-slate-100">
         <X size={16} />
         <span className="sr-only">Cerrar</span>
       </_Close>
@@ -105,7 +105,7 @@ const DialogTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <_Title
     ref={ref}
-    className={cn("font-serif text-xl text-vous-text", className)}
+    className={cn("text-xl font-bold text-slate-900 tracking-tight", className)}
     {...props}
   />
 ));

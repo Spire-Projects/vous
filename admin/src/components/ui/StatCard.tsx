@@ -16,30 +16,31 @@ export function StatCard({
   icon,
 }: StatCardProps) {
   return (
-    <div className="group bg-white/80 backdrop-blur-lg border border-white/60 rounded-3xl p-6 shadow-xl shadow-black/5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-amber-500/5 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-24 h-24 bg-amber-400/5 blur-[60px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      <div className="relative z-10 flex items-start justify-between">
-        <div className="flex-1">
-          <p className="text-[10px] font-nav uppercase tracking-[0.2em] text-vous-text-secondary">
-            {label}
-          </p>
-          <p className="font-serif text-3xl lg:text-4xl font-medium text-vous-text mt-3 tracking-tight truncate">
-            {value}
-          </p>
-          {change && (
-            <p
-              className={`text-[11px] font-nav tracking-wide mt-2 ${isPositive ? "text-emerald-600" : "text-red-600"}`}
-            >
-              {change}
-            </p>
-          )}
-        </div>
-        {icon && (
-          <div className="text-vous-gold/30 group-hover:text-vous-gold/70 transition-colors duration-300 ml-3">
-            {icon}
+    <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs transition-all duration-200 hover:shadow-md hover:border-slate-300/80 flex items-start justify-between">
+      <div className="flex-1 min-w-0">
+        <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+          {label}
+        </p>
+        <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-2 tracking-tight truncate">
+          {value}
+        </p>
+        {change && (
+          <div
+            className={`text-xs font-semibold mt-2.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-full ${
+              isPositive
+                ? "bg-emerald-50 text-emerald-700 border border-emerald-200/60"
+                : "bg-rose-50 text-rose-700 border border-rose-200/60"
+            }`}
+          >
+            {change}
           </div>
         )}
       </div>
+      {icon && (
+        <div className="p-2.5 rounded-xl bg-[#C9A84C]/10 text-[#8B6914] border border-[#C9A84C]/25 shrink-0 ml-3">
+          {icon}
+        </div>
+      )}
     </div>
   );
 }
