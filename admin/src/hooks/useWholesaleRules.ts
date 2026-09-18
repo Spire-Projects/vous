@@ -26,7 +26,7 @@ export function useWholesaleRules() {
     }
   }, []);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
+   
   useEffect(() => {
     fetchRules();
   }, [fetchRules]);

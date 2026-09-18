@@ -545,7 +545,7 @@ function AdminsTab() {
   const [initDone, setInitDone] = useState(false);
   useEffect(() => {
     if (!initDone) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+       
       setInitDone(true);
       void loadUsers();
     }

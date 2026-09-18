@@ -43,7 +43,7 @@ export function CategoryFormDialog({
   const [saving, setSaving] = useState(false);
   const [slugManual, setSlugManual] = useState(false);
 
-  /* eslint-disable react-hooks/set-state-in-effect */
+   
   useEffect(() => {
     if (category) {
       setName(category.name);
@@ -64,7 +64,7 @@ export function CategoryFormDialog({
       setSlugManual(false);
     }
   }, [category, open]);
-  /* eslint-enable react-hooks/set-state-in-effect */
+   
 
   function handleNameChange(v: string) {
     setName(v);

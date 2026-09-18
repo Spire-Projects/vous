@@ -28,7 +28,7 @@ export function useStyleGuides() {
     }
   }, []);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
+   
   useEffect(() => {
     fetchGuides();
   }, [fetchGuides]);

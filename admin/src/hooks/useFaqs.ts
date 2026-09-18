@@ -29,7 +29,7 @@ export function useFAQs() {
     }
   }, []);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
+   
   useEffect(() => {
     fetchFAQs();
   }, [fetchFAQs]);

@@ -70,7 +70,7 @@ export function BlogPostFormDialog({
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    /* eslint-disable react-hooks/set-state-in-effect */
+     
     if (post) {
       setTitle(post.title);
       setSlug(post.slug);
@@ -92,7 +92,7 @@ export function BlogPostFormDialog({
       setStatus("draft");
       setFeatured(false);
     }
-    /* eslint-enable react-hooks/set-state-in-effect */
+     
   }, [post, open]);
 
   function handleTitleChange(val: string) {

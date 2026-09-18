@@ -115,7 +115,6 @@ export function ProductFormDialog({
   // Load existing variants when editing
   useEffect(() => {
     if (!product) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setExistingVariants([]);
       return;
     }
@@ -123,7 +122,7 @@ export function ProductFormDialog({
       .findVariants(product.id)
       .then((data) => setExistingVariants(data))
       .catch(() => setExistingVariants([]));
-  }, [product?.id]);
+  }, [product]);
 
   const catName = categories.find((c) => c.id === categoryId)?.name ?? "";
   const hasVariants = sizes.length > 0 || colors.length > 0;

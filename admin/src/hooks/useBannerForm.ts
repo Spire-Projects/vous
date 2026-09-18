@@ -29,7 +29,7 @@ export function useBannerForm({
   const [active, setActive] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  /* eslint-disable react-hooks/set-state-in-effect */
+   
   useEffect(() => {
     setTab("form");
     setImageUrl(banner?.imageUrl ?? "");
@@ -42,7 +42,7 @@ export function useBannerForm({
     setCategorySlug(banner?.categorySlug ?? "");
     setActive(banner?.active ?? true);
   }, [banner, open]);
-  /* eslint-enable react-hooks/set-state-in-effect */
+   
 
   const ctaUrl = categorySlug
     ? `/catalogo?categoria=${categorySlug}`

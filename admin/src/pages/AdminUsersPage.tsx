@@ -114,7 +114,7 @@ export function AdminUsersPage() {
     }
   }
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
+   
   useEffect(() => {
     void loadUsers();
   }, []);

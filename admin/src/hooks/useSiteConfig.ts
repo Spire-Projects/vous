@@ -27,7 +27,7 @@ export function useSiteConfig() {
     }
   }, []);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
+   
   useEffect(() => {
     fetchConfig();
   }, [fetchConfig]);

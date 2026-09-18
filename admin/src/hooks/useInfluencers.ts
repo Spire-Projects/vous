@@ -28,7 +28,7 @@ export function useInfluencers() {
     }
   }, []);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
+   
   useEffect(() => {
     fetchAll();
   }, [fetchAll]);

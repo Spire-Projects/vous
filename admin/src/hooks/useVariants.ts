@@ -29,7 +29,7 @@ export function useVariants(productId: string | null) {
     }
   }, [productId]);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
+   
   useEffect(() => {
     fetchVariants();
   }, [fetchVariants]);

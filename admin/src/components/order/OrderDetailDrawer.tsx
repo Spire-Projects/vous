@@ -133,7 +133,7 @@ export function OrderDetailDrawer({
   const notesSavedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const orderId = order?.id;
-  /* eslint-disable react-hooks/set-state-in-effect */
+   
   useEffect(() => {
     if (order) {
       setNotes(order.adminNotes ?? "");
@@ -145,7 +145,7 @@ export function OrderDetailDrawer({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderId]);
-  /* eslint-enable react-hooks/set-state-in-effect */
+   
 
   useEffect(() => {
     return () => {

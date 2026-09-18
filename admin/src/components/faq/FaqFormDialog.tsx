@@ -31,7 +31,7 @@ export function FaqFormDialog({
   const [isActive, setIsActive] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  /* eslint-disable react-hooks/set-state-in-effect */
+   
   useEffect(() => {
     if (faq) {
       setQuestion(faq.question);
@@ -45,7 +45,7 @@ export function FaqFormDialog({
       setIsActive(true);
     }
   }, [faq, open]);
-  /* eslint-enable react-hooks/set-state-in-effect */
+   
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

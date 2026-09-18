@@ -70,7 +70,7 @@ export function useSettingsForm(config: SiteConfig | null) {
     emailRecipient: "",
   });
 
-  /* eslint-disable react-hooks/set-state-in-effect */
+   
   useEffect(() => {
     if (!config) return;
     setLogoUrl(config.logoUrl);
@@ -144,7 +144,7 @@ export function useSettingsForm(config: SiteConfig | null) {
       },
     );
   }, [config]);
-  /* eslint-enable react-hooks/set-state-in-effect */
+   
 
   function toInput(): UpdateSiteConfigInput {
     return {
