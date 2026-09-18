@@ -3,7 +3,7 @@ import type { LandingSectionRepository } from "@/domain/repositories/landing-sec
 export async function setLandingSectionOrder(
   repo: LandingSectionRepository,
   id: string,
-  order: number
+  order: number,
 ): Promise<void> {
   return repo.updateOrder(id, order);
 }

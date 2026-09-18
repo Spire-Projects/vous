@@ -11,44 +11,45 @@ export function ContentPage() {
   const [activeTab, setActiveTab] = useState<ContentTab>("blog");
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 shadow-xs p-5 sm:p-8 min-h-[calc(100vh-7rem)] space-y-6">
       <PageHeader
-        title="Contenido"
-        subtitle="Gestión de contenido editorial, influencers y redes sociales."
+        category="Contenido"
+        title="Contenido Editorial"
+        subtitle="Gestión de contenido editorial, influencers y publicaciones destacadas."
       />
 
-      <div className="flex gap-1 border-b border-white/40 pb-1">
+      <div className="flex flex-wrap items-center gap-2 p-1 bg-slate-100/80 rounded-xl w-fit">
         <button
           onClick={() => setActiveTab("blog")}
-          className={`inline-flex items-center gap-1.5 px-4 py-2.5 text-[11px] sm:text-sm font-sans border-b-2 transition-colors -mb-[1px] rounded-t-lg ${
+          className={`inline-flex items-center gap-2 px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all cursor-pointer ${
             activeTab === "blog"
-              ? "border-vous-gold text-vous-gold font-semibold bg-amber-50/60"
-              : "border-transparent text-vous-text-secondary hover:text-vous-text hover:bg-white/40"
+              ? "bg-white text-slate-900 font-semibold shadow-xs"
+              : "text-slate-600 hover:text-slate-900"
           }`}
         >
-          <FileText size={14} strokeWidth={1.5} />
+          <FileText size={15} strokeWidth={2} />
           Blog / Revista
         </button>
         <button
           onClick={() => setActiveTab("icon")}
-          className={`inline-flex items-center gap-1.5 px-4 py-2.5 text-[11px] sm:text-sm font-sans border-b-2 transition-colors -mb-[1px] rounded-t-lg ${
+          className={`inline-flex items-center gap-2 px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all cursor-pointer ${
             activeTab === "icon"
-              ? "border-vous-gold text-vous-gold font-semibold bg-amber-50/60"
-              : "border-transparent text-vous-text-secondary hover:text-vous-text hover:bg-white/40"
+              ? "bg-white text-slate-900 font-semibold shadow-xs"
+              : "text-slate-600 hover:text-slate-900"
           }`}
         >
-          <Star size={14} strokeWidth={1.5} />
+          <Star size={15} strokeWidth={2} />
           ICON
         </button>
         <button
           onClick={() => setActiveTab("new-posts")}
-          className={`inline-flex items-center gap-1.5 px-4 py-2.5 text-[11px] sm:text-sm font-sans border-b-2 transition-colors -mb-[1px] rounded-t-lg ${
+          className={`inline-flex items-center gap-2 px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all cursor-pointer ${
             activeTab === "new-posts"
-              ? "border-vous-gold text-vous-gold font-semibold bg-amber-50/60"
-              : "border-transparent text-vous-text-secondary hover:text-vous-text hover:bg-white/40"
+              ? "bg-white text-slate-900 font-semibold shadow-xs"
+              : "text-slate-600 hover:text-slate-900"
           }`}
         >
-          <Video size={14} strokeWidth={1.5} />
+          <Video size={15} strokeWidth={2} />
           New Post
         </button>
       </div>

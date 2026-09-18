@@ -5,7 +5,7 @@ export async function updateVariant(
   repo: ProductRepository,
   productId: string,
   variantId: string,
-  input: UpdateVariantInput
+  input: UpdateVariantInput,
 ): Promise<void> {
   return repo.updateVariant(productId, variantId, input);
 }

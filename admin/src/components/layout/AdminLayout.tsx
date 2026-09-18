@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
-import { Menu } from "lucide-react";
 import { AdminSidebar } from "./AdminSidebar";
+import { AdminTopNav } from "./AdminTopNav";
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -10,27 +10,29 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-vous-bg">
+    <div className="flex min-h-screen bg-[#F4F6FB] text-slate-900 antialiased">
+      {/* Mobile backdrop */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-30 lg:hidden"
+          className="fixed inset-0 bg-slate-950/50 backdrop-blur-xs z-30 lg:hidden transition-opacity"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
-      <AdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      {/* Sidebar */}
+      <AdminSidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
 
-      <button
-        className="fixed top-4 left-4 z-20 lg:hidden bg-vous-text text-white p-2.5 rounded-xl shadow-lg"
-        onClick={() => setSidebarOpen(true)}
-        aria-label="Abrir menú"
-      >
-        <Menu size={18} />
-      </button>
+      {/* Main container */}
+      <div className="flex-1 min-h-screen ml-0 lg:ml-64 flex flex-col min-w-0">
+        <AdminTopNav onOpenSidebar={() => setSidebarOpen(true)} />
 
-      <main className="flex-1 min-h-screen ml-0 lg:ml-64 pt-14 lg:pt-0">
-        <div className="animate-fade-in">{children}</div>
-      </main>
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-[1600px] w-full mx-auto">
+          <div className="animate-fade-in">{children}</div>
+        </main>
+      </div>
     </div>
   );
 }

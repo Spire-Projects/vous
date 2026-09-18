@@ -41,7 +41,9 @@ export const firestoreLandingSectionRepository: LandingSectionRepository = {
   async findAll(): Promise<LandingSection[]> {
     const q = query(collection(db, "landingSections"), orderBy("order", "asc"));
     const snap = await getDocs(q);
-    return snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>));
+    return snap.docs.map((d) =>
+      mapDoc(d.id, d.data() as Record<string, unknown>),
+    );
   },
 
   async findById(id: string): Promise<LandingSection | null> {
@@ -80,11 +82,17 @@ export const firestoreLandingSectionRepository: LandingSectionRepository = {
   },
 
   async setActive(id: string, active: boolean): Promise<void> {
-    await updateDoc(doc(db, "landingSections", id), { active, updatedAt: serverTimestamp() });
+    await updateDoc(doc(db, "landingSections", id), {
+      active,
+      updatedAt: serverTimestamp(),
+    });
   },
 
   async updateOrder(id: string, order: number): Promise<void> {
-    await updateDoc(doc(db, "landingSections", id), { order, updatedAt: serverTimestamp() });
+    await updateDoc(doc(db, "landingSections", id), {
+      order,
+      updatedAt: serverTimestamp(),
+    });
   },
 
   async setProducts(id: string, productIds: string[]): Promise<void> {

@@ -20,13 +20,15 @@ export function useCustomers() {
     }
   }, []);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(() => { fetchCustomers(); }, [fetchCustomers]);
+   
+  useEffect(() => {
+    fetchCustomers();
+  }, [fetchCustomers]);
 
   const toggleActive = useCallback(async (uid: string, current: boolean) => {
     await firestoreCustomerRepository.setActive(uid, !current);
     setCustomers((prev) =>
-      prev.map((c) => (c.uid === uid ? { ...c, isActive: !current } : c))
+      prev.map((c) => (c.uid === uid ? { ...c, isActive: !current } : c)),
     );
   }, []);
 

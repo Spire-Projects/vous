@@ -13,7 +13,11 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import type { FAQRepository } from "@/domain/repositories/faq.repository";
-import type { FAQ, CreateFAQInput, UpdateFAQInput } from "@/domain/entities/faq.entity";
+import type {
+  FAQ,
+  CreateFAQInput,
+  UpdateFAQInput,
+} from "@/domain/entities/faq.entity";
 
 function mapDoc(id: string, data: Record<string, unknown>): FAQ {
   return {
@@ -32,7 +36,9 @@ export const firestoreFAQRepository: FAQRepository = {
   async findAll(): Promise<FAQ[]> {
     const q = query(collection(db, "faqs"), orderBy("order", "asc"));
     const snap = await getDocs(q);
-    return snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>));
+    return snap.docs.map((d) =>
+      mapDoc(d.id, d.data() as Record<string, unknown>),
+    );
   },
 
   async findById(id: string): Promise<FAQ | null> {

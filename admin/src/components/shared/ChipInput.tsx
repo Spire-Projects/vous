@@ -8,7 +8,11 @@ interface ChipInputProps {
   placeholder?: string;
 }
 
-export function ChipInput({ value, onChange, placeholder = "Escribir y presionar Enter…" }: ChipInputProps) {
+export function ChipInput({
+  value,
+  onChange,
+  placeholder = "Escribir y presionar Enter…",
+}: ChipInputProps) {
   const [text, setText] = useState("");
 
   function add(input: string) {
@@ -36,7 +40,11 @@ export function ChipInput({ value, onChange, placeholder = "Escribir y presionar
               className="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-nav uppercase tracking-wide bg-white/90 border border-vous-border"
             >
               {item}
-              <button type="button" onClick={() => remove(i)} className="text-vous-text-secondary hover:text-vous-text ml-0.5">
+              <button
+                type="button"
+                onClick={() => remove(i)}
+                className="text-vous-text-secondary hover:text-vous-text ml-0.5"
+              >
                 <X size={11} />
               </button>
             </span>
@@ -59,7 +67,9 @@ export function ChipInput({ value, onChange, placeholder = "Escribir y presionar
             add(text);
           }
         }}
-        onBlur={() => { if (text.trim()) add(text); }}
+        onBlur={() => {
+          if (text.trim()) add(text);
+        }}
         placeholder={placeholder}
       />
     </div>

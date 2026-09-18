@@ -2,7 +2,7 @@ import type { LandingSectionRepository } from "@/domain/repositories/landing-sec
 
 export async function deleteLandingSection(
   repo: LandingSectionRepository,
-  id: string
+  id: string,
 ): Promise<void> {
   return repo.delete(id);
 }

@@ -20,9 +20,9 @@ export function getOrderStatusClass(status: OrderStatus): string {
   const map: Record<OrderStatus, string> = {
     pending: "bg-amber-50 text-amber-700",
     payment_sent: "bg-blue-100 text-blue-800",
-    verifying_payment: "bg-purple-100 text-purple-800",
+    verifying_payment: "bg-amber-100 text-amber-800",
     confirmed: "bg-sky-100 text-sky-800",
-    preparing: "bg-indigo-100 text-indigo-800",
+    preparing: "bg-amber-100 text-amber-800",
     shipped: "bg-teal-100 text-teal-800",
     delivered: "bg-emerald-50 text-emerald-700",
     cancelled: "bg-red-50 text-red-800",
@@ -54,7 +54,9 @@ export function getStockStatusClass(status: StockStatus): string {
 
 // ── Clases de color para solicitudes mayoristas ─────────────────────────────
 
-export function getWholesaleStatusLabel(status: WholesaleRequestStatus): string {
+export function getWholesaleStatusLabel(
+  status: WholesaleRequestStatus,
+): string {
   const map: Record<WholesaleRequestStatus, string> = {
     pending: "Pendiente",
     approved: "Aprobado",
@@ -63,7 +65,9 @@ export function getWholesaleStatusLabel(status: WholesaleRequestStatus): string 
   return map[status] ?? status;
 }
 
-export function getWholesaleStatusClass(status: WholesaleRequestStatus): string {
+export function getWholesaleStatusClass(
+  status: WholesaleRequestStatus,
+): string {
   const map: Record<WholesaleRequestStatus, string> = {
     pending: "bg-amber-50 text-amber-700",
     approved: "bg-emerald-50 text-emerald-700",

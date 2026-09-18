@@ -8,14 +8,22 @@ interface MapSidePanelProps {
   editable?: boolean;
 }
 
-export function MapSidePanel({ deptName, links, onSelectLink, editable }: MapSidePanelProps) {
+export function MapSidePanel({
+  deptName,
+  links,
+  onSelectLink,
+  editable,
+}: MapSidePanelProps) {
   if (!deptName) {
     return (
       <div className="h-full flex flex-col items-center justify-center text-center px-6 py-10">
         <MapPin size={40} className="text-vous-gold/40 mb-4" strokeWidth={1} />
-        <h3 className="font-serif text-lg text-vous-text mb-2">Selecciona un departamento</h3>
+        <h3 className="font-serif text-lg text-vous-text mb-2">
+          Selecciona un departamento
+        </h3>
         <p className="font-sans text-xs text-vous-text-muted max-w-[220px]">
-          Haz clic en cualquier departamento del mapa para ver las tiendas oficiales disponibles.
+          Haz clic en cualquier departamento del mapa para ver las tiendas
+          oficiales disponibles.
         </p>
       </div>
     );
@@ -41,7 +49,8 @@ export function MapSidePanel({ deptName, links, onSelectLink, editable }: MapSid
           Tiendas en {deptName}
         </h3>
         <p className="font-sans text-[11px] text-vous-text-muted mt-1">
-          {links.length} tienda{links.length > 1 ? "s" : ""} encontrada{links.length > 1 ? "s" : ""}
+          {links.length} tienda{links.length > 1 ? "s" : ""} encontrada
+          {links.length > 1 ? "s" : ""}
         </p>
       </div>
       <div className="flex-1 overflow-y-auto p-3 space-y-2">

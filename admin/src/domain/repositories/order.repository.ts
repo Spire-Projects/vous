@@ -1,4 +1,7 @@
-import type { Order, UpdateOrderStatusInput } from "@/domain/entities/order.entity";
+import type {
+  Order,
+  UpdateOrderStatusInput,
+} from "@/domain/entities/order.entity";
 
 export interface OrderRepository {
   findAll(limit?: number): Promise<Order[]>;

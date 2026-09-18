@@ -10,7 +10,12 @@ interface StepSizesProps {
   onCreateConfigSize?: (name: string) => Promise<void>;
 }
 
-export function StepSizes({ sizes, configSizes, onSizesChange, onCreateConfigSize }: StepSizesProps) {
+export function StepSizes({
+  sizes,
+  configSizes,
+  onSizesChange,
+  onCreateConfigSize,
+}: StepSizesProps) {
   const [custom, setCustom] = useState("");
 
   const activeConfig = configSizes.filter((s) => s.isActive);
@@ -44,13 +49,16 @@ export function StepSizes({ sizes, configSizes, onSizesChange, onCreateConfigSiz
         Tallas disponibles
       </p>
       <p className="text-[11px] text-vous-text-secondary leading-relaxed mb-2">
-        Selecciona las tallas configuradas o agrega personalizadas. Si el producto no tiene tallas, deja todo vacio.
+        Selecciona las tallas configuradas o agrega personalizadas. Si el
+        producto no tiene tallas, deja todo vacio.
       </p>
 
       {/* Configured sizes */}
       {activeConfig.length > 0 && (
         <div className="space-y-1.5">
-          <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary">Tallas predefinidas</p>
+          <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary">
+            Tallas predefinidas
+          </p>
           <div className="flex flex-wrap gap-2">
             {activeConfig.map((s) => {
               const selected = sizes.includes(s.name);
@@ -75,7 +83,9 @@ export function StepSizes({ sizes, configSizes, onSizesChange, onCreateConfigSiz
 
       {/* Custom sizes */}
       <div className="space-y-1.5">
-        <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary">Personalizadas</p>
+        <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary">
+          Personalizadas
+        </p>
         <div className="flex flex-wrap gap-2">
           {sizes
             .filter((s) => !activeConfig.some((c) => c.name === s))
@@ -85,8 +95,16 @@ export function StepSizes({ sizes, configSizes, onSizesChange, onCreateConfigSiz
                 className="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-nav uppercase tracking-wide bg-white/90 border border-vous-border"
               >
                 {s}
-                {onCreateConfigSize && <span title="Guardada en configuracion global"><Sparkles size={10} className="text-vous-gold" /></span>}
-                <button type="button" onClick={() => toggle(s)} className="text-vous-text-secondary hover:text-vous-text ml-0.5">
+                {onCreateConfigSize && (
+                  <span title="Guardada en configuracion global">
+                    <Sparkles size={10} className="text-vous-gold" />
+                  </span>
+                )}
+                <button
+                  type="button"
+                  onClick={() => toggle(s)}
+                  className="text-vous-text-secondary hover:text-vous-text ml-0.5"
+                >
                   <X size={11} />
                 </button>
               </span>
@@ -105,13 +123,21 @@ export function StepSizes({ sizes, configSizes, onSizesChange, onCreateConfigSiz
               }
             }}
           />
-          <Button type="button" variant="outline" size="sm" className="h-8" onClick={addCustom}>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="h-8"
+            onClick={addCustom}
+          >
             <Plus size={12} /> Agregar
           </Button>
         </div>
         {onCreateConfigSize && (
           <p className="text-[9px] text-vous-text-secondary">
-            Las tallas personalizadas se guardaran automaticamente en la configuracion global de ropa para que otros productos las puedan usar.
+            Las tallas personalizadas se guardaran automaticamente en la
+            configuracion global de ropa para que otros productos las puedan
+            usar.
           </p>
         )}
       </div>

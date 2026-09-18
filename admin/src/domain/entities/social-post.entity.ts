@@ -1,7 +1,11 @@
 /**
  * SocialPost entity — posts/videos from social networks (NEW POST section).
  */
-export type SocialPostPlatform = "instagram" | "tiktok" | "youtube" | "facebook";
+export type SocialPostPlatform =
+  | "instagram"
+  | "tiktok"
+  | "youtube"
+  | "facebook";
 
 export interface SocialPost {
   id: string;

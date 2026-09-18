@@ -25,12 +25,30 @@ export interface ProductRepository {
   delete(id: string): Promise<void>;
   setActive(id: string, isActive: boolean): Promise<void>;
   setFlags(id: string, flags: ProductFlags): Promise<void>;
-  applyDiscount(id: string, isDiscounted: boolean, discountPercentage?: number): Promise<void>;
-  applyCategoryDiscount(categoryId: string, isDiscounted: boolean, discountPercentage?: number): Promise<void>;
+  applyDiscount(
+    id: string,
+    isDiscounted: boolean,
+    discountPercentage?: number,
+  ): Promise<void>;
+  applyCategoryDiscount(
+    categoryId: string,
+    isDiscounted: boolean,
+    discountPercentage?: number,
+  ): Promise<void>;
   findVariants(productId: string): Promise<ProductVariant[]>;
-  createVariant(productId: string, input: CreateVariantInput): Promise<ProductVariant>;
-  createVariantsBatch(productId: string, inputs: CreateVariantInput[]): Promise<void>;
-  updateVariant(productId: string, variantId: string, input: UpdateVariantInput): Promise<void>;
+  createVariant(
+    productId: string,
+    input: CreateVariantInput,
+  ): Promise<ProductVariant>;
+  createVariantsBatch(
+    productId: string,
+    inputs: CreateVariantInput[],
+  ): Promise<void>;
+  updateVariant(
+    productId: string,
+    variantId: string,
+    input: UpdateVariantInput,
+  ): Promise<void>;
   deleteVariant(productId: string, variantId: string): Promise<void>;
   /** Ajuste manual de stock mayorista */
   updateWholesaleStock(id: string, stock: number): Promise<void>;

@@ -1,6 +1,11 @@
 // ── Barrel export de todos los tipos de VOUS (Admin Panel) ─────────────────
 
-export type { FS, SerializedTimestamp, AnyTimestamp, BaseDocument } from "./base.types";
+export type {
+  FS,
+  SerializedTimestamp,
+  AnyTimestamp,
+  BaseDocument,
+} from "./base.types";
 
 export type {
   CustomerRole,

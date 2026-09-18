@@ -12,7 +12,11 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import type { SocialPostRepository } from "@/domain/repositories/social-post.repository";
-import type { SocialPost, CreateSocialPostInput, UpdateSocialPostInput } from "@/domain/entities/social-post.entity";
+import type {
+  SocialPost,
+  CreateSocialPostInput,
+  UpdateSocialPostInput,
+} from "@/domain/entities/social-post.entity";
 
 function mapDoc(id: string, data: Record<string, unknown>): SocialPost {
   return {
@@ -35,7 +39,9 @@ export const firestoreSocialPostRepository: SocialPostRepository = {
   async findAll(): Promise<SocialPost[]> {
     const q = query(collection(db, "socialPosts"), orderBy("order", "asc"));
     const snap = await getDocs(q);
-    return snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>));
+    return snap.docs.map((d) =>
+      mapDoc(d.id, d.data() as Record<string, unknown>),
+    );
   },
 
   async findById(id: string): Promise<SocialPost | null> {

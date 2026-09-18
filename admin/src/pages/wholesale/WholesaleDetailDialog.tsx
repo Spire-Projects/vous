@@ -10,7 +10,12 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import type { WholesaleRequest } from "@/domain/entities/wholesale.entity";
-import { STATUS_VARIANT, STATUS_LABEL, HOW_FOUND_LABELS, formatDate } from "./types";
+import {
+  STATUS_VARIANT,
+  STATUS_LABEL,
+  HOW_FOUND_LABELS,
+  formatDate,
+} from "./types";
 
 interface WholesaleDetailDialogProps {
   selected: WholesaleRequest | null;
@@ -23,7 +28,10 @@ interface WholesaleDetailDialogProps {
 }
 
 function isImageUrl(url: string): boolean {
-  return /\.(jpe?g|png|gif|webp|svg|bmp)(\?.*)?$/i.test(url) || url.includes("cloudinary");
+  return (
+    /\.(jpe?g|png|gif|webp|svg|bmp)(\?.*)?$/i.test(url) ||
+    url.includes("cloudinary")
+  );
 }
 
 export function WholesaleDetailDialog({
@@ -58,14 +66,18 @@ export function WholesaleDetailDialog({
                 <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">
                   Departamento
                 </p>
-                <p className="font-sans text-vous-text">{selected.department}</p>
+                <p className="font-sans text-vous-text">
+                  {selected.department}
+                </p>
               </div>
               <div>
                 <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">
                   ¿Cómo nos conoció?
                 </p>
                 <p className="font-sans text-vous-text">
-                  {HOW_FOUND_LABELS[selected.howFound ?? ""] ?? selected.howFound ?? "—"}
+                  {HOW_FOUND_LABELS[selected.howFound ?? ""] ??
+                    selected.howFound ??
+                    "—"}
                 </p>
               </div>
               <div>
@@ -80,7 +92,9 @@ export function WholesaleDetailDialog({
                 <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">
                   Fecha
                 </p>
-                <p className="font-sans text-vous-text">{formatDate(selected.createdAt)}</p>
+                <p className="font-sans text-vous-text">
+                  {formatDate(selected.createdAt)}
+                </p>
               </div>
               <div className="col-span-2">
                 <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">
@@ -95,7 +109,9 @@ export function WholesaleDetailDialog({
                   <p className="text-[10px] font-nav uppercase tracking-wider text-vous-text-secondary mb-0.5">
                     Nota de Revisión
                   </p>
-                  <p className="font-sans text-vous-text-secondary text-sm italic">{selected.reviewNote}</p>
+                  <p className="font-sans text-vous-text-secondary text-sm italic">
+                    {selected.reviewNote}
+                  </p>
                 </div>
               )}
             </div>
@@ -137,7 +153,7 @@ export function WholesaleDetailDialog({
                         <ExternalLink size={11} />
                         Archivo {i + 1}
                       </a>
-                    )
+                    ),
                   )}
                 </div>
               </div>

@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,7 +12,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ImagePicker } from "@/components/shared/ImagePicker";
 import { MultiImagePicker } from "@/components/shared/MultiImagePicker";
-import type { Category, CreateCategoryInput } from "@/domain/entities/category.entity";
+import type {
+  Category,
+  CreateCategoryInput,
+} from "@/domain/entities/category.entity";
 import { toSlug } from "@/utils/slug";
 
 interface Props {
@@ -18,7 +26,13 @@ interface Props {
   onSave: (data: CreateCategoryInput) => Promise<void>;
 }
 
-export function CategoryFormDialog({ open, category, nextOrder, onClose, onSave }: Props) {
+export function CategoryFormDialog({
+  open,
+  category,
+  nextOrder,
+  onClose,
+  onSave,
+}: Props) {
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [description, setDescription] = useState("");
@@ -29,17 +43,28 @@ export function CategoryFormDialog({ open, category, nextOrder, onClose, onSave 
   const [saving, setSaving] = useState(false);
   const [slugManual, setSlugManual] = useState(false);
 
-  /* eslint-disable react-hooks/set-state-in-effect */
+   
   useEffect(() => {
     if (category) {
-      setName(category.name); setSlug(category.slug);
-      setDescription(category.description ?? ""); setImage(category.image ?? "");
-      setBanner(category.banner ?? ""); setImages(category.images ?? []); setIsActive(category.isActive);
+      setName(category.name);
+      setSlug(category.slug);
+      setDescription(category.description ?? "");
+      setImage(category.image ?? "");
+      setBanner(category.banner ?? "");
+      setImages(category.images ?? []);
+      setIsActive(category.isActive);
     } else {
-      setName(""); setSlug(""); setDescription(""); setImage(""); setBanner(""); setImages([]); setIsActive(true); setSlugManual(false);
+      setName("");
+      setSlug("");
+      setDescription("");
+      setImage("");
+      setBanner("");
+      setImages([]);
+      setIsActive(true);
+      setSlugManual(false);
     }
   }, [category, open]);
-  /* eslint-enable react-hooks/set-state-in-effect */
+   
 
   function handleNameChange(v: string) {
     setName(v);
@@ -52,7 +77,8 @@ export function CategoryFormDialog({ open, category, nextOrder, onClose, onSave 
     setSaving(true);
     try {
       await onSave({
-        name, slug,
+        name,
+        slug,
         description: description || undefined,
         image: image || undefined,
         banner: banner || undefined,
@@ -61,11 +87,18 @@ export function CategoryFormDialog({ open, category, nextOrder, onClose, onSave 
         sortOrder: category?.sortOrder ?? nextOrder,
       });
       onClose();
-    } finally { setSaving(false); }
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
-    <Dialog open={open} onOpenChange={(v) => { if (!v) onClose(); }}>
+    <Dialog
+      open={open}
+      onOpenChange={(v) => {
+        if (!v) onClose();
+      }}
+    >
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-nav text-[13px] uppercase tracking-wider">
@@ -76,36 +109,82 @@ export function CategoryFormDialog({ open, category, nextOrder, onClose, onSave 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1 col-span-2">
               <Label>Nombre *</Label>
-              <Input required value={name} onChange={(e) => handleNameChange(e.target.value)} />
+              <Input
+                required
+                value={name}
+                onChange={(e) => handleNameChange(e.target.value)}
+              />
             </div>
             <div className="space-y-1 col-span-2">
               <Label>Slug *</Label>
-              <Input required value={slug} onChange={(e) => { setSlug(e.target.value); setSlugManual(true); }} placeholder="nombre-categoria" />
+              <Input
+                required
+                value={slug}
+                onChange={(e) => {
+                  setSlug(e.target.value);
+                  setSlugManual(true);
+                }}
+                placeholder="nombre-categoria"
+              />
             </div>
           </div>
           <div className="space-y-1">
             <Label>Descripción</Label>
-            <Textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={2} />
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={2}
+            />
           </div>
           <div className="space-y-1">
             <Label>Imagen de categoría</Label>
-            <ImagePicker value={image} onChange={setImage} folder="vous/categories" label="Subir imagen" aspect="square" />
+            <ImagePicker
+              value={image}
+              onChange={setImage}
+              folder="vous/categories"
+              label="Subir imagen"
+              aspect="square"
+            />
           </div>
           <div className="space-y-1">
             <Label>Banner</Label>
-            <ImagePicker value={banner} onChange={setBanner} folder="vous/banners" label="Subir banner" aspect="video" />
+            <ImagePicker
+              value={banner}
+              onChange={setBanner}
+              folder="vous/banners"
+              label="Subir banner"
+              aspect="video"
+            />
           </div>
           <div className="space-y-2">
             <Label>Galería de imágenes</Label>
-            <MultiImagePicker values={images} onChange={setImages} folder="vous/categories" label="Agregar imagen" />
+            <MultiImagePicker
+              values={images}
+              onChange={setImages}
+              folder="vous/categories"
+              label="Agregar imagen"
+            />
           </div>
           <div className="flex items-center gap-2">
-            <Checkbox checked={isActive} onCheckedChange={(v) => setIsActive(v === true)} />
-            <Label className="mb-0">Activa (visible en catálogo y landing)</Label>
+            <Checkbox
+              checked={isActive}
+              onCheckedChange={(v) => setIsActive(v === true)}
+            />
+            <Label className="mb-0">
+              Activa (visible en catálogo y landing)
+            </Label>
           </div>
           <div className="flex justify-end gap-3 pt-2">
-            <Button type="button" variant="outline" onClick={onClose}>Cancelar</Button>
-            <Button type="submit" disabled={saving}>{saving ? "Guardando..." : category ? "Guardar cambios" : "Crear categoría"}</Button>
+            <Button type="button" variant="outline" onClick={onClose}>
+              Cancelar
+            </Button>
+            <Button type="submit" disabled={saving}>
+              {saving
+                ? "Guardando..."
+                : category
+                  ? "Guardar cambios"
+                  : "Crear categoría"}
+            </Button>
           </div>
         </form>
       </DialogContent>

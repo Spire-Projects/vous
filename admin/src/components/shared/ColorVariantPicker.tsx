@@ -22,7 +22,8 @@ export function ColorVariantPicker({ value, onChange }: Props) {
 
   function add() {
     if (!name.trim()) return;
-    if (value.some((c) => c.name.toLowerCase() === name.trim().toLowerCase())) return;
+    if (value.some((c) => c.name.toLowerCase() === name.trim().toLowerCase()))
+      return;
     onChange([...value, { hex, name: name.trim(), images: [] }]);
     setName("");
     setHex("#000000");
@@ -30,7 +31,8 @@ export function ColorVariantPicker({ value, onChange }: Props) {
 
   function remove(idx: number) {
     if (expandedIdx === idx) setExpandedIdx(null);
-    else if (expandedIdx !== null && expandedIdx > idx) setExpandedIdx(expandedIdx - 1);
+    else if (expandedIdx !== null && expandedIdx > idx)
+      setExpandedIdx(expandedIdx - 1);
     onChange(value.filter((_, i) => i !== idx));
   }
 
@@ -48,9 +50,15 @@ export function ColorVariantPicker({ value, onChange }: Props) {
             const isExpanded = expandedIdx === i;
             const imgCount = c.images?.length ?? 0;
             return (
-              <div key={i} className="border border-vous-border bg-vous-surface">
+              <div
+                key={i}
+                className="border border-vous-border bg-vous-surface"
+              >
                 <div className="flex items-center gap-2 px-2 py-1.5">
-                  <span className="w-5 h-5 rounded-full border border-vous-border shrink-0" style={{ background: c.hex }} />
+                  <span
+                    className="w-5 h-5 rounded-full border border-vous-border shrink-0"
+                    style={{ background: c.hex }}
+                  />
                   <button
                     type="button"
                     onClick={() => setExpandedIdx(isExpanded ? null : i)}
@@ -62,9 +70,23 @@ export function ColorVariantPicker({ value, onChange }: Props) {
                         ({imgCount} foto{imgCount !== 1 ? "s" : ""})
                       </span>
                     )}
-                    {isExpanded ? <ChevronDown size={12} className="ml-auto text-vous-text-secondary" /> : <ChevronRight size={12} className="ml-auto text-vous-text-secondary" />}
+                    {isExpanded ? (
+                      <ChevronDown
+                        size={12}
+                        className="ml-auto text-vous-text-secondary"
+                      />
+                    ) : (
+                      <ChevronRight
+                        size={12}
+                        className="ml-auto text-vous-text-secondary"
+                      />
+                    )}
                   </button>
-                  <button type="button" onClick={() => remove(i)} className="text-vous-text-secondary hover:text-red-700 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => remove(i)}
+                    className="text-vous-text-secondary hover:text-red-700 shrink-0"
+                  >
                     <X size={13} />
                   </button>
                 </div>
@@ -75,19 +97,35 @@ export function ColorVariantPicker({ value, onChange }: Props) {
                     </p>
                     <div className="flex flex-wrap gap-1.5">
                       {(c.images ?? []).map((img, j) => (
-                        <div key={j} className="relative w-12 h-12 border border-vous-border">
-                          <img src={img} alt="" className="w-full h-full object-cover" />
+                        <div
+                          key={j}
+                          className="relative w-12 h-12 border border-vous-border"
+                        >
+                          <img
+                            src={img}
+                            alt=""
+                            className="w-full h-full object-cover"
+                          />
                           <button
                             type="button"
-                            onClick={() => updateImages(i, (c.images ?? []).filter((_, k) => k !== j))}
+                            onClick={() =>
+                              updateImages(
+                                i,
+                                (c.images ?? []).filter((_, k) => k !== j),
+                              )
+                            }
                             className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[9px] w-3.5 h-3.5 rounded-full flex items-center justify-center"
-                          >×</button>
+                          >
+                            ×
+                          </button>
                         </div>
                       ))}
                     </div>
                     <ImagePicker
                       value=""
-                      onChange={(url) => updateImages(i, [...(c.images ?? []), url])}
+                      onChange={(url) =>
+                        updateImages(i, [...(c.images ?? []), url])
+                      }
                       folder="vous/products"
                       label="Agregar foto"
                       aspect="square"
@@ -112,14 +150,29 @@ export function ColorVariantPicker({ value, onChange }: Props) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Nombre del color (ej: Negro)"
-          onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); add(); } }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              add();
+            }
+          }}
           className="flex-1"
         />
-        <Button type="button" variant="outline" size="sm" onClick={add} disabled={!name.trim()} className="shrink-0 gap-1">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={add}
+          disabled={!name.trim()}
+          className="shrink-0 gap-1"
+        >
           <Plus size={13} /> Agregar
         </Button>
       </div>
-      <p className="text-[10px] text-vous-text-secondary">Cada color puede tener sus propias fotos. Las fotos se mostrarán cuando el cliente seleccione ese color.</p>
+      <p className="text-[10px] text-vous-text-secondary">
+        Cada color puede tener sus propias fotos. Las fotos se mostrarán cuando
+        el cliente seleccione ese color.
+      </p>
     </div>
   );
 }

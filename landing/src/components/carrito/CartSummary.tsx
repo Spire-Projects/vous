@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 interface CartSummaryProps {
   subtotal: string;
   total: string;
+  onCheckout?: () => void;
+  hasStockErrors?: boolean;
 }
 
-export function CartSummary({ subtotal, total }: CartSummaryProps) {
+export function CartSummary({ subtotal, total, onCheckout, hasStockErrors }: CartSummaryProps) {
   return (
     <div className="lg:w-80 shrink-0">
       <div className="bg-white p-6 sticky top-24">
@@ -32,9 +34,26 @@ export function CartSummary({ subtotal, total }: CartSummaryProps) {
           </div>
         </div>
 
-        <Button asChild variant="default" size="lg" className="w-full">
-          <Link href="/checkout">Finalizar Compra</Link>
-        </Button>
+        {hasStockErrors && (
+          <p className="mb-3 font-sans text-xs text-amber-800 bg-amber-100/70 p-2.5 border border-amber-200">
+            Ajusta los productos sin stock disponible para continuar.
+          </p>
+        )}
+
+        {onCheckout ? (
+          <Button
+            variant="default"
+            size="lg"
+            className="w-full justify-center"
+            onClick={onCheckout}
+          >
+            Finalizar Compra
+          </Button>
+        ) : (
+          <Button asChild variant="default" size="lg" className="w-full">
+            <Link href="/checkout">Finalizar Compra</Link>
+          </Button>
+        )}
 
         <div className="mt-5 space-y-2">
           {[

@@ -100,18 +100,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function register(
     name: string,
     email: string,
-    password: string
+    password: string,
   ): Promise<void> {
     // Verificar que no exista ningún superadmin todavía.
     // Si la lectura falla (reglas de Firestore sin auth), asumimos que no hay
     // superadmin y continuamos — el setDoc posterior validará el acceso.
     try {
       const snap = await getDocs(
-        query(collection(db, "adminUsers"), where("role", "==", "superadmin"))
+        query(collection(db, "adminUsers"), where("role", "==", "superadmin")),
       );
       if (!snap.empty) {
         throw new Error(
-          "Ya existe un superadmin. Contacta al administrador para obtener acceso."
+          "Ya existe un superadmin. Contacta al administrador para obtener acceso.",
         );
       }
     } catch (err) {
@@ -123,7 +123,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { user: newUser } = await createUserWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
 
     await setDoc(doc(db, "adminUsers", newUser.uid), {

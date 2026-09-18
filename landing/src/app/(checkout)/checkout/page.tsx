@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Shield } from "lucide-react";
 import { HeaderLogo } from "@/components/layout/Header/HeaderLogo";
 import { usePaymentConfig } from "@/hooks/usePaymentConfig";
@@ -9,6 +10,7 @@ import {
   CheckoutPaymentStep,
   CheckoutSuccessStep,
   CheckoutOrderSummary,
+  StockValidationDialog,
 } from "@/components/checkout";
 
 export default function CheckoutPage() {
@@ -35,8 +37,23 @@ export default function CheckoutPage() {
     finalTotal,
     handleProceedToPayment,
     handleSubmitProof,
+    adjustStockToAvailable,
     handleApplyDiscount,
   } = useCheckout();
+
+  const [dialogDismissed, setDialogDismissed] = useState(false);
+
+  const isStockDialogOpen = stockErrors.length > 0 && !dialogDismissed;
+
+  const handleAdjustStock = () => {
+    adjustStockToAvailable(stockErrors);
+    setDialogDismissed(false);
+  };
+
+  const onSubmitForm = () => {
+    setDialogDismissed(false);
+    handleProceedToPayment();
+  };
 
   if (step === "success") return <CheckoutSuccessStep orderNumber={orderNumber} />;
 
@@ -63,8 +80,9 @@ export default function CheckoutPage() {
                 onFieldChange={(k, v) => setForm((p) => ({ ...p, [k]: v }))}
                 formError={formError}
                 submitting={creatingOrder}
-                onSubmit={handleProceedToPayment}
+                onSubmit={onSubmitForm}
                 stockErrors={stockErrors}
+                onOpenStockDialog={() => setDialogDismissed(false)}
                 wholesaleErrors={wholesaleErrors}
               />
             )}
@@ -95,6 +113,13 @@ export default function CheckoutPage() {
           />
         </div>
       </div>
+
+      <StockValidationDialog
+        open={isStockDialogOpen}
+        onOpenChange={(open) => !open && setDialogDismissed(true)}
+        items={stockErrors}
+        onAdjustStock={handleAdjustStock}
+      />
     </div>
   );
 }

@@ -1,10 +1,20 @@
 import { useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { VariantAddForm } from "./VariantAddForm";
 import type { ColorItem } from "@/components/shared/ColorVariantPicker";
-import type { CreateVariantInput, ProductVariant } from "@/domain/entities/product.entity";
+import type {
+  CreateVariantInput,
+  ProductVariant,
+} from "@/domain/entities/product.entity";
 
 interface VariantEditorProps {
   colors: ColorItem[];
@@ -14,7 +24,13 @@ interface VariantEditorProps {
   onChange: (variants: CreateVariantInput[]) => void;
 }
 
-export function VariantEditor({ colors, sizes, variants, existingVariants = [], onChange }: VariantEditorProps) {
+export function VariantEditor({
+  colors,
+  sizes,
+  variants,
+  existingVariants = [],
+  onChange,
+}: VariantEditorProps) {
   const [showForm, setShowForm] = useState(false);
   const hasAny = sizes.length > 0 || colors.length > 0;
 
@@ -30,7 +46,8 @@ export function VariantEditor({ colors, sizes, variants, existingVariants = [], 
   if (!hasAny) {
     return (
       <p className="text-[11px] text-vous-text-secondary">
-        Aun no has agregado colores ni tallas. Regresa a los pasos Colores y Tallas para definir las opciones.
+        Aun no has agregado colores ni tallas. Regresa a los pasos Colores y
+        Tallas para definir las opciones.
       </p>
     );
   }
@@ -60,7 +77,11 @@ export function VariantEditor({ colors, sizes, variants, existingVariants = [], 
                     {v.images && v.images.length > 0 ? (
                       <div className="flex items-center gap-1">
                         <div className="relative w-10 h-10 border border-vous-border rounded overflow-hidden">
-                          <img src={v.images[0]} alt="" className="w-full h-full object-cover" />
+                          <img
+                            src={v.images[0]}
+                            alt=""
+                            className="w-full h-full object-cover"
+                          />
                           {v.images.length > 1 && (
                             <span className="absolute bottom-0 right-0 bg-black/60 text-white text-[8px] px-1 rounded-tl">
                               +{v.images.length - 1}
@@ -69,26 +90,43 @@ export function VariantEditor({ colors, sizes, variants, existingVariants = [], 
                         </div>
                       </div>
                     ) : (
-                      <span className="text-vous-text-secondary text-[11px]">—</span>
+                      <span className="text-vous-text-secondary text-[11px]">
+                        —
+                      </span>
                     )}
                   </TableCell>
                   <TableCell>
                     {v.color ? (
                       <span className="inline-flex items-center gap-1.5 text-[11px] font-nav uppercase">
-                        <span className="w-3.5 h-3.5 rounded-full border border-vous-border inline-block" style={{ background: v.colorHex ?? "#888" }} />
+                        <span
+                          className="w-3.5 h-3.5 rounded-full border border-vous-border inline-block"
+                          style={{ background: v.colorHex ?? "#888" }}
+                        />
                         {v.color}
                       </span>
                     ) : (
-                      <span className="text-vous-text-secondary text-[11px]">—</span>
+                      <span className="text-vous-text-secondary text-[11px]">
+                        —
+                      </span>
                     )}
                   </TableCell>
                   <TableCell>
-                    <span className="text-[11px] font-nav uppercase">{v.size ?? <span className="text-vous-text-secondary">—</span>}</span>
+                    <span className="text-[11px] font-nav uppercase">
+                      {v.size ?? (
+                        <span className="text-vous-text-secondary">—</span>
+                      )}
+                    </span>
                   </TableCell>
                   <TableCell>
-                    <span className={`text-[12px] font-nav font-semibold ${v.stock <= 0 ? "text-red-600" : ""}`}>{v.stock}</span>
+                    <span
+                      className={`text-[12px] font-nav font-semibold ${v.stock <= 0 ? "text-red-600" : ""}`}
+                    >
+                      {v.stock}
+                    </span>
                   </TableCell>
-                  <TableCell className="text-[10px] text-vous-text-secondary font-mono">{v.sku ?? "—"}</TableCell>
+                  <TableCell className="text-[10px] text-vous-text-secondary font-mono">
+                    {v.sku ?? "—"}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -120,7 +158,11 @@ export function VariantEditor({ colors, sizes, variants, existingVariants = [], 
                     {v.images && v.images.length > 0 ? (
                       <div className="flex items-center gap-1">
                         <div className="relative w-10 h-10 border border-vous-border rounded overflow-hidden">
-                          <img src={v.images[0]} alt="" className="w-full h-full object-cover" />
+                          <img
+                            src={v.images[0]}
+                            alt=""
+                            className="w-full h-full object-cover"
+                          />
                           {v.images.length > 1 && (
                             <span className="absolute bottom-0 right-0 bg-black/60 text-white text-[8px] px-1 rounded-tl">
                               +{v.images.length - 1}
@@ -129,28 +171,50 @@ export function VariantEditor({ colors, sizes, variants, existingVariants = [], 
                         </div>
                       </div>
                     ) : (
-                      <span className="text-vous-text-secondary text-[11px]">—</span>
+                      <span className="text-vous-text-secondary text-[11px]">
+                        —
+                      </span>
                     )}
                   </TableCell>
                   <TableCell>
                     {v.color ? (
                       <span className="inline-flex items-center gap-1.5 text-[11px] font-nav uppercase">
-                        <span className="w-3.5 h-3.5 rounded-full border border-vous-border inline-block" style={{ background: v.colorHex ?? "#888" }} />
+                        <span
+                          className="w-3.5 h-3.5 rounded-full border border-vous-border inline-block"
+                          style={{ background: v.colorHex ?? "#888" }}
+                        />
                         {v.color}
                       </span>
                     ) : (
-                      <span className="text-vous-text-secondary text-[11px]">—</span>
+                      <span className="text-vous-text-secondary text-[11px]">
+                        —
+                      </span>
                     )}
                   </TableCell>
                   <TableCell>
-                    <span className="text-[11px] font-nav uppercase">{v.size ?? <span className="text-vous-text-secondary">—</span>}</span>
+                    <span className="text-[11px] font-nav uppercase">
+                      {v.size ?? (
+                        <span className="text-vous-text-secondary">—</span>
+                      )}
+                    </span>
                   </TableCell>
                   <TableCell>
-                    <span className={`text-[12px] font-nav font-semibold ${v.stock <= 0 ? "text-red-600" : ""}`}>{v.stock}</span>
+                    <span
+                      className={`text-[12px] font-nav font-semibold ${v.stock <= 0 ? "text-red-600" : ""}`}
+                    >
+                      {v.stock}
+                    </span>
                   </TableCell>
-                  <TableCell className="text-[10px] text-vous-text-secondary font-mono">{v.sku ?? "—"}</TableCell>
+                  <TableCell className="text-[10px] text-vous-text-secondary font-mono">
+                    {v.sku ?? "—"}
+                  </TableCell>
                   <TableCell>
-                    <Button variant="ghost" size="icon-sm" className="text-vous-text-secondary hover:text-red-700" onClick={() => removeVariant(i)}>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      className="text-vous-text-secondary hover:text-red-700"
+                      onClick={() => removeVariant(i)}
+                    >
                       <Trash2 size={13} />
                     </Button>
                   </TableCell>
@@ -162,15 +226,29 @@ export function VariantEditor({ colors, sizes, variants, existingVariants = [], 
       )}
 
       {!showForm ? (
-        <Button type="button" variant="outline" size="sm" onClick={() => setShowForm(true)} className="gap-1.5">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => setShowForm(true)}
+          className="gap-1.5"
+        >
           <Plus size={13} /> Agregar variante
         </Button>
       ) : (
-        <VariantAddForm colors={colors} sizes={sizes} onAdd={addVariant} onCancel={() => setShowForm(false)} />
+        <VariantAddForm
+          colors={colors}
+          sizes={sizes}
+          onAdd={addVariant}
+          onCancel={() => setShowForm(false)}
+        />
       )}
 
       {variants.length === 0 && existingVariants.length === 0 && !showForm && (
-        <p className="text-[11px] text-vous-text-secondary">No hay variantes aun. Agrega las combinaciones de color y talla que existen.</p>
+        <p className="text-[11px] text-vous-text-secondary">
+          No hay variantes aun. Agrega las combinaciones de color y talla que
+          existen.
+        </p>
       )}
     </div>
   );

@@ -12,7 +12,11 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import type { FeedbackRepository } from "@/domain/repositories/feedback.repository";
-import type { Feedback, CreateFeedbackInput, UpdateFeedbackInput } from "@/domain/entities/feedback.entity";
+import type {
+  Feedback,
+  CreateFeedbackInput,
+  UpdateFeedbackInput,
+} from "@/domain/entities/feedback.entity";
 
 function mapDoc(id: string, data: Record<string, unknown>): Feedback {
   return {
@@ -33,7 +37,9 @@ export const firestoreFeedbackRepository: FeedbackRepository = {
   async findAll(): Promise<Feedback[]> {
     const q = query(collection(db, "feedback"), orderBy("createdAt", "desc"));
     const snap = await getDocs(q);
-    return snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>));
+    return snap.docs.map((d) =>
+      mapDoc(d.id, d.data() as Record<string, unknown>),
+    );
   },
 
   async findById(id: string): Promise<Feedback | null> {

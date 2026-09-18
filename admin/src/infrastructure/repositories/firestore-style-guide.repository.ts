@@ -12,7 +12,11 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import type { StyleGuideRepository } from "@/domain/repositories/style-guide.repository";
-import type { StyleGuide, CreateStyleGuideInput, UpdateStyleGuideInput } from "@/domain/entities/style-guide.entity";
+import type {
+  StyleGuide,
+  CreateStyleGuideInput,
+  UpdateStyleGuideInput,
+} from "@/domain/entities/style-guide.entity";
 
 function mapDoc(id: string, data: Record<string, unknown>): StyleGuide {
   return {
@@ -38,7 +42,9 @@ export const firestoreStyleGuideRepository: StyleGuideRepository = {
   async findAll(): Promise<StyleGuide[]> {
     const q = query(collection(db, "styleGuides"), orderBy("order", "asc"));
     const snap = await getDocs(q);
-    return snap.docs.map((d) => mapDoc(d.id, d.data() as Record<string, unknown>));
+    return snap.docs.map((d) =>
+      mapDoc(d.id, d.data() as Record<string, unknown>),
+    );
   },
 
   async findById(id: string): Promise<StyleGuide | null> {

@@ -1,4 +1,7 @@
-import type { Category, CreateCategoryInput } from "@/domain/entities/category.entity";
+import type {
+  Category,
+  CreateCategoryInput,
+} from "@/domain/entities/category.entity";
 
 export interface CategoryRepository {
   findAll(): Promise<Category[]>;
